@@ -1,0 +1,378 @@
+config_id: market-v4-default
+config_version: market-v4.4.0
+environment_version: market-env-v4.1.0
+
+schema_versions:
+  state: market-state-v4.1.0
+  action: company-action-v4.0.0
+  event: market-event-v4.0.0
+  manifest: episode-manifest-v1.0.0
+
+protocols:
+  rng: rng-splitmix64-v1.0.0
+  hash: rfc8785-sha256-fixedpoint-v1.0.0
+  rng_components:
+    demand_noise: v1
+    sentiment_noise: v1
+    supply_cost_noise: v1
+    consumer_utility_noise: v1
+    operational_capacity_noise: v1
+    risk_signal_generation: v1
+    event_realization: v1
+    incident_generation: v1
+    rule_opponent_policy: v1
+    market_model_selection: v1
+
+market:
+  min_agents: 2
+  max_agents: 8
+  default_agents: 4
+  rounds: 10
+  base_demand_orders: 12000
+  demand_noise_std_ppm: 30000
+  initial_sentiment_ppm: 1000000
+  sentiment_mean_ppm: 1000000
+  sentiment_reversion_ppm: 150000
+  sentiment_noise_std_ppm: 15000
+  sentiment_min_ppm: 850000
+  sentiment_max_ppm: 1150000
+  initial_supply_cost_index_ppm: 1000000
+  supply_cost_mean_ppm: 1000000
+  supply_cost_reversion_ppm: 120000
+  supply_cost_noise_std_ppm: 12000
+  supply_cost_min_ppm: 850000
+  supply_cost_max_ppm: 1250000
+
+episode_options:
+  round_options: [5, 10, 15, 20]
+  default_rounds: 10
+  seed_min: 0
+  seed_max: 18446744073709551615
+
+market_models:
+  random_demand_jitter_ppm: 25000
+  random_price_anchor_jitter_cents: 250
+  selection_weights_ppm:
+    balanced: 350000
+    value_oriented: 250000
+    quality_oriented: 200000
+    service_oriented: 200000
+  profiles:
+    balanced:
+      label: 均衡市场
+      description: 价格、品牌和服务共同影响消费者选择，需求与支付意愿接近基准。
+      demand_bias_ppm: 1000000
+      price_anchor_cents: 10400
+      price_band_cents: 1200
+      segment_weights_ppm: {price_sensitive: 450000, brand_sensitive: 300000, service_sensitive: 250000}
+      utility_multipliers_ppm: {price: 1000000, awareness: 1000000, service: 1000000, reputation: 1000000, prior_stockout: 1000000}
+    value_oriented:
+      label: 价格敏感市场
+      description: 消费者更关注价格，整体需求略高，但高价更难维持份额。
+      demand_bias_ppm: 1030000
+      price_anchor_cents: 10000
+      price_band_cents: 900
+      segment_weights_ppm: {price_sensitive: 600000, brand_sensitive: 220000, service_sensitive: 180000}
+      utility_multipliers_ppm: {price: 1450000, awareness: 700000, service: 700000, reputation: 650000, prior_stockout: 900000}
+    quality_oriented:
+      label: 品质偏好市场
+      description: 品牌知名度与声誉决定品质信任和溢价能力；服务质量仍重要，但不是核心品质信号。
+      demand_bias_ppm: 970000
+      price_anchor_cents: 10800
+      price_band_cents: 1300
+      segment_weights_ppm: {price_sensitive: 300000, brand_sensitive: 480000, service_sensitive: 220000}
+      utility_multipliers_ppm: {price: 850000, awareness: 1400000, service: 700000, reputation: 1450000, prior_stockout: 850000}
+    service_oriented:
+      label: 服务偏好市场
+      description: 当期服务质量、履约稳定性与历史缺货记录主导选择；品牌知名度影响较弱。
+      demand_bias_ppm: 1000000
+      price_anchor_cents: 10600
+      price_band_cents: 1100
+      segment_weights_ppm: {price_sensitive: 300000, brand_sensitive: 250000, service_sensitive: 450000}
+      utility_multipliers_ppm: {price: 900000, awareness: 700000, service: 1550000, reputation: 1100000, prior_stockout: 1700000}
+
+company_initial:
+  cash_balance_cents: 30000000
+  base_capacity_orders: 3500
+  base_unit_cost_cents: 6000
+  brand_awareness_ppm: 350000
+  service_quality_ppm: 550000
+  reputation_ppm: 500000
+  resilience_ppm: 150000
+  capacity_book_value_cents: 0
+  initial_price_cents: 10000
+  history_window: 3
+
+action:
+  bounds:
+    price_cents: {min: 7500, max: 13000}
+    advertising_budget_cents: {min: 0, max: 5000000}
+    service_budget_cents: {min: 0, max: 5000000}
+    capacity_investment_cents: {min: 0, max: 6000000}
+    resilience_budget_cents: {min: 0, max: 4000000}
+    repair_budget_cents: {min: 0, max: 8000000}
+  saturation_scales_cents:
+    advertising: 1800000
+    service: 1600000
+    resilience: 1400000
+  presets:
+    low:
+      price_cents: 10000
+      advertising_budget_cents: 650000
+      service_budget_cents: 650000
+      capacity_investment_cents: 0
+      resilience_budget_cents: 0
+    medium:
+      price_cents: 10000
+      advertising_budget_cents: 700000
+      service_budget_cents: 700000
+      capacity_investment_cents: 0
+      resilience_budget_cents: 0
+    high:
+      price_cents: 10000
+      advertising_budget_cents: 800000
+      service_budget_cents: 900000
+      capacity_investment_cents: 0
+      resilience_budget_cents: 0
+
+consumer_choice:
+  temperature_ppm: 1000000
+  price_scale_cents: 2500
+  relative_price_signal_min_ppm: -2000000
+  relative_price_signal_max_ppm: 2000000
+  prior_awareness_weight_ppm: 700000
+  current_awareness_weight_ppm: 650000
+  prior_service_weight_ppm: 700000
+  current_service_weight_ppm: 550000
+  utility_noise_std_ppm: 25000
+  segments:
+    price_sensitive:
+      weight_ppm: 450000
+      outside_utility_ppm: 150000
+      coefficients_ppm:
+        price: 1450000
+        awareness: 350000
+        service: 300000
+        reputation: 250000
+        prior_stockout: -750000
+    brand_sensitive:
+      weight_ppm: 300000
+      outside_utility_ppm: 100000
+      coefficients_ppm:
+        price: 650000
+        awareness: 1050000
+        service: 450000
+        reputation: 700000
+        prior_stockout: -600000
+    service_sensitive:
+      weight_ppm: 250000
+      outside_utility_ppm: 120000
+      coefficients_ppm:
+        price: 550000
+        awareness: 350000
+        service: 1250000
+        reputation: 800000
+        prior_stockout: -1000000
+
+state_updates:
+  awareness_retention_ppm: 920000
+  awareness_input_weight_ppm: 280000
+  service_retention_ppm: 920000
+  service_input_weight_ppm: 250000
+  reputation_retention_ppm: 940000
+  reputation_service_weight_ppm: 25000
+  reputation_fulfillment_weight_ppm: 35000
+  resilience_retention_ppm: 930000
+  resilience_input_weight_ppm: 420000
+
+operating_costs:
+  fixed_overhead_cents: 3500000
+  fulfillment_cost_per_order_cents: 1200
+  description: 每轮公司固定运营成本，以及每笔履约订单的配送、包装、损耗和平台成本
+
+capacity:
+  investment_unit_cost_cents: 10000
+  capacity_depreciation_ppm: 5000
+  book_value_depreciation_ppm: 10000
+  operational_noise_std_ppm: 20000
+  operational_noise_min_ppm: 900000
+  operational_noise_max_ppm: 1100000
+  infinite_financial_capacity_orders: 2147483647
+
+events:
+  max_active_events: 2
+  resilience_max_reduction_ppm: 700000
+  service_penalty_max_ppm: 900000
+  reputation_penalty_max_ppm: 900000
+  definitions:
+    extreme_weather:
+      signal_generation_probability_ppm: 90000
+      lead_time_rounds: 1
+      severity_weights_ppm: {low: 400000, medium: 400000, high: 200000}
+      severity:
+        low:
+          estimated_probability_ppm: 500000
+          duration_weights_ppm: {"1": 800000, "2": 200000}
+          demand_multiplier_ppm: 950000
+          supply_cost_multiplier_ppm: 1080000
+          capacity_multiplier_ppm: 900000
+          advertising_multiplier_ppm: 900000
+          service_penalty_ppm: 50000
+          reputation_penalty_ppm: 10000
+        medium:
+          estimated_probability_ppm: 680000
+          duration_weights_ppm: {"1": 400000, "2": 600000}
+          demand_multiplier_ppm: 900000
+          supply_cost_multiplier_ppm: 1180000
+          capacity_multiplier_ppm: 780000
+          advertising_multiplier_ppm: 780000
+          service_penalty_ppm: 110000
+          reputation_penalty_ppm: 30000
+        high:
+          estimated_probability_ppm: 820000
+          duration_weights_ppm: {"2": 650000, "3": 350000}
+          demand_multiplier_ppm: 820000
+          supply_cost_multiplier_ppm: 1350000
+          capacity_multiplier_ppm: 600000
+          advertising_multiplier_ppm: 650000
+          service_penalty_ppm: 220000
+          reputation_penalty_ppm: 70000
+    supply_chain_shock:
+      signal_generation_probability_ppm: 70000
+      lead_time_rounds: 1
+      severity_weights_ppm: {low: 350000, medium: 450000, high: 200000}
+      severity:
+        low:
+          estimated_probability_ppm: 480000
+          duration_weights_ppm: {"1": 700000, "2": 300000}
+          demand_multiplier_ppm: 1000000
+          supply_cost_multiplier_ppm: 1150000
+          capacity_multiplier_ppm: 950000
+          advertising_multiplier_ppm: 1000000
+          service_penalty_ppm: 20000
+          reputation_penalty_ppm: 0
+        medium:
+          estimated_probability_ppm: 650000
+          duration_weights_ppm: {"1": 300000, "2": 700000}
+          demand_multiplier_ppm: 980000
+          supply_cost_multiplier_ppm: 1300000
+          capacity_multiplier_ppm: 880000
+          advertising_multiplier_ppm: 950000
+          service_penalty_ppm: 50000
+          reputation_penalty_ppm: 10000
+        high:
+          estimated_probability_ppm: 800000
+          duration_weights_ppm: {"2": 600000, "3": 400000}
+          demand_multiplier_ppm: 950000
+          supply_cost_multiplier_ppm: 1550000
+          capacity_multiplier_ppm: 750000
+          advertising_multiplier_ppm: 900000
+          service_penalty_ppm: 90000
+          reputation_penalty_ppm: 30000
+    regional_logistics_disruption:
+      signal_generation_probability_ppm: 80000
+      lead_time_rounds: 1
+      severity_weights_ppm: {low: 400000, medium: 400000, high: 200000}
+      severity:
+        low:
+          estimated_probability_ppm: 500000
+          duration_weights_ppm: {"1": 750000, "2": 250000}
+          demand_multiplier_ppm: 980000
+          supply_cost_multiplier_ppm: 1050000
+          capacity_multiplier_ppm: 880000
+          advertising_multiplier_ppm: 950000
+          service_penalty_ppm: 60000
+          reputation_penalty_ppm: 20000
+        medium:
+          estimated_probability_ppm: 680000
+          duration_weights_ppm: {"1": 350000, "2": 650000}
+          demand_multiplier_ppm: 940000
+          supply_cost_multiplier_ppm: 1120000
+          capacity_multiplier_ppm: 720000
+          advertising_multiplier_ppm: 850000
+          service_penalty_ppm: 130000
+          reputation_penalty_ppm: 50000
+        high:
+          estimated_probability_ppm: 830000
+          duration_weights_ppm: {"2": 650000, "3": 350000}
+          demand_multiplier_ppm: 880000
+          supply_cost_multiplier_ppm: 1220000
+          capacity_multiplier_ppm: 520000
+          advertising_multiplier_ppm: 700000
+          service_penalty_ppm: 250000
+          reputation_penalty_ppm: 100000
+    festival_demand_surge:
+      signal_generation_probability_ppm: 110000
+      lead_time_rounds: 1
+      severity_weights_ppm: {low: 300000, medium: 500000, high: 200000}
+      severity:
+        low:
+          estimated_probability_ppm: 550000
+          duration_weights_ppm: {"1": 900000, "2": 100000}
+          demand_multiplier_ppm: 1120000
+          supply_cost_multiplier_ppm: 1030000
+          capacity_multiplier_ppm: 1000000
+          advertising_multiplier_ppm: 1100000
+          service_penalty_ppm: 0
+          reputation_penalty_ppm: 0
+        medium:
+          estimated_probability_ppm: 720000
+          duration_weights_ppm: {"1": 700000, "2": 300000}
+          demand_multiplier_ppm: 1280000
+          supply_cost_multiplier_ppm: 1080000
+          capacity_multiplier_ppm: 1000000
+          advertising_multiplier_ppm: 1180000
+          service_penalty_ppm: 0
+          reputation_penalty_ppm: 0
+        high:
+          estimated_probability_ppm: 880000
+          duration_weights_ppm: {"1": 450000, "2": 550000}
+          demand_multiplier_ppm: 1500000
+          supply_cost_multiplier_ppm: 1150000
+          capacity_multiplier_ppm: 1000000
+          advertising_multiplier_ppm: 1250000
+          service_penalty_ppm: 0
+          reputation_penalty_ppm: 0
+
+incidents:
+  base_probability_ppm: 45000
+  probability_reduction_ppm: 650000
+  severity_reduction_ppm: 550000
+  max_repair_mitigation_ppm: 650000
+  type_weights_ppm:
+    platform_system_outage: 400000
+    warehouse_equipment_failure: 350000
+    cold_chain_incident: 250000
+  severity_weights_ppm: {low: 450000, medium: 400000, high: 150000}
+  definitions:
+    platform_system_outage:
+      severity:
+        low: {duration_rounds: 1, repair_required_cents: 600000, capacity_multiplier_ppm: 900000, advertising_multiplier_ppm: 750000, service_penalty_ppm: 50000, reputation_penalty_ppm: 20000, refund_rate_ppm: 10000}
+        medium: {duration_rounds: 2, repair_required_cents: 1600000, capacity_multiplier_ppm: 700000, advertising_multiplier_ppm: 450000, service_penalty_ppm: 130000, reputation_penalty_ppm: 60000, refund_rate_ppm: 30000}
+        high: {duration_rounds: 3, repair_required_cents: 3200000, capacity_multiplier_ppm: 450000, advertising_multiplier_ppm: 200000, service_penalty_ppm: 250000, reputation_penalty_ppm: 120000, refund_rate_ppm: 60000}
+    warehouse_equipment_failure:
+      severity:
+        low: {duration_rounds: 1, repair_required_cents: 700000, capacity_multiplier_ppm: 820000, advertising_multiplier_ppm: 1000000, service_penalty_ppm: 30000, reputation_penalty_ppm: 10000, refund_rate_ppm: 5000}
+        medium: {duration_rounds: 2, repair_required_cents: 1800000, capacity_multiplier_ppm: 600000, advertising_multiplier_ppm: 1000000, service_penalty_ppm: 90000, reputation_penalty_ppm: 40000, refund_rate_ppm: 15000}
+        high: {duration_rounds: 3, repair_required_cents: 3600000, capacity_multiplier_ppm: 350000, advertising_multiplier_ppm: 1000000, service_penalty_ppm: 180000, reputation_penalty_ppm: 90000, refund_rate_ppm: 35000}
+    cold_chain_incident:
+      severity:
+        low: {duration_rounds: 1, repair_required_cents: 900000, capacity_multiplier_ppm: 920000, advertising_multiplier_ppm: 950000, service_penalty_ppm: 70000, reputation_penalty_ppm: 60000, refund_rate_ppm: 35000}
+        medium: {duration_rounds: 2, repair_required_cents: 2300000, capacity_multiplier_ppm: 780000, advertising_multiplier_ppm: 850000, service_penalty_ppm: 160000, reputation_penalty_ppm: 130000, refund_rate_ppm: 80000}
+        high: {duration_rounds: 3, repair_required_cents: 4500000, capacity_multiplier_ppm: 550000, advertising_multiplier_ppm: 700000, service_penalty_ppm: 300000, reputation_penalty_ppm: 240000, refund_rate_ppm: 150000}
+
+terminal:
+  capacity_salvage_rate_ppm: 650000
+  awareness_value_max_cents: 3000000
+  service_value_max_cents: 3000000
+  reputation_value_max_cents: 4000000
+  resilience_value_max_cents: 2500000
+
+persona_utilities:
+  profit_scale_cents: 10000000
+  share_growth_scale_ppm: 100000
+  weights_ppm:
+    none: {profit: 1000000, share: 0, growth: 0, stability: 0, cash: 0, reputation: 0, resilience: 0}
+    aggressive: {profit: 300000, share: 220000, growth: 240000, stability: 30000, cash: 50000, reputation: 80000, resilience: 80000}
+    conservative: {profit: 250000, share: 50000, growth: 30000, stability: 240000, cash: 220000, reputation: 120000, resilience: 90000}
+    balanced: {profit: 300000, share: 120000, growth: 100000, stability: 120000, cash: 120000, reputation: 140000, resilience: 100000}

@@ -1,0 +1,43 @@
+config_id: mvp_default_v1
+environment_version: mvp_market_v1
+
+market:
+  total_demand: 10000
+  rounds: 10
+
+action_mapping:
+  price_level:
+    low: 80
+    medium: 100
+    high: 120
+
+  advertising_level:
+    low:
+      spend: 500
+      score: 0.2
+    medium:
+      spend: 1500
+      score: 0.5
+    high:
+      spend: 3000
+      score: 0.8
+
+  service_level:
+    low:
+      cost_per_order: 2
+      score: 0.3
+    medium:
+      cost_per_order: 5
+      score: 0.6
+    high:
+      cost_per_order: 9
+      score: 0.9
+
+company:
+  unit_cost: 50
+  initial_budget: 1000000
+
+attractiveness_weights:
+  price: 0.50
+  advertising: 0.20
+  service: 0.30

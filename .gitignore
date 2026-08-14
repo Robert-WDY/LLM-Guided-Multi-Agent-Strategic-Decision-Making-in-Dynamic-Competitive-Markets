@@ -1,0 +1,46 @@
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+.venv/
+venv/
+*.egg-info/
+/dist/
+/build/
+
+# Frontend dependencies and generated output
+frontend/node_modules/
+frontend/.next/
+frontend/.vinext/
+frontend/dist/
+frontend/out/
+frontend/outputs/
+frontend/work/
+frontend/.wrangler/
+
+# Environment and credentials; examples remain versioned
+.env
+.env.*
+!.env.example
+!frontend/.env.example
+*.pem
+*.key
+
+# Runtime state and logs
+*.log
+*.pid
+logs/
+
+# IDE / operating system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local, non-reviewable working note; canonical specifications are Markdown
+/分析.docx
