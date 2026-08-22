@@ -35,6 +35,8 @@ frontend/.wrangler/
 *.log
 *.pid
 logs/
+runs/
+.tmp/
 
 # IDE / operating system files
 .DS_Store
@@ -44,3 +46,4 @@ Thumbs.db
 
 # Local, non-reviewable working note; canonical specifications are Markdown
 /分析.docx
+~$*.docx
