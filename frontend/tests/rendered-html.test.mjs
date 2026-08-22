@@ -12,24 +12,21 @@ async function render() {
   );
 }
 
-test("server-renders the market laboratory", async () => {
+test("server-renders the multi-agent game research dashboard", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
-  assert.match(html, /<title>Fresh Market Lab/);
-  assert.match(html, /FRESH MARKET LAB/);
-  assert.match(html, /MARKET_ENV_V4/);
-  assert.match(html, /单公司经营/);
-  assert.match(html, /市场全景/);
-  assert.match(html, /规则对手/);
-  assert.match(html, /单公司经营控制台/);
-  assert.match(html, /公司状态/);
-  assert.match(html, /公开市场情报/);
-  assert.match(html, /资源配置/);
-  assert.match(html, /实现需求/);
-  assert.match(html, /成交总量/);
-  assert.match(html, /市场模型在线|正在连接/);
-  assert.doesNotMatch(html, /MVP_MARKET_V1|Attractiveness → Softmax/);
+  assert.match(html, /<title>多智能体博弈实验室/);
+  assert.match(html, /多智能体博弈实验室/);
+  assert.match(html, /多智能体博弈实验平台/);
+  assert.match(html, /从一个清楚的入口/);
+  assert.match(html, /个人体验/);
+  assert.match(html, /观察实验/);
+  assert.match(html, /研究控制台/);
+  assert.match(html, /配置并进入/);
+  assert.doesNotMatch(html, /当前模式导航/);
+  assert.doesNotMatch(html, /实验报告 REPORT/);
+  assert.doesNotMatch(html, /Chain of Thought.*真实推理过程/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/);
 });

@@ -1,1195 +1,336 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions, react/no-unescaped-entities */
 
-type Bound = { min: number; max: number };
-type Incident = {
-  incident_id: string;
-  incident_type: string;
-  severity: string;
-  remaining_rounds: number;
-  repair_required_cents: number;
-  accumulated_repair_cents: number;
-};
-type Company = {
-  company_id: string;
-  persona: string;
-  financial: {
-    cash_balance_cents: number;
-    round_revenue_cents: number;
-    round_variable_cost_cents: number;
-    round_fixed_spend_cents: number;
-    round_incident_cost_cents: number;
-    round_operating_cost_cents: number;
-    round_profit_cents: number;
-    cumulative_profit_cents: number;
-    capacity_book_value_cents: number;
-  };
-  commercial: {
-    price_cents: number;
-    market_share_ppm: number;
-    potential_demand_orders: number;
-    sales_orders: number;
-    attempted_unfulfilled_orders: number;
-    orders_received_from_redistribution: number;
-    orders_lost_after_redistribution: number;
-  };
-  operations: {
-    base_capacity_orders: number;
-    effective_capacity_orders: number;
-    financial_capacity_orders: number;
-    capacity_utilization_ppm: number;
-    base_unit_cost_cents: number;
-    actual_unit_cost_cents: number;
-  };
-  brand: {
-    brand_awareness_ppm: number;
-    service_quality_ppm: number;
-    reputation_ppm: number;
-    last_attempted_unfulfilled_rate_ppm: number;
-  };
-  risk: { resilience_ppm: number; active_incident: Incident | null };
-};
-type RiskSignal = {
-  signal_id: string;
-  event_type: string;
-  target_round: number;
-  estimated_probability_ppm: number;
-  severity: string;
-  lead_time_rounds: number;
-};
-type MarketEvent = {
-  event_id: string;
-  event_type: string;
-  severity: string;
-  remaining_rounds: number;
-  demand_multiplier_ppm: number;
-  supply_cost_multiplier_ppm: number;
-  capacity_multiplier_ppm: number;
-};
-type MarketSnapshot = {
-  base_demand_orders: number;
-  realized_demand_orders: number;
-  no_purchase_orders: number;
-  lost_after_stockout_orders: number;
-  market_sentiment_ppm: number;
-  base_supply_cost_index_ppm: number;
-  actual_supply_cost_index_ppm: number;
-  average_paid_price_cents: number;
-  market_model_id: string;
-  market_model_label: string;
-  market_model_description: string;
-  demand_bias_ppm: number;
-  price_anchor_cents: number;
-  price_band_cents: number;
-};
-type MarketState = {
-  episode_id: string;
-  episode_seed: number;
-  round: number;
-  rounds_remaining: number;
-  state_version: number;
-  terminal: boolean;
-  max_rounds: number;
-  market: MarketSnapshot;
-  risk_signals: RiskSignal[];
-  active_market_events: MarketEvent[];
-  company_order: string[];
-  companies: Record<string, Company>;
-  terminal_enterprise_values_cents: Record<string, number>;
-  state_hash: string;
-};
-type ActionConstraints = {
-  schema_version: string;
-  cash_available_cents: number;
-  bounds: Record<string, Bound>;
-  capacity_investment_enabled: boolean;
-  resilience_investment_enabled: boolean;
-  active_incident: Incident | null;
-  max_useful_repair_budget_cents: number;
-  mandatory_operating_costs: {
-    fixed_overhead_cents: number;
-    fulfillment_cost_per_order_cents: number;
-    description: string;
-  };
-};
-type EpisodePayload = {
-  state: MarketState;
-  action_constraints: Record<string, ActionConstraints>;
-  action_presets: Record<string, Record<string, number>>;
-  game_mode: GameMode;
-  player_company_id: string | null;
-  market_model_options: Record<string, { label: string; description: string }>;
-  episode_options: {
-    round_options: number[];
-    default_rounds: number;
-    seed: { min: number; max: number; random_supported: boolean; fixed_supported: boolean; note: string };
-    market_models: Record<string, { label: string; description: string }>;
-  };
-  company_analysis?: CompanyAnalysis;
-};
-type GameMode = "market" | "single_company";
-type SeedMode = "random" | "fixed";
-type MarketModel = "random" | "balanced" | "value_oriented" | "quality_oriented" | "service_oriented";
-type AnalysisFactor = {
-  key: string;
-  label: string;
-  value_ppm: number;
-  status: "healthy" | "watch" | "risk";
-  summary: string;
-};
-type Recommendation = {
-  priority: "critical" | "high" | "medium" | "normal";
-  dimension: string;
-  title: string;
-  rationale: string;
-};
-type CompanyAnalysis = {
-  company_id: string;
-  round: number;
-  health_score: number;
-  health_label: string;
-  factors: AnalysisFactor[];
-  recommendations: Recommendation[];
-  decision_context: {
-    margin_per_order_cents: number;
-    fulfillment_cost_per_order_cents: number;
-    relative_price_cents: number;
-    capacity_buffer_orders: number;
-    rounds_remaining: number;
-  };
-};
-type RetrospectiveRound = {
-  round: number;
-  verdict: string;
-  action: Record<string, number | string | Record<string, number | string>>;
-  profit_cents: number;
-  operating_cost_cents: number;
-  cash_cents: number;
-  enterprise_value_cents: number;
-  enterprise_value_delta_cents: number;
-  market_share_ppm: number;
-  share_delta_ppm: number;
-  sales_orders: number;
-  effective_capacity_orders: number;
-  stockout_orders: number;
-  market_demand_orders: number;
-  market_demand_delta_orders: number;
-  supply_cost_index_ppm: number;
-  supply_cost_delta_ppm: number;
-  outside_option_orders: number;
-  average_paid_price_cents: number;
-  awareness_ppm: number;
-  reputation_ppm: number;
-  resilience_ppm: number;
-  active_events: string[];
-  reasons: string[];
-  state_after_hash: string;
-};
-type ValueBreakdown = {
-  cash_cents: number;
-  capacity_book_value_cents: number;
-  total_assets_cents: number;
-  capacity_salvage_cents: number;
-  awareness_value_cents: number;
-  service_value_cents: number;
-  reputation_value_cents: number;
-  resilience_value_cents: number;
-  enterprise_value_cents: number;
-};
-type RankingRow = { rank: number; company_id: string; value_cents: number; breakdown: ValueBreakdown };
-type TrendPoint = {
-  round: number;
-  enterprise_value_cents: number;
-  total_assets_cents: number;
-  cash_cents: number;
-  cumulative_profit_cents: number;
-  market_share_ppm: number;
-};
-type Retrospective = {
-  status: "complete" | "in_progress";
-  player_company_id: string;
-  outcome: string;
-  headline: string;
-  rank: number;
-  asset_rank: number;
-  company_count: number;
-  terminal_value_cents: number;
-  market_model: { id: string; label: string; description: string; demand_bias_ppm: number; price_anchor_cents: number; price_band_cents: number };
-  rankings: { composite: RankingRow[]; total_assets: RankingRow[] };
-  ranking_methodology: { composite: string; total_assets: string };
-  component_comparison: Array<{ key: string; label: string; own_value_cents: number; leader_value_cents: number; gap_cents: number }>;
-  rank_explanation: string[];
-  trend_series: Array<{ company_id: string; points: TrendPoint[] }>;
-  summary: {
-    initial_cash_cents: number;
-    final_cash_cents: number;
-    cumulative_profit_cents: number;
-    initial_share_ppm: number;
-    final_share_ppm: number;
-    final_reputation_ppm: number;
-    final_resilience_ppm: number;
-    profitable_rounds: number;
-    stockout_rounds: number;
-  };
-  success_reasons: string[];
-  failure_reasons: string[];
-  turning_point_rounds: number[];
-  rounds: RetrospectiveRound[];
-  methodology: string;
-};
-type Draft = {
-  price_cents: number;
-  advertising_budget_cents: number;
-  service_budget_cents: number;
-  capacity_investment_cents: number;
-  resilience_budget_cents: number;
-  incident_mode: "wait" | "partial_repair" | "full_repair";
-  repair_budget_cents: number;
-};
-type HistoryPoint = {
-  settledRound: number;
-  state: MarketState;
-  market: MarketSnapshot;
-  signalOutcomes: Array<{ signal: RiskSignal; realized: boolean }>;
-};
+import { useEffect, useMemo, useState } from "react";
+import {
+  AgentConfig,
+  AgentRuntimeView,
+  advanceDemoRound,
+  DEFAULT_AGENTS,
+  DEMO_AGENTS,
+  DEMO_MESSAGES,
+  DEMO_REPLAY,
+  LabConfig,
+  PERSONAS,
+  PersonaKey,
+  PROFIT_SERIES,
+  ViewId,
+} from "./lab-model";
 
 const API_URL = process.env.NEXT_PUBLIC_MARKET_API_URL ?? "http://localhost:8010/api";
-const DEFAULT_ROUNDS = 10;
-const COMPANY_META = [
-  { id: "company_A", shortName: "A", name: "青禾速配", color: "#0f766e" },
-  { id: "company_B", shortName: "B", name: "橙选到家", color: "#e86445" },
-  { id: "company_C", shortName: "C", name: "蓝仓鲜送", color: "#4c6fff" },
-  { id: "company_D", shortName: "D", name: "紫藤优鲜", color: "#8b5cf6" },
+
+type EntryMode = "participant" | "observer" | "research";
+
+const NAV_ITEMS: Array<{ id: ViewId; index: string; label: string; hint: string }> = [
+  { id: "live", index: "01", label: "实时现场", hint: "回合进行" },
+  { id: "observatory", index: "02", label: "智能体观察", hint: "输入与判断" },
+  { id: "communication", index: "03", label: "通信记录", hint: "消息" },
+  { id: "strategy", index: "04", label: "信念与策略", hint: "博弈分析" },
+  { id: "market", index: "05", label: "市场结果", hint: "经营结果" },
+  { id: "replay", index: "06", label: "回合记录", hint: "过程重建" },
+  { id: "report", index: "07", label: "实验报告", hint: "已完成" },
 ];
-const EVENT_LABELS: Record<string, string> = {
-  extreme_weather: "极端天气",
-  supply_chain_shock: "供应链冲击",
-  regional_logistics_disruption: "区域物流中断",
-  festival_demand_surge: "节庆需求激增",
-  platform_system_outage: "平台系统故障",
-  warehouse_equipment_failure: "仓储设备故障",
-  cold_chain_incident: "冷链事故",
-};
-const SEVERITY_LABELS: Record<string, string> = {
-  low: "低",
-  medium: "中",
-  high: "高",
+
+const ENTRY_META: Record<EntryMode, { label: string; eyebrow: string }> = {
+  participant: { label: "个人体验", eyebrow: "参与者" },
+  observer: { label: "观察模式", eyebrow: "观察者" },
+  research: { label: "研究控制台", eyebrow: "研究员" },
 };
 
-function metaFor(id: string) {
-  return COMPANY_META.find((item) => item.id === id) ?? {
-    id,
-    shortName: id.slice(-1).toUpperCase(),
-    name: id,
-    color: "#64748b",
+const PERSONA_WEIGHT_LABELS: Record<string, string> = { profit: "利润", growth: "增长", risk: "风险控制", cash: "现金安全", social: "共同收益" };
+const PERSONA_TRAIT_LABELS: Record<string, string> = { timeDiscount: "长期重视程度", riskAversion: "风险厌恶", cooperation: "合作倾向", opportunism: "机会主义倾向" };
+const STRATEGY_LABELS: Record<string, string> = { growth: "增长导向", profit: "利润导向", defensive: "防御导向" };
+const ACTION_LABELS: Record<string, string> = { cut: "降价", maintain: "维持", raise: "提价" };
+const PLAN_STATUS_LABELS: Record<string, string> = { done: "已完成", active: "进行中", queued: "待处理" };
+
+const DRIVER_MODELS: Record<AgentConfig["driver"], string> = {
+  human: "Human",
+  doubao: "Doubao Seed 2.0 Lite",
+  deepseek: "DeepSeek V3",
+  rule: "Deterministic Rule",
+};
+
+const MARKET_LABELS: Record<LabConfig["marketType"], string> = {
+  balanced: "均衡市场",
+  high_demand: "高需求市场",
+  supply_crisis: "供应紧张市场",
+  disaster: "高灾害风险场景",
+  public_goods: "公共品合作场景",
+};
+
+type BackendCompany = {
+  financial: { cash_balance_cents: number; round_profit_cents: number };
+  commercial: { price_cents: number; market_share_ppm: number };
+  risk: { resilience_ppm: number };
+};
+
+type BackendEpisode = {
+  state: {
+    episode_id: string;
+    episode_seed: number;
+    round: number;
+    max_rounds: number;
+    state_hash: string;
+    companies: Record<string, BackendCompany>;
   };
+  agent_tokens?: Record<string, string>;
+};
+
+type RuntimeMode = "draft" | "demo" | "backend";
+
+function formatMoney(cents: number, compact = false) {
+  if (compact) return `¥${new Intl.NumberFormat("zh-CN", { notation: "compact", maximumFractionDigits: 1 }).format(cents / 100)}`;
+  return new Intl.NumberFormat("zh-CN", { style: "currency", currency: "CNY", maximumFractionDigits: 0 }).format(cents / 100);
 }
 
-function money(cents: number) {
-  return new Intl.NumberFormat("zh-CN", {
-    style: "currency",
-    currency: "CNY",
-    maximumFractionDigits: 0,
-  }).format(cents / 100);
+function formatPercent(value: number) {
+  return `${value.toFixed(1)}%`;
 }
 
-function compactMoney(cents: number) {
-  return `¥${new Intl.NumberFormat("zh-CN", {
-    notation: "compact",
-    maximumFractionDigits: 1,
-  }).format(cents / 100)}`;
+function Toggle({ checked, label, onChange }: { checked: boolean; label: string; onChange: (value: boolean) => void }) {
+  return <button type="button" className={`switch${checked ? " on" : ""}`} role="switch" aria-checked={checked} aria-label={label} onClick={() => onChange(!checked)}><i /></button>;
 }
 
-function percent(ppm: number, digits = 1) {
-  return `${(ppm / 10_000).toFixed(digits)}%`;
+function StatusDot({ tone = "ok" }: { tone?: "ok" | "warn" | "off" }) {
+  return <i className={`status-dot ${tone}`} aria-hidden="true" />;
 }
 
-async function api<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${API_URL}${path}`, {
-    ...init,
-    headers: { "Content-Type": "application/json", ...(init?.headers ?? {}) },
-  });
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({ detail: "请求失败" }));
-    throw new Error(body.detail ?? `HTTP ${response.status}`);
-  }
-  return response.json() as Promise<T>;
+function AppShell({ active, setActive, children, runtimeMode, backendOnline, episodeId, entryMode, completed, onHome }: { active: ViewId; setActive: (view: ViewId) => void; children: React.ReactNode; runtimeMode: RuntimeMode; backendOnline: boolean | null; episodeId: string; entryMode: EntryMode; completed: boolean; onHome: () => void }) {
+  if (active === "home") return <main className="landing-shell">{children}</main>;
+  const nav = NAV_ITEMS.find((item) => item.id === active);
+  if (active === "setup") return <main className="configuration-shell"><header className="simple-workspace-header"><button type="button" onClick={onHome}>← 返回主页</button><div><span>{ENTRY_META[entryMode].eyebrow} · 环境配置</span><strong>{ENTRY_META[entryMode].label}</strong></div><b>博弈实验室</b></header>{children}</main>;
+  const allowed = entryMode === "participant" ? ["live", "replay", "report"] : entryMode === "observer" ? ["live", "observatory", "communication", "market", "replay", "report"] : ["live", "observatory", "communication", "strategy", "market", "replay", "report"];
+  const visibleNavigation = NAV_ITEMS.filter((item) => allowed.includes(item.id) && (item.id !== "report" || completed));
+  return <main className="lab-shell">
+    <aside className="lab-sidebar">
+      <button className="lab-brand" type="button" onClick={onHome}><span className="brand-glyph">博弈</span><div><strong>多智能体博弈实验室</strong><small>返回主入口</small></div></button>
+      <div className="workspace-identity"><span>{ENTRY_META[entryMode].eyebrow}</span><strong>{ENTRY_META[entryMode].label}</strong><button type="button" onClick={() => setActive("setup")}>修改环境</button></div>
+      <nav aria-label="当前模式导航">{visibleNavigation.map((item) => <button key={item.id} type="button" className={active === item.id ? "active" : ""} onClick={() => setActive(item.id)}><span>{item.index}</span><div><strong>{item.label}</strong><small>{item.hint}</small></div><i>›</i></button>)}</nav>
+      <div className="sidebar-run-card"><span>当前会话</span><strong>{episodeId || "尚未创建"}</strong><div><StatusDot tone={runtimeMode === "backend" ? "ok" : runtimeMode === "demo" ? "warn" : "off"} />{runtimeMode === "backend" ? "后端真实运行" : runtimeMode === "demo" ? "交互演示" : "尚未开始"}</div></div>
+      <div className="sidebar-system"><div><span>市场接口</span><b>{backendOnline === null ? "检查中" : backendOnline ? "在线" : "离线"}</b></div><div><span>回合状态</span><b>{completed ? "已完成" : "进行中"}</b></div></div>
+    </aside>
+    <section className="lab-main"><header className="lab-topbar"><div><span className="topbar-kicker">{ENTRY_META[entryMode].eyebrow} · {nav?.hint}</span><h1>{nav?.label}</h1></div><div className="topbar-meta"><span><StatusDot tone={backendOnline ? "ok" : "warn"} />{backendOnline ? "后端已连接" : "当前为演示模式"}</span><button type="button" onClick={onHome}>返回主页</button></div></header>{children}</section>
+  </main>;
 }
 
-function draftsFrom(payload: EpisodePayload): Record<string, Draft> {
-  const preset = payload.action_presets.medium;
-  return Object.fromEntries(
-    payload.state.company_order.map((companyId) => [
-      companyId,
-      {
-        price_cents: preset.price_cents,
-        advertising_budget_cents: preset.advertising_budget_cents,
-        service_budget_cents: preset.service_budget_cents,
-        capacity_investment_cents: preset.capacity_investment_cents,
-        resilience_budget_cents: preset.resilience_budget_cents,
-        incident_mode: "wait",
-        repair_budget_cents: 0,
-      } satisfies Draft,
-    ]),
-  );
+function LandingView({ choose, resume, hasSession }: { choose: (mode: EntryMode) => void; resume: () => void; hasSession: boolean }) {
+  return <div className="landing-page"><header className="landing-header"><div className="landing-logo"><span>博弈</span><div><strong>多智能体博弈实验室</strong><small>多智能体博弈实验平台</small></div></div><div className="landing-status"><StatusDot /><span>本地研究环境</span></div></header><section className="landing-hero"><span>选择进入方式</span><h1>从一个清楚的入口<br />进入多智能体博弈。</h1><p>先选择你要扮演的角色，再配置市场环境。观察、参与和研究不会混在同一个界面里。</p></section><section className="entry-grid"><button type="button" className="entry-card participant" onClick={() => choose("participant")}><i>01</i><span>参与决策</span><h2>个人体验</h2><p>作为公司 A 做价格、投入与合作决策，观察其他智能体如何响应。</p><b>配置并进入 <em>→</em></b></button><button type="button" className="entry-card observer" onClick={() => choose("observer")}><i>02</i><span>观察过程</span><h2>观察实验</h2><p>不参与决策，跟随回合查看市场、消息、智能体判断和结算结果。</p><b>配置并进入 <em>→</em></b></button><button type="button" className="entry-card research" onClick={() => choose("research")}><i>03</i><span>研究分析</span><h2>研究控制台</h2><p>配置处理组、回合重建和完整研究工具；实验完成后才生成报告。</p><b>配置并进入 <em>→</em></b></button></section>{hasSession && <section className="resume-session"><div><span>当前会话</span><strong>已有一个未关闭的本地会话</strong></div><button type="button" onClick={resume}>继续当前会话 →</button></section>}<footer className="landing-footer"><span>后端市场环境是权威结果来源</span><span>不展示模型隐藏思维过程</span><span>交互演示不等于研究证据</span></footer></div>;
 }
 
-function RangeControl({
-  label,
-  value,
-  bound,
-  step,
-  disabled,
-  format,
-  timing,
-  impact,
-  usage,
-  onChange,
-}: {
-  label: string;
-  value: number;
-  bound: Bound;
-  step: number;
-  disabled?: boolean;
-  format: (value: number) => string;
-  timing: string;
-  impact: string;
-  usage: string;
-  onChange: (value: number) => void;
-}) {
-  const progress = ((value - bound.min) / Math.max(1, bound.max - bound.min)) * 100;
-  return (
-    <div className={`range-control${disabled ? " disabled" : ""}`}>
-      <span><i>{label}</i><strong>{format(value)}</strong></span>
-      <input
-        type="range"
-        min={bound.min}
-        max={bound.max}
-        step={step}
-        value={value}
-        disabled={disabled}
-        aria-label={label}
-        style={{ "--range-progress": `${progress}%` } as React.CSSProperties}
-        onChange={(event) => onChange(Number(event.target.value))}
-      />
-      <div className="control-explainer">
-        <span>{timing}</span>
-        <p>{impact}</p>
-        <small>{usage}</small>
-      </div>
+function SectionHead({ eyebrow, title, description, action }: { eyebrow: string; title: string; description?: string; action?: React.ReactNode }) {
+  return <div className="section-head"><div><span>{eyebrow}</span><h2>{title}</h2>{description && <p>{description}</p>}</div>{action}</div>;
+}
+
+function SetupView({ config, setConfig, agents, setAgents, editingAgent, setEditingAgent, start, busy, notice, backendOnline, entryMode }: { config: LabConfig; setConfig: React.Dispatch<React.SetStateAction<LabConfig>>; agents: AgentConfig[]; setAgents: React.Dispatch<React.SetStateAction<AgentConfig[]>>; editingAgent: string | null; setEditingAgent: (id: string | null) => void; start: (forceDemo: boolean) => void; busy: boolean; notice: string; backendOnline: boolean | null; entryMode: EntryMode }) {
+  const editor = agents.find((agent) => agent.companyId === editingAgent) ?? null;
+  const patchAgent = (companyId: string, patch: Partial<AgentConfig>) => setAgents((current) => current.map((agent) => agent.companyId === companyId ? { ...agent, ...patch } : agent));
+  function removeAgent(companyId: string) { setAgents((current) => current.filter((agent) => agent.companyId !== companyId)); if (editingAgent === companyId) setEditingAgent(null); }
+  function addAgent() { if (agents.length < 4) setAgents((current) => [...current, { ...DEFAULT_AGENTS[agents.length] }]); }
+  return <div className="view-pad setup-view">
+    <section className="setup-hero"><div><span>{ENTRY_META[entryMode].eyebrow} · 环境</span><h2>配置环境</h2><p>当前入口：<b>{ENTRY_META[entryMode].label}</b>。只需确认市场与智能体；进入后会打开独立界面，随时可以返回主页。</p></div><div className="setup-readiness"><span>进入前检查</span><ul><li className="done">共同随机种子已固定</li><li className="done">{agents.length} 个智能体已分配</li><li className={config.controllerToken ? "done" : "warn"}>{config.controllerToken ? "控制器已授权" : "当前将使用演示环境"}</li></ul></div></section>
+    <div className="setup-grid">
+      <section className="card market-config-card"><SectionHead eyebrow="01 · 市场" title="市场配置" description="进行对照实验时，保持随机种子和市场不变，只改变需要研究的处理条件。" /><div className="segmented-label">信息可见范围</div><div className="segmented three">{(["perfect", "public", "imperfect"] as const).map((mode) => <button key={mode} type="button" className={config.informationMode === mode ? "active" : ""} onClick={() => setConfig((current) => ({ ...current, informationMode: mode }))}><b>{mode === "perfect" ? "完全信息" : mode === "public" ? "公共信息" : "不完全信息"}</b><small>{mode === "perfect" ? "查看完整市场状态" : mode === "public" ? "只能查看授权信息" : "需要形成对手判断"}</small></button>)}</div>
+        <label className="field"><span>市场类型</span><select value={config.marketType} onChange={(event) => setConfig((current) => ({ ...current, marketType: event.target.value as LabConfig["marketType"] }))}>{Object.entries(MARKET_LABELS).map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select></label>
+        <div className="field-row"><label className="field"><span>回合数</span><select value={config.rounds} onChange={(event) => setConfig((current) => ({ ...current, rounds: Number(event.target.value) as LabConfig["rounds"] }))}>{[5, 10, 15, 20].map((rounds) => <option value={rounds} key={rounds}>{rounds} 回合</option>)}</select></label><label className="field"><span>共同随机种子</span><input type="number" value={config.seed} min={0} onChange={(event) => setConfig((current) => ({ ...current, seed: Math.max(0, Number(event.target.value) || 0) }))} /></label></div>
+        <div className="capability-list"><div><span><b>智能体通信</b><small>公开消息与点对点私信</small></span><Toggle checked={config.communication} label="启用通信" onChange={(value) => setConfig((current) => ({ ...current, communication: value }))} /></div><div><span><b>共享抗冲击投入</b><small>当前唯一合作机制</small></span><Toggle checked={config.cooperation} label="启用合作" onChange={(value) => setConfig((current) => ({ ...current, cooperation: value, communication: value || current.communication }))} /></div><div><span><b>博弈分析辅助</b><small>对手判断 → 效用推断 → 策略建议</small></span><Toggle checked={config.gameTheory} label="启用博弈论增强" onChange={(value) => setConfig((current) => ({ ...current, gameTheory: value }))} /></div></div>
+      </section>
+      <section className="card agent-config-card"><SectionHead eyebrow="02 · 智能体" title="智能体构成" description="点击人格标签可以查看研究参数。" action={<button className="ghost-button" type="button" disabled={agents.length >= 4} onClick={addAgent}>＋ 添加智能体</button>} /><div className="agent-config-list">{agents.map((agent) => <article key={agent.companyId} style={{ "--agent": agent.color } as React.CSSProperties}><span className="agent-letter">{agent.shortName}</span><div className="agent-identity"><strong>{agent.companyName}</strong><small>{agent.companyId}</small></div><label><span>控制方式</span><select value={agent.driver} onChange={(event) => { const driver = event.target.value as AgentConfig["driver"]; patchAgent(agent.companyId, { driver, model: DRIVER_MODELS[driver] }); }}><option value="human">人类参与者</option><option value="doubao">豆包模型</option><option value="deepseek">深度求索模型</option><option value="rule">确定性规则</option></select></label><label><span>人格</span><button type="button" className="persona-chip" onClick={() => setEditingAgent(agent.companyId)}>{PERSONAS[agent.persona].label}<i>↗</i></button></label><div className="agent-flags"><span>{agent.information === "full" ? "完整信息" : agent.information === "public" ? "公共信息" : "不完全信息"}</span><span className={agent.communication ? "on" : ""}>通信</span><span className={agent.gameTheory ? "on" : ""}>博弈辅助</span></div>{agents.length > 2 && <button className="remove-agent" type="button" aria-label={`移除 ${agent.companyName}`} onClick={() => removeAgent(agent.companyId)}>×</button>}</article>)}</div></section>
     </div>
-  );
-}
-
-function CompactDecisionControl({
-  label,
-  value,
-  bound,
-  step,
-  disabled,
-  format,
-  timing,
-  impact,
-  usage,
-  onChange,
-}: {
-  label: string;
-  value: number;
-  bound: Bound;
-  step: number;
-  disabled?: boolean;
-  format: (value: number) => string;
-  timing: string;
-  impact: string;
-  usage: string;
-  onChange: (value: number) => void;
-}) {
-  const progress = ((value - bound.min) / Math.max(1, bound.max - bound.min)) * 100;
-  return <div className={`command-control${disabled ? " disabled" : ""}`}>
-    <div className="command-control-head"><strong>{label}</strong><span>{timing}</span><b>{format(value)}</b></div>
-    <input type="range" min={bound.min} max={bound.max} step={step} value={value} disabled={disabled} aria-label={label} style={{ "--range-progress": `${progress}%` } as React.CSSProperties} onChange={(event) => onChange(Number(event.target.value))} />
-    <details><summary>{impact}</summary><p>{usage}</p></details>
+    <section className="launch-bar"><div className="controller-field"><span>本地控制器令牌</span><input type="password" placeholder="只保存在当前浏览器内存；高级后端实验必填" value={config.controllerToken} onChange={(event) => setConfig((current) => ({ ...current, controllerToken: event.target.value }))} /></div><div className="launch-status"><StatusDot tone={backendOnline ? "ok" : "warn"} /><span>{notice}</span></div><button className="secondary-launch" type="button" disabled={busy} onClick={() => start(true)}>进入交互演示</button><button className="primary-launch" type="button" disabled={busy} onClick={() => start(false)}>{busy ? "创建中…" : "创建真实实验"}<i>→</i></button></section>
+    {editor && <div className="drawer-backdrop" role="presentation" onMouseDown={() => setEditingAgent(null)}><aside className="persona-drawer" role="dialog" aria-modal="true" aria-label="人格配置" onMouseDown={(event) => event.stopPropagation()}><div className="drawer-head"><div><span>人格配置</span><h2>{editor.companyName}</h2></div><button type="button" aria-label="关闭" onClick={() => setEditingAgent(null)}>×</button></div><label className="field"><span>人格预设</span><select value={editor.persona} onChange={(event) => patchAgent(editor.companyId, { persona: event.target.value as PersonaKey })}>{Object.values(PERSONAS).map((persona) => <option key={persona.key} value={persona.key}>{persona.label}</option>)}</select></label><p className="persona-summary">{PERSONAS[editor.persona].summary}</p><div className="persona-section"><span>目标权重</span>{Object.entries(PERSONAS[editor.persona].weights).map(([key, value]) => <div className="persona-slider" key={key}><label><b>{PERSONA_WEIGHT_LABELS[key]}</b><span>{value}%</span></label><input type="range" value={value} min={0} max={100} readOnly /></div>)}</div><div className="persona-section"><span>行为倾向</span>{Object.entries(PERSONAS[editor.persona].traits).map(([key, value]) => <div className="persona-slider" key={key}><label><b>{PERSONA_TRAIT_LABELS[key]}</b><span>{value}%</span></label><input type="range" value={value} min={0} max={100} readOnly /></div>)}</div><div className="drawer-note"><b>研究边界</b><p>前端展示的是版本化人格参数，不是模型内部心理状态；自定义参数写入后也必须由后端实验清单固化。</p></div></aside></div>}
   </div>;
 }
 
-function PreviousRoundBrief({ state, companies, settledMarket }: { state: MarketState; companies: Company[]; settledMarket?: MarketSnapshot }) {
-  const settledRound = state.round - 1;
-  const isInitial = settledRound === 0;
-  const totalSales = companies.reduce((sum, company) => sum + company.commercial.sales_orders, 0);
-  const totalRevenue = companies.reduce((sum, company) => sum + company.financial.round_revenue_cents, 0);
-  const averageListedPrice = Math.round(companies.reduce((sum, company) => sum + company.commercial.price_cents, 0) / Math.max(1, companies.length));
-  const minimumPrice = Math.min(...companies.map((company) => company.commercial.price_cents));
-  const maximumPrice = Math.max(...companies.map((company) => company.commercial.price_cents));
-  const market = settledMarket ?? state.market;
-  const demand = isInitial ? state.market.base_demand_orders : market.realized_demand_orders;
-  return (
-    <section className="previous-round-brief" aria-label="上一轮公开市场信息">
-      <div className="brief-head">
-        <div><span className="eyebrow">PUBLIC INFORMATION · DECISION BASIS</span><h3>{isInitial ? "初始公开市场基线" : `上一轮（R${settledRound}）结算快照`}</h3></div>
-        <p>{isInitial ? "第一轮尚未发生交易，下列需求为初始基准。" : `这些是进入 Round ${state.round} 决策前所有公司都能看到的已结算信息。`}</p>
-      </div>
-      <div className="brief-metrics">
-        <article><span>{isInitial ? "需求基准" : "全市场实现需求"}</span><strong>{demand.toLocaleString("zh-CN")}<i>单</i></strong><small>进入消费者选择阶段，不等于成交销量</small></article>
-        <article><span>公司成交总量</span><strong>{isInitial ? "—" : totalSales.toLocaleString("zh-CN")}<i>{isInitial ? "" : "单"}</i></strong><small>四家公司最终成功履约的订单合计</small></article>
-        <article><span>平均挂牌价</span><strong>{money(averageListedPrice)}</strong><small>公司公开报价的简单平均；区间 {money(minimumPrice)}–{money(maximumPrice)}</small></article>
-        <article><span>实际成交均价</span><strong>{isInitial || !market.average_paid_price_cents ? "—" : money(market.average_paid_price_cents)}</strong><small>按实际成交订单计算的市场平均支付价格</small></article>
-        <article><span>市场销售额</span><strong>{isInitial ? "—" : compactMoney(totalRevenue)}</strong><small>各公司本轮营业收入合计</small></article>
-        <article><span>{isInitial ? "当前供应成本指数" : `R${settledRound} 供应成本指数`}</span><strong>{(market.actual_supply_cost_index_ppm / 1_000_000).toFixed(3)}</strong><small>与标题回合使用同一结算时点</small></article>
-      </div>
-      <div className="public-company-strip">
-        {companies.map((company) => {
-          const meta = metaFor(company.company_id);
-          return <article key={company.company_id}><i style={{ background: meta.color }}>{meta.shortName}</i><div><strong>{meta.name}</strong><small>报价 {money(company.commercial.price_cents)} · 份额 {percent(company.commercial.market_share_ppm)} · 销量 {isInitial ? "尚未成交" : `${company.commercial.sales_orders.toLocaleString("zh-CN")} 单`}</small></div></article>;
-        })}
-      </div>
-      <div className="brief-foot">
-        <p><b>流失口径：</b>未购买 {market.no_purchase_orders.toLocaleString("zh-CN")} 单是消费者选择 Outside Option；缺货后流失 {market.lost_after_stockout_orders.toLocaleString("zh-CN")} 单是转售后仍未履约。</p>
-        <p><b>公开风险：</b>{state.active_market_events.length ? state.active_market_events.map((event) => EVENT_LABELS[event.event_type] ?? event.event_type).join("、") : "当前无已激活市场事件"}；{state.risk_signals.length ? `${state.risk_signals.length} 条未来风险预警` : "无未来预警"}。</p>
-      </div>
-    </section>
-  );
-}
+function MetricCard({ label, value, note, accent }: { label: string; value: string; note: string; accent?: boolean }) { return <article className={`metric-card${accent ? " accent" : ""}`}><span>{label}</span><strong>{value}</strong><small>{note}</small></article>; }
 
-function ProfitChart({ history, companyIds }: { history: HistoryPoint[]; companyIds: string[] }) {
-  const maxMagnitude = Math.max(
-    1,
-    ...history.flatMap((point) =>
-      companyIds.map((companyId) =>
-        Math.abs(point.state.companies[companyId].financial.round_profit_cents),
-      ),
-    ),
-  );
-  return (
-    <div className="chart-card">
-      <div className="section-heading compact">
-        <div><span className="eyebrow">PROFIT / ROUND</span><h3>后端利润轨迹</h3></div>
-        <span className="chart-unit">CNY</span>
-      </div>
-      <div className="profit-chart" aria-label="各公司后端单轮利润柱状图">
-        {history.length === 0 ? (
-          <div className="chart-empty"><span>01</span><p>提交第一组联合动作后，真实利润轨迹会从这里生长。</p></div>
-        ) : history.map((point) => (
-          <div className="round-column" key={point.settledRound}>
-            <div className="bar-cluster">
-              {companyIds.map((companyId) => {
-                const profit = point.state.companies[companyId].financial.round_profit_cents;
-                return <div
-                  key={companyId}
-                  className={`profit-bar${profit < 0 ? " loss" : ""}`}
-                  style={{
-                    height: `${Math.max(4, (Math.abs(profit) / maxMagnitude) * 100)}%`,
-                    background: metaFor(companyId).color,
-                  }}
-                  title={`${metaFor(companyId).name}: ${money(profit)}`}
-                />;
-              })}
-            </div>
-            <span>R{point.settledRound}</span>
-          </div>
-        ))}
-      </div>
-      <div className="legend-row">
-        {companyIds.map((companyId) => <span key={companyId}><i style={{ background: metaFor(companyId).color }} />{metaFor(companyId).shortName}</span>)}
-      </div>
-    </div>
-  );
-}
-
-function MarketShareHistory({ history, companyIds }: { history: HistoryPoint[]; companyIds: string[] }) {
-  return (
-    <div className="statistics-card share-history-card">
-      <div className="section-heading compact"><div><span className="eyebrow">MARKET SHARE</span><h3>逐轮市场份额</h3></div><span className="chart-unit">成交订单占比</span></div>
-      <p className="statistics-note">每一行是一轮结算后的公司成交份额；它反映竞争位置，不包含未购买和缺货后流失订单。</p>
-      <div className="share-history-table">
-        {history.length === 0 ? <div className="statistics-empty">完成第一轮后显示份额变化</div> : history.map((point) => <article key={point.settledRound}>
-          <span>R{String(point.settledRound).padStart(2, "0")}</span>
-          <div>{companyIds.map((companyId) => <i key={companyId} style={{ width: `${point.state.companies[companyId].commercial.market_share_ppm / 10_000}%`, background: metaFor(companyId).color }} title={`${metaFor(companyId).name} ${percent(point.state.companies[companyId].commercial.market_share_ppm)}`} />)}</div>
-          <small>{companyIds.map((companyId) => `${metaFor(companyId).shortName} ${percent(point.state.companies[companyId].commercial.market_share_ppm, 0)}`).join(" · ")}</small>
-        </article>)}
-      </div>
-      <div className="legend-row">{companyIds.map((companyId) => <span key={companyId}><i style={{ background: metaFor(companyId).color }} />{metaFor(companyId).name}</span>)}</div>
-    </div>
-  );
-}
-
-function RevenueTable({ companies, settledRound }: { companies: Company[]; settledRound: number }) {
-  const totalRevenue = companies.reduce((sum, company) => sum + company.financial.round_revenue_cents, 0);
-  return (
-    <div className="statistics-card revenue-card">
-      <div className="section-heading compact"><div><span className="eyebrow">SALES REVENUE</span><h3>{settledRound ? `R${settledRound} 公司销售额` : "公司销售额"}</h3></div><span className="chart-unit">CNY</span></div>
-      <p className="statistics-note">销售额采用后端实际营业收入；客单收入为销售额 ÷ 成交订单，不是公司挂牌价。</p>
-      <div className="data-table revenue-table">
-        <div className="data-table-head"><span>公司</span><span>成交销量</span><span>销售额</span><span>客单收入</span><span>销售额占比</span></div>
-        {companies.map((company) => {
-          const meta = metaFor(company.company_id);
-          const revenueSharePpm = totalRevenue > 0 ? Math.round(company.financial.round_revenue_cents / totalRevenue * 1_000_000) : 0;
-          const revenuePerOrder = company.commercial.sales_orders > 0 ? Math.round(company.financial.round_revenue_cents / company.commercial.sales_orders) : 0;
-          return <div className="data-table-row" key={company.company_id}>
-            <span><i style={{ background: meta.color }}>{meta.shortName}</i><b>{meta.name}</b></span>
-            <span>{settledRound ? `${company.commercial.sales_orders.toLocaleString("zh-CN")} 单` : "—"}</span>
-            <span>{settledRound ? money(company.financial.round_revenue_cents) : "—"}</span>
-            <span>{settledRound && revenuePerOrder ? money(revenuePerOrder) : "—"}</span>
-            <span>{settledRound ? percent(revenueSharePpm) : "—"}</span>
-          </div>;
-        })}
-        <div className="data-table-total"><span>市场合计</span><span>{settledRound ? `${companies.reduce((sum, company) => sum + company.commercial.sales_orders, 0).toLocaleString("zh-CN")} 单` : "—"}</span><strong>{settledRound ? money(totalRevenue) : "—"}</strong></div>
-      </div>
-    </div>
-  );
-}
-
-function MarketStatisticsTable({ history }: { history: HistoryPoint[] }) {
-  return (
-    <div className="statistics-card market-statistics-card">
-      <div className="section-heading compact"><div><span className="eyebrow">MARKET STATISTICS</span><h3>逐轮市场统计</h3></div><span className="chart-unit">已结算公开数据</span></div>
-      <div className="metric-definition"><b>实现需求</b><span>本轮进入消费者选择阶段的订单总量</span><b>成交总量</b><span>各公司最终履约订单之和</span><b>未购买</b><span>消费者主动选择 Outside Option</span><b>缺货流失</b><span>产能与转售后仍未履约</span></div>
-      <div className="market-statistics-scroll">
-        <table>
-          <thead><tr><th>回合</th><th>实现需求（单）</th><th>成交总量（单）</th><th>市场销售额</th><th>成交均价</th><th>未购买（单）</th><th>缺货流失（单）</th><th>供应成本指数</th></tr></thead>
-          <tbody>{history.length === 0 ? <tr><td colSpan={8}>完成第一轮后显示统计数据</td></tr> : history.map((point) => {
-            const pointCompanies = point.state.company_order.map((id) => point.state.companies[id]);
-            const totalSales = pointCompanies.reduce((sum, company) => sum + company.commercial.sales_orders, 0);
-            const totalRevenue = pointCompanies.reduce((sum, company) => sum + company.financial.round_revenue_cents, 0);
-            return <tr key={point.settledRound}><td>R{String(point.settledRound).padStart(2, "0")}</td><td>{point.market.realized_demand_orders.toLocaleString("zh-CN")}</td><td>{totalSales.toLocaleString("zh-CN")}</td><td>{money(totalRevenue)}</td><td>{money(point.market.average_paid_price_cents)}</td><td>{point.market.no_purchase_orders.toLocaleString("zh-CN")}</td><td>{point.market.lost_after_stockout_orders.toLocaleString("zh-CN")}</td><td>{(point.market.actual_supply_cost_index_ppm / 1_000_000).toFixed(3)}</td></tr>;
-          })}</tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
-
-function CompanyCockpit({
-  state,
-  company,
-  analysis,
-}: {
-  state: MarketState;
-  company: Company;
-  analysis: CompanyAnalysis | null;
-}) {
-  const meta = metaFor(company.company_id);
-  const ranking = state.company_order
-    .map((id) => state.companies[id])
-    .sort((a, b) => b.commercial.market_share_ppm - a.commercial.market_share_ppm);
-  return (
-    <section className="company-cockpit" style={{ "--player": meta.color } as React.CSSProperties}>
-      <div className="cockpit-heading">
-        <div className="player-identity"><span>{meta.shortName}</span><div><small>YOUR COMPANY</small><h2>{meta.name}</h2><p>你负责当前公司的全部资源配置；其他公司由带 Seed 随机风格的规则程序决策。</p></div></div>
-        <div className="health-score"><span>经营健康度</span><strong>{analysis?.health_score ?? "—"}</strong><small>/ 100 · {analysis?.health_label ?? "分析中"}</small></div>
-      </div>
-      <div className="cockpit-metrics">
-        <article><span>现金</span><strong>{compactMoney(company.financial.cash_balance_cents)}</strong><small>累计利润 {compactMoney(company.financial.cumulative_profit_cents)}</small></article>
-        <article><span>市场份额</span><strong>{percent(company.commercial.market_share_ppm)}</strong><small>当前排名 #{ranking.findIndex((item) => item.company_id === company.company_id) + 1}</small></article>
-        <article><span>单位价差</span><strong>{money(analysis?.decision_context.margin_per_order_cents ?? 0)}</strong><small>报价减当前单位成本</small></article>
-        <article><span>履约余量</span><strong>{(analysis?.decision_context.capacity_buffer_orders ?? 0).toLocaleString("zh-CN")}</strong><small>有效产能 {company.operations.effective_capacity_orders.toLocaleString("zh-CN")}</small></article>
-      </div>
-      <div className="cockpit-body">
-        <div className="health-factors">
-          <div className="mini-heading"><span>STATE DIAGNOSIS</span><h3>公司状态体检</h3></div>
-          {analysis?.factors.map((factor) => <article key={factor.key} className={`factor-row ${factor.status}`}>
-            <div><strong>{factor.label}</strong><small>{factor.summary}</small></div>
-            <span><i style={{ width: `${Math.min(100, factor.value_ppm / 10_000)}%` }} /></span>
-            <em>{factor.status === "healthy" ? "稳健" : factor.status === "watch" ? "观察" : "风险"}</em>
-          </article>)}
-        </div>
-        <div className="decision-brief">
-          <div className="mini-heading"><span>DECISION BRIEF</span><h3>本轮决策提示</h3></div>
-          <p className="brief-disclaimer">提示来自当前状态与已知约束，不替你选择策略。</p>
-          <div className="recommendation-list">
-            {analysis?.recommendations.map((item, index) => <article key={`${item.dimension}-${index}`} className={item.priority}>
-              <span>{index + 1}</span><div><strong>{item.title}</strong><p>{item.rationale}</p></div>
-            </article>)}
-          </div>
-        </div>
-        <div className="competitor-watch">
-          <div className="mini-heading"><span>COMPETITOR WATCH</span><h3>竞争位置</h3></div>
-          {ranking.map((item, index) => {
-            const itemMeta = metaFor(item.company_id);
-            return <article key={item.company_id} className={item.company_id === company.company_id ? "player" : ""}><b>#{index + 1}</b><i style={{ background: itemMeta.color }}>{itemMeta.shortName}</i><div><strong>{itemMeta.name}</strong><small>{money(item.commercial.price_cents)} · 现金 {compactMoney(item.financial.cash_balance_cents)}</small></div><span>{percent(item.commercial.market_share_ppm)}</span></article>;
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function TerminalTrendChart({ retrospective }: { retrospective: Retrospective }) {
-  const width = 920;
-  const height = 280;
-  const padding = { left: 66, right: 24, top: 22, bottom: 36 };
-  const values = retrospective.trend_series.flatMap((series) => series.points.map((point) => point.enterprise_value_cents));
-  const rawMin = Math.min(...values);
-  const rawMax = Math.max(...values);
-  const spread = Math.max(1, rawMax - rawMin);
-  const minimum = Math.max(0, rawMin - spread * 0.12);
-  const maximum = rawMax + spread * 0.12;
-  const maxRounds = retrospective.rounds.length || DEFAULT_ROUNDS;
-  const x = (round: number) => padding.left + (round / maxRounds) * (width - padding.left - padding.right);
-  const y = (value: number) => padding.top + ((maximum - value) / Math.max(1, maximum - minimum)) * (height - padding.top - padding.bottom);
-  const gridValues = Array.from({ length: 5 }, (_, index) => minimum + ((maximum - minimum) * index) / 4).reverse();
-  return <section className="terminal-trend-card">
-    <div className="terminal-section-head"><div><span>VALUE TREND</span><h3>综合价值折线图</h3></div><p>从 R0 初始状态到 R10 终局，采用与综合榜相同的估值口径。</p></div>
-    <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label="四家公司逐轮综合价值折线图">
-      {gridValues.map((value) => <g key={value}><line x1={padding.left} x2={width - padding.right} y1={y(value)} y2={y(value)} /><text x={padding.left - 10} y={y(value) + 3} textAnchor="end">{compactMoney(Math.round(value))}</text></g>)}
-      {Array.from({ length: maxRounds + 1 }, (_, round) => <text key={round} x={x(round)} y={height - 10} textAnchor="middle">R{round}</text>)}
-      {retrospective.trend_series.map((series) => {
-        const meta = metaFor(series.company_id);
-        const points = series.points.map((point) => `${x(point.round)},${y(point.enterprise_value_cents)}`).join(" ");
-        return <g key={series.company_id} className={series.company_id === retrospective.player_company_id ? "player-line" : ""}>
-          <polyline points={points} style={{ stroke: meta.color }} />
-          {series.points.map((point) => <circle key={point.round} cx={x(point.round)} cy={y(point.enterprise_value_cents)} r={series.company_id === retrospective.player_company_id ? 4 : 2.5} style={{ fill: meta.color }}><title>{meta.name} R{point.round}: {money(point.enterprise_value_cents)}</title></circle>)}
-        </g>;
-      })}
-    </svg>
-    <div className="terminal-chart-legend">{retrospective.trend_series.map((series) => <span key={series.company_id}><i style={{ background: metaFor(series.company_id).color }} />{metaFor(series.company_id).name}</span>)}</div>
-  </section>;
-}
-
-function TerminalRankings({ retrospective }: { retrospective: Retrospective }) {
-  const boards = [
-    { key: "composite" as const, eyebrow: "COMPOSITE VALUE", title: "综合价值榜", rows: retrospective.rankings.composite, method: retrospective.ranking_methodology.composite },
-    { key: "total_assets" as const, eyebrow: "TOTAL ASSETS", title: "总资产榜", rows: retrospective.rankings.total_assets, method: retrospective.ranking_methodology.total_assets },
+function LiveView({ agents, round, maxRounds, nextRound, runtimeMode, notice, completed, interactive }: { agents: AgentRuntimeView[]; round: number; maxRounds: number; nextRound: (action: { price: number; advertising: number; contribution: number }) => void; runtimeMode: RuntimeMode; notice: string; completed: boolean; interactive: boolean }) {
+  const [humanAction, setHumanAction] = useState({ price: 9800, advertising: 200000, contribution: 200000 });
+  const [processStep, setProcessStep] = useState(0);
+  const [processCompanyId, setProcessCompanyId] = useState(agents[0].companyId);
+  const phase = ["接收信息", "交流", "形成判断", "制定策略", "做出决策", "市场结算"];
+  const human = agents[0];
+  const processAgent = agents.find((agent) => agent.companyId === processCompanyId) ?? agents[0];
+  const shareTotal = agents.reduce((sum, agent) => sum + agent.share, 0);
+  const averagePrice = agents.reduce((sum, agent) => sum + agent.price * agent.share, 0) / Math.max(1, shareTotal);
+  const publicState = human.observation.public;
+  const visibleMessages = [
+    { route: "B → PUBLIC", text: round % 2 === 0 ? "我们会守住当前价格区间。" : "本轮将优先扩大市场份额。", trust: "UNVERIFIED" },
+    { route: `${round % 3 === 0 ? "C" : "D"} → A`, text: round % 3 === 0 ? "建议下一轮共同提高韧性贡献。" : "供应冲击可能高于公开预测。", trust: "PRIVATE · UNVERIFIED" },
   ];
-  return <div className="terminal-rankings">{boards.map((board) => <section key={board.key} className="terminal-ranking-card">
-    <div className="terminal-section-head"><div><span>{board.eyebrow}</span><h3>{board.title}</h3></div></div>
-    <p className="ranking-method">{board.method}</p>
-    <div>{board.rows.map((row) => { const meta = metaFor(row.company_id); return <article key={row.company_id} className={row.company_id === retrospective.player_company_id ? "player" : ""}>
-      <b>#{row.rank}</b><i style={{ background: meta.color }}>{meta.shortName}</i><div><strong>{meta.name}</strong><small>{board.key === "composite" ? `现金 ${compactMoney(row.breakdown.cash_cents)} · 长期价值 ${compactMoney(row.value_cents - row.breakdown.cash_cents)}` : `现金 ${compactMoney(row.breakdown.cash_cents)} · 产能账面 ${compactMoney(row.breakdown.capacity_book_value_cents)}`}</small></div><span>{compactMoney(row.value_cents)}</span>
-    </article>; })}</div>
-  </section>)}</div>;
+  const processMessages = processAgent.companyId === human.companyId ? visibleMessages : [
+    { route: `${processAgent.companyId.slice(-1)} → PUBLIC`, text: processAgent.decision.summary, trust: "UNVERIFIED" },
+    { route: `A → ${processAgent.companyId.slice(-1)}`, text: "请说明下一轮是否会改变公开价格。", trust: "PRIVATE · UNVERIFIED" },
+  ];
+  const hasSettledRound = agents.some((agent) => agent.shareDelta !== 0 || agent.profit !== 0);
+  const hasHistoricalEvidence = round > 1 || completed;
+  const moveToNextRound = () => { nextRound(humanAction); setProcessStep(0); };
+  return <div className="view-pad live-view"><section className="live-command card"><div className="round-orbit"><span>当前决策回合</span><strong>{round}</strong><small>/ {maxRounds}</small><i style={{ "--progress": `${maxRounds === 1 ? 100 : Math.min(100, ((round - 1) / (maxRounds - 1)) * 100)}%` } as React.CSSProperties} /></div><div className="phase-track">{phase.map((item, index) => <div className={completed || index < processStep ? "done" : index === processStep ? "active" : ""} key={item}><i>{completed || index < processStep ? "✓" : index + 1}</i><span>{item}</span></div>)}</div><div className="live-actions"><span>{runtimeMode === "backend" ? "后端真实回合" : "前端交互演示"}<small>{notice}</small></span><b className={completed ? "round-complete" : "round-open"}>{completed ? "本次体验已完成" : `第 ${round} 回合进行中`}</b></div></section>
+    <div className="live-scope-banner"><div><StatusDot tone={runtimeMode === "backend" ? "ok" : "warn"} /><span><b>{runtimeMode === "backend" ? "权威后端状态" : "交互演示状态"}</b> · 消息是未验证陈述；对手私有信息不会进入你的事实状态。</span></div><strong>市场份额合计 {shareTotal.toFixed(1)}%</strong></div>
+    <div className="metrics-row"><MetricCard label="市场需求" value={publicState[0]?.value ?? "—"} note="最近一次结算产生的订单需求" /><MetricCard label="市场平均价格" value={formatMoney(averagePrice)} note="按照各公司当前市场份额加权" /><MetricCard label="行业抗冲击能力" value={publicState[3]?.value ?? "—"} note="越高表示灾害或供应冲击造成的损失越小" accent /><MetricCard label="份额校验" value={`${shareTotal.toFixed(1)}%`} note="四家公司市场份额必须合计为 100%" /></div>
+    <section className="agent-board clean">{agents.map((agent, index) => <article className={`runtime-agent-card${interactive && index === 0 ? " human" : ""}`} key={agent.companyId} style={{ "--agent": agent.color } as React.CSSProperties}><div className="runtime-agent-head"><span>{agent.companyId.slice(-1)}</span><div><strong>{agent.companyName}</strong><small>{agent.persona}</small></div><b>{interactive && index === 0 ? "你" : "智能体"}</b></div><div className="agent-primary-result"><span>市场份额 <i title="该公司获得的全部市场订单比例。四家公司合计为 100%。">?</i></span><strong>{formatPercent(agent.share)}</strong><em className={agent.shareDelta >= 0 ? "up" : "down"}>{agent.shareDelta === 0 ? "本轮尚未结算" : `${agent.shareDelta > 0 ? "+" : ""}${agent.shareDelta.toFixed(1)} 个百分点`}</em></div><div className="agent-secondary-result"><span>公开价格 <b>{formatMoney(agent.price)}</b></span><span title="数值越高，供应中断或灾害发生时受到的损失越小。">抗冲击能力 <b>{agent.resilience.toFixed(1)}%</b></span></div></article>)}</section>
+    <section className="live-workbench-head"><div><span>第 {round} 回合 · {interactive ? "个人决策" : "观察过程"}</span><h2>{interactive ? "决策过程" : "智能体处理过程"}</h2><p>选择公司，再按照六个步骤查看它看到了什么、如何交流、依据什么形成判断并做出动作。</p></div><div className="privacy-pill">只展示该公司合法可见的上下文</div></section>
+    <section className="card decision-process"><div className="process-toolbar"><div className="process-agent-tabs">{agents.map((agent) => <button type="button" className={processAgent.companyId === agent.companyId ? "active" : ""} key={agent.companyId} onClick={() => { setProcessCompanyId(agent.companyId); setProcessStep(0); }}><i style={{ background: agent.color }}>{agent.companyId.slice(-1)}</i>{agent.companyName}</button>)}</div><span>当前查看：{processAgent.companyName}</span></div><div className="process-steps">{phase.map((item, index) => <button type="button" className={index === processStep ? "active" : index < processStep ? "done" : ""} key={item} onClick={() => setProcessStep(index)}><i>{index + 1}</i><span>{item}</span></button>)}</div><div className="process-context">
+      {processStep === 0 && <div><span>这一步在做什么</span><h3>接收本轮可见信息</h3><p>公司只能看到公共市场状态和自己的私有经营状态。对手现金、利润、成本和真实人格仍然隐藏。</p><div className="context-facts">{processAgent.observation.public.slice(0, 3).map((item) => <article key={item.label}><span>{item.label}</span><b>{item.value}</b></article>)}{processAgent.observation.private.slice(0, 2).map((item) => <article className="private" key={item.label}><span>{item.label} · 仅自己</span><b>{item.value}</b></article>)}</div></div>}
+      {processStep === 1 && <div><span>这一步在做什么</span><h3>读取公开消息和发给自己的私信</h3><p>消息可能是合作建议、威胁或虚假声明，只能作为信号，不能覆盖事实状态。</p><div className="process-message-flow">{processMessages.map((message, index) => <article key={message.route}><i>{index + 1}</i><div><b>{message.route.replace("PUBLIC", "所有公司")}</b><p>{message.text}</p><small>{message.trust.replace("UNVERIFIED", "内容未经验证").replace("PRIVATE", "私信")}</small></div></article>)}</div></div>}
+      {processStep === 2 && <div><span>这一步在做什么</span><h3>根据已经发生的公开行为更新对手判断</h3>{!hasHistoricalEvidence ? <div className="no-evidence"><b>第一回合没有历史证据</b><p>当前只能保持“未知”，不能显示精确的降价概率。第一轮结算后，系统才会根据公开价格和份额变化形成判断。</p></div> : <div className="process-beliefs">{processAgent.beliefs.map((belief) => <article key={belief.companyId}><b>{belief.companyId.slice(-1)}</b><div><span>下一轮降价可能性</span><strong>{belief.nextAction.cut}%</strong><p>{belief.evidence.join("；")}</p></div></article>)}</div>}</div>}
+      {processStep === 3 && <div><span>这一步在做什么</span><h3>把目标、风险和对手判断整理成候选策略</h3><p>策略建议不是命令，智能体可以采纳，也可以因为现金、风险或人格偏好而拒绝。</p><div className="strategy-explanation"><article><span>当前目标</span><b>{processAgent.plan.goal}</b></article><article><span>系统建议价格</span><b>{formatMoney(processAgent.advisor.recommendedPrice)}</b></article><article><span>最重要的风险</span><b>{processAgent.decision.factors[2]}</b></article></div></div>}
+      {processStep === 4 && <div><span>这一步在做什么</span><h3>综合上下文后提交本轮动作</h3><p>{processAgent.decision.summary}</p><div className="final-action-context"><span>价格 <b>{formatMoney(processAgent.action.price)}</b></span><span>广告 <b>{formatMoney(processAgent.action.advertising, true)}</b></span><span>服务投入 <b>{formatMoney(processAgent.action.service, true)}</b></span><span>共享抗冲击投入 <b>{formatMoney(processAgent.action.contribution, true)}</b></span></div></div>}
+      {processStep === 5 && <div><span>这一步在做什么</span><h3>四家公司动作锁定后统一结算</h3><p>市场份额是相对竞争结果：一家公司的份额增加，必然由其他公司份额减少来平衡。</p><div className="settlement-explanation"><b>{processAgent.companyName}</b><span>份额变化 {processAgent.shareDelta >= 0 ? "+" : ""}{processAgent.shareDelta.toFixed(1)} 个百分点</span><span>本轮价格 {formatMoney(processAgent.action.price)}</span></div></div>}
+    </div><div className="process-next"><span>步骤 {processStep + 1} / {phase.length}</span><button type="button" disabled={processStep >= phase.length - 1} onClick={() => setProcessStep((current) => Math.min(phase.length - 1, current + 1))}>查看下一步 →</button></div></section>
+    <div className="compact-evidence-row"><section className="card compact-messages"><div><span>本轮消息</span><small>始终可见 · 内容未验证</small></div>{visibleMessages.map((message) => <article key={message.route}><b>{message.route.replace("PUBLIC", "所有公司")}</b><p>{message.text}</p></article>)}</section><section className="card compact-opponent-view"><div><span>对手判断</span><small>只依据已经结算的公开历史</small></div>{!hasHistoricalEvidence ? <p className="compact-empty">第一回合尚无历史行为，暂不判断。</p> : human.beliefs.map((belief) => <article key={belief.companyId}><b>{belief.companyId.slice(-1)}</b><span>降价可能性</span><strong>{belief.nextAction.cut}%</strong></article>)}</section></div>
+    <div className="live-main-action-grid">{interactive ? <section className="card live-action-panel primary-task"><div className="mini-panel-head"><span>你的本轮决策</span><b>{completed ? "已锁定" : "可以修改"}</b></div><h3>第 {round} 回合动作</h3><div className="live-action-controls"><label><span>价格 <b>{formatMoney(humanAction.price)}</b></span><small>价格更低通常有利于份额，但会压缩每笔订单利润。</small><input disabled={completed} type="range" min={8000} max={12000} step={50} value={humanAction.price} onChange={(event) => setHumanAction((current) => ({ ...current, price: Number(event.target.value) }))} /></label><label><span>广告预算 <b>{formatMoney(humanAction.advertising, true)}</b></span><small>用于吸引订单，当期需要支付成本。</small><input disabled={completed} type="range" min={0} max={2000000} step={100000} value={humanAction.advertising} onChange={(event) => setHumanAction((current) => ({ ...current, advertising: Number(event.target.value) }))} /></label><label><span>共享抗冲击投入 <b>{formatMoney(humanAction.contribution, true)}</b></span><small>当期支付成本，未来全行业都可能获得保护。</small><input disabled={completed} type="range" min={0} max={2000000} step={100000} value={humanAction.contribution} onChange={(event) => setHumanAction((current) => ({ ...current, contribution: Number(event.target.value) }))} /></label></div><button className="settle-round-button" type="button" disabled={completed} onClick={moveToNextRound}>{runtimeMode === "backend" ? "请求后端推进回合" : round === maxRounds ? "提交并结算最终回合" : `提交第 ${round} 回合并进入下一轮`}<i>→</i></button></section> : <section className="card observer-round-panel primary-task"><div className="mini-panel-head"><span>观察推进</span><b>不控制任何公司</b></div><h3>观察第 {round} 回合</h3><p>系统使用四个智能体各自的策略完成联合动作与市场结算。</p><button className="settle-round-button" type="button" disabled={completed} onClick={moveToNextRound}>{round === maxRounds ? "观察最终回合结算" : "观察下一回合"}<i>→</i></button></section>}
+      <section className="card live-settlement-panel"><div className="mini-panel-head"><span>最近一次市场结算</span><b>{hasSettledRound ? "已有结果" : "等待第一轮"}</b></div><h3>{hasSettledRound ? `第 ${Math.max(1, round - (completed ? 0 : 1))} 回合结果` : "尚无已结算回合"}</h3><div className="settlement-table"><div><span>公司</span><span>价格</span><span>份额变化</span><span>利润</span></div>{agents.map((agent, index) => <article key={agent.companyId}><b style={{ color: agent.color }}>{agent.companyId.slice(-1)}</b><span>{formatMoney(agent.action.price)}</span><em className={agent.shareDelta >= 0 ? "up" : "down"}>{agent.shareDelta === 0 ? "—" : `${agent.shareDelta > 0 ? "+" : ""}${agent.shareDelta.toFixed(1)} 个百分点`}</em><strong>{index === 0 ? formatMoney(agent.profit, true) : "未公开"}</strong></article>)}</div><p className="settlement-proof">四家公司市场份额合计为 <b>{shareTotal.toFixed(1)}%</b>。对手利润属于私有信息，因此不向参与者展示。</p></section></div>
+  </div>;
 }
 
-function MarketRetrospective({ retrospective }: { retrospective: Retrospective }) {
-  return (
-    <section className="retrospective">
-      <div className="retro-hero">
-        <div><span className="eyebrow">MARKET RETROSPECTIVE</span><h2>市场回溯：{retrospective.outcome}</h2><p>{retrospective.headline}</p></div>
-        <div className="retro-rank"><span>终局排名</span><strong>#{retrospective.rank}</strong><small>/ {retrospective.company_count} · 企业价值 {compactMoney(retrospective.terminal_value_cents)}</small></div>
-      </div>
-      <div className="retro-summary">
-        <article><span>累计利润</span><strong>{money(retrospective.summary.cumulative_profit_cents)}</strong></article>
-        <article><span>最终现金</span><strong>{compactMoney(retrospective.summary.final_cash_cents)}</strong></article>
-        <article><span>最终份额</span><strong>{percent(retrospective.summary.final_share_ppm)}</strong></article>
-        <article><span>盈利回合</span><strong>{retrospective.summary.profitable_rounds} / {retrospective.rounds.length}</strong></article>
-      </div>
-      <div className="retro-market-model"><span>本局市场模型</span><strong>{retrospective.market_model.label}</strong><p>{retrospective.market_model.description} 需求偏差 {percent(retrospective.market_model.demand_bias_ppm, 1)}，价格锚点 {money(retrospective.market_model.price_anchor_cents)} ± {money(retrospective.market_model.price_band_cents)}。</p></div>
-      <TerminalRankings retrospective={retrospective} />
-      <TerminalTrendChart retrospective={retrospective} />
-      <section className="rank-explanation">
-        <div className="terminal-section-head"><div><span>WHY THIS RANK</span><h3>为什么得到这个结果</h3></div><p>将玩家与综合榜冠军逐项对比。</p></div>
-        <div className="rank-explanation-grid"><div>{retrospective.rank_explanation.map((reason) => <p key={reason}>{reason}</p>)}</div><div className="component-comparison">{retrospective.component_comparison.map((item) => <article key={item.key}><span>{item.label}</span><b>{compactMoney(item.own_value_cents)}</b><small className={item.gap_cents > 0 ? "negative" : "positive"}>{item.gap_cents > 0 ? `落后 ${compactMoney(item.gap_cents)}` : `领先 ${compactMoney(-item.gap_cents)}`}</small></article>)}</div></div>
-      </section>
-      <div className="retro-reasons">
-        <div className="success"><span>WHAT WORKED</span><h3>为什么成功</h3>{retrospective.success_reasons.length ? retrospective.success_reasons.map((reason) => <p key={reason}>+ {reason}</p>) : <p>没有识别到持续的正向证据。</p>}</div>
-        <div className="failure"><span>VALUE LEAKS</span><h3>为什么失利</h3>{retrospective.failure_reasons.length ? retrospective.failure_reasons.map((reason) => <p key={reason}>− {reason}</p>) : <p>没有识别到显著的价值损失环节。</p>}</div>
-      </div>
-      <div className="retro-timeline">
-        <div className="section-heading"><div><span className="eyebrow">ROUND BY ROUND</span><h2>状态是如何变化的</h2></div><p>{retrospective.methodology}</p></div>
-        {retrospective.rounds.map((round) => <article key={round.round} className={retrospective.turning_point_rounds.includes(round.round) ? "turning-point" : ""}>
-          <div className="retro-round"><span>R{String(round.round).padStart(2, "0")}</span><strong>{round.verdict}</strong>{retrospective.turning_point_rounds.includes(round.round) && <small>关键转折</small>}</div>
-          <div className="retro-stats"><span>利润 <b className={round.profit_cents < 0 ? "negative" : "positive"}>{money(round.profit_cents)}</b></span><span>综合价值变化 <b className={round.enterprise_value_delta_cents < 0 ? "negative" : "positive"}>{round.enterprise_value_delta_cents >= 0 ? "+" : ""}{compactMoney(round.enterprise_value_delta_cents)}</b></span><span>份额 <b>{percent(round.market_share_ppm)} ({round.share_delta_ppm >= 0 ? "+" : ""}{percent(round.share_delta_ppm)})</b></span><span>销量 / 产能 <b>{round.sales_orders.toLocaleString("zh-CN")} / {round.effective_capacity_orders.toLocaleString("zh-CN")}</b></span></div>
-          <div className="retro-market"><span>同轮市场</span><p>总需求 {round.market_demand_orders.toLocaleString("zh-CN")} 单（{round.market_demand_delta_orders >= 0 ? "+" : ""}{round.market_demand_delta_orders.toLocaleString("zh-CN")}） · 成交均价 {money(round.average_paid_price_cents)} · 供应成本指数 {(round.supply_cost_index_ppm / 1_000_000).toFixed(3)}（{round.supply_cost_delta_ppm >= 0 ? "+" : ""}{(round.supply_cost_delta_ppm / 1_000_000).toFixed(3)}） · 场外流失 {round.outside_option_orders.toLocaleString("zh-CN")} 单 · 事件 {round.active_events.length ? round.active_events.map((event) => EVENT_LABELS[event] ?? event).join(" / ") : "无"}</p></div>
-          <div className="retro-action"><span>决策与成本</span><p>价格 {money(Number(round.action.price_cents))} · 广告 {compactMoney(Number(round.action.advertising_budget_cents))} · 服务 {compactMoney(Number(round.action.service_budget_cents))} · 产能 {compactMoney(Number(round.action.capacity_investment_cents))} · 韧性 {compactMoney(Number(round.action.resilience_budget_cents))} · 常规运营 {compactMoney(round.operating_cost_cents)}</p></div>
-          <ul>{round.reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>
-          <code>{round.state_after_hash.slice(0, 30)}…</code>
-        </article>)}
-      </div>
-    </section>
-  );
+type ObservatoryTab = "observation" | "belief" | "planning" | "decision";
+
+function ObservatoryView({ agents }: { agents: AgentRuntimeView[] }) {
+  const [companyId, setCompanyId] = useState(agents[0].companyId);
+  const [tab, setTab] = useState<ObservatoryTab>("observation");
+  const agent = agents.find((item) => item.companyId === companyId) ?? agents[0];
+  return <div className="view-pad observatory-view"><section className="observatory-header card"><div><span>智能体范围审计</span><h2>这个智能体在这一轮究竟知道什么？</h2><p>可见信息、自己的私有信息、隐藏信息和概率判断被严格分开。这里不展示模型隐藏思维过程。</p></div><div className="agent-selector">{agents.map((item) => <button type="button" className={item.companyId === companyId ? "active" : ""} style={{ "--agent": item.color } as React.CSSProperties} key={item.companyId} onClick={() => setCompanyId(item.companyId)}><i>{item.companyId.slice(-1)}</i><span>{item.companyName}<small>{item.persona}</small></span></button>)}</div></section>
+    <div className="observatory-layout"><aside className="agent-dossier card"><div className="dossier-avatar" style={{ background: agent.color }}>{agent.companyId.slice(-1)}</div><span>当前智能体</span><h2>{agent.companyName}</h2><p>{agent.driver}<br />人格 · {agent.persona}</p><dl><div><dt>输入信息校验值</dt><dd>{agent.observationHash}</dd></div><div><dt>回合</dt><dd>05</dd></div><div><dt>状态版本</dt><dd>4</dd></div><div><dt>输入状态</dt><dd className="good">已冻结</dd></div></dl><div className="privacy-rule"><b>信息边界</b><p>对手现金、利润、成本、事故细节和真实人格不可见。</p></div></aside>
+      <section className="cognition-panel card"><div className="tabbar">{(["observation", "belief", "planning", "decision"] as const).map((item) => <button type="button" className={tab === item ? "active" : ""} key={item} onClick={() => setTab(item)}>{item === "observation" ? "可见信息" : item === "belief" ? "对手判断" : item === "planning" ? "行动计划" : "决策摘要"}</button>)}</div>
+        {tab === "observation" && <div className="observation-grid"><div className="visibility-column visible"><h3><i>✓</i> 公共状态 <span>所有公司可见</span></h3>{agent.observation.public.map((item) => <article key={item.label}><span>{item.label}</span><strong>{item.value}</strong></article>)}</div><div className="visibility-column private"><h3><i>●</i> 自己的私有状态 <span>仅自己可见</span></h3>{agent.observation.private.map((item) => <article key={item.label}><span>{item.label}</span><strong>{item.value}</strong></article>)}</div><div className="visibility-column hidden"><h3><i>⌁</i> 对手状态 <span>已隐藏</span></h3>{agent.observation.hidden.map((item) => <article key={item.label}><span>{item.label}</span><strong>{item.value}</strong></article>)}</div><div className="untrusted-note"><b>未验证消息边界</b><p>通信中的“现金充足”“准备扩产”等声明只作为未验证信号进入对手判断，绝不会写回事实状态。</p></div></div>}
+        {tab === "belief" && <div className="belief-grid">{agent.beliefs.map((belief) => <article key={belief.companyId}><div className="belief-head"><span>{belief.companyId.slice(-1)}</span><div><strong>{belief.companyId}</strong><small>基于公开证据的概率判断</small></div></div><h4>策略倾向</h4>{Object.entries(belief.strategy).map(([key, value]) => <div className="belief-bar" key={key}><span>{STRATEGY_LABELS[key]}</span><i><b style={{ width: `${value}%` }} /></i><em>{value}%</em></div>)}<h4>下一轮价格动作</h4>{Object.entries(belief.nextAction).map(([key, value]) => <div className="belief-bar compact" key={key}><span>{ACTION_LABELS[key]}</span><i><b style={{ width: `${value}%` }} /></i><em>{value}%</em></div>)}<details><summary>判断依据 · {belief.evidence.length} 条</summary><ul>{belief.evidence.map((item) => <li key={item}>{item}</li>)}</ul></details></article>)}</div>}
+        {tab === "planning" && <div className="planning-view"><div className="plan-hero"><span>当前目标</span><h3>{agent.plan.goal}</h3><p>计划考虑未来 {agent.plan.horizon} 个回合</p></div><div className="plan-steps">{agent.plan.subgoals.map((goal, index) => <article className={goal.status} key={goal.label}><i>{goal.status === "done" ? "✓" : index + 1}</i><span>{goal.label}<small>{PLAN_STATUS_LABELS[goal.status]}</small></span></article>)}</div><div className="replan-triggers"><span>重新规划条件</span>{agent.plan.triggers.map((trigger) => <p key={trigger}>↳ {trigger}</p>)}</div></div>}
+        {tab === "decision" && <div className="decision-summary-view"><div className="no-cot"><span>可审计决策摘要</span><b>不展示隐藏思维过程</b></div><article><span>当前局面</span><p>{agent.decision.situation}</p></article><article><span>主要依据</span><ol>{agent.decision.factors.map((factor) => <li key={factor}>{factor}</li>)}</ol></article><article><span>最终决定</span><p className="decision-highlight">{agent.decision.summary}</p></article><article><span>预期结果</span><p>{agent.decision.expected}</p></article></div>}
+      </section></div>
+  </div>;
+}
+
+function CommunicationView() {
+  const [filter, setFilter] = useState<"all" | "public" | "private">("all");
+  const messages = DEMO_MESSAGES.filter((message) => filter === "all" || message.channel === filter);
+  const filterLabels = { all: "全部", public: "公开消息", private: "私信" };
+  const kindLabels: Record<string, string> = { statement: "声明", proposal: "提议", commitment: "承诺", threat: "威胁", signal: "信号", response: "回应" };
+  return <div className="view-pad communication-view"><SectionHead eyebrow="交流、提议与承诺" title="通信记录" description="公开消息、私信、提议与履约结果位于同一条时间线。所有消息都不具有强制约束力，也不一定真实。" action={<div className="filter-pills">{(["all", "public", "private"] as const).map((item) => <button type="button" className={filter === item ? "active" : ""} onClick={() => setFilter(item)} key={item}>{filterLabels[item]}</button>)}</div>} /><div className="communication-layout"><section className="message-stream card"><div className="stream-head"><span>第 5 回合 · 通信已关闭</span><b>{messages.length} 条消息</b></div>{messages.map((message) => <article className={message.channel} key={message.id}><div className="message-route"><i>{message.sender.slice(-1)}</i><span>{message.sender}{message.recipient ? ` → ${message.recipient}` : " → 所有公司"}<small>{message.channel === "public" ? "公开" : "私信"} · {kindLabels[message.kind]}</small></span><time>第 {message.round} 回合</time></div><blockquote>{message.text}</blockquote><div className="message-meta"><span>可见公司：{message.visibility.join("、")}</span>{message.status && <b className={message.status}>{message.status === "accepted" ? "已接受" : message.status === "rejected" ? "已拒绝" : "部分违约"}</b>}</div></article>)}</section><aside className="communication-audit card"><span>消息可见范围</span><h3>谁能看见什么</h3><div className="matrix"><div><i /><b>A</b><b>B</b><b>C</b><b>D</b></div>{DEMO_MESSAGES.slice(0, 4).map((message) => <div key={message.id}><span>{message.sender.slice(-1)}{message.recipient ? `→${message.recipient.slice(-1)}` : "→全部"}</span>{["A", "B", "C", "D"].map((company) => <i className={message.visibility.includes(company) ? "seen" : "hidden"} key={company}>{message.visibility.includes(company) ? "✓" : "–"}</i>)}</div>)}</div><div className="audit-callout"><b>未发现可见性泄漏</b><p>非接收者看不到私信的编号、数量、时间或正文。</p></div><div className="commitment-chain"><span>承诺履约过程</span><ol><li><i>01</i>提出投入 10,000 元</li><li><i>02</i>C 接受提议</li><li><i>03</i>实际投入 3,000 元</li><li className="bad"><i>04</i>履约 30%，属于部分违约</li></ol></div></aside></div></div>;
+}
+
+function StrategyView({ agents }: { agents: AgentRuntimeView[] }) {
+  const [companyId, setCompanyId] = useState(agents[1].companyId);
+  const agent = agents.find((item) => item.companyId === companyId) ?? agents[1];
+  const pipeline = ["可见信息", "动作概率判断", "对手策略判断", "效用目标推断", "策略建议", "最终动作"];
+  return <div className="view-pad strategy-view"><SectionHead eyebrow="对手判断 → 效用推断 → 策略建议" title="博弈策略分析" description="每一层都记录输入来源；策略建议不具有强制约束力，最终决定仍由智能体提交。" action={<select value={companyId} onChange={(event) => setCompanyId(event.target.value)}>{agents.map((item) => <option value={item.companyId} key={item.companyId}>{item.companyName}</option>)}</select>} /><section className="strategy-pipeline">{pipeline.map((item, index) => <div key={item} className={index === 4 ? "focus" : ""}><i>{index + 1}</i><span>{item}<small>{index < 4 ? "已验证输入" : index === 4 ? "仅供参考" : "智能体提交"}</small></span>{index < 5 && <b>→</b>}</div>)}</section><div className="strategy-grid"><section className="card opponent-model-card"><span>对手策略判断</span><h3>对手策略倾向</h3>{agent.beliefs.map((belief) => <article key={belief.companyId}><div><b>{belief.companyId}</b><small>{belief.evidence.length} 条公开依据</small></div><div className="strategy-stack" title="增长导向、利润导向、防御导向"><i style={{ width: `${belief.strategy.growth}%` }} /><i style={{ width: `${belief.strategy.profit}%` }} /><i style={{ width: `${belief.strategy.defensive}%` }} /></div><em>增长导向 {belief.strategy.growth}%</em></article>)}<div className="stack-legend"><span><i />增长</span><span><i />利润</span><span><i />防御</span></div></section><section className="card utility-card"><span>效用目标推断</span><h3>推断偏好，不等于真实人格</h3><div className="utility-radar"><svg viewBox="0 0 220 180" role="img" aria-label="效用权重雷达图"><polygon points="110,12 204,72 168,168 52,168 16,72" className="radar-grid" /><polygon points={`110,${100 - agent.utility.profit} ${110 + agent.utility.growth * 1.5},78 ${145 + agent.utility.risk / 2},142 66,142 42,78`} className="radar-data" /><text x="110" y="9">利润</text><text x="184" y="66">增长</text><text x="174" y="176">风险</text><text x="16" y="176">现金</text><text x="0" y="66">共同收益</text></svg></div><div className="utility-values"><span>利润 <b>{agent.utility.profit}%</b></span><span>增长 <b>{agent.utility.growth}%</b></span><span>风险 <b>{agent.utility.risk}%</b></span></div></section><section className="card advisor-card"><span>博弈策略建议</span><h3>有限动作候选</h3><div className="candidate-table"><div><span>动作</span><span>效用评分</span><span>风险</span></div>{agent.advisor.candidates.map((candidate, index) => <article className={index === 0 ? "recommended" : ""} key={candidate.action}><span>{candidate.action}{index === 0 && <b>系统建议</b>}</span><strong>{candidate.utility.toFixed(2)}</strong><em>{candidate.risk.toFixed(2)}</em></article>)}</div><div className="advisor-result"><span>建议价格<strong>{formatMoney(agent.advisor.recommendedPrice)}</strong></span><i>→</i><span>最终价格<strong>{formatMoney(agent.action.price)}</strong></span><b className={agent.advisor.adopted ? "adopted" : "rejected"}>{agent.advisor.adopted ? "已采纳" : "未采纳"}</b></div><p>是否有效必须使用真实市场结果评价；内部评分不能证明建议提高了利润。</p></section></div></div>;
+}
+
+function LineChart() {
+  const colors: Record<string, string> = { A: "#21b99a", B: "#ef765d", C: "#6286eb", D: "#a777e3" };
+  const keys = ["A", "B", "C", "D"] as const;
+  const path = (key: typeof keys[number]) => PROFIT_SERIES.map((point, index) => `${index ? "L" : "M"}${30 + index * 112},${190 - point[key] * 52}`).join(" ");
+  return <svg className="line-chart" viewBox="0 0 510 220" role="img" aria-label="公司利润趋势"><g className="chart-grid">{[30, 80, 130, 180].map((y) => <line key={y} x1="28" y1={y} x2="485" y2={y} />)}</g>{keys.map((key) => <g key={key}><path d={path(key)} fill="none" stroke={colors[key]} strokeWidth="3" />{PROFIT_SERIES.map((point, index) => <circle key={point.round} cx={30 + index * 112} cy={190 - point[key] * 52} r="4" fill={colors[key]} />)}</g>)}</svg>;
+}
+
+function MarketView({ agents }: { agents: AgentRuntimeView[] }) {
+  const gradients = agents.map((agent, index) => `${agent.color} ${agents.slice(0, index).reduce((sum, item) => sum + item.share, 0)}% ${agents.slice(0, index + 1).reduce((sum, item) => sum + item.share, 0)}%`).join(",");
+  return <div className="view-pad market-view"><SectionHead eyebrow="市场结果与公共状态" title="市场面板" description="这里只展示后端市场状态和结算派生指标，不在前端复制权威市场公式。" /><div className="metrics-row"><MetricCard label="市场需求" value="12,480" note="实际产生的订单数" /><MetricCard label="市场平均价格" value="¥98.20" note="成交订单加权价格" /><MetricCard label="行业抗冲击能力" value="62.4%" note="越高表示冲击损失越小" accent /><MetricCard label="消费者信任" value="71.0%" note="消费者对市场的总体信心" /></div><div className="market-grid"><section className="card chart-panel"><div className="card-head"><div><span>利润变化</span><h3>单轮利润轨迹</h3></div><div className="chart-legend">{agents.map((agent) => <span key={agent.companyId}><i style={{ background: agent.color }} />{agent.companyId.slice(-1)}</span>)}</div></div><LineChart /><div className="chart-axis">{PROFIT_SERIES.map((point) => <span key={point.round}>第 {point.round} 轮</span>)}</div></section><section className="card share-panel"><div className="card-head"><div><span>市场份额</span><h3>竞争格局</h3></div></div><div className="share-ring" style={{ background: `conic-gradient(${gradients})` }}><i><strong>100%</strong><span>全部市场</span></i></div><div className="share-list">{agents.map((agent) => <div key={agent.companyId}><i style={{ background: agent.color }} /><span>{agent.companyName}</span><strong>{formatPercent(agent.share)}</strong></div>)}</div></section><section className="card investment-panel"><div className="card-head"><div><span>投入结构</span><h3>资源配置对照</h3></div></div><div className="investment-table"><div><span>公司</span><span>广告</span><span>服务</span><span>产能</span><span>抗冲击投入</span></div>{agents.map((agent) => <article key={agent.companyId}><b style={{ color: agent.color }}>{agent.companyId.slice(-1)}</b>{[agent.action.advertising, agent.action.service, agent.action.capacity, agent.action.resilience].map((value, index) => <span key={index}><i style={{ width: `${Math.min(100, value / 8000)}%` }} /><em>{formatMoney(value, true)}</em></span>)}</article>)}</div></section></div></div>;
+}
+
+function ReplayView() {
+  const [selected, setSelected] = useState(4);
+  const step = DEMO_REPLAY[selected];
+  return <div className="view-pad replay-view"><SectionHead eyebrow="确定性输入重建" title="回合重建" description="按照市场状态 → 可见信息 → 对手判断 → 通信 → 决策 → 动作 → 结果重建过程；不会重新调用模型生成语义。" action={<div className="replay-selectors"><select aria-label="实验"><option>第 1001 号随机种子实验</option></select><select aria-label="回合"><option>第 5 回合</option></select><select aria-label="智能体"><option>全部智能体</option></select></div>} /><div className="replay-layout"><section className="replay-timeline card">{DEMO_REPLAY.map((item, index) => <button type="button" key={`${item.phase}-${index}`} className={`${item.tone}${selected === index ? " selected" : ""}`} onClick={() => setSelected(index)}><i>{index + 1}</i><div><span>{item.phase} · {item.agent}</span><strong>{item.title}</strong><small>{item.detail}</small></div><em>{item.hash ?? "—"}</em></button>)}</section><section className="replay-inspector card"><div className="inspector-head"><span>过程详情</span><b>{step.phase}</b></div><div className="trace-summary"><span>{step.agent}</span><h3>{step.title}</h3><p>{step.detail}</p></div><div className="json-view"><span>{`{`}</span><p><i>"round"</i>: <b>5</b>,</p><p><i>"phase"</i>: <em>"{step.phase.toLowerCase().replace(" ", "_")}"</em>,</p><p><i>"company_scope"</i>: <em>"{step.agent}"</em>,</p><p><i>"source_hash"</i>: <em>"{step.hash ?? "derived"}"</em>,</p><p><i>"replay_match"</i>: <b>true</b></p><span>{`}`}</span></div><div className="replay-checks"><div><StatusDot />经济状态重建 <b>100%</b></div><div><StatusDot />交互过程重建 <b>100%</b></div><div><StatusDot />可见信息重建 <b>100%</b></div><div><StatusDot />博弈分析重建 <b>100%</b></div></div></section></div></div>;
+}
+
+function ReportView({ agents, runtimeMode }: { agents: AgentRuntimeView[]; runtimeMode: RuntimeMode }) {
+  const profitWinner = [...agents].sort((a, b) => b.profit - a.profit)[0];
+  const shareWinner = [...agents].sort((a, b) => b.share - a.share)[0];
+  const averageResilience = agents.reduce((sum, agent) => sum + agent.resilience, 0) / agents.length;
+  const totalShare = agents.reduce((sum, agent) => sum + agent.share, 0);
+  return <div className="view-pad report-view"><section className="report-hero"><div><span>实验已完成 · 最终总结</span><h2>本次实验已经完成。</h2><p>{runtimeMode === "demo" ? "这是交互演示的回合总结，不是大模型实验结论。" : "报告来自当前后端实验；研究结论仍需使用共同随机种子进行对照。"}</p></div><button type="button">导出当前结果 <i>↗</i></button></section><div className="report-scorecard"><article><span>利润最高</span><strong style={{ color: profitWinner.color }}>{profitWinner.companyName}</strong><small>{formatMoney(profitWinner.profit)}</small></article><article><span>市场份额最高</span><strong style={{ color: shareWinner.color }}>{shareWinner.companyName}</strong><small>{formatPercent(shareWinner.share)}</small></article><article><span>行业平均抗冲击能力</span><strong>{averageResilience.toFixed(1)}%</strong><small>四家公司平均值</small></article><article><span>市场份额合计</span><strong>{totalShare.toFixed(1)}%</strong><small>必须等于 100%</small></article></div><div className="report-grid clean-report"><section className="card report-findings"><span>本次运行说明了什么</span><h3>当前实验结果</h3><article><i>01</i><div><strong>市场竞争已经完成</strong><p>价格和投入共同影响份额与利润，四家公司份额总和保持 100%。</p></div><b>已观察到</b></article><article><i>02</i><div><strong>份额不等于利润</strong><p>份额领先者与利润领先者可能不是同一家公司，需要同时解释竞争和经营结果。</p></div><b>描述性结果</b></article><article className="warn"><i>03</i><div><strong>{runtimeMode === "demo" ? "不能作为研究证据" : "单个实验不能形成因果结论"}</strong><p>{runtimeMode === "demo" ? "正式结论必须来自后端市场环境、真实智能体、回合事件和过程重建。" : "至少需要共同随机种子、固定处理条件和配对统计。"}</p></div><b>证据边界</b></article></section><section className="card agent-report"><span>智能体最终结果</span><h3>公司结果</h3>{agents.map((agent) => <article key={agent.companyId}><i style={{ background: agent.color }}>{agent.companyId.slice(-1)}</i><div><strong>{agent.persona}</strong><p>{agent.decision.summary}</p></div><span><b>{formatPercent(agent.share)}</b><small>市场份额</small></span><span><b>{formatMoney(agent.profit, true)}</b><small>利润</small></span></article>)}</section></div></div>;
+}
+
+function hydrateAgents(payload: BackendEpisode, configs: AgentConfig[]) {
+  return DEMO_AGENTS.map((agent) => {
+    const state = payload.state.companies[agent.companyId];
+    const config = configs.find((item) => item.companyId === agent.companyId);
+    if (!state || !config) return agent;
+    return { ...agent, persona: PERSONAS[config.persona].label, driver: config.model, cash: state.financial.cash_balance_cents, profit: state.financial.round_profit_cents, share: state.commercial.market_share_ppm / 10_000, price: state.commercial.price_cents, resilience: state.risk.resilience_ppm / 10_000 };
+  });
+}
+
+function hydrateDemoAgents(configs: AgentConfig[]) {
+  return DEMO_AGENTS.map((agent) => {
+    const config = configs.find((item) => item.companyId === agent.companyId);
+    if (!config) return agent;
+    return {
+      ...agent,
+      driver: config.model,
+      persona: PERSONAS[config.persona].label,
+      action: { ...agent.action },
+      observation: { public: [...agent.observation.public], private: [...agent.observation.private], hidden: [...agent.observation.hidden] },
+    };
+  });
 }
 
 export default function Home() {
-  const [gameMode, setGameMode] = useState<GameMode>("single_company");
-  const [playerCompanyId, setPlayerCompanyId] = useState("company_A");
-  const [companyCount, setCompanyCount] = useState(4);
-  const [state, setState] = useState<MarketState | null>(null);
-  const [constraints, setConstraints] = useState<Record<string, ActionConstraints>>({});
-  const [presets, setPresets] = useState<EpisodePayload["action_presets"]>({});
-  const [drafts, setDrafts] = useState<Record<string, Draft>>({});
-  const [history, setHistory] = useState<HistoryPoint[]>([]);
-  const [companyAnalysis, setCompanyAnalysis] = useState<CompanyAnalysis | null>(null);
-  const [retrospective, setRetrospective] = useState<Retrospective | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [notice, setNotice] = useState("正在连接 MARKET_ENV_V4");
-  const [error, setError] = useState<string | null>(null);
-  const [seedMode, setSeedMode] = useState<SeedMode>("random");
-  const [fixedSeed, setFixedSeed] = useState(42);
-  const [activeSeed, setActiveSeed] = useState<number | null>(null);
-  const [marketModel, setMarketModel] = useState<MarketModel>("random");
-  const [marketModelOptions, setMarketModelOptions] = useState<Record<string, { label: string; description: string }>>({});
-  const [selectedRounds, setSelectedRounds] = useState(DEFAULT_ROUNDS);
-  const [roundOptions, setRoundOptions] = useState<number[]>([5, 10, 15, 20]);
-
-  async function createEpisode(
-    count = companyCount,
-    mode: GameMode = gameMode,
-    player = playerCompanyId,
-    model: MarketModel = marketModel,
-    rounds = selectedRounds,
-  ) {
-    setLoading(true);
-    setError(null);
-    try {
-      const randomValues = new Uint32Array(1);
-      crypto.getRandomValues(randomValues);
-      const episodeSeed = seedMode === "fixed" ? fixedSeed : randomValues[0];
-      const payload = await api<EpisodePayload>("/episodes", {
-        method: "POST",
-        body: JSON.stringify({
-          episode_seed: episodeSeed,
-          company_ids: COMPANY_META.slice(0, count).map((company) => company.id),
-          game_mode: mode,
-          player_company_id: mode === "single_company" ? player : null,
-          market_model: model,
-          max_rounds: rounds,
-        }),
-      });
-      setState(payload.state);
-      setConstraints(payload.action_constraints);
-      setPresets(payload.action_presets);
-      setMarketModelOptions(payload.market_model_options);
-      setRoundOptions(payload.episode_options.round_options);
-      setSelectedRounds(payload.state.max_rounds);
-      setDrafts(draftsFrom(payload));
-      setHistory([]);
-      setCompanyAnalysis(payload.company_analysis ?? null);
-      setRetrospective(null);
-      setActiveSeed(payload.state.episode_seed);
-      setNotice(mode === "single_company" ? "你的公司已就绪 · 对手由随机规则程序控制" : "后端已连接 · 等待联合动作");
-    } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "无法连接市场后端");
-      setNotice("后端连接失败");
-    } finally {
-      setLoading(false);
-    }
-  }
+  const [active, setActive] = useState<ViewId>("home");
+  const [entryMode, setEntryMode] = useState<EntryMode>("participant");
+  const [config, setConfig] = useState<LabConfig>({ informationMode: "public", marketType: "balanced", rounds: 20, seed: 20260821, communication: true, cooperation: false, gameTheory: true, controllerToken: "" });
+  const [agents, setAgents] = useState<AgentConfig[]>(DEFAULT_AGENTS.map((agent) => ({ ...agent })));
+  const [runtimeAgents, setRuntimeAgents] = useState<AgentRuntimeView[]>(DEMO_AGENTS);
+  const [editingAgent, setEditingAgent] = useState<string | null>(null);
+  const [runtimeMode, setRuntimeMode] = useState<RuntimeMode>("draft");
+  const [backendOnline, setBackendOnline] = useState<boolean | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState("正在检查 Market API；研究演示始终可用。");
+  const [episodeId, setEpisodeId] = useState("");
+  const [round, setRound] = useState(1);
+  const [demoCompleted, setDemoCompleted] = useState(false);
 
   useEffect(() => {
-    // The initial remote synchronization intentionally initializes component state.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    void createEpisode(4, "single_company", "company_A");
-    // Initial connection only; resets are explicit user actions.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const controller = new AbortController();
+    fetch(`${API_URL}/health`, { signal: controller.signal }).then((response) => { setBackendOnline(response.ok); setNotice((current) => current.startsWith("研究演示") ? current : response.ok ? "Market API 在线，可创建真实 Episode。" : "Market API 不可用，可载入演示。"); }).catch(() => { setBackendOnline(false); setNotice((current) => current.startsWith("研究演示") ? current : "Market API 离线；可载入有明确标识的研究演示。"); });
+    return () => controller.abort();
   }, []);
 
-  const companyIds = useMemo(
-    () => state?.company_order ?? COMPANY_META.slice(0, companyCount).map((item) => item.id),
-    [state, companyCount],
-  );
-  const companies = useMemo(
-    () => state ? companyIds.map((id) => state.companies[id]) : [],
-    [state, companyIds],
-  );
-  const leader = useMemo(
-    () => [...companies].sort((a, b) => b.commercial.market_share_ppm - a.commercial.market_share_ppm)[0],
-    [companies],
-  );
-  const topProfit = useMemo(
-    () => [...companies].sort((a, b) => b.financial.round_profit_cents - a.financial.round_profit_cents)[0],
-    [companies],
-  );
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [active]);
 
-  function updateDraft(companyId: string, field: keyof Draft, value: Draft[keyof Draft]) {
-    setDrafts((current) => ({
-      ...current,
-      [companyId]: { ...current[companyId], [field]: value },
-    }));
-    setNotice("动作已编辑 · 尚未锁定");
-  }
+  const marketModel = useMemo(() => ({ balanced: "balanced", high_demand: "quality_oriented", supply_crisis: "value_oriented", disaster: "service_oriented", public_goods: "balanced" } as const)[config.marketType], [config.marketType]);
 
-  function changeIncidentMode(companyId: string, mode: Draft["incident_mode"]) {
-    const maximum = constraints[companyId].max_useful_repair_budget_cents;
-    updateDraft(companyId, "incident_mode", mode);
-    updateDraft(
-      companyId,
-      "repair_budget_cents",
-      mode === "full_repair" ? maximum : mode === "partial_repair" ? Math.max(1, Math.floor(maximum / 2)) : 0,
-    );
-  }
-
-  function randomizeActions() {
-    if (!state) return;
-    setDrafts((current) => Object.fromEntries(companyIds.map((companyId) => {
-      const companyConstraints = constraints[companyId];
-      const randomWithin = (field: string, step: number) => {
-        const bound = companyConstraints.bounds[field];
-        const slots = Math.floor((bound.max - bound.min) / step);
-        return bound.min + Math.floor(Math.random() * (slots + 1)) * step;
-      };
-      return [companyId, {
-        ...current[companyId],
-        price_cents: randomWithin("price_cents", 50),
-        advertising_budget_cents: randomWithin("advertising_budget_cents", 100_000),
-        service_budget_cents: randomWithin("service_budget_cents", 100_000),
-        capacity_investment_cents: companyConstraints.capacity_investment_enabled ? randomWithin("capacity_investment_cents", 100_000) : 0,
-        resilience_budget_cents: companyConstraints.resilience_investment_enabled ? randomWithin("resilience_budget_cents", 100_000) : 0,
-      }];
-    })));
-    setNotice("已生成一组可行动作 · 尚未提交");
-  }
-
-  async function commitRound() {
-    if (!state || state.terminal || submitting) return;
-    setSubmitting(true);
-    setError(null);
-    setNotice(gameMode === "single_company" ? `正在结算你的 Round ${state.round} 决策` : `正在锁定 Round ${state.round} 联合动作`);
-    const jointAction = Object.fromEntries(companyIds.map((companyId) => {
-      const draft = drafts[companyId];
-      return [companyId, {
-        action_id: crypto.randomUUID(),
-        episode_id: state.episode_id,
-        agent_id: companyId,
-        round: state.round,
-        state_version: state.state_version,
-        price_cents: draft.price_cents,
-        advertising_budget_cents: draft.advertising_budget_cents,
-        service_budget_cents: draft.service_budget_cents,
-        capacity_investment_cents: draft.capacity_investment_cents,
-        resilience_budget_cents: draft.resilience_budget_cents,
-        incident_response: {
-          mode: draft.incident_mode,
-          repair_budget_cents: draft.repair_budget_cents,
-        },
-        strategy_summary: "frontend numeric action",
-      }];
-    }));
+  async function startExperiment(forceDemo: boolean) {
+    if (forceDemo || !backendOnline) { setRuntimeMode("demo"); setEpisodeId(`demo-${config.seed}`); setRound(1); setDemoCompleted(false); setRuntimeAgents(hydrateDemoAgents(agents)); setNotice("研究演示从第 1 回合开始；所有示例字段均标记为 DEMO，不代表一次真实模型调用。"); setActive("live"); return; }
+    const protectedMode = config.communication || config.cooperation || config.gameTheory || config.informationMode !== "perfect";
+    if (protectedMode && !config.controllerToken) { setNotice("高级实验需要本地 Controller Token。可填写 Token，或先载入研究演示。"); return; }
+    setBusy(true);
     try {
-      const endpoint = gameMode === "single_company" ? `/episodes/${state.episode_id}/player-steps` : `/episodes/${state.episode_id}/steps`;
-      const requestBody = gameMode === "single_company"
-        ? {
-            step_id: `${state.episode_id}:${state.round}:${state.state_version}`,
-            player_action: jointAction[playerCompanyId],
-          }
-        : {
-            step_id: `${state.episode_id}:${state.round}:${state.state_version}`,
-            joint_action: jointAction,
-          };
-      const payload = await api<{
-        state: MarketState;
-        settled_market: MarketSnapshot;
-        action_constraints: Record<string, ActionConstraints>;
-        step_result: { settled_round: number };
-        company_analysis?: CompanyAnalysis;
-        retrospective?: Retrospective;
-      }>(endpoint, {
-        method: "POST",
-        body: JSON.stringify(requestBody),
-      });
-      setState(payload.state);
-      setConstraints(payload.action_constraints);
-      const signalOutcomes = state.risk_signals
-        .filter((signal) => signal.target_round === payload.state.round)
-        .map((signal) => ({
-          signal,
-          realized: payload.state.active_market_events.some((event) => event.event_id.includes(signal.signal_id)),
-        }));
-      setHistory((current) => [...current, { settledRound: payload.step_result.settled_round, state: payload.state, market: payload.settled_market, signalOutcomes }]);
-      setCompanyAnalysis(payload.company_analysis ?? null);
-      setRetrospective(payload.retrospective ?? null);
-      setDrafts((current) => Object.fromEntries(companyIds.map((companyId) => [
-        companyId,
-        {
-          ...current[companyId],
-          capacity_investment_cents: payload.state.rounds_remaining <= 1 ? 0 : current[companyId].capacity_investment_cents,
-          resilience_budget_cents: payload.state.rounds_remaining <= 1 ? 0 : current[companyId].resilience_budget_cents,
-          incident_mode: "wait",
-          repair_budget_cents: 0,
-        },
-      ])));
-      setNotice(payload.state.terminal ? "Episode 已完成 · 市场回溯已生成" : gameMode === "single_company" ? `Round ${payload.step_result.settled_round} 完成 · 对手已同步行动` : `Round ${payload.step_result.settled_round} 已由后端结算`);
-    } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "联合动作提交失败");
-      setNotice("动作未提交 · 状态未改变");
-    } finally {
-      setSubmitting(false);
+      const response = await fetch(`${API_URL}/episodes`, { method: "POST", headers: { "Content-Type": "application/json", ...(config.controllerToken ? { "X-Controller-Token": config.controllerToken } : {}) }, body: JSON.stringify({ episode_seed: config.seed, company_ids: agents.map((agent) => agent.companyId), personas: Object.fromEntries(agents.map((agent) => [agent.companyId, agent.persona.startsWith("aggressive") ? "aggressive" : agent.persona.startsWith("risk") ? "conservative" : "balanced"])), agent_configs: Object.fromEntries(agents.map((agent) => [agent.companyId, { agent_id: `${agent.driver}-${agent.companyId}`, agent_type: agent.driver === "rule" ? "rule" : agent.driver === "human" ? "human" : "model", model: agent.model, persona_name: agent.persona }])), game_mode: agents.some((agent) => agent.driver === "human") && !protectedMode ? "single_company" : "market", player_company_id: agents.find((agent) => agent.driver === "human")?.companyId ?? null, market_model: marketModel, max_rounds: config.rounds, information_mode: config.informationMode === "perfect" ? "perfect" : "public", communication_mode: config.communication ? "public_private" : "off", cooperation_mode: config.cooperation ? "shared_resilience_v1" : "off", belief_mode: config.gameTheory ? "public_action_v1" : "off", opponent_model_mode: config.gameTheory ? "public_strategy_v1" : "off", utility_inference_mode: config.gameTheory ? "strategy_utility_v1" : "off", advisor_mode: config.gameTheory ? "bayesian_strategy_v2" : "off", repeated_game_mode: "off" }) });
+      const payload = await response.json() as BackendEpisode & { detail?: string };
+      if (!response.ok) throw new Error(typeof payload.detail === "string" ? payload.detail : `HTTP ${response.status}`);
+      setRuntimeMode("backend"); setEpisodeId(payload.state.episode_id); setRound(Math.max(1, payload.state.round)); setDemoCompleted(false); setRuntimeAgents(hydrateAgents(payload, agents)); setNotice("真实 Episode 已创建；高级回合推进等待 Coordinator intents/communication barrier。仅创建不等于模型已运行。"); setActive("live");
+    } catch (error) { setNotice(error instanceof Error ? `创建失败：${error.message}` : "创建失败；状态未改变。"); } finally { setBusy(false); }
+  }
+
+  function nextRound(humanAction: { price: number; advertising: number; contribution: number }) {
+    if (runtimeMode === "backend") { setNotice("高级真实 Episode 必须由 Coordinator 完成通信、Intent 与 Settlement；前端不会绕过屏障直接 Step。"); return; }
+    if (demoCompleted) return;
+    const settledRound = round;
+    setRuntimeAgents((current) => advanceDemoRound(current, settledRound, humanAction));
+    if (settledRound >= config.rounds) {
+      setDemoCompleted(true);
+      setNotice(`第 ${settledRound} 回合已结算，Episode 完成；不会循环回第 1 回合。`);
+      return;
     }
+    setRound(settledRound + 1);
+    setNotice(`第 ${settledRound} 回合已联合结算；现在进入第 ${settledRound + 1} 回合决策。演示结果不作为研究证据。`);
   }
 
-  async function changeCount(count: number) {
-    setCompanyCount(count);
-    await createEpisode(count);
+  function chooseEntry(mode: EntryMode) {
+    setEntryMode(mode);
+    setRuntimeMode("draft");
+    setEpisodeId("");
+    setRound(1);
+    setDemoCompleted(false);
+    setRuntimeAgents(DEMO_AGENTS);
+    setAgents(DEFAULT_AGENTS.map((agent, index) => mode === "observer" ? { ...agent, driver: index === 3 ? "rule" : index === 1 ? "doubao" : "deepseek", model: index === 3 ? DRIVER_MODELS.rule : index === 1 ? DRIVER_MODELS.doubao : DRIVER_MODELS.deepseek } : { ...agent }));
+    setNotice(`${ENTRY_META[mode].label}：请先确认环境，然后进入独立界面。`);
+    setActive("setup");
   }
 
-  async function changeMode(mode: GameMode) {
-    setGameMode(mode);
-    const count = mode === "single_company" ? 4 : companyCount;
-    if (mode === "single_company") setCompanyCount(4);
-    await createEpisode(count, mode, playerCompanyId);
-  }
-
-  async function changePlayer(companyId: string) {
-    setPlayerCompanyId(companyId);
-    await createEpisode(4, "single_company", companyId);
-  }
-
-  async function changeMarketModel(model: MarketModel) {
-    setMarketModel(model);
-    await createEpisode(
-      gameMode === "single_company" ? 4 : companyCount,
-      gameMode,
-      playerCompanyId,
-      model,
-      selectedRounds,
-    );
-  }
-
-  async function changeRounds(rounds: number) {
-    setSelectedRounds(rounds);
-    await createEpisode(
-      gameMode === "single_company" ? 4 : companyCount,
-      gameMode,
-      playerCompanyId,
-      marketModel,
-      rounds,
-    );
-  }
-
-  function applyPreset(level: "low" | "medium" | "high") {
-    if (!presets[level] || !state) return;
-    const preset = presets[level];
-    setDrafts((current) => Object.fromEntries(companyIds.map((companyId) => [companyId, {
-      ...current[companyId],
-      price_cents: preset.price_cents,
-      advertising_budget_cents: preset.advertising_budget_cents,
-      service_budget_cents: preset.service_budget_cents,
-      capacity_investment_cents: state.rounds_remaining <= 1 ? 0 : preset.capacity_investment_cents,
-      resilience_budget_cents: state.rounds_remaining <= 1 ? 0 : preset.resilience_budget_cents,
-    }])));
-    setNotice(`已应用 ${level.toUpperCase()} 参数锚点 · 尚未提交`);
-  }
-
-  const settledRound = state ? state.round - 1 : 0;
-  const maxRounds = state?.max_rounds ?? selectedRounds;
-  const progress = (settledRound / maxRounds) * 100;
-  const backendOnline = Boolean(state && !error);
-  const editableCompanyIds = gameMode === "single_company" ? [playerCompanyId] : companyIds;
-  const playerCompany = state?.companies[playerCompanyId] ?? null;
-
-  if (gameMode === "single_company") {
-    const draft = drafts[playerCompanyId];
-    const playerConstraints = constraints[playerCompanyId];
-    const averageListedPrice = companies.length ? Math.round(companies.reduce((sum, company) => sum + company.commercial.price_cents, 0) / companies.length) : 0;
-    const totalSales = companies.reduce((sum, company) => sum + company.commercial.sales_orders, 0);
-    const totalRevenue = companies.reduce((sum, company) => sum + company.financial.round_revenue_cents, 0);
-    const fixedSpend = draft ? draft.advertising_budget_cents + draft.service_budget_cents + draft.capacity_investment_cents + draft.resilience_budget_cents + draft.repair_budget_cents : 0;
-    const rankedCompanies = [...companies].sort((a, b) => b.commercial.market_share_ppm - a.commercial.market_share_ppm);
-    const incident = playerCompany?.risk.active_incident ?? null;
-    const recentHistory = [...history].slice(-5).reverse();
-    const lastSettledMarket = history[history.length - 1]?.market;
-    return <main className={`command-shell${state?.terminal ? " terminal" : ""}`}>
-      <header className="command-topbar">
-        <div className="command-brand"><span>FM</span><div><strong>FRESH MARKET LAB</strong><small>单公司经营控制台</small></div></div>
-        <div className="command-mode"><button type="button" className="active">单公司经营</button><button type="button" onClick={() => void changeMode("market")}>市场全景</button></div>
-        <div className="command-company-picker"><span>你的公司</span>{COMPANY_META.map((company) => <button type="button" key={company.id} title={company.name} className={playerCompanyId === company.id ? "active" : ""} style={{ "--pick": company.color } as React.CSSProperties} onClick={() => void changePlayer(company.id)}>{company.shortName}</button>)}</div>
-        <div className="command-seed"><select aria-label="市场模型" title={state?.market.market_model_description} value={marketModel} onChange={(event) => void changeMarketModel(event.target.value as MarketModel)}><option value="random">随机市场</option>{Object.entries(marketModelOptions).map(([id, option]) => <option key={id} value={id}>{option.label}</option>)}</select><select aria-label="轮数" value={selectedRounds} onChange={(event) => void changeRounds(Number(event.target.value))}>{roundOptions.map((rounds) => <option key={rounds} value={rounds}>{rounds} 轮</option>)}</select><select aria-label="Seed 模式" value={seedMode} onChange={(event) => setSeedMode(event.target.value as SeedMode)}><option value="random">随机 Seed</option><option value="fixed">固定 Seed</option></select>{seedMode === "fixed" && <input aria-label="固定 Seed" type="number" min={0} max={4_294_967_295} value={fixedSeed} onChange={(event) => setFixedSeed(Math.max(0, Math.min(4_294_967_295, Number(event.target.value) || 0)))} />}<small>{state?.market.market_model_label ?? "—"} · Seed {activeSeed ?? "—"}</small></div>
-        <div className="command-round"><span>ROUND</span><strong>{state?.terminal ? maxRounds : state?.round ?? 1}</strong><small>/ {maxRounds}</small><i><b style={{ width: `${progress}%` }} /></i></div>
-        <div className={`command-connection${backendOnline ? "" : " offline"}`}><i />{backendOnline ? "市场模型在线" : "正在连接"}</div>
-      </header>
-
-      <section className="command-ticker" aria-label="决策所需公开市场摘要">
-        <article><span>{settledRound ? `R${settledRound} 实现需求` : "初始需求基准"}</span><strong>{state ? (settledRound && lastSettledMarket ? lastSettledMarket.realized_demand_orders : state.market.base_demand_orders).toLocaleString("zh-CN") : "—"}<i> 单</i></strong><small title={state?.market.market_model_description}>{state?.market.market_model_description ?? "进入消费者选择，非成交量"}</small></article>
-        <article><span>成交总量</span><strong>{settledRound ? totalSales.toLocaleString("zh-CN") : "—"}<i>{settledRound ? " 单" : ""}</i></strong><small>最终成功履约订单</small></article>
-        <article><span>平均挂牌价</span><strong>{averageListedPrice ? money(averageListedPrice) : "—"}</strong><small>公开报价简单平均</small></article>
-        <article><span>{settledRound ? `R${settledRound} 成交均价` : "实际成交均价"}</span><strong>{settledRound && lastSettledMarket?.average_paid_price_cents ? money(lastSettledMarket.average_paid_price_cents) : "—"}</strong><small>按成交订单加权</small></article>
-        <article><span>市场销售额</span><strong>{settledRound ? compactMoney(totalRevenue) : "—"}</strong><small>公司营业收入合计</small></article>
-        <article><span>未购买 / 缺货流失</span><strong>{lastSettledMarket ? `${lastSettledMarket.no_purchase_orders.toLocaleString("zh-CN")} / ${lastSettledMarket.lost_after_stockout_orders.toLocaleString("zh-CN")}` : "—"}</strong><small>上一轮 Outside Option / 未履约</small></article>
-        <article><span>{state?.terminal ? "终局供应成本" : `R${state?.round ?? 1} 当前供应成本`}</span><strong>{state ? (state.market.actual_supply_cost_index_ppm / 1_000_000).toFixed(3) : "—"}</strong><small>含当前已激活事件，供本轮决策</small></article>
-      </section>
-
-      {state?.terminal && retrospective ? <div className="command-terminal-view"><div className="command-terminal-actions"><button type="button" onClick={() => void createEpisode(4, "single_company", playerCompanyId)}>再经营一次</button><span>Episode 已结束，以下是完整市场回溯。</span></div><MarketRetrospective retrospective={retrospective} /></div> : <div className="command-layout">
-        <section className="command-company-panel command-panel">
-          <div className="command-panel-head"><div><span>01 · COMPANY</span><h2>公司状态</h2></div><button type="button" onClick={() => void createEpisode(4, "single_company", playerCompanyId)}>重新开始</button></div>
-          {playerCompany ? <>
-            <div className="command-company-identity" style={{ "--player": metaFor(playerCompanyId).color } as React.CSSProperties}><i>{metaFor(playerCompanyId).shortName}</i><div><strong>{metaFor(playerCompanyId).name}</strong><small>{playerCompany.persona}</small></div><b>{companyAnalysis?.health_score ?? "—"}<small>健康度</small></b></div>
-            <div className="command-company-kpis"><article><span>现金</span><strong>{compactMoney(playerCompany.financial.cash_balance_cents)}</strong><small>累计利润 {compactMoney(playerCompany.financial.cumulative_profit_cents)}</small></article><article><span>市场份额</span><strong>{percent(playerCompany.commercial.market_share_ppm)}</strong><small>排名 #{rankedCompanies.findIndex((company) => company.company_id === playerCompanyId) + 1}</small></article><article><span>单笔贡献</span><strong>{money(companyAnalysis?.decision_context.margin_per_order_cents ?? 0)}</strong><small>报价 − 商品 − 履约成本</small></article><article><span>产能利用率</span><strong>{percent(playerCompany.operations.capacity_utilization_ppm, 0)}</strong><small>余量 {companyAnalysis?.decision_context.capacity_buffer_orders.toLocaleString("zh-CN") ?? "—"} 单</small></article></div>
-            <div className="command-diagnosis"><div className="command-subhead"><span>状态体检</span><small>当前公开状态</small></div>{companyAnalysis?.factors.map((factor) => <article key={factor.key}><div><strong>{factor.label}</strong><small>{factor.summary}</small></div><span><i className={factor.status} style={{ width: `${Math.min(100, factor.value_ppm / 10_000)}%` }} /></span><em>{factor.status === "healthy" ? "稳健" : factor.status === "watch" ? "观察" : "风险"}</em></article>)}</div>
-            <div className="command-advice"><div className="command-subhead"><span>本轮提示</span><small>规则证据，不代替决策</small></div>{companyAnalysis?.recommendations.slice(0, 3).map((item, index) => <article key={`${item.dimension}-${index}`}><b>{index + 1}</b><div><strong>{item.title}</strong><p>{item.rationale}</p></div></article>)}</div>
-          </> : <div className="command-loading">正在载入公司状态…</div>}
-        </section>
-
-        <section className="command-decision-panel command-panel">
-          <div className="command-panel-head"><div><span>02 · DECISION</span><h2>Round {state?.round ?? 1} 资源配置</h2></div><div className="command-presets"><button type="button" onClick={() => applyPreset("low")}>低投入</button><button type="button" onClick={() => applyPreset("medium")}>中投入</button><button type="button" onClick={() => applyPreset("high")}>高投入</button></div></div>
-          <div className="command-decision-summary"><p>先确定价格定位，再分配获客、履约和风险资源。市场还会扣除固定运营费与逐单履约费。</p><div><span>主动投入 / 固定运营</span><strong>{money(fixedSpend)}</strong><small>{playerConstraints ? `+ ${money(playerConstraints.mandatory_operating_costs.fixed_overhead_cents)}，另 ${money(playerConstraints.mandatory_operating_costs.fulfillment_cost_per_order_cents)}/单` : "/ 可用 —"}</small></div></div>
-          {draft && playerConstraints ? <div className="command-controls">
-            <CompactDecisionControl label="价格" value={draft.price_cents} bound={playerConstraints.bounds.price_cents} step={50} format={money} timing="当轮生效" impact="影响消费者选择与每单毛利" usage={`上一轮平均挂牌价为 ${money(averageListedPrice)}。低价通常争取份额，高价需要品牌、服务或产能支撑。`} onChange={(value) => updateDraft(playerCompanyId, "price_cents", value)} />
-            <CompactDecisionControl label="广告" value={draft.advertising_budget_cents} bound={playerConstraints.bounds.advertising_budget_cents} step={100_000} format={money} timing="当轮 + 跨轮" impact="提升吸引力并沉淀品牌知名度" usage="适合份额或知名度偏弱时使用；投入先占用现金，同轮不保证完全回收。" onChange={(value) => updateDraft(playerCompanyId, "advertising_budget_cents", value)} />
-            <CompactDecisionControl label="服务" value={draft.service_budget_cents} bound={playerConstraints.bounds.service_budget_cents} step={100_000} format={money} timing="当轮 + 跨轮" impact="改善消费者选择、服务质量与声誉" usage="适合支撑溢价或修复声誉；如果根因是产能不足，仅增加服务不能消除缺货。" onChange={(value) => updateDraft(playerCompanyId, "service_budget_cents", value)} />
-            <CompactDecisionControl label="产能" value={draft.capacity_investment_cents} bound={playerConstraints.bounds.capacity_investment_cents} step={100_000} disabled={!playerConstraints.capacity_investment_enabled} format={money} timing="下一轮生效" impact="提高后续有效产能，期末保留资产价值" usage="高利用率或持续缺货时使用。本轮先承担成本，最后一轮因来不及形成运营收益而禁用。" onChange={(value) => updateDraft(playerCompanyId, "capacity_investment_cents", value)} />
-            <CompactDecisionControl label="韧性" value={draft.resilience_budget_cents} bound={playerConstraints.bounds.resilience_budget_cents} step={100_000} disabled={!playerConstraints.resilience_investment_enabled} format={money} timing="保护后续轮次" impact="缓冲未来市场事件与公司事故损失" usage="出现未来风险预警时更有价值；不能抵消本轮已经激活的事件。" onChange={(value) => updateDraft(playerCompanyId, "resilience_budget_cents", value)} />
-            {incident ? <div className="command-incident"><div><strong>事故维修</strong><small>{EVENT_LABELS[incident.incident_type] ?? incident.incident_type} · 待修 {money(playerConstraints.max_useful_repair_budget_cents)} · 本轮仍保留残余影响</small></div>{(["wait", "partial_repair", "full_repair"] as const).map((mode) => <button type="button" key={mode} className={draft.incident_mode === mode ? "active" : ""} onClick={() => changeIncidentMode(playerCompanyId, mode)}>{mode === "wait" ? "等待" : mode === "partial_repair" ? "部分维修" : "完全维修"}</button>)}</div> : <div className="command-no-incident">✓ 当前无公司事故</div>}
-          </div> : <div className="command-loading">正在载入动作约束…</div>}
-          <div className="command-submit"><div><span>{fixedSpend > (playerConstraints?.cash_available_cents ?? Infinity) ? "预算超出可用现金" : notice}</span><small>提交后，3 个规则对手同步决策并由后端统一结算。</small></div><button type="button" onClick={() => void commitRound()} disabled={!state || loading || submitting || state.terminal || fixedSpend > (playerConstraints?.cash_available_cents ?? 0)}>{submitting ? "结算中…" : `提交 Round ${state?.round ?? 1}`}<i>→</i></button></div>
-        </section>
-
-        <aside className="command-market-panel command-panel">
-          <div className="command-panel-head"><div><span>03 · MARKET</span><h2>公开市场情报</h2></div><small>{history.length} / {maxRounds} 已结算</small></div>
-          <div className="command-share"><div className="command-subhead"><span>当前市场份额</span><small>成交订单占比</small></div><div>{companies.map((company) => <i key={company.company_id} style={{ width: `${company.commercial.market_share_ppm / 10_000}%`, background: metaFor(company.company_id).color }} title={`${metaFor(company.company_id).name} ${percent(company.commercial.market_share_ppm)}`} />)}</div></div>
-          <div className="command-public-table"><div><span>公司</span><span>报价</span><span>份额</span><span>销量</span><span>销售额</span></div>{rankedCompanies.map((company) => { const meta = metaFor(company.company_id); return <article key={company.company_id} className={company.company_id === playerCompanyId ? "player" : ""}><span><i style={{ background: meta.color }}>{meta.shortName}</i>{meta.name}</span><span>{money(company.commercial.price_cents)}</span><strong>{percent(company.commercial.market_share_ppm)}</strong><span>{settledRound ? company.commercial.sales_orders.toLocaleString("zh-CN") : "—"}</span><span>{settledRound ? compactMoney(company.financial.round_revenue_cents) : "—"}</span></article>; })}</div>
-          <div className="command-risk-block"><div className="command-subhead"><span>事件与风险</span><small>{state?.active_market_events.length ?? 0} 激活 · {state?.risk_signals.length ?? 0} 预警</small></div><div>{state?.active_market_events.map((event) => <article key={event.event_id} className="active"><b>!</b><span><strong>{EVENT_LABELS[event.event_type] ?? event.event_type}</strong><small>{SEVERITY_LABELS[event.severity]}强度 · 剩余 {event.remaining_rounds} 轮 · 需求 {percent(event.demand_multiplier_ppm, 0)} · 成本 {percent(event.supply_cost_multiplier_ppm, 0)} · 产能 {percent(event.capacity_multiplier_ppm, 0)}</small></span></article>)}{state?.risk_signals.map((signal) => <article key={signal.signal_id}><b>↗</b><span><strong>{EVENT_LABELS[signal.event_type] ?? signal.event_type}</strong><small>R{signal.target_round} · 概率 {percent(signal.estimated_probability_ppm, 0)}</small></span></article>)}{recentHistory[0]?.signalOutcomes.map(({ signal, realized }) => <article key={`outcome-${signal.signal_id}`} className={realized ? "active" : ""}><b>{realized ? "✓" : "×"}</b><span><strong>{EVENT_LABELS[signal.event_type] ?? signal.event_type}</strong><small>R{signal.target_round} 预警{realized ? "已兑现" : "未发生"}</small></span></article>)}{!state?.active_market_events.length && !state?.risk_signals.length && !recentHistory[0]?.signalOutcomes.length && <p>当前无已激活事件或未来风险预警</p>}</div></div>
-          <div className="command-history"><div className="command-subhead"><span>最近回合</span><small>需求 → 成交 → 流失</small></div>{recentHistory.length ? recentHistory.map((point) => { const pointCompanies = point.state.company_order.map((id) => point.state.companies[id]); const pointSales = pointCompanies.reduce((sum, company) => sum + company.commercial.sales_orders, 0); return <article key={point.settledRound}><b>R{point.settledRound}</b><span><strong>{point.state.market.realized_demand_orders.toLocaleString("zh-CN")}</strong><small>实现需求</small></span><span><strong>{pointSales.toLocaleString("zh-CN")}</strong><small>成交</small></span><span><strong>{(point.state.market.no_purchase_orders + point.state.market.lost_after_stockout_orders).toLocaleString("zh-CN")}</strong><small>总流失</small></span></article>; }) : <p>完成第一轮后显示回合统计</p>}</div>
-          <div className="command-definition"><b>实现需求</b> = 进入消费者选择的全市场订单；<b>成交</b> = 最终成功履约；<b>流失</b> = 未购买 + 缺货后未履约。</div>
-        </aside>
-      </div>}
-      {error && <div className="command-error">{error}</div>}
-    </main>;
-  }
-
-  return (
-    <main className="app-shell">
-      <header className="topbar">
-        <div className="brand"><div className="brand-mark"><span>FM</span></div><div><strong>FRESH MARKET LAB</strong><span>动态随机市场实验台</span></div></div>
-        <div className="header-status">
-          <span className={`status-pill${backendOnline ? "" : " offline"}`}><i />{backendOnline ? "后端实时连接" : "等待后端"}</span>
-          <span className="version">MARKET_ENV_V4.0</span>
-        </div>
-      </header>
-
-      <section className="mode-dock" aria-label="体验模式">
-        <div className="mode-switch">
-          <button type="button" className={gameMode === "single_company" ? "active" : ""} onClick={() => void changeMode("single_company")}><span>01</span><strong>单公司经营</strong><small>你决策 · 随机规则对手行动</small></button>
-          <button type="button" className={gameMode === "market" ? "active" : ""} onClick={() => void changeMode("market")}><span>02</span><strong>市场全景</strong><small>配置全部公司联合动作</small></button>
-        </div>
-        {gameMode === "single_company" && <div className="player-picker"><span>选择你的公司</span>{COMPANY_META.map((company) => <button type="button" key={company.id} className={playerCompanyId === company.id ? "active" : ""} style={{ "--pick": company.color } as React.CSSProperties} onClick={() => void changePlayer(company.id)}>{company.shortName}<small>{company.name}</small></button>)}</div>}
-      </section>
-
-      <section className="hero">
-        <div className="hero-copy">
-          <span className="eyebrow">{gameMode === "single_company" ? "MANAGEMENT SIMULATION" : "SEEDED DYNAMIC MARKET"}</span>
-          <h1>{gameMode === "single_company" ? <>经营一家公司，<br />承担每个选择。</> : <>决策会留下痕迹，<br />市场也会改变。</>}</h1>
-          <p>{gameMode === "single_company" ? "分析你的现金、产能、品牌和风险状态，只提交一家公司的决策。竞争者会自主响应，十轮结束后用完整市场轨迹解释成败。" : "连续配置价格、广告、服务、产能与韧性。后端统一处理消费者选择、现金约束、缺货转售、风险事件和公司事故，前端只展示真实的状态转移。"}</p>
-        </div>
-        <div className="round-panel">
-          <div className="round-number"><span>SETTLED</span><strong>{String(settledRound).padStart(2, "0")}</strong><small>/ {maxRounds}</small></div>
-          <div className="progress-track"><span style={{ width: `${progress}%` }} /></div>
-          <div className="round-state"><span className="pulse-dot" />{notice}</div>
-          {error && <div className="error-banner">{error}</div>}
-        </div>
-      </section>
-
-      <section className="metric-strip" aria-label="市场概览">
-        <article><span>{settledRound ? "上一轮全市场实现需求" : "初始需求基准"}</span><strong>{state ? (settledRound ? state.market.realized_demand_orders : state.market.base_demand_orders).toLocaleString("zh-CN") : "—"}<i> 单</i></strong><small>{settledRound ? "进入消费者选择，不等于成交量" : "尚未进入首轮交易"}</small></article>
-        <article><span>未购买 / 缺货后流失</span><strong>{state ? `${state.market.no_purchase_orders.toLocaleString("zh-CN")} / ${state.market.lost_after_stockout_orders.toLocaleString("zh-CN")}` : "—"}</strong><small>单位：单 · 两类流失口径不同</small></article>
-        <article><span>当前领先</span><strong style={{ color: leader ? metaFor(leader.company_id).color : undefined }}>{leader ? `${metaFor(leader.company_id).shortName} · ${percent(leader.commercial.market_share_ppm)}` : "—"}</strong><small>{leader ? metaFor(leader.company_id).name : "等待状态"}</small></article>
-        <article><span>最高单轮利润</span><strong>{topProfit && settledRound ? compactMoney(topProfit.financial.round_profit_cents) : "—"}</strong><small>{topProfit && settledRound ? metaFor(topProfit.company_id).name : "等待首轮结果"}</small></article>
-      </section>
-
-      {gameMode === "single_company" && state && playerCompany && <CompanyCockpit state={state} company={playerCompany} analysis={companyAnalysis} />}
-
-      <section className="workspace-grid">
-        <div className="market-board panel">
-          <div className="section-heading">
-            <div><span className="eyebrow">MARKET STATE</span><h2>成交份额与经营状态</h2></div>
-            {gameMode === "market" && <div className="company-count" role="group" aria-label="公司数量">
-              {[2, 3, 4].map((count) => <button type="button" key={count} className={companyCount === count ? "active" : ""} onClick={() => void changeCount(count)} disabled={loading}>{count} 家</button>)}
-            </div>}
-          </div>
-          <div className="share-stack" aria-label="后端市场份额堆叠图">
-            {companies.map((company) => {
-              const meta = metaFor(company.company_id);
-              return <div key={company.company_id} style={{ width: `${company.commercial.market_share_ppm / 10_000}%`, background: meta.color }}>{company.commercial.market_share_ppm > 150_000 && <span>{meta.shortName} {percent(company.commercial.market_share_ppm)}</span>}</div>;
-            })}
-          </div>
-          <div className="company-table dynamic-table">
-            <div className="table-head"><span>公司</span><span>价格</span><span>成交份额</span><span>销量 / 产能</span><span>利润 / 现金</span></div>
-            {companies.map((company) => {
-              const meta = metaFor(company.company_id);
-              return <div className="table-row" key={company.company_id}>
-                <span className="company-name"><i style={{ background: meta.color }}>{meta.shortName}</i><b>{meta.name}<small>声誉 {percent(company.brand.reputation_ppm, 0)} · 韧性 {percent(company.risk.resilience_ppm, 0)}</small></b></span>
-                <span>{money(company.commercial.price_cents)}<small>成本 {money(company.operations.actual_unit_cost_cents)}</small></span>
-                <span><b>{percent(company.commercial.market_share_ppm)}</b><em><i style={{ width: `${company.commercial.market_share_ppm / 10_000}%`, background: meta.color }} /></em></span>
-                <span>{company.commercial.sales_orders.toLocaleString("zh-CN")} / {company.operations.effective_capacity_orders.toLocaleString("zh-CN")}<small>利用率 {percent(company.operations.capacity_utilization_ppm, 0)}</small></span>
-                <span className={company.financial.round_profit_cents < 0 ? "negative" : "positive"}>{settledRound ? money(company.financial.round_profit_cents) : "—"}<small>现金 {compactMoney(company.financial.cash_balance_cents)}</small></span>
-              </div>;
-            })}
-          </div>
-          <div className="formula-note"><span>BACKEND SINGLE SOURCE</span><p>Segment Choice → Outside Option → Capacity / Cash → Redistribution → State Hash</p><code>{state?.state_hash ? `${state.state_hash.slice(0, 24)}…` : "等待 State Hash"}</code></div>
-        </div>
-
-        <aside className="risk-panel panel">
-          <div className="section-heading compact"><div><span className="eyebrow">RISK DESK</span><h3>风险与事件</h3></div><span className="event-count">R{state?.round ?? 1}</span></div>
-          <div className="risk-section">
-            <span className="risk-label">ACTIVE EVENTS</span>
-            {state?.active_market_events.length ? state.active_market_events.map((event) => <article className="risk-item active" key={event.event_id}><i>!</i><div><strong>{EVENT_LABELS[event.event_type] ?? event.event_type}</strong><p>{SEVERITY_LABELS[event.severity]}强度 · 剩余 {event.remaining_rounds} 轮</p></div></article>) : <p className="risk-empty">当前无重大市场事件</p>}
-          </div>
-          <div className="risk-section">
-            <span className="risk-label">EARLY WARNINGS</span>
-            {state?.risk_signals.length ? state.risk_signals.map((signal) => <article className="risk-item" key={signal.signal_id}><i>↗</i><div><strong>{EVENT_LABELS[signal.event_type] ?? signal.event_type}</strong><p>R{signal.target_round} · 概率 {percent(signal.estimated_probability_ppm, 0)} · {SEVERITY_LABELS[signal.severity]}</p></div></article>) : <p className="risk-empty">暂无未来风险预警</p>}
-          </div>
-          <div className="risk-section">
-            <span className="risk-label">COMPANY INCIDENTS</span>
-            {companies.some((company) => company.risk.active_incident) ? companies.filter((company) => company.risk.active_incident).map((company) => <article className="risk-item incident" key={company.company_id}><i style={{ background: metaFor(company.company_id).color }}>{metaFor(company.company_id).shortName}</i><div><strong>{EVENT_LABELS[company.risk.active_incident!.incident_type]}</strong><p>剩余 {company.risk.active_incident!.remaining_rounds} 轮 · 可主动维修</p></div></article>) : <p className="risk-empty">所有公司运营正常</p>}
-          </div>
-          <div className="index-grid"><span>市场情绪<strong>{state ? (state.market.market_sentiment_ppm / 1_000_000).toFixed(3) : "—"}</strong></span><span>供应成本指数<strong>{state ? (state.market.actual_supply_cost_index_ppm / 1_000_000).toFixed(3) : "—"}</strong></span></div>
-        </aside>
-      </section>
-
-      <section className="action-studio">
-        <div className="section-heading studio-heading">
-          <div><span className="eyebrow">{gameMode === "single_company" ? "YOUR DECISION" : "NUMERIC JOINT ACTION"}</span><h2>Round {state?.terminal ? "—" : state?.round ?? 1} {gameMode === "single_company" ? `${metaFor(playerCompanyId).name}决策` : "连续动作配置"}</h2><p>{gameMode === "single_company" ? "提交后，三个规则对手会基于同一 State 同步行动；你无法在看到对手动作后反悔。" : "所有金额由后端以整数分校验；联合动作锁定后只执行一次。"}</p></div>
-          <div className="studio-tools"><button className="text-button" type="button" onClick={() => applyPreset("low")}>低投入锚点</button><button className="text-button" type="button" onClick={() => applyPreset("medium")}>中投入锚点</button><button className="text-button" type="button" onClick={() => applyPreset("high")}>高投入锚点</button><button className="text-button" type="button" onClick={randomizeActions}>生成可行动作</button><label className="studio-seed"><select aria-label="市场模型" value={marketModel} onChange={(event) => void changeMarketModel(event.target.value as MarketModel)}><option value="random">随机市场</option>{Object.entries(marketModelOptions).map(([id, option]) => <option key={id} value={id}>{option.label}</option>)}</select><select aria-label="轮数" value={selectedRounds} onChange={(event) => void changeRounds(Number(event.target.value))}>{roundOptions.map((rounds) => <option key={rounds} value={rounds}>{rounds} 轮</option>)}</select><select aria-label="Seed 模式" value={seedMode} onChange={(event) => setSeedMode(event.target.value as SeedMode)}><option value="random">随机 Seed</option><option value="fixed">固定 Seed</option></select>{seedMode === "fixed" && <input aria-label="固定 Seed" type="number" min={0} max={4_294_967_295} value={fixedSeed} onChange={(event) => setFixedSeed(Math.max(0, Math.min(4_294_967_295, Number(event.target.value) || 0)))} />}<span>{state?.market.market_model_label ?? "—"} · {selectedRounds}轮 · Seed {activeSeed ?? "—"}</span></label><button className="text-button" type="button" onClick={() => void createEpisode(companyCount, gameMode, playerCompanyId)}>重新开始</button></div>
-        </div>
-        {state && !state.terminal && <PreviousRoundBrief state={state} companies={companies} settledMarket={history[history.length - 1]?.market} />}
-        {gameMode === "single_company" && <div className="ai-opponent-note"><span>3 SEEDED RULE PROGRAMS</span><p>对手不使用 Agent；每局随机分配价值、溢价、增长或谨慎风格，再结合现金、份额、产能、预警和事故执行规则动作。</p></div>}
-        <div className={`action-grid${gameMode === "single_company" ? " player-action-grid" : ""}`}>
-          {state && editableCompanyIds.map((companyId) => {
-            const meta = metaFor(companyId);
-            const company = state.companies[companyId];
-            const draft = drafts[companyId];
-            const companyConstraints = constraints[companyId];
-            if (!draft || !companyConstraints) return null;
-            const incident = company.risk.active_incident;
-            const fixedSpend = draft.advertising_budget_cents + draft.service_budget_cents + draft.capacity_investment_cents + draft.resilience_budget_cents + draft.repair_budget_cents;
-            const averageListedPrice = Math.round(companies.reduce((sum, item) => sum + item.commercial.price_cents, 0) / Math.max(1, companies.length));
-            return <article className="action-card numeric-card" key={companyId} style={{ "--company": meta.color } as React.CSSProperties}>
-              <div className="action-card-head"><span className="company-badge">{meta.shortName}</span><div><strong>{meta.name}</strong><small>现金 {money(company.financial.cash_balance_cents)}</small></div><span className={`ready${fixedSpend > companyConstraints.cash_available_cents ? " invalid" : ""}`}>{fixedSpend > companyConstraints.cash_available_cents ? "OVER" : "VALID"}</span></div>
-              <div className="decision-method"><strong>参数怎么用</strong><p>先用价格确定“份额还是毛利”的定位，再在现金约束内分配品牌、履约和风险投入。结果由竞争者动作与随机市场共同决定，不是确定性预测。</p></div>
-              <RangeControl label="价格" value={draft.price_cents} bound={companyConstraints.bounds.price_cents} step={50} format={money} timing="当轮生效" impact="同时影响消费者选择、成交份额和每单毛利。" usage={`参考上一轮市场平均挂牌价 ${money(averageListedPrice)}：降低价格通常更利于争取订单，提高价格则需要品牌与服务支撑。`} onChange={(value) => updateDraft(companyId, "price_cents", value)} />
-              <RangeControl label="广告投入" value={draft.advertising_budget_cents} bound={companyConstraints.bounds.advertising_budget_cents} step={100_000} format={money} timing="当轮 + 跨轮" impact="提高本轮消费者吸引力，并沉淀为后续品牌知名度。" usage="知名度或份额偏弱时可加大；注意广告先占用现金，不能保证在同一轮完全回收。" onChange={(value) => updateDraft(companyId, "advertising_budget_cents", value)} />
-              <RangeControl label="服务投入" value={draft.service_budget_cents} bound={companyConstraints.bounds.service_budget_cents} step={100_000} format={money} timing="当轮 + 跨轮" impact="改善本轮选择吸引力，并影响服务质量与后续声誉。" usage="适合支持溢价、修复低声誉；若缺货持续存在，仅加服务投入不能替代产能。" onChange={(value) => updateDraft(companyId, "service_budget_cents", value)} />
-              <RangeControl label="产能投资" value={draft.capacity_investment_cents} bound={companyConstraints.bounds.capacity_investment_cents} step={100_000} disabled={!companyConstraints.capacity_investment_enabled} format={money} timing="下一轮生效" impact="提高后续有效产能并形成期末产能资产，本轮先承担固定支出。" usage="利用率接近上限或频繁缺货时使用；最后一轮因来不及形成运营收益而禁用。" onChange={(value) => updateDraft(companyId, "capacity_investment_cents", value)} />
-              <RangeControl label="韧性投入" value={draft.resilience_budget_cents} bound={companyConstraints.bounds.resilience_budget_cents} step={100_000} disabled={!companyConstraints.resilience_investment_enabled} format={money} timing="保护后续轮次" impact="提升风险准备，用于缓冲未来市场事件或公司事故的经营损失。" usage="出现未来风险预警时更有价值；不能抵消本轮已经激活的市场事件。" onChange={(value) => updateDraft(companyId, "resilience_budget_cents", value)} />
-              {incident ? <div className="repair-control"><span><i>事故响应</i><strong>待修 {money(companyConstraints.max_useful_repair_budget_cents)}</strong></span><p>维修在本轮销售前执行：等待可保留现金但继续承受事故影响；部分或完全维修会立即占用现金并降低运营损失。</p><div>{(["wait", "partial_repair", "full_repair"] as const).map((mode) => <button type="button" key={mode} className={draft.incident_mode === mode ? "active" : ""} onClick={() => changeIncidentMode(companyId, mode)}>{mode === "wait" ? "等待" : mode === "partial_repair" ? "部分" : "完全"}</button>)}</div></div> : <div className="no-incident">✓ 当前无公司事故；若后续发生事故，这里会出现等待、部分维修和完全维修选项。</div>}
-              <div className="spend-summary"><span>固定支出</span><strong>{money(fixedSpend)}</strong><small>占现金 {percent(Math.round((fixedSpend / Math.max(1, companyConstraints.cash_available_cents)) * 1_000_000), 0)}</small></div>
-            </article>;
-          })}
-        </div>
-        <div className="commit-bar">
-          <div><span>{state ? `${gameMode === "single_company" ? "1 PLAYER ACTION" : `${companyIds.length}/${companyIds.length} ACTIONS`} READY · STATE V${state.state_version}` : "CONNECTING"}</span><small>{gameMode === "single_company" ? "提交时后端补全规则对手动作，再统一 Action Lock" : "后端将验证 Budget、Round、State Version 与 Action Idempotency"}</small></div>
-          <button className="commit-button" type="button" onClick={() => void commitRound()} disabled={!state || loading || submitting || state.terminal}>
-            <span>{state?.terminal ? "Episode 已完成" : submitting ? "后端结算中…" : `锁定并提交 Round ${state?.round ?? 1}`}</span><i>→</i>
-          </button>
-        </div>
-      </section>
-
-      <section className="analytics-grid">
-        <ProfitChart history={history} companyIds={companyIds} />
-        <div className="history-card">
-          <div className="section-heading compact"><div><span className="eyebrow">STATE TRANSITIONS</span><h3>回合轨迹</h3></div><span className="event-count">{history.length} EVENTS</span></div>
-          <div className="event-list">
-            {history.length === 0 ? <div className="event-empty"><span>等待 State<sub>1</sub> → State<sub>2</sub></span><p>实现需求指进入消费者选择的全市场订单，并不等于成交销量。</p></div> : [...history].reverse().map((point) => {
-              const pointCompanies = point.state.company_order.map((id) => point.state.companies[id]);
-              const pointLeader = [...pointCompanies].sort((a, b) => b.commercial.market_share_ppm - a.commercial.market_share_ppm)[0];
-              const totalSales = pointCompanies.reduce((sum, company) => sum + company.commercial.sales_orders, 0);
-              return <article key={point.settledRound}><span className="event-round">R{String(point.settledRound).padStart(2, "0")}</span><div><strong>{metaFor(pointLeader.company_id).name} 领跑 · 全市场实现需求 {point.state.market.realized_demand_orders.toLocaleString("zh-CN")} 单</strong><p>实际成交 {totalSales.toLocaleString("zh-CN")} 单 · 未购买 {point.state.market.no_purchase_orders.toLocaleString("zh-CN")} 单 · 缺货流失 {point.state.market.lost_after_stockout_orders.toLocaleString("zh-CN")} 单 · 领先份额 {percent(pointLeader.commercial.market_share_ppm)}</p></div><span className="event-ok">VALID</span></article>;
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="statistics-suite">
-        <div className="section-heading statistics-heading"><div><span className="eyebrow">PUBLIC MARKET DATA</span><h2>市场份额、销售额与统计数据</h2><p>所有表格使用每轮后端结算结果，不用前端估算替代真实状态。</p></div><span className="event-count">{history.length} / {maxRounds} ROUNDS</span></div>
-        <div className="statistics-grid">
-          <MarketShareHistory history={history} companyIds={companyIds} />
-          <RevenueTable companies={companies} settledRound={settledRound} />
-          <MarketStatisticsTable history={history} />
-        </div>
-      </section>
-
-      {gameMode === "single_company" && retrospective && <MarketRetrospective retrospective={retrospective} />}
-
-      <footer><span>FRESH MARKET LAB · ENGINEERING MVP V4</span><p>单公司分析与回溯只使用已记录状态和规则证据，不虚构严格因果。</p></footer>
-    </main>
-  );
+  const view = active === "home" ? <LandingView choose={chooseEntry} resume={() => setActive("live")} hasSession={Boolean(episodeId)} /> : active === "setup" ? <SetupView config={config} setConfig={setConfig} agents={agents} setAgents={setAgents} editingAgent={editingAgent} setEditingAgent={setEditingAgent} start={(forceDemo) => void startExperiment(forceDemo)} busy={busy} notice={notice} backendOnline={backendOnline} entryMode={entryMode} /> : active === "live" ? <LiveView agents={runtimeAgents} round={round} maxRounds={config.rounds} nextRound={nextRound} runtimeMode={runtimeMode} notice={notice} completed={demoCompleted} interactive={entryMode === "participant"} /> : active === "observatory" ? <ObservatoryView agents={runtimeAgents} /> : active === "communication" ? <CommunicationView /> : active === "strategy" ? <StrategyView agents={runtimeAgents} /> : active === "market" ? <MarketView agents={runtimeAgents} /> : active === "replay" ? <ReplayView /> : <ReportView agents={runtimeAgents} runtimeMode={runtimeMode} />;
+  return <AppShell active={active} setActive={setActive} runtimeMode={runtimeMode} backendOnline={backendOnline} episodeId={episodeId} entryMode={entryMode} completed={demoCompleted} onHome={() => setActive("home")}>{view}</AppShell>;
 }

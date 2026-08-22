@@ -11,12 +11,12 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "localhost:3000";
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
   const imageUrl = `${protocol}://${host}/og.png`;
-  const title = "Fresh Market Lab | 多智能体市场实验台";
-  const description = "连接 Engineering MVP v4 后端，观察连续动作、风险事件、消费者选择、现金产能与长期状态变化。";
+  const title = "多智能体博弈实验室";
+  const description = "配置多智能体实验，观察可见信息、对手判断、通信、策略建议、最终动作、市场结果与过程重建。";
   return {
     title,
     description,
-    openGraph: { title, description, type: "website", images: [{ url: imageUrl, width: 1733, height: 877, alt: "Fresh Market Lab 多智能体市场模拟器" }] },
+    openGraph: { title, description, type: "website", images: [{ url: imageUrl, width: 1733, height: 877, alt: "多智能体博弈实验室" }] },
     twitter: { card: "summary_large_image", title, description, images: [imageUrl] },
   };
 }
