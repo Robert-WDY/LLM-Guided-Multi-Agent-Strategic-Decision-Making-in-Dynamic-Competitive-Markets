@@ -49,7 +49,7 @@ cooperation = false
 
 因此所有 Profile 的 `social_welfare` 和 `cooperation_reputation` 权重仍必须为零。
 
-显式启用 `cooperation_mode=shared_resilience_v1` 后，只开放私密韧性提议、非约束承诺和真实公共韧性贡献。它不启用共同效用、合作人格、联合定价或社会福利公式；Persona 仍只影响 Agent 如何权衡当期私人成本、未来风险和可信度信息，不修改市场公式或执行护栏。详见 `docs/cooperation-mvp-v1.md`。
+显式启用 `cooperation_mode=shared_resilience_v1` 后，只开放私密韧性提议、非约束承诺和真实公共韧性贡献。它不启用共同效用、合作人格、联合定价或社会福利公式；Persona 仍只影响 Agent 如何权衡当期私人成本、未来风险和可信度信息，不修改市场公式或执行护栏。详见 `docs/05-交互合作与综合实验/05-cooperation-mvp-v1.md`。
 
 `reciprocity / commitment_honesty / opportunism` 已进入版本化 Profile，但 Cooperation MVP v1 尚未给它们增加 Controller 侧效用或强制执行语义，也不直接参与市场结算。
 

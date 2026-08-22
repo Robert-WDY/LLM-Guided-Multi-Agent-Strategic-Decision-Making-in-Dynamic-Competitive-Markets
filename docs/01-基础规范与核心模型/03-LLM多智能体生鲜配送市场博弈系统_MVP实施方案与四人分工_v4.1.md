@@ -4,7 +4,7 @@
 **配套权威文件：**
 
 - `market_v4.yaml`：市场默认参数、事件分布、动作边界的唯一配置来源；
-- `LLM多智能体生鲜配送市场博弈系统_Engineering_MVP技术规格_v4.0.md`：市场公式、回合时序、RNG、State Hash、幂等和 Replay 的详细规范；
+- `02-LLM多智能体生鲜配送市场博弈系统_Engineering_MVP技术规格_v4.0.md`：市场公式、回合时序、RNG、State Hash、幂等和 Replay 的详细规范；
 - 本文档：团队分工、统一接口、集成顺序和验收目标。
 
 ---

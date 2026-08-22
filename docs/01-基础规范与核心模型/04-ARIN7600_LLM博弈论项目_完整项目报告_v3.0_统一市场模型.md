@@ -1,7 +1,7 @@
 # ARIN7600 人工智能项目完整报告 v3.0
 ## 面向不完全信息重复博弈的 LLM 多智能体战略决策系统
 
-**Engineering MVP 规范：** `LLM多智能体生鲜配送市场博弈系统_Engineering_MVP技术规格_v4.0.md`  
+**Engineering MVP 规范：** `02-LLM多智能体生鲜配送市场博弈系统_Engineering_MVP技术规格_v4.0.md`
 **权威市场配置：** `market_v4.yaml`
 
 ---

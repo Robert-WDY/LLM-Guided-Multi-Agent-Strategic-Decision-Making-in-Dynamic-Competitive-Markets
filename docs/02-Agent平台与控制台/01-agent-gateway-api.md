@@ -134,7 +134,7 @@ Session 只保存 Token 的 SHA-256。通信开启时，公司 Observation、通
 
 `episode_seed` 也可以省略或传 `null` 生成随机 uint64。非法轮数、Seed 或市场值由请求 Schema 返回 `422`，不会静默纠正。
 
-`agent_configs` 是只进入 EpisodeManifest 的实验审计元数据，不进入 MarketState 或市场公式。若为公司配置了 `agent_id`，Intent 的该字段必须匹配；未配置的旧 Episode 由服务端使用固定 company ID 作为审计身份，客户端自报值不会成为权威身份。人格的完整 Runtime 配置和逐轮效用协议见 `docs/persona-research.md`。
+`agent_configs` 是只进入 EpisodeManifest 的实验审计元数据，不进入 MarketState 或市场公式。若为公司配置了 `agent_id`，Intent 的该字段必须匹配；未配置的旧 Episode 由服务端使用固定 company ID 作为审计身份，客户端自报值不会成为权威身份。人格的完整 Runtime 配置和逐轮效用协议见 `docs/04-Persona研究/01-persona-research.md`。
 
 时间口径：顶层 `market` 是当前决策轮可见的条件，因此包含当前轮已激活事件对应的供应压力；`public_history[].market` 是某个已结算回合的结果，只使用该回合开始时已激活的事件。两者不得混用。控制平面的 step 响应另外返回 `settled_market`，供前端记录同轮历史。
 

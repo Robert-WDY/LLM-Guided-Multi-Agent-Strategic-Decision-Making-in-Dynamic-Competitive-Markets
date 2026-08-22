@@ -13,7 +13,7 @@ True MarketState
   -> Information Replay
 ```
 
-Phase A 当时不实现 Belief Ledger、Opponent Model 或 Bayesian Best Response。默认 Observation 仍以 `belief_schema_version=none` 和 `belief_state=null` 表示无信念基线；后续 Phase B 的可选公开动作信念见 `docs/belief-mvp.md`。
+Phase A 当时不实现 Belief Ledger、Opponent Model 或 Bayesian Best Response。默认 Observation 仍以 `belief_schema_version=none` 和 `belief_state=null` 表示无信念基线；后续 Phase B 的可选公开动作信念见 `docs/03-信息架构与博弈增强/02-belief-mvp.md`。
 
 ## 单一事实来源
 
@@ -137,4 +137,4 @@ Phase B 已在后续 `agent-observation-v1.8.0` 中实现：
 - Belief Hash 和 Belief Replay；
 - Brier Score、Log Loss 和 Calibration Error。
 
-实现结果、算法、Replay、校准指标和边界见 `docs/belief-mvp.md`。即使 Phase B 已完成，`public_action_v1` 仍只是简单公开行为频率信念，不能称为完整 Bayesian Agent。
+实现结果、算法、Replay、校准指标和边界见 `docs/03-信息架构与博弈增强/02-belief-mvp.md`。即使 Phase B 已完成，`public_action_v1` 仍只是简单公开行为频率信念，不能称为完整 Bayesian Agent。

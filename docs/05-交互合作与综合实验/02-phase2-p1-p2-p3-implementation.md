@@ -184,9 +184,9 @@ Interaction Replay 可以发现日志中的非一致性修改：
 
 ## 6. 真实模型 Smoke 与后续内容
 
-已使用 `doubao-seed-2-0-lite-260215` 完成同一 Seed 810 的 `2 LLM + 2 Rule × 5轮` 对照：`off` 与 `public_private` 均通过全部协议检查和双 Replay。通信组产生 10 条公开消息、0 条私信，并记录 5 次采信和 6 次忽略。详细结果见 `docs/phase2-real-llm-smoke-seed810.md`。
+已使用 `doubao-seed-2-0-lite-260215` 完成同一 Seed 810 的 `2 LLM + 2 Rule × 5轮` 对照：`off` 与 `public_private` 均通过全部协议检查和双 Replay。通信组产生 10 条公开消息、0 条私信，并记录 5 次采信和 6 次忽略。详细结果见 `docs/05-交互合作与综合实验/03-phase2-real-llm-smoke-seed810.md`。
 
-进一步完成 Seeds 810–814 的 `off/public_only/public_private` 三条件矩阵，共 15 个 Episode。100 次真实通信生成零失败，双 Replay、消息可见性和引用检查全部通过；所有 100 条消息仍为公开 `statement`，没有真实私信或结构化对手动作请求。另完成固定状态的无消息/韧性提议/拒绝投入/Prompt Injection 四条件反事实。详细结果见 `docs/phase2-real-llm-5seed-smoke.md`。
+进一步完成 Seeds 810–814 的 `off/public_only/public_private` 三条件矩阵，共 15 个 Episode。100 次真实通信生成零失败，双 Replay、消息可见性和引用检查全部通过；所有 100 条消息仍为公开 `statement`，没有真实私信或结构化对手动作请求。另完成固定状态的无消息/韧性提议/拒绝投入/Prompt Injection 四条件反事实。详细结果见 `docs/05-交互合作与综合实验/04-phase2-real-llm-5seed-smoke.md`。
 
 以下仍需单独执行：
 
