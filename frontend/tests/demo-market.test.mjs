@@ -1,7 +1,29 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { advanceDemoRound, DEMO_AGENTS } from "../app/lab-model.ts";
+import {
+  advanceDemoRound,
+  DEFAULT_LAB_CONFIG,
+  DEMO_AGENTS,
+  requiresAdvancedCoordinator,
+} from "../app/lab-model.ts";
+
+test("default real experiment uses fixed backend secrets and no browser credential", () => {
+  assert.equal(DEFAULT_LAB_CONFIG.rounds, 5);
+  assert.equal(DEFAULT_LAB_CONFIG.informationMode, "perfect");
+  assert.equal(DEFAULT_LAB_CONFIG.communication, false);
+  assert.equal(DEFAULT_LAB_CONFIG.cooperation, false);
+  assert.equal(DEFAULT_LAB_CONFIG.gameTheory, false);
+  assert.equal("controllerToken" in DEFAULT_LAB_CONFIG, false);
+  assert.equal(requiresAdvancedCoordinator(DEFAULT_LAB_CONFIG), false);
+});
+
+test("protected capabilities are routed to the advanced coordinator instead of browser secrets", () => {
+  assert.equal(requiresAdvancedCoordinator({ ...DEFAULT_LAB_CONFIG, informationMode: "public" }), true);
+  assert.equal(requiresAdvancedCoordinator({ ...DEFAULT_LAB_CONFIG, communication: true }), true);
+  assert.equal(requiresAdvancedCoordinator({ ...DEFAULT_LAB_CONFIG, cooperation: true }), true);
+  assert.equal(requiresAdvancedCoordinator({ ...DEFAULT_LAB_CONFIG, gameTheory: true }), true);
+});
 
 const baseAction = { price: 9800, advertising: 200000, contribution: 200000 };
 

@@ -16,6 +16,11 @@ from game_theory_agent.agents import (
     PersonaRegistry,
     load_persona_registry,
 )
+from game_theory_agent.agents.single.persona_agent import (
+    PersonaAgent,
+    SABMEpisodeRunner,
+)
+from game_theory_agent.agents.single.service import build_agent_lab_runtime
 from game_theory_agent.model_clients import (
     DeepSeekModelClient,
     DoubaoModelClient,
@@ -32,6 +37,8 @@ from game_theory_agent.orchestration import (
 
 DEFAULT_COMPANIES = ("company_A", "company_B", "company_C", "company_D")
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_OPENROUTER_MODEL = "nvidia/nemotron-3-super-120b-a12b:free"
+DEFAULT_OPENROUTER_SECRET = PROJECT_ROOT / "secrets" / "open_router-api_key.env"
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -40,8 +47,8 @@ def _parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--provider",
-        choices=("doubao", "deepseek", "mock"),
-        default=os.getenv("AGENT_PROVIDER", "doubao"),
+        choices=("openrouter", "doubao", "deepseek", "mock"),
+        default=os.getenv("AGENT_PROVIDER", "openrouter"),
     )
     parser.add_argument("--episode-id", default=None)
     parser.add_argument("--seed", type=int, default=42)
@@ -84,6 +91,18 @@ def _parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument("--model", default=None)
+    parser.add_argument(
+        "--openrouter-secret",
+        type=Path,
+        default=DEFAULT_OPENROUTER_SECRET,
+        help="git-crypt protected OpenRouter API key file.",
+    )
+    parser.add_argument(
+        "--sabm-output-root",
+        type=Path,
+        default=PROJECT_ROOT / "~outputs-intermediate" / "agent-runs",
+        help="SABM checkpoints and decision traces.",
+    )
     parser.add_argument(
         "--opponent-policy",
         choices=("controller-rule", "uniform-random"),
@@ -134,6 +153,95 @@ def _model_name(model_client: object) -> str:
     return type(model_client).__name__
 
 
+def _openrouter_agent_configs(
+    selected: tuple[str, ...],
+    persona_assignments: dict[str, PersonaProfile],
+    model_id: str,
+    *,
+    decision_timeout: float,
+) -> dict[str, dict[str, object]]:
+    """生成 Controller 可审计的 PersonaAgent manifest。"""
+
+    return {
+        company_id: {
+            "agent_id": f"single-agent-{company_id}",
+            "provider": "openrouter",
+            "model_name": model_id,
+            "persona": persona_assignments[company_id].manifest_dict(),
+            "decision_timeout_seconds": decision_timeout,
+        }
+        for company_id in selected
+    }
+
+
+async def _run_openrouter_episode(
+    args: argparse.Namespace,
+    *,
+    selected: tuple[str, ...],
+    persona_assignments: dict[str, PersonaProfile],
+    episode_id: str,
+    controller: HttpControllerClient,
+) -> int:
+    """通过 PersonaAgent/SABM 图运行后端回合，不扩展公共 API。"""
+
+    model_id = args.model or DEFAULT_OPENROUTER_MODEL
+    agent_configs = _openrouter_agent_configs(
+        selected,
+        persona_assignments,
+        model_id,
+        decision_timeout=args.decision_timeout,
+    )
+    created = await controller.create_episode(
+        {
+            "episode_id": episode_id,
+            "episode_seed": args.seed,
+            "company_ids": list(DEFAULT_COMPANIES),
+            "market_model": args.market_model,
+            "max_rounds": args.rounds,
+            "information_mode": args.information_mode,
+            "communication_mode": "off",
+            "agent_configs": agent_configs,
+        }
+    )
+    agent_tokens = created.get("agent_tokens", {})
+    agents: dict[str, PersonaAgent] = {}
+    for company_id in selected:
+        bundle = build_agent_lab_runtime(
+            episode_id=f"{episode_id}-{company_id}",
+            secret_path=args.openrouter_secret,
+            output_root=args.sabm_output_root,
+            gateway_base_url=args.gateway_url,
+            provider_timeout_seconds=args.decision_timeout,
+        )
+        bundle.gateway.set_agent_tokens(agent_tokens)
+        agents[company_id] = PersonaAgent(
+            company_id=company_id,
+            model_id=model_id,
+            runtime=bundle.runtime,
+            persona_profile=persona_assignments[company_id],
+        )
+
+    results = await SABMEpisodeRunner(
+        controller=controller,
+        agents=agents,
+    ).run_episode(episode_id, rounds=args.rounds)
+    submitted = 0
+    for result in results:
+        submitted += len(result.accepted_intent_ids)
+        state = result.settlement["state"]
+        print(
+            f"R{result.round_number:02d} settled "
+            f"state_version={state['state_version']} "
+            f"submitted_intents={len(result.accepted_intent_ids)}/{len(selected)} "
+            f"hash={state['state_hash']}"
+        )
+    print(f"Episode complete: {episode_id}")
+    print(f"SABM output root: {args.sabm_output_root.resolve()}")
+    expected = len(results) * len(selected)
+    print(f"Primary model intents accepted: {submitted}/{expected}; fallbacks: {expected - submitted}")
+    return 0 if submitted else 2
+
+
 async def _run(args: argparse.Namespace) -> int:
     token = os.getenv("MARKET_CONTROLLER_TOKEN")
     if not token:
@@ -149,6 +257,13 @@ async def _run(args: argparse.Namespace) -> int:
         raise SystemExit("ARK_API_KEY is not set")
     if args.provider == "deepseek" and not os.getenv("DEEPSEEK_API_KEY"):
         raise SystemExit("DEEPSEEK_API_KEY is not set")
+    if args.provider == "openrouter":
+        if not args.openrouter_secret.is_file():
+            raise SystemExit(f"OpenRouter secret file does not exist: {args.openrouter_secret}")
+        if args.communication_mode != "off":
+            raise SystemExit("OpenRouter SABM backend currently requires --communication-mode off")
+        if args.opponent_policy != "controller-rule":
+            raise SystemExit("OpenRouter SABM backend currently requires --opponent-policy controller-rule")
 
     registry = load_persona_registry(PROJECT_ROOT / "configs" / "market_v4.yaml")
     try:
@@ -163,6 +278,15 @@ async def _run(args: argparse.Namespace) -> int:
 
     episode_id = args.episode_id or f"agent-smoke-{uuid.uuid4()}"
     controller = HttpControllerClient(token, args.controller_url)
+    if args.provider == "openrouter":
+        return await _run_openrouter_episode(
+            args,
+            selected=selected,
+            persona_assignments=persona_assignments,
+            episode_id=episode_id,
+            controller=controller,
+        )
+
     gateway = HttpAgentGatewayClient(args.gateway_url)
 
     runtimes: dict[str, AgentRuntime] = {}

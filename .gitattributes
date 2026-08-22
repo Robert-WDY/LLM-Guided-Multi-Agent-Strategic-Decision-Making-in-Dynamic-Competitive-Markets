@@ -9,3 +9,8 @@
 
 *.md diff=markdown
 *.py diff=python
+
+# 真实 secrets 在 Git 中强制使用 git-crypt；公开示例保持明文。
+secrets/** filter=git-crypt diff=git-crypt -text
+secrets/*.example !filter !diff !text
+secrets/**/*.example !filter !diff !text

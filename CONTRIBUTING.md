@@ -61,6 +61,6 @@ npm run build
 ## 兼容性要求
 
 - 更改 State、Action、Event 或 Manifest 结构时提升相应 Schema/环境版本。
-- 已公开的 Agent 字段不得静默改变语义；需要迁移时在 `docs/agent-gateway-api.md` 说明。
+- 已公开的 Agent 字段不得静默改变语义；需要迁移时在 `docs/02-Agent平台与控制台/01-agent-gateway-api.md` 说明。
 - 保证相同配置、Seed、初始状态、动作和环境版本产生相同 State Hash。
 - 配置参数以 `configs/market_v4.yaml` 为唯一来源，避免在前后端重复硬编码市场公式。

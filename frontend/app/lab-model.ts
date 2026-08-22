@@ -42,13 +42,26 @@ export type AgentConfig = {
   shortName: string;
   companyName: string;
   color: string;
-  driver: "human" | "doubao" | "deepseek" | "rule";
+  driver: "human" | "model";
   model: string;
   persona: PersonaKey;
   information: "full" | "public" | "imperfect";
   communication: boolean;
   gameTheory: boolean;
 };
+
+export type EntryMode = "participant" | "observer" | "research";
+
+export const AI_MODEL_OPTIONS = [
+  { id: "nvidia/nemotron-3-super-120b-a12b:free", label: "Nemotron 3 Super", note: "默认 · 均衡" },
+  { id: "nvidia/nemotron-3-ultra-550b-a55b:free", label: "Nemotron 3 Ultra", note: "复杂推理" },
+] as const;
+
+export const DEFAULT_AI_MODEL_ID = AI_MODEL_OPTIONS[0].id;
+
+export function isAiModelId(value: string): boolean {
+  return AI_MODEL_OPTIONS.some((option) => option.id === value);
+}
 
 export type LabConfig = {
   informationMode: "perfect" | "public" | "imperfect";
@@ -58,8 +71,25 @@ export type LabConfig = {
   communication: boolean;
   cooperation: boolean;
   gameTheory: boolean;
-  controllerToken: string;
 };
+
+// 默认配置只启用公开的基础 Episode；高级 Controller 能力由用户显式开启。
+export const DEFAULT_LAB_CONFIG: LabConfig = {
+  informationMode: "perfect",
+  marketType: "balanced",
+  rounds: 5,
+  seed: 20260821,
+  communication: false,
+  cooperation: false,
+  gameTheory: false,
+};
+
+export function requiresAdvancedCoordinator(config: LabConfig): boolean {
+  return config.communication
+    || config.cooperation
+    || config.gameTheory
+    || config.informationMode !== "perfect";
+}
 
 export type Belief = {
   companyId: string;
@@ -74,6 +104,8 @@ export type AgentRuntimeView = {
   color: string;
   persona: string;
   driver: string;
+  dataSource: "demo" | "backend_initial_state" | "controller_settlement";
+  actionAvailable: boolean;
   cash: number;
   profit: number;
   share: number;
@@ -114,6 +146,11 @@ export type AgentRuntimeView = {
   };
   utility: { profit: number; growth: number; risk: number };
 };
+
+/** 节点流只呈现由固定后端模型驱动的公司，不混入人类决策过程。 */
+export function aiFlowAgents(agents: AgentRuntimeView[]): AgentRuntimeView[] {
+  return agents.filter((agent) => isAiModelId(agent.driver));
+}
 
 export type CommunicationRecord = {
   id: string;
@@ -190,11 +227,28 @@ export const PERSONAS: Record<PersonaKey, PersonaProfile> = {
 };
 
 export const DEFAULT_AGENTS: AgentConfig[] = [
-  { companyId: "company_A", shortName: "A", companyName: "青禾速配", color: "#4ee0bd", driver: "human", model: "Human", persona: "balanced_v1", information: "public", communication: true, gameTheory: false },
-  { companyId: "company_B", shortName: "B", companyName: "橙选到家", color: "#ff8468", driver: "doubao", model: "Doubao Seed 2.0 Lite", persona: "aggressive_v1_extreme", information: "public", communication: true, gameTheory: true },
-  { companyId: "company_C", shortName: "C", companyName: "蓝仓鲜送", color: "#7196ff", driver: "deepseek", model: "DeepSeek V3", persona: "selfish_long_term_v1", information: "public", communication: true, gameTheory: true },
-  { companyId: "company_D", shortName: "D", companyName: "紫藤优鲜", color: "#b38cff", driver: "rule", model: "Deterministic Rule", persona: "risk_guarded_v1", information: "public", communication: false, gameTheory: false },
+  { companyId: "company_A", shortName: "A", companyName: "青禾速配", color: "#4ee0bd", driver: "human", model: "人类参与者", persona: "balanced_v1", information: "public", communication: true, gameTheory: false },
+  { companyId: "company_B", shortName: "B", companyName: "橙选到家", color: "#ff8468", driver: "model", model: AI_MODEL_OPTIONS[0].id, persona: "aggressive_v1_extreme", information: "public", communication: true, gameTheory: true },
+  { companyId: "company_C", shortName: "C", companyName: "蓝仓鲜送", color: "#7196ff", driver: "model", model: AI_MODEL_OPTIONS[1].id, persona: "selfish_long_term_v1", information: "public", communication: true, gameTheory: true },
+  { companyId: "company_D", shortName: "D", companyName: "紫藤优鲜", color: "#b38cff", driver: "model", model: AI_MODEL_OPTIONS[0].id, persona: "risk_guarded_v1", information: "public", communication: false, gameTheory: false },
 ];
+
+export function agentsForEntry(mode: EntryMode): AgentConfig[] {
+  return DEFAULT_AGENTS.map((agent, index) => {
+    if (mode === "participant" && index === 0) return { ...agent };
+    const selectedModel = isAiModelId(agent.model) ? agent.model : DEFAULT_AI_MODEL_ID;
+    return { ...agent, driver: "model", model: selectedModel };
+  });
+}
+
+export function buildEpisodeAgentConfigs(agents: AgentConfig[]) {
+  return Object.fromEntries(agents.map((agent) => [agent.companyId, {
+    agent_id: agent.driver === "human" ? `human-${agent.companyId}` : `single-agent-${agent.companyId}`,
+    agent_type: agent.driver,
+    model: agent.driver === "human" ? null : agent.model,
+    persona_name: agent.persona,
+  }]));
+}
 
 const commonPublic = [
   { label: "实现需求", value: "12,480 单" },
@@ -213,6 +267,8 @@ function runtime(agent: AgentConfig, index: number): AgentRuntimeView {
     color: agent.color,
     persona: PERSONAS[agent.persona].label,
     driver: agent.model,
+    dataSource: "demo",
+    actionAvailable: true,
     cash: 24_800_000 - index * 1_420_000,
     profit: profits[index],
     share: shares[index],
@@ -270,6 +326,48 @@ function runtime(agent: AgentConfig, index: number): AgentRuntimeView {
 }
 
 export const DEMO_AGENTS = DEFAULT_AGENTS.map(runtime);
+
+type BackendCompanyState = {
+  financial: { cash_balance_cents: number; round_profit_cents: number };
+  commercial: { price_cents: number; market_share_ppm: number };
+  risk: { resilience_ppm: number };
+};
+
+export function mergeBackendAgentState(
+  state: { companies: Record<string, BackendCompanyState> },
+  configs: AgentConfig[],
+  previous?: AgentRuntimeView[],
+  resolutions: Record<string, { action?: Record<string, number> }> = {},
+): AgentRuntimeView[] {
+  return DEMO_AGENTS.map((template) => {
+    const company = state.companies[template.companyId];
+    const config = configs.find((item) => item.companyId === template.companyId);
+    if (!company || !config) return template;
+    const prior = previous?.find((item) => item.companyId === template.companyId);
+    const share = company.commercial.market_share_ppm / 10_000;
+    const action = resolutions[template.companyId]?.action;
+    return {
+      ...template,
+      persona: PERSONAS[config.persona].label,
+      driver: config.driver === "human" ? "人类参与者" : config.model,
+      cash: company.financial.cash_balance_cents,
+      profit: company.financial.round_profit_cents,
+      share,
+      shareDelta: prior ? Math.round((share - prior.share) * 10) / 10 : 0,
+      price: company.commercial.price_cents,
+      resilience: company.risk.resilience_ppm / 10_000,
+      action: action ? {
+        ...template.action,
+        price: action.price_cents ?? company.commercial.price_cents,
+        advertising: action.advertising_budget_cents ?? 0,
+        service: action.service_budget_cents ?? 0,
+        capacity: action.capacity_investment_cents ?? 0,
+        resilience: action.resilience_budget_cents ?? 0,
+        contribution: action.shared_resilience_contribution_cents ?? 0,
+      } : template.action,
+    };
+  });
+}
 
 export type DemoHumanAction = {
   price: number;

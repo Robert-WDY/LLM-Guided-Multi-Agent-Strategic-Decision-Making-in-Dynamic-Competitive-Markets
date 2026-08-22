@@ -1,6 +1,6 @@
 # Game Theory Agent — Engineering MVP v4
 
-后端市场模型以 `LLM多智能体生鲜配送市场博弈系统_Engineering_MVP技术规格_v4.0.md`
+后端市场模型以 `docs/01-基础规范与核心模型/02-LLM多智能体生鲜配送市场博弈系统_Engineering_MVP技术规格_v4.0.md`
 为算法规范，以 `configs/market_v4.yaml` 为唯一参数来源。
 
 当前已经实现：
@@ -18,7 +18,7 @@
 - 公司状态诊断、情境化决策建议，以及终局逐轮市场回溯与成败归因。
 - 统一决策规则层：人类、规则对手和外部 Agent 的请求都先经过状态护栏与现金约束；
 - 独立 Agent Gateway：Agent 只读取观察和提交意图，受保护 Controller 才能执行联合结算；
-- Game Theory Lab 研究控制台：实验配置、Human/LLM/Rule Agent 编排、Persona Profile、Agent-scoped Observation、Belief/Advisor、通信可见性、市场结果、Replay 调试和实验报告；
+- Game Theory Lab 研究控制台：正常 UI 的控制方式只提供人类参与者或 AI 模型，并支持为各 AI 参与者选择经过真实门控的固定免费模型；
 - 随机 / 固定 Seed 前端入口和 200 Seed 投入档位校准。
 - 规则对手使用 Seed 固定的价值型、溢价型、增长型或谨慎型行为，并带可复现的回合扰动；不调用 Agent 或模型；
 - 利润计入固定运营和逐单履约成本，声誉采用慢变量更新，完全维修当轮保留残余事故影响；
@@ -34,11 +34,13 @@
 - Persona Catalog v1.0：人格以效用权重、时间折扣和风险/行为特征进入 Agent Planner，不改变 MarketEnv 或统一安全护栏；
 - 支持无人格、激进、保守、均衡、长期自利和短期逐利 Profile，并记录确定性逐轮人格效用、折扣累计效用与 Profile Hash；
 - Interaction MVP 提供非约束公开消息、一对一私信、公司级可见性、Communication Close 与独立 Interaction Replay；
-- Cooperation MVP v1 只启用 `Shared Resilience Contribution`：私密提议、接受/拒绝、非约束承诺、真实贡献、公共韧性、履约/背离、可信度与独立 Cooperation Replay；联合定价、转账、联盟、物流和产能共享仍禁用；详见 `docs/cooperation-mvp-v1.md`；
+- Cooperation MVP v1 只启用 `Shared Resilience Contribution`：私密提议、接受/拒绝、非约束承诺、真实贡献、公共韧性、履约/背离、可信度与独立 Cooperation Replay；联合定价、转账、联盟、物流和产能共享仍禁用；详见 `docs/05-交互合作与综合实验/05-cooperation-mvp-v1.md`；
 - Controller Policy v1.1 预留固定运营成本、保护最低单位贡献，并在恢复阶段阻止继续降价；
 - RoundCoordinator 并发冻结观察、逐公司超时/fallback、统一结算，并输出可审计 RoundEvent JSONL；
 - 内置 MockModelClient 可在未接入真实模型时验证 `1 Agent + 3 Rule` 与多 Agent 联合动作闭环。
 - 豆包/火山方舟 `DoubaoModelClient` 与 DeepSeek `DeepSeekModelClient`：统一结构化决策契约、一次格式修复和规则 fallback。
+- OpenRouter `PersonaAgent` 与 SABM 有界节点流：三候选决策、一次修复、Gateway intent、Controller 规则 fallback，以及隔离的 checkpoint/trace；WebUI 真实回合通过后端管理接口运行模型、提交人类意图并联合结算，`02 智能体观察` 的竖向八节点详情展示本轮事件、耗时、Token、修复与 fallback。
+- AI 回合执行期间，`01 实时现场` 按公司显示真实当前节点、模型等待、调用次数和已用时间，`02 智能体观察` 实时点亮执行中的节点；Token、模型耗时、错误和 fallback 只在后端产生对应事件后显示。
 - 可选择均衡、价格敏感、品质偏好、服务偏好或 Seed 随机市场；市场公开需求偏差、价格锚点与合理价格区间。
 - 品质市场显著强化品牌知名度与声誉，服务市场显著强化当期服务与历史缺货惩罚，不再仅靠消费者分群比例形成细微差别。
 - Episode 支持 `5 / 10 / 15 / 20` 轮、随机或固定 uint64 Seed，并提供 Agent 只读选项发现接口；创建与结算仍由私有 Controller 负责。
@@ -46,7 +48,7 @@
 - 终局同时提供综合价值榜和总资产榜、四家公司逐轮综合价值折线，以及与冠军逐项对比的结果解释。
 - `settled_market` 与 `public_history[].market` 使用同轮事件、情绪和供应成本口径；顶层 `state.market` 表示下一决策轮当前条件。
 
-前端已升级为 LLM 多智能体博弈实验控制台，不保留独立市场公式。高级真实 Episode 必须使用受保护 Controller 契约；无后端时可加载明确标识、不会冒充真实模型结果的 Research Demo。
+前端已升级为 LLM 多智能体博弈实验控制台，不保留独立市场公式。参与者、观察者和研究员三种真实模式共用严格的数据边界：模型运行前只显示后端初始状态和“尚未运行”，运行中只显示真实节点事件与后端计时，结算后只显示本次 Episode 的 observation、execution trace、Controller 结果与 history，不用演示常量补齐。新实验默认 5 回合；正常界面使用“AI 模型”等产品文案，只有缺少固定密钥或模型调用错误时才显示具体 Provider 排障信息。通信/合作等高级真实 Episode 仍必须使用受保护 Controller 契约；无后端时可加载明确标识、不会冒充真实模型结果的 Research Demo。
 
 ## 项目结构
 
@@ -80,32 +82,36 @@ npm run lint
 npm run dev
 ```
 
+Windows 也可从项目根目录运行 `start.bat`；它会调用 `scripts/start.ps1` 补齐 Python/前端依赖，停止占用默认端口的监听进程，启动服务并在健康检查通过后打开浏览器。`-ValidateOnly -NoBrowser` 可用于无副作用配置检查。
+
+WebUI 默认模型为 `nvidia/nemotron-3-super-120b-a12b:free`，复杂推理备选为 `nvidia/nemotron-3-ultra-550b-a55b:free`。可用 `scripts/probe_openrouter_models.py` 重新执行安全门控；脚本只输出状态、错误分类、耗时和 Token，不输出密钥或模型原文。
+
 默认端口为：前端 `3210`、私有市场引擎 `8010`、Agent Gateway `8011`。启动 Controller 前设置高熵令牌：
 
 ```powershell
 $env:MARKET_CONTROLLER_TOKEN="请替换为随机高熵令牌"
 ```
 
-Agent 接口、权限边界和请求示例见 [docs/agent-gateway-api.md](docs/agent-gateway-api.md)。在线 OpenAPI 位于 `http://127.0.0.1:8011/docs`。
-进入不完全信息前的 Observation Split、Visibility Policy、View Hash 和 Information Replay 见 [docs/information-architecture-refactor.md](docs/information-architecture-refactor.md)。
-确定性公开动作信念、Belief Hash、Belief Replay 与验收见 [docs/belief-mvp.md](docs/belief-mvp.md)。
-真实豆包模型的固定状态重复和 3 个共同 Seed Belief OFF/ON 配对 Pilot 见 [docs/belief-real-paired-pilot.md](docs/belief-real-paired-pilot.md)。
-P0–P5 的严格信息契约、通信信号信念、Bayesian Advisor 与五层 Replay 验收见 [docs/incomplete-information-p0-p5.md](docs/incomplete-information-p0-p5.md)。
+Agent 接口、权限边界和请求示例见 [docs/02-Agent平台与控制台/01-agent-gateway-api.md](docs/02-Agent平台与控制台/01-agent-gateway-api.md)。在线 OpenAPI 位于 `http://127.0.0.1:8011/docs`。
+进入不完全信息前的 Observation Split、Visibility Policy、View Hash 和 Information Replay 见 [docs/03-信息架构与博弈增强/01-information-architecture-refactor.md](docs/03-信息架构与博弈增强/01-information-architecture-refactor.md)。
+确定性公开动作信念、Belief Hash、Belief Replay 与验收见 [docs/03-信息架构与博弈增强/02-belief-mvp.md](docs/03-信息架构与博弈增强/02-belief-mvp.md)。
+真实豆包模型的固定状态重复和 3 个共同 Seed Belief OFF/ON 配对 Pilot 见 [docs/03-信息架构与博弈增强/03-belief-real-paired-pilot.md](docs/03-信息架构与博弈增强/03-belief-real-paired-pilot.md)。
+P0–P5 的严格信息契约、通信信号信念、Bayesian Advisor 与五层 Replay 验收见 [docs/03-信息架构与博弈增强/04-incomplete-information-p0-p5.md](docs/03-信息架构与博弈增强/04-incomplete-information-p0-p5.md)。
 
-不完全信息市场中的单一完全信息 Agent、跨人格配对夺冠实验见 [docs/privileged-information-persona-experiment.md](docs/privileged-information-persona-experiment.md)。
-Opponent Modeling、Utility Inference、Advisor v2、Repeated Game Strategy 与完整 GameTheory Replay/基准见 [docs/game-theory-enhancement.md](docs/game-theory-enhancement.md)。
-真实 LLM 的 Persona/Belief/Opponent Model/Utility+Advisor 四组消融、真实市场反事实、Token 与单 Seed Pilot 结果见 [docs/stage51-real-game-theory-evaluation.md](docs/stage51-real-game-theory-evaluation.md)。
-多 Agent 研究控制台的信息架构、真实/演示边界、八个工作区与前端验收见 [docs/frontend-research-dashboard.md](docs/frontend-research-dashboard.md)。
-单 Agent 与多 Agent 的运行时、协调器、日志和接入示例见 [docs/agent-runtime-and-orchestration.md](docs/agent-runtime-and-orchestration.md)。
-人格配置、效用公式、实验隔离和非合作阶段边界见 [docs/persona-research.md](docs/persona-research.md)。
-阶段 2 通信状态机、可见性和验收设计见 [docs/phase2-interaction-mvp-design.md](docs/phase2-interaction-mvp-design.md)，P1/P2/P3 实现结果见 [docs/phase2-p1-p2-p3-implementation.md](docs/phase2-p1-p2-p3-implementation.md)。
-真实豆包模型的单 Seed 基线见 [docs/phase2-real-llm-smoke-seed810.md](docs/phase2-real-llm-smoke-seed810.md)，5 个共同 Seed、三种通信条件及固定状态反事实验收见 [docs/phase2-real-llm-5seed-smoke.md](docs/phase2-real-llm-5seed-smoke.md)。
-市场模型、榜单口径与回溯字段见 [docs/market-models-and-ranking.md](docs/market-models-and-ranking.md)。
+不完全信息市场中的单一完全信息 Agent、跨人格配对夺冠实验见 [docs/04-Persona研究/05-privileged-information-persona-experiment.md](docs/04-Persona研究/05-privileged-information-persona-experiment.md)。
+Opponent Modeling、Utility Inference、Advisor v2、Repeated Game Strategy 与完整 GameTheory Replay/基准见 [docs/03-信息架构与博弈增强/05-game-theory-enhancement.md](docs/03-信息架构与博弈增强/05-game-theory-enhancement.md)。
+真实 LLM 的 Persona/Belief/Opponent Model/Utility+Advisor 四组消融、真实市场反事实、Token 与单 Seed Pilot 结果见 [docs/03-信息架构与博弈增强/06-stage51-real-game-theory-evaluation.md](docs/03-信息架构与博弈增强/06-stage51-real-game-theory-evaluation.md)。
+多 Agent 研究控制台的信息架构、真实/演示边界、八个工作区与前端验收见 [docs/02-Agent平台与控制台/04-frontend-research-dashboard.md](docs/02-Agent平台与控制台/04-frontend-research-dashboard.md)。
+单 Agent 与多 Agent 的运行时、协调器、日志和接入示例见 [docs/02-Agent平台与控制台/02-agent-runtime-and-orchestration.md](docs/02-Agent平台与控制台/02-agent-runtime-and-orchestration.md)。
+人格配置、效用公式、实验隔离和非合作阶段边界见 [docs/04-Persona研究/01-persona-research.md](docs/04-Persona研究/01-persona-research.md)。
+阶段 2 通信状态机、可见性和验收设计见 [docs/05-交互合作与综合实验/01-phase2-interaction-mvp-design.md](docs/05-交互合作与综合实验/01-phase2-interaction-mvp-design.md)，P1/P2/P3 实现结果见 [docs/05-交互合作与综合实验/02-phase2-p1-p2-p3-implementation.md](docs/05-交互合作与综合实验/02-phase2-p1-p2-p3-implementation.md)。
+真实豆包模型的单 Seed 基线见 [docs/05-交互合作与综合实验/03-phase2-real-llm-smoke-seed810.md](docs/05-交互合作与综合实验/03-phase2-real-llm-smoke-seed810.md)，5 个共同 Seed、三种通信条件及固定状态反事实验收见 [docs/05-交互合作与综合实验/04-phase2-real-llm-5seed-smoke.md](docs/05-交互合作与综合实验/04-phase2-real-llm-5seed-smoke.md)。
+市场模型、榜单口径与回溯字段见 [docs/01-基础规范与核心模型/06-market-models-and-ranking.md](docs/01-基础规范与核心模型/06-market-models-and-ranking.md)。
 四人协作的分支、Review、模块边界和合并检查见 [CONTRIBUTING.md](CONTRIBUTING.md)。每次 Pull Request 会自动运行后端测试、前端 lint 和生产构建。
 
 ## 模型 Agent 冒烟运行
 
-安装后编辑本地 `.env`，填入 `ARK_API_KEY` 和/或 `DEEPSEEK_API_KEY`。该文件已被 Git 忽略。`AGENT_PROVIDER` 可设置为 `doubao`、`deepseek` 或 `mock`。
+OpenRouter 是默认 Provider，API key 从 git-crypt 保护的 `secrets/open_router-api_key.env` 读取。首次使用请按 [OpenRouter API Key 创建与本地配置](docs/member-2/05-openrouter-api-key-setup.md) 创建 Key、复制模板并完成安全验证。`AGENT_PROVIDER` 也可显式设置为 `doubao`、`deepseek` 或 `mock`；旧 Provider 的 key 仍从本地 `.env` / 环境变量读取。
 
 在第一个 PowerShell 启动同进程的市场引擎和 Agent Gateway：
 
@@ -118,6 +124,10 @@ python -m game_theory_agent.api
 
 ```powershell
 $env:PYTHONPATH="src"
+# 默认 OpenRouter + PersonaAgent/SABM
+python -m game_theory_agent.run_agents --rounds 5 --seed 42
+
+# 或使用原有 Provider
 python -m game_theory_agent.run_agents --provider doubao --rounds 5 --seed 42
 
 # 或切换为 DeepSeek
@@ -133,7 +143,7 @@ python -m game_theory_agent.run_agents --provider deepseek --persona selfish_lon
 python -m game_theory_agent.run_agents --provider mock --agent-companies company_A,company_B --persona balanced --persona-map company_A=profit_myopic,company_B=conservative --rounds 5 --seed 42
 ```
 
-也可以省略 `--provider`，直接修改 `.env` 中的 `AGENT_PROVIDER`。`--model` 可临时覆盖对应的 `ARK_MODEL` 或 `DEEPSEEK_MODEL`。默认只有 `company_A` 使用所选模型，另外三家公司使用规则 fallback。运行日志写入 `runs/<episode_id>/agent-rounds.jsonl`，真实密钥不得写入仓库。
+也可以省略 `--provider`，直接修改 `.env` 中的 `AGENT_PROVIDER`。`--model` 可覆盖当前 Provider 模型。默认只有 `company_A` 使用所选模型，另外三家公司使用规则 fallback。OpenRouter SABM 当前要求 `--communication-mode off --opponent-policy controller-rule`，checkpoint/trace 默认写入 `~outputs-intermediate/agent-runs/`；旧 Provider 运行日志仍写入 `runs/<episode_id>/agent-rounds.jsonl`。设计与接入细节见 [docs/member-2/README.md](docs/member-2/README.md)。
 
 初始状态的 `round=1` 表示等待第一轮决策。每次调用：
 

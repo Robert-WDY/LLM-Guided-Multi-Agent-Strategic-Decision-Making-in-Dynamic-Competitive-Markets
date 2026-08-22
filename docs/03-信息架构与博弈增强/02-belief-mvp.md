@@ -113,7 +113,7 @@ Information Replay 继续负责 True State→可见字段；Belief Replay 单独
 
 ## 后续实现状态
 
-Belief-aware Planner 的首轮真实模型配对 Pilot 已完成，结果见 `docs/belief-real-paired-pilot.md`。之后已实现 `public_action_signal_v2` 与非绑定 `bayesian_price_v1` Advisor，工程设计和验收见 `docs/incomplete-information-p0-p5.md`。Pilot 仍只表明模型能明确引用信念并在固定状态下方向一致地调整价格；当前预测器信息增益弱、利润方向不稳定，新增 P4/P5 工程能力不能替代扩大真实模型实验。
+Belief-aware Planner 的首轮真实模型配对 Pilot 已完成，结果见 `docs/03-信息架构与博弈增强/03-belief-real-paired-pilot.md`。之后已实现 `public_action_signal_v2` 与非绑定 `bayesian_price_v1` Advisor，工程设计和验收见 `docs/03-信息架构与博弈增强/04-incomplete-information-p0-p5.md`。Pilot 仍只表明模型能明确引用信念并在固定状态下方向一致地调整价格；当前预测器信息增益弱、利润方向不稳定，新增 P4/P5 工程能力不能替代扩大真实模型实验。
 
 下一阶段仍不增加更多隐藏字段，而是扩大并强化以下实验：
 

@@ -7,6 +7,7 @@ import os
 import secrets
 import threading
 import uuid
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
@@ -18,6 +19,10 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 
 from game_theory_agent.agents.contracts import AgentRequestedAction
+from game_theory_agent.agents.personas import load_persona_registry
+from game_theory_agent.agents.single.persona_agent import PersonaAgent
+from game_theory_agent.agents.single.provider import ProviderError, validate_model_id
+from game_theory_agent.agents.single.service import build_agent_lab_runtime
 from game_theory_agent.agents.market_regime import MarketRegimeEvaluator
 from game_theory_agent.agents.observation import (
     InformationMode,
@@ -85,6 +90,7 @@ from game_theory_agent.market import (
 )
 from game_theory_agent.market.exceptions import MarketError
 from game_theory_agent.market.replay import EpisodeManifest, MarketTransition
+from game_theory_agent.managed_round_progress import ManagedRoundProgressRegistry
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -93,6 +99,11 @@ CONFIG_PATH = Path(
 )
 CONFIG = load_market_config(CONFIG_PATH)
 MARKET_REGIME_EVALUATOR = MarketRegimeEvaluator(CONFIG)
+MANAGED_OPENROUTER_SECRET = PROJECT_ROOT / "secrets" / "open_router-api_key.env"
+MANAGED_AI_OUTPUT_ROOT = PROJECT_ROOT / "~outputs-intermediate" / "webui-agent-runs"
+MANAGED_ROUND_LOCKS: dict[str, threading.Lock] = {}
+MANAGED_ROUND_LOCKS_GUARD = threading.Lock()
+MANAGED_ROUND_PROGRESS = ManagedRoundProgressRegistry()
 
 
 class CreateEpisodeRequest(BaseModel):
@@ -139,6 +150,14 @@ class StepRequest(BaseModel):
 class PlayerStepRequest(BaseModel):
     step_id: str
     player_action: dict[str, Any]
+
+
+class ManagedRoundRequest(BaseModel):
+    """WebUI 回合输入；模型凭据和 Controller 凭据只留在后端。"""
+
+    model_config = ConfigDict(extra="forbid")
+
+    human_actions: dict[str, AgentRequestedAction] = Field(default_factory=dict)
 
 
 class SubmitAgentIntentRequest(BaseModel):
@@ -625,6 +644,11 @@ def _episode_payload(session: EpisodeSession) -> dict[str, Any]:
             ).items()
         },
         "episode_options": _episode_options(),
+        "observations": {
+            company_id: _agent_observation(session, company_id)
+            for company_id in state.company_ids
+        },
+        "history": [transition.to_dict() for transition in session.transitions],
     }
     if session.player_company_id:
         payload["company_analysis"] = build_company_analysis(
@@ -1685,6 +1709,313 @@ def get_state(episode_id: str) -> dict[str, Any]:
     session = _session(episode_id)
     with session.lock:
         return _episode_payload(session)
+
+
+def _managed_round_lock(episode_id: str) -> threading.Lock:
+    with MANAGED_ROUND_LOCKS_GUARD:
+        return MANAGED_ROUND_LOCKS.setdefault(episode_id, threading.Lock())
+
+
+def _managed_trace_payload(trace: Any) -> dict[str, Any]:
+    """返回详细的结构化审计字段，不把密钥或 Provider 原始响应送到浏览器。"""
+
+    def dump(value: Any) -> Any:
+        if value is None or isinstance(value, (str, int, float, bool)):
+            return value
+        if hasattr(value, "model_dump"):
+            return dump(value.model_dump(mode="json"))
+        if isinstance(value, dict):
+            return {str(key): dump(item) for key, item in value.items()}
+        if isinstance(value, (list, tuple)):
+            return [dump(item) for item in value]
+        return str(value)
+
+    return {
+        "status": str(trace.status),
+        "repair_attempts": int(trace.repair_attempts),
+        "provider_usage": {
+            key: int(value)
+            for key, value in dict(trace.provider_usage).items()
+            if key in {"prompt_tokens", "completion_tokens", "total_tokens"}
+        },
+        "latency_ms": int(trace.latency_ms),
+        "provider_finish_reason": trace.provider_finish_reason,
+        "provider_error_category": trace.provider_error_category,
+        "provider_usage_available": bool(trace.provider_usage_available),
+        "error_code": trace.error_code,
+        "selected_candidate_id": trace.selected_candidate_id,
+        "selection_reason_codes": dump(trace.selection_reason_codes),
+        "validation_errors": dump(trace.validation_errors),
+        "memory_view": dump(trace.memory_view),
+        "strategy_reflection": dump(trace.strategy_reflection),
+        "prompt_audit": dump(trace.prompt_audit),
+        "candidates": dump(trace.candidates),
+        "prepared_intent": dump(trace.prepared_intent),
+        "intent_receipt": dump(trace.intent_receipt),
+    }
+
+
+def _run_managed_persona_agent(
+    *,
+    episode_id: str,
+    company_id: str,
+    model_id: str,
+    persona_name: str,
+    agent_token: str | None,
+    progress_callback: Any = None,
+) -> tuple[str | None, dict[str, Any]]:
+    """运行一个真实 PersonaAgent，并收集其节点事件和最终 trace。"""
+
+    validate_model_id(model_id)
+    registry = load_persona_registry(CONFIG_PATH)
+    profile = registry.get(persona_name)
+    gateway_host = os.environ.get("MARKET_AGENT_HOST", "127.0.0.1")
+    gateway_port = os.environ.get("MARKET_AGENT_PORT", "8011")
+    bundle = build_agent_lab_runtime(
+        episode_id=f"{episode_id}-{company_id}",
+        secret_path=MANAGED_OPENROUTER_SECRET,
+        output_root=MANAGED_AI_OUTPUT_ROOT,
+        gateway_base_url=f"http://{gateway_host}:{gateway_port}",
+    )
+    if agent_token:
+        bundle.gateway.set_agent_tokens({company_id: agent_token})
+    events: list[dict[str, Any]] = []
+
+    def record(stage: str, details: dict[str, Any]) -> None:
+        events.append({"stage": stage, "details": dict(details)})
+        if progress_callback is not None:
+            progress_callback(stage, details)
+
+    result = PersonaAgent(
+        company_id=company_id,
+        model_id=model_id,
+        runtime=bundle.runtime,
+        persona_profile=profile,
+    ).decide_round(episode_id, progress_callback=record)
+    return result.intent_id, {
+        "company_id": company_id,
+        "model_id": model_id,
+        "fallback_used": result.status != "accepted" or not result.intent_id,
+        "events": events,
+        "trace": _managed_trace_payload(result.trace),
+    }
+
+
+def _failed_managed_execution(
+    company_id: str, model_id: str, error_code: str
+) -> dict[str, Any]:
+    return {
+        "company_id": company_id,
+        "model_id": model_id,
+        "fallback_used": True,
+        "events": [
+            {
+                "stage": "provider_error",
+                "details": {"error_category": error_code},
+            },
+            {
+                "stage": "finalize",
+                "details": {"status": "no_intent"},
+            },
+        ],
+        "trace": {
+            "status": "no_intent",
+            "repair_attempts": 0,
+            "provider_usage": {"total_tokens": 0},
+            "latency_ms": 0,
+            "provider_finish_reason": None,
+            "provider_error_category": error_code,
+            "error_code": error_code,
+            "selected_candidate_id": None,
+        },
+    }
+
+
+@app.post("/api/episodes/{episode_id}/managed-rounds")
+def run_managed_round(
+    episode_id: str, request: ManagedRoundRequest
+) -> dict[str, Any]:
+    """由本地后端统一运行 AI / 人类意图并结算一轮。"""
+
+    lock = _managed_round_lock(episode_id)
+    if not lock.acquire(blocking=False):
+        raise HTTPException(status_code=409, detail="该 Episode 正在执行回合")
+    progress_started = False
+    try:
+        session = _session(episode_id)
+        with session.lock:
+            state = session.env.get_state()
+            if state.terminal:
+                raise HTTPException(status_code=409, detail="episode is terminal")
+            if session.communication_mode != "off" or session.cooperation_mode != "off":
+                raise HTTPException(
+                    status_code=409,
+                    detail="当前 AI 节点流只执行无通信、无合作屏障的回合",
+                )
+            configs = dict(session.manifest.agent_configs)
+            company_ids = tuple(state.company_ids)
+            round_number = state.round
+            state_version = state.state_version
+
+        model_jobs: list[tuple[str, str, str]] = []
+        human_companies: list[str] = []
+        registry = load_persona_registry(CONFIG_PATH)
+        for company_id in company_ids:
+            config = dict(configs.get(company_id, {}))
+            agent_type = str(config.get("agent_type") or "")
+            if agent_type == "human":
+                human_companies.append(company_id)
+                continue
+            if agent_type != "model":
+                raise HTTPException(
+                    status_code=422,
+                    detail=f"{company_id} 的控制方式必须是 human 或 model",
+                )
+            model_id = str(config.get("model") or config.get("model_name") or "")
+            persona_name = str(config.get("persona_name") or "balanced_v1")
+            try:
+                validate_model_id(model_id)
+                registry.get(persona_name)
+            except (ProviderError, ValueError) as exc:
+                raise HTTPException(
+                    status_code=422,
+                    detail=f"{company_id} 的 AI 模型或人格配置无效",
+                ) from exc
+            model_jobs.append((company_id, model_id, persona_name))
+
+        if model_jobs and not MANAGED_OPENROUTER_SECRET.is_file():
+            raise HTTPException(
+                status_code=503,
+                detail=(
+                    "OpenRouter AI 无法启动：缺少固定密钥文件 "
+                    "source/secrets/open_router-api_key.env"
+                ),
+            )
+        missing_human = set(human_companies) - set(request.human_actions)
+        extra_human = set(request.human_actions) - set(human_companies)
+        if missing_human or extra_human:
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "code": "HUMAN_ACTIONS_MISMATCH",
+                    "missing": sorted(missing_human),
+                    "unexpected": sorted(extra_human),
+                },
+            )
+
+        MANAGED_ROUND_PROGRESS.start(
+            episode_id,
+            round_number,
+            state_version,
+            [(company_id, model_id) for company_id, model_id, _ in model_jobs],
+        )
+        progress_started = True
+
+        intent_ids: dict[str, str] = {}
+        executions: dict[str, dict[str, Any]] = {}
+        if model_jobs:
+            with ThreadPoolExecutor(max_workers=len(model_jobs)) as pool:
+                pending = {
+                    pool.submit(
+                        _run_managed_persona_agent,
+                        episode_id=episode_id,
+                        company_id=company_id,
+                        model_id=model_id,
+                        persona_name=persona_name,
+                        agent_token=None,
+                        progress_callback=(
+                            lambda stage, details, company_id=company_id: (
+                                MANAGED_ROUND_PROGRESS.record_event(
+                                    episode_id,
+                                    company_id,
+                                    stage,
+                                    details,
+                                )
+                            )
+                        ),
+                    ): (company_id, model_id)
+                    for company_id, model_id, persona_name in model_jobs
+                }
+                for future in as_completed(pending):
+                    company_id, model_id = pending[future]
+                    try:
+                        intent_id, execution = future.result()
+                    except Exception as exc:  # 失败必须变成可审计回退，不能泄露原文
+                        error_code = (
+                            exc.code if isinstance(exc, ProviderError) else "ai_runtime_failed"
+                        )
+                        execution = _failed_managed_execution(
+                            company_id, model_id, str(error_code)
+                        )
+                        intent_id = None
+                    executions[company_id] = execution
+                    MANAGED_ROUND_PROGRESS.mark_company_finished(
+                        episode_id,
+                        company_id,
+                        fallback_used=bool(execution["fallback_used"]),
+                        error_category=(
+                            execution["trace"].get("provider_error_category")
+                            or execution["trace"].get("error_code")
+                        ),
+                    )
+                    if intent_id:
+                        intent_ids[company_id] = intent_id
+
+        MANAGED_ROUND_PROGRESS.mark_settling(episode_id)
+        for company_id in human_companies:
+            with session.lock:
+                current = session.env.get_state()
+                observation = _agent_observation(session, company_id)
+            config = dict(configs[company_id])
+            receipt = submit_agent_intent(
+                episode_id,
+                SubmitAgentIntentRequest(
+                    agent_id=str(config["agent_id"]),
+                    company_id=company_id,
+                    round=current.round,
+                    state_version=current.state_version,
+                    observation_hash=observation["observation_hash"],
+                    requested_action=request.human_actions[company_id],
+                    rationale="人类参与者通过本地 WebUI 提交",
+                    expected_outcome="由市场结算结果验证",
+                ),
+                agent_token=None,
+            )
+            intent_ids[company_id] = str(receipt["intent_id"])
+
+        controller_token = os.environ.get("MARKET_CONTROLLER_TOKEN")
+        if not controller_token:
+            raise HTTPException(
+                status_code=503,
+                detail="AI 回合无法结算：本地 Controller 配置不可用",
+            )
+        settlement = settle_agent_round(
+            episode_id,
+            SettleAgentRoundRequest(
+                step_id=f"{episode_id}:{round_number}:{state_version}",
+                intent_ids=intent_ids,
+                fallback="rule",
+            ),
+            controller_token=controller_token,
+        )
+        with session.lock:
+            runtime_payload = _episode_payload(session)
+        MANAGED_ROUND_PROGRESS.complete(episode_id)
+        return {**runtime_payload, **settlement, "executions": executions}
+    except Exception:
+        if progress_started:
+            MANAGED_ROUND_PROGRESS.fail(episode_id, "managed_round_failed")
+        raise
+    finally:
+        lock.release()
+
+
+@app.get("/api/episodes/{episode_id}/managed-rounds/progress")
+def get_managed_round_progress(episode_id: str) -> dict[str, Any]:
+    """返回当前 Episode 最近一次管理回合的安全实时进度。"""
+
+    _session(episode_id)
+    return MANAGED_ROUND_PROGRESS.snapshot(episode_id)
 
 
 @app.get("/api/episodes/{episode_id}/agents/{agent_id}/action-constraints")

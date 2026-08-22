@@ -74,7 +74,7 @@ runtimes = {
 }
 ```
 
-RoundCoordinator 先从 Controller 读取一次权威状态，再并发读取观察，并强制所有观察的 `round`、`state_version`、`state_hash` 与冻结状态一致。`communication_mode=off` 时保持原路径；开启通信时，所有 Runtime 先并发生成一次 Cheap Talk，Controller 关闭通信并生成公司级可见视图，协调器重新读取关闭后的 Observation，随后才并发规划经营动作。Agent 仍互相看不到本轮最终动作，且消息不会直接修改市场。完整状态机和验收见 `docs/phase2-interaction-mvp-design.md`。
+RoundCoordinator 先从 Controller 读取一次权威状态，再并发读取观察，并强制所有观察的 `round`、`state_version`、`state_hash` 与冻结状态一致。`communication_mode=off` 时保持原路径；开启通信时，所有 Runtime 先并发生成一次 Cheap Talk，Controller 关闭通信并生成公司级可见视图，协调器重新读取关闭后的 Observation，随后才并发规划经营动作。Agent 仍互相看不到本轮最终动作，且消息不会直接修改市场。完整状态机和验收见 `docs/05-交互合作与综合实验/01-phase2-interaction-mvp-design.md`。
 
 ## 4. 失败策略
 
@@ -190,7 +190,7 @@ meta + identity + 可信 PersonaProfile
 + 当前动作约束
 ```
 
-PersonaProfile 由 Runtime 注入，包含版本化效用权重、时间折扣、风险偏好和预留行为特征。它只影响 Planner 与结果评价，不进入 MarketEnv 公式或 Controller 护栏。当前合作与社会福利能力关闭，详细配置、效用公式和实验方法见 `docs/persona-research.md`。
+PersonaProfile 由 Runtime 注入，包含版本化效用权重、时间折扣、风险偏好和预留行为特征。它只影响 Planner 与结果评价，不进入 MarketEnv 公式或 Controller 护栏。当前合作与社会福利能力关闭，详细配置、效用公式和实验方法见 `docs/04-Persona研究/01-persona-research.md`。
 
 Market Regime 的阈值位于 `configs/market_v4.yaml` 的 `agent_context.regime_thresholds`，由代码确定性计算。它只是给 Agent 的高层摘要，不参与需求、成本、消费者选择或状态更新。
 

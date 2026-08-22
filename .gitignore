@@ -37,6 +37,9 @@ frontend/.wrangler/
 logs/
 runs/
 .tmp/
+/~temp/
+/~outputs-intermediate/
+/~outputs-final/
 
 # IDE / operating system files
 .DS_Store
