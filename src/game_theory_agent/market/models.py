@@ -57,6 +57,7 @@ class CompanyAction:
     service_budget_cents: int = 0
     capacity_investment_cents: int = 0
     resilience_budget_cents: int = 0
+    shared_resilience_contribution_cents: int | None = None
     incident_response: IncidentResponse = IncidentResponse()
     strategy_summary: str = ""
 
@@ -67,11 +68,12 @@ class CompanyAction:
             + self.service_budget_cents
             + self.capacity_investment_cents
             + self.resilience_budget_cents
+            + (self.shared_resilience_contribution_cents or 0)
             + self.incident_response.repair_budget_cents
         )
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        payload = {
             "action_id": self.action_id,
             "episode_id": self.episode_id,
             "agent_id": self.agent_id,
@@ -85,6 +87,11 @@ class CompanyAction:
             "incident_response": self.incident_response.to_dict(),
             "strategy_summary": self.strategy_summary,
         }
+        if self.shared_resilience_contribution_cents is not None:
+            payload["shared_resilience_contribution_cents"] = (
+                self.shared_resilience_contribution_cents
+            )
+        return payload
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "CompanyAction":
@@ -99,6 +106,11 @@ class CompanyAction:
             service_budget_cents=int(data.get("service_budget_cents", 0)),
             capacity_investment_cents=int(data.get("capacity_investment_cents", 0)),
             resilience_budget_cents=int(data.get("resilience_budget_cents", 0)),
+            shared_resilience_contribution_cents=(
+                int(data["shared_resilience_contribution_cents"])
+                if data.get("shared_resilience_contribution_cents") is not None
+                else None
+            ),
             incident_response=IncidentResponse.from_dict(
                 data.get("incident_response", {})
             ),
@@ -350,6 +362,48 @@ class MarketSnapshot:
 
 
 @dataclass(frozen=True, slots=True)
+class SharedResilienceState:
+    """Public-good stock created by settled company contributions."""
+
+    protocol_version: str = "shared-resilience-market-v1.0.0"
+    industry_resilience_ppm: int = 0
+    last_total_contribution_cents: int = 0
+    last_contribution_by_company_cents: tuple[tuple[str, int], ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "protocol_version": self.protocol_version,
+            "industry_resilience_ppm": self.industry_resilience_ppm,
+            "last_total_contribution_cents": (
+                self.last_total_contribution_cents
+            ),
+            "last_contribution_by_company_cents": dict(
+                self.last_contribution_by_company_cents
+            ),
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "SharedResilienceState":
+        by_company = data.get("last_contribution_by_company_cents", {})
+        return cls(
+            protocol_version=str(
+                data.get(
+                    "protocol_version", "shared-resilience-market-v1.0.0"
+                )
+            ),
+            industry_resilience_ppm=int(
+                data.get("industry_resilience_ppm", 0)
+            ),
+            last_total_contribution_cents=int(
+                data.get("last_total_contribution_cents", 0)
+            ),
+            last_contribution_by_company_cents=tuple(
+                sorted((str(key), int(value)) for key, value in by_company.items())
+            ),
+        )
+
+
+@dataclass(frozen=True, slots=True)
 class MarketState:
     episode_id: str
     episode_seed: int
@@ -363,6 +417,7 @@ class MarketState:
     risk_signals: tuple[RiskSignal, ...]
     active_market_events: tuple[MarketEvent, ...]
     companies: tuple[CompanyState, ...]
+    shared_resilience: SharedResilienceState | None = None
     last_joint_action: tuple[CompanyAction, ...] = ()
     terminal_enterprise_values_cents: tuple[tuple[str, int], ...] = ()
     state_hash: str = ""
@@ -378,7 +433,7 @@ class MarketState:
         raise KeyError(company_id)
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        payload = {
             "episode_id": self.episode_id,
             "episode_seed": self.episode_seed,
             "round": self.round,
@@ -404,6 +459,9 @@ class MarketState:
             ),
             "state_hash": self.state_hash,
         }
+        if self.shared_resilience is not None:
+            payload["shared_resilience"] = self.shared_resilience.to_dict()
+        return payload
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "MarketState":
@@ -438,6 +496,11 @@ class MarketState:
             ),
             companies=tuple(
                 CompanyState.from_dict(companies_data[key]) for key in order
+            ),
+            shared_resilience=(
+                SharedResilienceState.from_dict(data["shared_resilience"])
+                if data.get("shared_resilience") is not None
+                else None
             ),
             last_joint_action=tuple(
                 CompanyAction.from_dict(actions[key]) for key in order if key in actions

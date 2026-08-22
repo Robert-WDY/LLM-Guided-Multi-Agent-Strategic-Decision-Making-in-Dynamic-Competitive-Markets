@@ -1,10 +1,10 @@
 config_id: market-v4-default
-config_version: market-v4.4.0
-environment_version: market-env-v4.1.0
+config_version: market-v4.10.0
+environment_version: market-env-v4.2.0
 
 schema_versions:
-  state: market-state-v4.1.0
-  action: company-action-v4.0.0
+  state: market-state-v4.2.0
+  action: company-action-v4.1.0
   event: market-event-v4.0.0
   manifest: episode-manifest-v1.0.0
 
@@ -48,6 +48,21 @@ episode_options:
   default_rounds: 10
   seed_min: 0
   seed_max: 18446744073709551615
+
+agent_context:
+  regime_thresholds:
+    price_war_discount_ppm: 900000
+    price_war_min_companies: 2
+    high_demand_ratio_ppm: 1080000
+    low_demand_ratio_ppm: 920000
+    capacity_constrained_ppm: 900000
+    capacity_slack_ppm: 650000
+    supply_high_ppm: 1080000
+    supply_crisis_ppm: 1150000
+    supply_low_ppm: 950000
+    hhi_moderate_ppm: 300000
+    hhi_concentrated_ppm: 400000
+    risk_warning_probability_ppm: 500000
 
 market_models:
   random_demand_jitter_ppm: 25000
@@ -105,11 +120,12 @@ company_initial:
 
 action:
   bounds:
-    price_cents: {min: 7500, max: 13000}
+    price_cents: {min: 7500, max: 18000}
     advertising_budget_cents: {min: 0, max: 5000000}
     service_budget_cents: {min: 0, max: 5000000}
     capacity_investment_cents: {min: 0, max: 6000000}
     resilience_budget_cents: {min: 0, max: 4000000}
+    shared_resilience_contribution_cents: {min: 0, max: 4000000}
     repair_budget_cents: {min: 0, max: 8000000}
   saturation_scales_cents:
     advertising: 1800000
@@ -185,10 +201,26 @@ state_updates:
   resilience_retention_ppm: 930000
   resilience_input_weight_ppm: 420000
 
+shared_resilience:
+  initial_industry_resilience_ppm: 0
+  retention_ppm: 850000
+  contribution_scale_cents: 4000000
+  contribution_input_weight_ppm: 500000
+  public_protection_weight_ppm: 800000
+
 operating_costs:
   fixed_overhead_cents: 3500000
   fulfillment_cost_per_order_cents: 1200
   description: 每轮公司固定运营成本，以及每笔履约订单的配送、包装、损耗和平台成本
+
+decision_policy:
+  future_overhead_reserve_rounds: 2
+  minimum_unit_contribution_cents: 300
+  recovery_loss_streak: 2
+  recovery_cash_drawdown_ppm: 200000
+  liquidity_crisis_runway_milli_rounds: 3000
+  recovery_spend_cap_ppm: 700000
+  crisis_spend_cap_ppm: 0
 
 capacity:
   investment_unit_cost_cents: 10000
@@ -369,10 +401,62 @@ terminal:
   resilience_value_max_cents: 2500000
 
 persona_utilities:
+  schema_version: persona-catalog-v1.1.0
+  default_profile_id: none
+  capabilities:
+    social_welfare: false
+    cooperation: false
   profit_scale_cents: 10000000
   share_growth_scale_ppm: 100000
   weights_ppm:
-    none: {profit: 1000000, share: 0, growth: 0, stability: 0, cash: 0, reputation: 0, resilience: 0}
-    aggressive: {profit: 300000, share: 220000, growth: 240000, stability: 30000, cash: 50000, reputation: 80000, resilience: 80000}
-    conservative: {profit: 250000, share: 50000, growth: 30000, stability: 240000, cash: 220000, reputation: 120000, resilience: 90000}
-    balanced: {profit: 300000, share: 120000, growth: 100000, stability: 120000, cash: 120000, reputation: 140000, resilience: 100000}
+    none: {profit: 1000000, share: 0, growth: 0, stability: 0, cash: 0, reputation: 0, resilience: 0, social_welfare: 0, cooperation_reputation: 0}
+    aggressive: {profit: 300000, share: 220000, growth: 240000, stability: 30000, cash: 50000, reputation: 80000, resilience: 80000, social_welfare: 0, cooperation_reputation: 0}
+    conservative: {profit: 250000, share: 50000, growth: 30000, stability: 240000, cash: 220000, reputation: 120000, resilience: 90000, social_welfare: 0, cooperation_reputation: 0}
+    balanced: {profit: 300000, share: 120000, growth: 100000, stability: 120000, cash: 120000, reputation: 140000, resilience: 100000, social_welfare: 0, cooperation_reputation: 0}
+    selfish_long_term: {profit: 350000, share: 30000, growth: 20000, stability: 100000, cash: 250000, reputation: 150000, resilience: 100000, social_welfare: 0, cooperation_reputation: 0}
+    profit_myopic: {profit: 900000, share: 0, growth: 0, stability: 0, cash: 100000, reputation: 0, resilience: 0, social_welfare: 0, cooperation_reputation: 0}
+    aggressive_v1_extreme: {profit: 300000, share: 220000, growth: 240000, stability: 30000, cash: 50000, reputation: 80000, resilience: 80000, social_welfare: 0, cooperation_reputation: 0}
+    conservative_v1_extreme: {profit: 250000, share: 50000, growth: 30000, stability: 240000, cash: 220000, reputation: 120000, resilience: 90000, social_welfare: 0, cooperation_reputation: 0}
+    balanced_v1: {profit: 300000, share: 120000, growth: 100000, stability: 120000, cash: 120000, reputation: 140000, resilience: 100000, social_welfare: 0, cooperation_reputation: 0}
+    selfish_long_term_v1: {profit: 350000, share: 30000, growth: 20000, stability: 100000, cash: 250000, reputation: 150000, resilience: 100000, social_welfare: 0, cooperation_reputation: 0}
+    disciplined_growth_v1: {profit: 380000, share: 150000, growth: 150000, stability: 70000, cash: 70000, reputation: 90000, resilience: 90000, social_welfare: 0, cooperation_reputation: 0}
+    risk_guarded_v1: {profit: 280000, share: 60000, growth: 50000, stability: 180000, cash: 160000, reputation: 110000, resilience: 160000, social_welfare: 0, cooperation_reputation: 0}
+  traits_ppm:
+    none: {time_discount: 1000000, risk_aversion: 0, reciprocity: 0, commitment_honesty: 0, opportunism: 0}
+    aggressive: {time_discount: 850000, risk_aversion: 150000, reciprocity: 100000, commitment_honesty: 400000, opportunism: 700000}
+    conservative: {time_discount: 950000, risk_aversion: 800000, reciprocity: 300000, commitment_honesty: 750000, opportunism: 200000}
+    balanced: {time_discount: 920000, risk_aversion: 450000, reciprocity: 300000, commitment_honesty: 650000, opportunism: 400000}
+    selfish_long_term: {time_discount: 950000, risk_aversion: 350000, reciprocity: 100000, commitment_honesty: 500000, opportunism: 600000}
+    profit_myopic: {time_discount: 400000, risk_aversion: 100000, reciprocity: 0, commitment_honesty: 100000, opportunism: 950000}
+    aggressive_v1_extreme: {time_discount: 850000, risk_aversion: 150000, reciprocity: 100000, commitment_honesty: 400000, opportunism: 700000}
+    conservative_v1_extreme: {time_discount: 950000, risk_aversion: 800000, reciprocity: 300000, commitment_honesty: 750000, opportunism: 200000}
+    balanced_v1: {time_discount: 920000, risk_aversion: 450000, reciprocity: 300000, commitment_honesty: 650000, opportunism: 400000}
+    selfish_long_term_v1: {time_discount: 950000, risk_aversion: 350000, reciprocity: 100000, commitment_honesty: 500000, opportunism: 600000}
+    disciplined_growth_v1: {time_discount: 900000, risk_aversion: 300000, reciprocity: 150000, commitment_honesty: 600000, opportunism: 500000}
+    risk_guarded_v1: {time_discount: 960000, risk_aversion: 700000, reciprocity: 250000, commitment_honesty: 800000, opportunism: 200000}
+  labels:
+    none: 无人格基线
+    aggressive: 激进增长
+    conservative: 保守稳健
+    balanced: 均衡经营
+    selfish_long_term: 长期自利
+    profit_myopic: 短期逐利
+    aggressive_v1_extreme: 极端激进增长 v1
+    conservative_v1_extreme: 极端保守稳健 v1
+    balanced_v1: 均衡经营 v1
+    selfish_long_term_v1: 长期自利 v1
+    disciplined_growth_v1: 有纪律增长 v1
+    risk_guarded_v1: 主动风险管理 v1
+  objectives:
+    none: 在统一安全约束内最大化本轮利润，作为无人格历史基线。
+    aggressive: 在可承受的现金与单位经济约束内，优先争取市场份额和增长机会。
+    conservative: 优先保持现金、利润稳定性和风险韧性，避免不可逆的下行风险。
+    balanced: 平衡利润、份额、现金、声誉和韧性，追求稳健的长期企业价值。
+    selfish_long_term: 只最大化本公司的长期企业价值；合作性行为只有在能改善本公司长期回报时才有工具价值。
+    profit_myopic: 优先最大化当前及近期可实现利润，弱化远期资产、声誉和风险准备。
+    aggressive_v1_extreme: 在可承受的现金与单位经济约束内，优先争取市场份额和增长机会；作为极端人格与压力测试基线。
+    conservative_v1_extreme: 优先保持现金、利润稳定性和风险韧性，避免不可逆的下行风险；作为极端人格与压力测试基线。
+    balanced_v1: 平衡利润、份额、现金、声誉和韧性，追求稳健的长期企业价值；作为同质市场版本化基线。
+    selfish_long_term_v1: 只最大化本公司的长期企业价值，在不依赖合作的条件下保存长期回报；作为版本化研究基线。
+    disciplined_growth_v1: 将增长与市场份额视为重要目标，但只接受具有合理单位利润、边际回报和回收期的扩张。
+    risk_guarded_v1: 在现金成本与预期未来损失之间主动配置产能和韧性，以风险调整后的长期价值为主要依据。

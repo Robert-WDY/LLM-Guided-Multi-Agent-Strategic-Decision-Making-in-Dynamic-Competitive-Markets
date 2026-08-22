@@ -151,6 +151,53 @@ class MarketConfig:
         if episode_options.get("seed_min") != 0 or episode_options.get("seed_max") != (1 << 64) - 1:
             raise ConfigError("episode seed range must cover uint64")
 
+        regime = self.mapping("agent_context", "regime_thresholds")
+        regime_fields = (
+            "price_war_discount_ppm",
+            "price_war_min_companies",
+            "high_demand_ratio_ppm",
+            "low_demand_ratio_ppm",
+            "capacity_constrained_ppm",
+            "capacity_slack_ppm",
+            "supply_high_ppm",
+            "supply_crisis_ppm",
+            "supply_low_ppm",
+            "hhi_moderate_ppm",
+            "hhi_concentrated_ppm",
+            "risk_warning_probability_ppm",
+        )
+        for field in regime_fields:
+            value = regime.get(field)
+            if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+                raise ConfigError(
+                    f"agent_context.regime_thresholds.{field} must be non-negative"
+                )
+        if not (
+            int(regime["low_demand_ratio_ppm"])
+            < 1_000_000
+            < int(regime["high_demand_ratio_ppm"])
+        ):
+            raise ConfigError("demand regime thresholds must bracket 1000000")
+        if not (
+            int(regime["capacity_slack_ppm"])
+            < int(regime["capacity_constrained_ppm"])
+            <= 1_000_000
+        ):
+            raise ConfigError("capacity regime thresholds are inconsistent")
+        if not (
+            int(regime["supply_low_ppm"])
+            < 1_000_000
+            < int(regime["supply_high_ppm"])
+            < int(regime["supply_crisis_ppm"])
+        ):
+            raise ConfigError("supply regime thresholds are inconsistent")
+        if not (
+            int(regime["hhi_moderate_ppm"])
+            < int(regime["hhi_concentrated_ppm"])
+            <= 1_000_000
+        ):
+            raise ConfigError("HHI regime thresholds are inconsistent")
+
         initial = self.mapping("company_initial")
         for field in (
             "cash_balance_cents",
@@ -173,6 +220,31 @@ class MarketConfig:
             if int(initial[field]) > 1_000_000:
                 raise ConfigError(f"company_initial.{field} must be in [0, 1000000]")
 
+        policy = self.mapping("decision_policy")
+        for field in (
+            "future_overhead_reserve_rounds",
+            "minimum_unit_contribution_cents",
+            "recovery_loss_streak",
+            "recovery_cash_drawdown_ppm",
+            "liquidity_crisis_runway_milli_rounds",
+            "recovery_spend_cap_ppm",
+            "crisis_spend_cap_ppm",
+        ):
+            value = policy.get(field)
+            if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+                raise ConfigError(f"decision_policy.{field} must be non-negative")
+        for field in (
+            "recovery_cash_drawdown_ppm",
+            "recovery_spend_cap_ppm",
+            "crisis_spend_cap_ppm",
+        ):
+            if int(policy[field]) > 1_000_000:
+                raise ConfigError(f"decision_policy.{field} must be <= 1000000")
+        if int(policy["crisis_spend_cap_ppm"]) > int(
+            policy["recovery_spend_cap_ppm"]
+        ):
+            raise ConfigError("crisis spend cap must not exceed recovery spend cap")
+
         bounds = self.mapping("action", "bounds")
         for name, raw in bounds.items():
             if not isinstance(raw, Mapping):
@@ -182,6 +254,26 @@ class MarketConfig:
                 raise ConfigError(f"action.bounds.{name} min/max must be integers")
             if low < 0 or low > high:
                 raise ConfigError(f"action.bounds.{name} range is invalid")
+
+        shared = self.mapping("shared_resilience")
+        for field in (
+            "initial_industry_resilience_ppm",
+            "retention_ppm",
+            "contribution_input_weight_ppm",
+            "public_protection_weight_ppm",
+        ):
+            value = shared.get(field)
+            if (
+                isinstance(value, bool)
+                or not isinstance(value, int)
+                or not 0 <= value <= 1_000_000
+            ):
+                raise ConfigError(f"shared_resilience.{field} must be ppm")
+        scale = shared.get("contribution_scale_cents")
+        if isinstance(scale, bool) or not isinstance(scale, int) or scale <= 0:
+            raise ConfigError(
+                "shared_resilience.contribution_scale_cents must be positive"
+            )
 
         operating = self.mapping("operating_costs")
         for field in (
@@ -319,10 +411,122 @@ class MarketConfig:
                             f"incident {incident_name}.{level}.{field} is missing"
                         )
 
-        for persona, weights in self.mapping(
-            "persona_utilities", "weights_ppm"
-        ).items():
+        max_event_supply = max(
+            int(definition["supply_cost_multiplier_ppm"])
+            for event in events.values()
+            for definition in event["severity"].values()
+        )
+        max_refund = max(
+            int(definition["refund_rate_ppm"])
+            for incident in self.mapping("incidents", "definitions").values()
+            for definition in incident["severity"].values()
+        )
+        worst_unit_cost = (
+            int(initial["base_unit_cost_cents"])
+            * self.integer("market", "supply_cost_max_ppm")
+            * max_event_supply
+            + 1_000_000_000_000 - 1
+        ) // 1_000_000_000_000
+        required_price_max = (
+            (
+                worst_unit_cost
+                + self.integer(
+                    "operating_costs", "fulfillment_cost_per_order_cents"
+                )
+                + int(policy["minimum_unit_contribution_cents"])
+            )
+            * 1_000_000
+            + (1_000_000 - max_refund)
+            - 1
+        ) // (1_000_000 - max_refund)
+        if int(bounds["price_cents"]["max"]) < required_price_max:
+            raise ConfigError(
+                "action.bounds.price_cents.max cannot cover worst-case safe price "
+                f"{required_price_max}"
+            )
+
+        persona_cfg = self.mapping("persona_utilities")
+        if persona_cfg.get("schema_version") not in {
+            "persona-catalog-v1.0.0",
+            "persona-catalog-v1.1.0",
+        }:
+            raise ConfigError(
+                "persona_utilities.schema_version must be a supported persona catalog"
+            )
+        weights_by_persona = self.mapping("persona_utilities", "weights_ppm")
+        traits_by_persona = self.mapping("persona_utilities", "traits_ppm")
+        labels_by_persona = self.mapping("persona_utilities", "labels")
+        objectives_by_persona = self.mapping("persona_utilities", "objectives")
+        persona_ids = set(weights_by_persona)
+        if not persona_ids or not (
+            persona_ids
+            == set(traits_by_persona)
+            == set(labels_by_persona)
+            == set(objectives_by_persona)
+        ):
+            raise ConfigError(
+                "persona weights, traits, labels and objectives must use the same ids"
+            )
+        if persona_cfg.get("default_profile_id") not in persona_ids:
+            raise ConfigError("persona_utilities.default_profile_id is unknown")
+        utility_components = {
+            "profit",
+            "share",
+            "growth",
+            "stability",
+            "cash",
+            "reputation",
+            "resilience",
+            "social_welfare",
+            "cooperation_reputation",
+        }
+        trait_components = {
+            "time_discount",
+            "risk_aversion",
+            "reciprocity",
+            "commitment_honesty",
+            "opportunism",
+        }
+        capabilities = self.mapping("persona_utilities", "capabilities")
+        for capability in ("social_welfare", "cooperation"):
+            if not isinstance(capabilities.get(capability), bool):
+                raise ConfigError(
+                    f"persona_utilities.capabilities.{capability} must be boolean"
+                )
+        for persona, weights in weights_by_persona.items():
+            if set(weights) != utility_components:
+                raise ConfigError(
+                    f"persona {persona} weights must define {sorted(utility_components)}"
+                )
             self._require_ppm_sum(weights, f"persona {persona} weights")
+            traits = traits_by_persona[persona]
+            if not isinstance(traits, Mapping) or set(traits) != trait_components:
+                raise ConfigError(
+                    f"persona {persona} traits must define {sorted(trait_components)}"
+                )
+            for name, value in traits.items():
+                if (
+                    isinstance(value, bool)
+                    or not isinstance(value, int)
+                    or not 0 <= value <= 1_000_000
+                ):
+                    raise ConfigError(
+                        f"persona {persona} trait {name} must be ppm"
+                    )
+            for field, capability in (
+                ("social_welfare", "social_welfare"),
+                ("cooperation_reputation", "cooperation"),
+            ):
+                if not capabilities[capability] and int(weights[field]) != 0:
+                    raise ConfigError(
+                        f"persona {persona} cannot weight disabled {capability}"
+                    )
+            for field, source in (
+                ("label", labels_by_persona[persona]),
+                ("objective", objectives_by_persona[persona]),
+            ):
+                if not isinstance(source, str) or not source.strip():
+                    raise ConfigError(f"persona {persona} {field} must be text")
 
     @staticmethod
     def _require_ppm_sum(raw: Any, label: str) -> None:

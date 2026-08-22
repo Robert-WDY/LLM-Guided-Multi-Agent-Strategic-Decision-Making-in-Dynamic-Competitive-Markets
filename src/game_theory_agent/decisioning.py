@@ -9,6 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping
 
+from game_theory_agent.economics import decision_support_metrics
 from game_theory_agent.market import (
     CompanyAction,
     IncidentResponse,
@@ -19,7 +20,7 @@ from game_theory_agent.market import (
 from game_theory_agent.market.exceptions import ActionValidationError
 
 
-POLICY_VERSION = "decision-policy-v1.0.0"
+POLICY_VERSION = "decision-policy-v1.1.0"
 ECONOMIC_FIELDS = (
     "price_cents",
     "advertising_budget_cents",
@@ -139,6 +140,64 @@ def resolve_action_request(
             int(bounds[field]["max"]),
         )
 
+    cooperation_enabled = state.shared_resilience is not None
+    requested_shared_raw = request.get(
+        "shared_resilience_contribution_cents", 0
+    )
+    requested_shared = (
+        0
+        if requested_shared_raw is None
+        else _integer(
+            {"shared_resilience_contribution_cents": requested_shared_raw},
+            "shared_resilience_contribution_cents",
+            0,
+        )
+    )
+    if cooperation_enabled:
+        shared_bounds = bounds["shared_resilience_contribution_cents"]
+        values["shared_resilience_contribution_cents"] = _clamp(
+            adjustments,
+            "shared_resilience_contribution_cents",
+            requested_shared,
+            int(shared_bounds["min"]),
+            int(shared_bounds["max"]),
+        )
+    else:
+        _adjust(
+            adjustments,
+            "shared_resilience_contribution_cents",
+            requested_shared,
+            0,
+            "COOPERATION_DISABLED",
+            "当前 Episode 未启用共享韧性合作动作。",
+        )
+
+    economics = decision_support_metrics(config, state, company_id)
+    enforceable_price_floor = min(
+        int(bounds["price_cents"]["max"]),
+        int(economics["minimum_safe_price_cents"]),
+    )
+    if economics["strategic_phase"] in {
+        "profit_recovery",
+        "liquidity_crisis",
+    }:
+        enforceable_price_floor = max(
+            enforceable_price_floor,
+            company.commercial.price_cents,
+        )
+    values["price_cents"] = _adjust(
+        adjustments,
+        "price_cents",
+        values["price_cents"],
+        max(values["price_cents"], enforceable_price_floor),
+        (
+            "RECOVERY_PRICE_FLOOR"
+            if economics["strategic_phase"] != "growth"
+            else "NEGATIVE_UNIT_MARGIN_PROTECTED"
+        ),
+        "价格不得低于单位经济安全线；恢复阶段不得继续主动降价。",
+    )
+
     # Saturating assets should not absorb unlimited cash. These are execution
     # guardrails, not hidden strategy choices, and apply equally to every source.
     awareness = company.brand.brand_awareness_ppm
@@ -184,6 +243,15 @@ def resolve_action_request(
                 "LAST_ROUND_DISABLED",
                 "最后一轮的长期投资无法形成后续经营收益。",
             )
+        if cooperation_enabled:
+            values["shared_resilience_contribution_cents"] = _adjust(
+                adjustments,
+                "shared_resilience_contribution_cents",
+                values["shared_resilience_contribution_cents"],
+                0,
+                "LAST_ROUND_DISABLED",
+                "最后一轮的共享韧性贡献无法形成下一轮公共收益。",
+            )
     elif (
         company.operations.capacity_utilization_ppm < 750_000
         and company.brand.last_attempted_unfulfilled_rate_ppm == 0
@@ -207,12 +275,14 @@ def resolve_action_request(
     incident = company.risk.active_incident
     mode = IncidentResponseMode.WAIT
     repair = 0
+    overhead = int(config.mapping("operating_costs")["fixed_overhead_cents"])
+    repair_cash_limit = max(0, company.financial.cash_balance_cents - overhead)
     if incident is not None and requested_mode != "wait" and requested_repair > 0:
         useful = min(
             requested_repair,
             incident.remaining_repair_cents,
             int(bounds["repair_budget_cents"]["max"]),
-            company.financial.cash_balance_cents,
+            repair_cash_limit,
         )
         if useful >= incident.remaining_repair_cents:
             mode = IncidentResponseMode.FULL_REPAIR
@@ -234,14 +304,26 @@ def resolve_action_request(
         "维修方式由事故状态、剩余维修额与可用现金统一确定。",
     )
 
-    # Preserve repair and proportionally scale other fixed budgets to cash.
+    # Preserve current/future overhead before allowing discretionary spending.
     spend_fields = (
         "advertising_budget_cents",
         "service_budget_cents",
         "capacity_investment_cents",
         "resilience_budget_cents",
+    ) + (
+        ("shared_resilience_contribution_cents",)
+        if cooperation_enabled
+        else ()
     )
-    available = max(0, company.financial.cash_balance_cents - repair)
+    available = max(
+        0,
+        company.financial.cash_balance_cents
+        - repair
+        - int(economics["minimum_cash_reserve_cents"]),
+    )
+    available = min(
+        available, int(economics["maximum_discretionary_budget_cents"])
+    )
     requested_operating = sum(values[field] for field in spend_fields)
     if requested_operating > available:
         original = {field: values[field] for field in spend_fields}
@@ -261,8 +343,8 @@ def resolve_action_request(
                 field,
                 original[field],
                 values[field],
-                "CASH_ENVELOPE_SCALED",
-                "固定投入按比例缩放到本轮可用现金内。",
+                "LIQUIDITY_RESERVE_PROTECTED",
+                "固定投入按比例缩放，并预留本轮及安全期固定运营成本。",
             )
 
     action = CompanyAction(
@@ -273,6 +355,11 @@ def resolve_action_request(
         round=state.round,
         state_version=state.state_version,
         incident_response=IncidentResponse(mode, repair),
+        shared_resilience_contribution_cents=(
+            values.pop("shared_resilience_contribution_cents")
+            if cooperation_enabled
+            else None
+        ),
         strategy_summary=str(request.get("strategy_summary", source))[:500],
         **values,
     )

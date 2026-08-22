@@ -31,6 +31,7 @@ from game_theory_agent.market.models import (
     Persona,
     RiskSignal,
     RiskState,
+    SharedResilienceState,
     StepResult,
 )
 from game_theory_agent.market.protocols import ComponentRng, sha256_hash, state_hash
@@ -111,6 +112,7 @@ class MarketEnv:
         personas: Mapping[str, Persona | str] | None = None,
         market_model: str = "random",
         max_rounds: int | None = None,
+        cooperation_mode: str = "off",
     ) -> MarketState:
         ids = tuple(
             company_ids
@@ -124,6 +126,8 @@ class MarketEnv:
             raise StateInvariantError("episode_id must be non-empty")
         if not 0 <= episode_seed < (1 << 64):
             raise StateInvariantError("episode_seed must fit uint64")
+        if cooperation_mode not in {"off", "shared_resilience_v1"}:
+            raise StateInvariantError("unsupported cooperation_mode")
         selected_rounds = (
             self.config.integer("episode_options", "default_rounds")
             if max_rounds is None
@@ -265,6 +269,19 @@ class MarketEnv:
             risk_signals=signals,
             active_market_events=(),
             companies=companies,
+            shared_resilience=(
+                SharedResilienceState(
+                    industry_resilience_ppm=self.config.integer(
+                        "shared_resilience",
+                        "initial_industry_resilience_ppm",
+                    ),
+                    last_contribution_by_company_cents=tuple(
+                        (company_id, 0) for company_id in sorted(ids)
+                    ),
+                )
+                if cooperation_mode == "shared_resilience_v1"
+                else None
+            ),
         )
         state = replace(state, state_hash=state_hash(state.to_dict()))
         self.assert_invariants(state)
@@ -286,16 +303,6 @@ class MarketEnv:
             raise StateInvariantError("environment has not been reset")
         return self._state
 
-    def get_observation(
-        self, agent_id: str, information_mode: str = "perfect"
-    ) -> dict[str, Any]:
-        state = self.get_state()
-        if agent_id not in state.company_ids:
-            raise KeyError(agent_id)
-        if information_mode != "perfect":
-            raise ValueError("Engineering MVP only supports perfect information")
-        return state.to_dict()
-
     def get_action_constraints(
         self, agent_id: str, state_version: int
     ) -> dict[str, Any]:
@@ -305,12 +312,24 @@ class MarketEnv:
         company = state.company(agent_id)
         incident = company.risk.active_incident
         operating = self.config.mapping("operating_costs")
+        bounds = self.config.to_dict()["action"]["bounds"]
+        if state.shared_resilience is None:
+            bounds.pop("shared_resilience_contribution_cents", None)
         return {
             "schema_version": self.config.text("schema_versions", "action"),
             "cash_available_cents": company.financial.cash_balance_cents,
-            "bounds": self.config.to_dict()["action"]["bounds"],
+            "bounds": bounds,
             "capacity_investment_enabled": state.rounds_remaining > 1,
             "resilience_investment_enabled": state.rounds_remaining > 1,
+            "shared_resilience_contribution_enabled": (
+                state.shared_resilience is not None
+                and state.rounds_remaining > 1
+            ),
+            "cooperation_mode": (
+                "shared_resilience_v1"
+                if state.shared_resilience is not None
+                else "off"
+            ),
             "active_incident": incident.to_dict() if incident else None,
             "max_useful_repair_budget_cents": (
                 incident.remaining_repair_cents if incident else 0
@@ -384,6 +403,44 @@ class MarketEnv:
         self._action_registry.update(pending_action_ids)
         return result
 
+    def counterfactual_without_public_resilience(
+        self,
+        state: MarketState,
+        joint_action: Mapping[str, CompanyAction | Mapping[str, Any]],
+    ) -> StepResult:
+        """Settle the same round with inherited public stock set to zero.
+
+        This is a read-only shadow evaluation.  It uses the same episode,
+        round, actions and component RNG, and it keeps current contributions
+        in the action because they only create protection for the next round.
+        The returned transition is never installed into this environment.
+        """
+
+        if state.shared_resilience is None:
+            raise StateInvariantError(
+                "public-resilience counterfactual requires cooperation state"
+            )
+        actions = self._validate_joint_action(state, joint_action)
+        zero_shared = replace(
+            state.shared_resilience,
+            industry_resilience_ppm=0,
+        )
+        shadow_state = replace(
+            state,
+            shared_resilience=zero_shared,
+            state_hash="",
+        )
+        shadow_state = replace(
+            shadow_state,
+            state_hash=state_hash(shadow_state.to_dict()),
+        )
+        shadow = MarketEnv(self.config)
+        shadow.load_state(shadow_state)
+        return shadow.step(
+            f"{state.episode_id}:{state.round}:{state.state_version}",
+            actions,
+        )
+
     def _transition(
         self,
         state: MarketState,
@@ -400,6 +457,16 @@ class MarketEnv:
         event_cfg = self.config.mapping("events")
         incident_cfg = self.config.mapping("incidents")
         operating_cfg = self.config.mapping("operating_costs")
+        shared_cfg = self.config.mapping("shared_resilience")
+        current_industry_resilience = (
+            state.shared_resilience.industry_resilience_ppm
+            if state.shared_resilience is not None
+            else 0
+        )
+        current_public_protection = _ppm_mul(
+            int(shared_cfg["public_protection_weight_ppm"]),
+            current_industry_resilience,
+        )
 
         scales = action_cfg["saturation_scales_cents"]
         ad_inputs = {
@@ -458,6 +525,10 @@ class MarketEnv:
             company_id = company.company_id
             action = actions[company_id]
             resilience = company.risk.resilience_ppm
+            effective_resilience = PPM - _ppm_mul(
+                PPM - resilience,
+                PPM - current_public_protection,
+            )
             supply_multiplier = PPM
             capacity_multiplier = PPM
             advertising_multiplier = PPM
@@ -468,25 +539,29 @@ class MarketEnv:
                     supply_multiplier,
                     self._protected_cost_multiplier(
                         event.supply_cost_multiplier_ppm,
-                        resilience,
+                        effective_resilience,
                         max_event_reduction,
                     ),
                 )
                 capacity_multiplier = _ppm_mul(
                     capacity_multiplier,
                     self._protected_loss_multiplier(
-                        event.capacity_multiplier_ppm, resilience, max_event_reduction
+                        event.capacity_multiplier_ppm,
+                        effective_resilience,
+                        max_event_reduction,
                     ),
                 )
                 advertising_multiplier = _ppm_mul(
                     advertising_multiplier,
                     self._protected_loss_multiplier(
                         event.advertising_multiplier_ppm,
-                        resilience,
+                        effective_resilience,
                         max_event_reduction,
                     ),
                 )
-                reduction = PPM - _ppm_mul(max_event_reduction, resilience)
+                reduction = PPM - _ppm_mul(
+                    max_event_reduction, effective_resilience
+                )
                 market_service_penalty += _ppm_mul(event.service_penalty_ppm, reduction)
                 market_reputation_penalty += _ppm_mul(
                     event.reputation_penalty_ppm, reduction
@@ -965,6 +1040,43 @@ class MarketEnv:
             int(market_cfg["supply_cost_max_ppm"]),
         )
 
+        contributions = {
+            company_id: int(
+                actions[company_id].shared_resilience_contribution_cents or 0
+            )
+            for company_id in state.company_ids
+        }
+        total_contribution = sum(contributions.values())
+        next_shared_resilience: SharedResilienceState | None = None
+        next_public_protection = 0
+        if state.shared_resilience is not None:
+            next_industry_resilience = _clip(
+                _ppm_mul(
+                    int(shared_cfg["retention_ppm"]),
+                    current_industry_resilience,
+                )
+                + _ppm_mul(
+                    int(shared_cfg["contribution_input_weight_ppm"]),
+                    _sat_ppm(
+                        total_contribution,
+                        int(shared_cfg["contribution_scale_cents"]),
+                    ),
+                ),
+                0,
+                PPM,
+            )
+            next_shared_resilience = SharedResilienceState(
+                industry_resilience_ppm=next_industry_resilience,
+                last_total_contribution_cents=total_contribution,
+                last_contribution_by_company_cents=tuple(
+                    sorted(contributions.items())
+                ),
+            )
+            next_public_protection = _ppm_mul(
+                int(shared_cfg["public_protection_weight_ppm"]),
+                next_industry_resilience,
+            )
+
         terminal = state.round >= state.max_rounds
         if terminal:
             next_events: tuple[MarketEvent, ...] = ()
@@ -992,6 +1104,7 @@ class MarketEnv:
                             company,
                             company.risk.active_incident,
                             random_summary,
+                            public_protection_ppm=next_public_protection,
                         ),
                     ),
                 )
@@ -1050,6 +1163,7 @@ class MarketEnv:
             risk_signals=next_signals,
             active_market_events=next_events,
             companies=tuple(next_companies),
+            shared_resilience=next_shared_resilience,
             last_joint_action=tuple(
                 actions[company_id] for company_id in state.company_ids
             ),
@@ -1104,6 +1218,24 @@ class MarketEnv:
             )
             if closure != state.market.realized_demand_orders:
                 failures.append("demand allocation does not close")
+
+        shared = state.shared_resilience
+        if shared is not None:
+            if not 0 <= shared.industry_resilience_ppm <= PPM:
+                failures.append(
+                    "industry resilience is outside [0, 1000000]"
+                )
+            by_company = dict(shared.last_contribution_by_company_cents)
+            if set(by_company) != set(state.company_ids):
+                failures.append(
+                    "shared resilience contribution attribution is incomplete"
+                )
+            if any(value < 0 for value in by_company.values()):
+                failures.append("shared resilience contribution is negative")
+            if sum(by_company.values()) != shared.last_total_contribution_cents:
+                failures.append(
+                    "shared resilience contribution total is inconsistent"
+                )
 
         for company in state.companies:
             if company.financial.cash_balance_cents < 0:
@@ -1405,15 +1537,21 @@ class MarketEnv:
         company: CompanyState,
         active_incident: CompanyIncident | None,
         summary: dict[str, int],
+        *,
+        public_protection_ppm: int = 0,
     ) -> CompanyIncident | None:
         if active_incident is not None:
             return active_incident
         cfg = self.config.mapping("incidents")
+        effective_resilience = PPM - _ppm_mul(
+            PPM - company.risk.resilience_ppm,
+            PPM - public_protection_ppm,
+        )
         probability = _ppm_mul(
             int(cfg["base_probability_ppm"]),
             PPM
             - _ppm_mul(
-                int(cfg["probability_reduction_ppm"]), company.risk.resilience_ppm
+                int(cfg["probability_reduction_ppm"]), effective_resilience
             ),
         )
         rng = self._rng(
@@ -1447,7 +1585,7 @@ class MarketEnv:
         )
         definition = cfg["definitions"][incident_type]["severity"][severity]
         impact_factor = PPM - _ppm_mul(
-            int(cfg["severity_reduction_ppm"]), company.risk.resilience_ppm
+            int(cfg["severity_reduction_ppm"]), effective_resilience
         )
         return CompanyIncident(
             incident_id=(

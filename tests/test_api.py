@@ -21,7 +21,7 @@ def test_api_creates_and_steps_v4_episode():
     body = created.json()
     state = body["state"]
     assert state["round"] == 1
-    assert body["manifest"]["environment_version"] == "market-env-v4.1.0"
+    assert body["manifest"]["environment_version"] == "market-env-v4.2.0"
     assert set(body["action_constraints"]) == {"company_A", "company_B"}
 
     joint_action = {}
@@ -230,6 +230,7 @@ def test_player_step_rejects_market_mode_episode():
 def test_agent_gateway_accepts_intent_without_mutating_and_controller_executes(
     monkeypatch,
 ):
+    monkeypatch.delenv("MARKET_CONTROLLER_TOKEN", raising=False)
     SESSIONS.clear()
     created = client.post(
         "/api/episodes",
@@ -262,6 +263,7 @@ def test_agent_gateway_accepts_intent_without_mutating_and_controller_executes(
             "company_id": "company_A",
             "round": 1,
             "state_version": 0,
+            "observation_hash": observed["observation_hash"],
             "requested_action": {
                 "price_cents": 10_000,
                 "advertising_budget_cents": 600_000,
@@ -334,6 +336,7 @@ def test_agent_gateway_rejects_stale_intent():
             "company_id": "company_A",
             "round": 1,
             "state_version": 99,
+            "observation_hash": "sha256:stale-observation",
             "requested_action": {"price_cents": 10_000},
         },
     )

@@ -21,6 +21,7 @@ from game_theory_agent.market.models import (
     Persona,
     RiskSignal,
     RiskState,
+    SharedResilienceState,
     StepResult,
 )
 from game_theory_agent.market.replay import EpisodeManifest, MarketTransition
@@ -55,6 +56,7 @@ __all__ = [
     "PresetResolver",
     "RiskSignal",
     "RiskState",
+    "SharedResilienceState",
     "StepResult",
     "ValidationResult",
     "load_market_config",

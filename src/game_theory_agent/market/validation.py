@@ -98,7 +98,9 @@ class ActionValidator:
             "incident_response",
         }
     )
-    optional_fields = frozenset({"strategy_summary"})
+    optional_fields = frozenset(
+        {"strategy_summary", "shared_resilience_contribution_cents"}
+    )
 
     def __init__(self, config: MarketConfig) -> None:
         self.config = config
@@ -148,6 +150,13 @@ class ActionValidator:
                 parsed.get(field), int
             ):
                 errors.append(f"{field} must be an integer")
+        shared_raw = parsed.get("shared_resilience_contribution_cents")
+        if shared_raw is not None and (
+            isinstance(shared_raw, bool) or not isinstance(shared_raw, int)
+        ):
+            errors.append(
+                "shared_resilience_contribution_cents must be an integer"
+            )
 
         response_raw = parsed.get("incident_response")
         if not isinstance(response_raw, Mapping):
@@ -186,6 +195,11 @@ class ActionValidator:
             service_budget_cents=int(parsed["service_budget_cents"]),
             capacity_investment_cents=int(parsed["capacity_investment_cents"]),
             resilience_budget_cents=int(parsed["resilience_budget_cents"]),
+            shared_resilience_contribution_cents=(
+                int(shared_raw or 0)
+                if state.shared_resilience is not None
+                else (int(shared_raw) if shared_raw not in (None, 0) else None)
+            ),
             incident_response=response,
             strategy_summary=str(parsed.get("strategy_summary", "")),
         )
@@ -223,6 +237,20 @@ class ActionValidator:
             high = int(bounds[field]["max"])
             if not low <= value <= high:
                 errors.append(f"{field} must be in [{low}, {high}]")
+        shared = action.shared_resilience_contribution_cents
+        if state.shared_resilience is None:
+            if shared not in (None, 0):
+                errors.append("shared resilience contribution is disabled")
+        else:
+            shared_value = int(shared or 0)
+            shared_bounds = bounds["shared_resilience_contribution_cents"]
+            if not int(shared_bounds["min"]) <= shared_value <= int(
+                shared_bounds["max"]
+            ):
+                errors.append(
+                    "shared_resilience_contribution_cents must be in "
+                    f"[{shared_bounds['min']}, {shared_bounds['max']}]"
+                )
 
         repair_bounds = bounds["repair_budget_cents"]
         repair = action.incident_response.repair_budget_cents
@@ -255,6 +283,10 @@ class ActionValidator:
                 errors.append("capacity investment is disabled in the last round")
             if action.resilience_budget_cents != 0:
                 errors.append("resilience investment is disabled in the last round")
+            if (action.shared_resilience_contribution_cents or 0) != 0:
+                errors.append(
+                    "shared resilience contribution is disabled in the last round"
+                )
         if action.fixed_spend_cents > company.financial.cash_balance_cents:
             errors.append("BUDGET_EXCEEDED")
         return errors
