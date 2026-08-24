@@ -25,7 +25,7 @@ protocols:
 
 market:
   min_agents: 2
-  max_agents: 8
+  max_agents: 10
   default_agents: 4
   rounds: 10
   base_demand_orders: 12000

@@ -342,3 +342,94 @@ def test_agent_gateway_rejects_stale_intent():
     )
     assert response.status_code == 409
     assert response.json()["detail"]["code"] == "STALE_OBSERVATION"
+
+
+def test_auto_run_finishes_remaining_rounds():
+    SESSIONS.clear()
+    created = client.post(
+        "/api/episodes",
+        json={
+            "episode_id": "auto-run-test",
+            "episode_seed": 9,
+            "company_ids": ["company_A", "company_B"],
+            "game_mode": "single_company",
+            "player_company_id": "company_A",
+            "max_rounds": 5,
+        },
+    )
+    assert created.status_code == 201
+    finished = client.post("/api/episodes/auto-run-test/auto-run")
+    assert finished.status_code == 200, finished.text
+    body = finished.json()
+    assert body["state"]["terminal"] is True
+    assert len(body["rounds"]) == 5
+    assert body["retrospective"]["status"] == "complete"
+
+
+def test_auto_run_accepts_json_object_body():
+    SESSIONS.clear()
+    created = client.post(
+        "/api/episodes",
+        json={
+            "episode_id": "auto-run-json",
+            "episode_seed": 11,
+            "company_ids": ["company_A", "company_B"],
+            "game_mode": "single_company",
+            "player_company_id": "company_A",
+            "max_rounds": 5,
+        },
+    )
+    assert created.status_code == 201
+    finished = client.post(
+        "/api/episodes/auto-run-json/auto-run",
+        content=b"{}",
+        headers={"content-type": "application/json"},
+    )
+    assert finished.status_code == 200, finished.text
+    assert finished.json()["state"]["terminal"] is True
+
+
+def test_auto_run_rejects_interaction_barrier(monkeypatch):
+    SESSIONS.clear()
+    monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", "unit-test-controller-token")
+    created = client.post(
+        "/api/episodes",
+        json={
+            "episode_id": "auto-run-blocked",
+            "episode_seed": 13,
+            "company_ids": ["company_A", "company_B"],
+            "communication_mode": "public_private",
+            "max_rounds": 5,
+        },
+        headers={"X-Controller-Token": "unit-test-controller-token"},
+    )
+    assert created.status_code == 201, created.text
+    blocked = client.post("/api/episodes/auto-run-blocked/auto-run")
+    assert blocked.status_code == 409
+    assert blocked.json()["detail"]["code"] == "INTERACTION_REQUIRES_AGENT_BARRIER"
+
+
+def test_api_creates_ten_company_episode():
+    SESSIONS.clear()
+    company_ids = [f"company_{chr(65 + index)}" for index in range(10)]
+    created = client.post(
+        "/api/episodes",
+        json={
+            "episode_id": "ten-company-test",
+            "episode_seed": 21,
+            "company_ids": company_ids,
+            "game_mode": "single_company",
+            "player_company_id": "company_A",
+            "max_rounds": 5,
+        },
+    )
+    assert created.status_code == 201, created.text
+    assert created.json()["state"]["company_order"] == company_ids
+    finished = client.post(
+        "/api/episodes/ten-company-test/auto-run",
+        content=b"{}",
+        headers={"content-type": "application/json"},
+    )
+    assert finished.status_code == 200, finished.text
+    assert finished.json()["state"]["terminal"] is True
+    assert len(finished.json()["rounds"]) == 5

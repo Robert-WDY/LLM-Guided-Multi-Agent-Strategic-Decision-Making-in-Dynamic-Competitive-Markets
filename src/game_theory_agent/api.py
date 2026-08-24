@@ -104,7 +104,9 @@ class CreateEpisodeRequest(BaseModel):
             "company_B",
             "company_C",
             "company_D",
-        ]
+        ],
+        min_length=2,
+        max_length=10,
     )
     personas: dict[str, Persona] = Field(default_factory=dict)
     agent_configs: dict[str, dict[str, Any]] = Field(default_factory=dict)
@@ -139,6 +141,10 @@ class StepRequest(BaseModel):
 class PlayerStepRequest(BaseModel):
     step_id: str
     player_action: dict[str, Any]
+
+
+class AutoRunRequest(BaseModel):
+    model_config = ConfigDict(extra="ignore")
 
 
 class SubmitAgentIntentRequest(BaseModel):
@@ -1118,6 +1124,11 @@ def _episode_options() -> dict[str, Any]:
             "request_semantics": "episode_seed omitted/null = random uint64; integer = fixed",
             "note": "随机 Seed 由受信任 Controller 生成；固定 Seed 用于可重放与配对评估。",
         },
+        "company_count": {
+            "min": CONFIG.min_agents,
+            "max": CONFIG.max_agents,
+            "default": CONFIG.integer("market", "default_agents"),
+        },
         "market_models": {
             "random": {
                 "label": "随机市场",
@@ -2082,6 +2093,73 @@ def settle_agent_round(
             ),
         }
         session.agent_settlements[request.step_id] = (request_key, payload)
+        return payload
+
+
+def _auto_run_remaining(session: EpisodeSession) -> list[dict[str, Any]]:
+    """Settle every remaining round with the deterministic rule policy."""
+
+    rounds: list[dict[str, Any]] = []
+    while not session.env.get_state().terminal:
+        state_before = session.env.get_state()
+        resolutions: dict[str, ResolvedDecision] = {}
+        for company_id in state_before.company_ids:
+            rule_action = build_rule_action(CONFIG, state_before, company_id)
+            resolutions[company_id] = _resolve(
+                state_before,
+                company_id,
+                rule_action.to_dict(),
+                source="rule-auto-run",
+                action_id=rule_action.action_id,
+            )
+        actions = {
+            company_id: decision.action
+            for company_id, decision in resolutions.items()
+        }
+        step_id = (
+            f"{state_before.episode_id}:{state_before.round}:"
+            f"{state_before.state_version}"
+        )
+        result = session.env.step(step_id, actions)
+        _record_transition(session, state_before, actions, result)
+        rounds.append(
+            {
+                "settled_round": result.settled_round,
+                "state": result.state_after.to_dict(),
+                "settled_market": settled_market_snapshot(session.transitions[-1]),
+                "decision_resolutions": {
+                    company_id: decision.to_dict()
+                    for company_id, decision in resolutions.items()
+                },
+            }
+        )
+    return rounds
+
+
+@app.post("/api/episodes/{episode_id}/auto-run")
+def auto_run_episode(
+    episode_id: str,
+    request: AutoRunRequest | None = None,
+) -> dict[str, Any]:
+    """Finish the current episode with rule agents, one joint step per round."""
+
+    del request
+    session = _session(episode_id)
+    with session.lock:
+        _reject_direct_step_when_interaction_enabled(session)
+        if session.env.get_state().terminal:
+            raise HTTPException(status_code=409, detail="episode is terminal")
+        rounds = _auto_run_remaining(session)
+        payload = _episode_payload(session)
+        payload["rounds"] = rounds
+        state = session.env.get_state()
+        if session.player_company_id and state.terminal:
+            payload["retrospective"] = build_retrospective(
+                session.manifest,
+                session.transitions,
+                session.player_company_id,
+                CONFIG,
+            )
         return payload
 
 
