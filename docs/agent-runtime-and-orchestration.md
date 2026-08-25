@@ -90,6 +90,10 @@ RoundCoordinator 先从 Controller 读取一次权威状态，再并发读取观
 
 Coordinator 不吞掉 Controller 或 MarketEnv 的结算错误。环境失败时不会伪造下一状态。
 
+### 规则代理续跑
+
+研究控制台可以调用受保护的 `POST /api/v1/controller/episodes/{episode_id}/auto-run`，让确定性规则代理跑完普通 Episode 的剩余回合。该操作需要 Controller Token、显式规则覆盖确认、当前 Round/State Version/State Hash 和幂等 `run_id`。通信、合作或任何 Belief/Advisor 战略链开启时禁止使用，避免把缺少 Agent Observation、Advice 和 Decision Trace 的结果误报为真实 Agent 实验。响应与前端报告都会明确标记 `rule_auto_run`；Economic Transition 可回放，但不会伪造 Agent Decision Trace。
+
 ### 可靠建议模式
 
 `advisor_mode=pareto_reliable_v5` 只允许用于 `public` 信息模式。它保留 `pareto_rollout_v4` 的 Planner 原推荐，同时记录可靠性门控后的有效推荐。当对手模型平均置信度低于门槛、Planner 候选不优于情境退路，或候选差距落在 Rollout 情景不确定度内时，建议器明确 `abstain`，退回零可选投入、利润恢复或风险缓冲动作。Gate 输入、原因、候选集合和输出都有独立 Hash；旧 v3/v4 合同和 Replay 不做静默修改。

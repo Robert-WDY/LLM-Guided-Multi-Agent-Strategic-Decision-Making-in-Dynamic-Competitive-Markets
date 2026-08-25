@@ -37,6 +37,8 @@ Human Agent 页面可以设置价格、广告和共享韧性贡献，也可以�
 
 创建真实高级 Episode 后，前端不会绕过 Communication Close 和 Agent Intent 直接调用市场 Step，而是提示等待 Coordinator 完成屏障和 Settlement。当前前端完成了高级 Episode 创建与权威 MarketState hydration，下一后端阶段才需要增加安全的 Experiment/Timeline/Trace 聚合读 API 和 Coordinator 控制 API。
 
+市场配置现支持 2–10 家公司。普通完全信息、通信关闭、合作关闭、博弈分析关闭的 Episode 可以使用“规则代理跑完剩余轮次”；该按钮要求 Controller Token，并提交当前 Round、State Version、State Hash、显式规则覆盖确认和幂等 Run ID。后端拒绝旧状态、重复 ID 不同输入以及任何启用战略链的 Episode。完成页会明确说明剩余轮次由确定性规则代理完成，不能把结果解释为原配置 LLM 的持续行为。
+
 后端离线或未输入 Token 时可加载 Research Demo。演示从 Round 1 开始，最大回合结算后进入 `EPISODE COMPLETE`，不会循环。每次推进读取 Human 的价格、广告与贡献，结合对手回合策略、历史份额和确定性冲击计算演示订单吸引力，再把四家公司份额归一化为 100%。这修复了固定加减造成的单调份额假象，并让低价扩大份额但可能损害利润等基本权衡可以在 UI 中观察。该函数不是 `MarketEnv`，不能进入实验报告或替代后端 RoundEvent。
 
 实时页不再要求参与者在多个导航页面间拼接信息。信息按真实处理顺序放在同一页。公司摘要只保留市场份额、变化、公开价格和抗冲击能力，删除卡片底部难以阅读的完整动作串。对手现金、成本、利润和人格仍保持遮蔽；“同页全部信息”指智能体合法可见并与决策相关的全部输入，而不是突破不完全信息边界。
@@ -54,7 +56,7 @@ Human Agent 页面可以设置价格、广告和共享韧性贡献，也可以�
 - Persona Drawer 的 Preset 与全部权重可见；
 - Live 对手现金和利润显示为隐藏；
 - Live 初始回合为 1，Round 20 完成后按钮锁定且不会返回 Round 1；
-- 四家公司份额每轮合计 100.0%，连续五轮中存在方向反转而不是机械单调轨迹；
+- 2–10 家公司份额每轮合计 100.0%，连续五轮中存在方向反转而不是机械单调轨迹；
 - Human 低价与高价反事实产生不同份额和利润；
 - Replay 节点切换会更新 Trace Inspector；
 - 页面导航后自动回到顶部，避免从 Setup 底部进入 Live 时跳过回合屏障；

@@ -1,6 +1,8 @@
 from fastapi.testclient import TestClient
 
-from game_theory_agent.api import SESSIONS, agent_app, app
+from game_theory_agent.api import CONFIG, SESSIONS, agent_app, app
+from game_theory_agent.market import MarketEnv
+from game_theory_agent.market.replay import verify_replay
 
 
 client = TestClient(app)
@@ -342,3 +344,251 @@ def test_agent_gateway_rejects_stale_intent():
     )
     assert response.status_code == 409
     assert response.json()["detail"]["code"] == "STALE_OBSERVATION"
+
+
+CONTROLLER_TOKEN = "unit-test-controller-token"
+
+
+def _controller_headers() -> dict[str, str]:
+    return {"X-Controller-Token": CONTROLLER_TOKEN}
+
+
+def _auto_run_body(run_id: str, state: dict[str, object]) -> dict[str, object]:
+    return {
+        "run_id": run_id,
+        "confirm_rule_override": True,
+        "expected_round": state["round"],
+        "expected_state_version": state["state_version"],
+        "expected_state_hash": state["state_hash"],
+    }
+
+
+def test_auto_run_requires_controller_authentication(monkeypatch):
+    SESSIONS.clear()
+    monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", CONTROLLER_TOKEN)
+    created = client.post(
+        "/api/episodes",
+        json={
+            "episode_id": "auto-run-auth-test",
+            "episode_seed": 8,
+            "company_ids": ["company_A", "company_B"],
+        },
+    )
+    assert created.status_code == 201
+
+    denied = client.post(
+        "/api/v1/controller/episodes/auto-run-auth-test/auto-run",
+        json=_auto_run_body("auth-attempt", created.json()["state"]),
+    )
+
+    assert denied.status_code == 401
+    assert SESSIONS["auto-run-auth-test"].env.get_state().round == 1
+
+
+def test_auto_run_rejects_stale_state_identity(monkeypatch):
+    SESSIONS.clear()
+    monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", CONTROLLER_TOKEN)
+    created = client.post(
+        "/api/episodes",
+        headers=_controller_headers(),
+        json={
+            "episode_id": "auto-run-stale-test",
+            "episode_seed": 81,
+            "company_ids": ["company_A", "company_B"],
+        },
+    )
+    body = _auto_run_body("auto-run-stale-test:1", created.json()["state"])
+    body["expected_state_hash"] = "sha256:stale"
+
+    stale = client.post(
+        "/api/v1/controller/episodes/auto-run-stale-test/auto-run",
+        headers=_controller_headers(),
+        json=body,
+    )
+
+    assert stale.status_code == 409
+    assert stale.json()["detail"]["code"] == "STALE_RULE_AUTO_RUN"
+    assert SESSIONS["auto-run-stale-test"].env.get_state().round == 1
+
+
+def test_auto_run_finishes_remaining_rounds_and_replays(monkeypatch):
+    SESSIONS.clear()
+    monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", CONTROLLER_TOKEN)
+    created = client.post(
+        "/api/episodes",
+        headers=_controller_headers(),
+        json={
+            "episode_id": "auto-run-test",
+            "episode_seed": 9,
+            "company_ids": ["company_A", "company_B"],
+            "game_mode": "single_company",
+            "player_company_id": "company_A",
+            "max_rounds": 5,
+        },
+    )
+    assert created.status_code == 201
+    finished = client.post(
+        "/api/v1/controller/episodes/auto-run-test/auto-run",
+        headers=_controller_headers(),
+        json=_auto_run_body("auto-run-test:1", created.json()["state"]),
+    )
+    assert finished.status_code == 200, finished.text
+    body = finished.json()
+    assert body["state"]["terminal"] is True
+    assert len(body["rounds"]) == 5
+    assert body["execution"]["mode"] == "rule_auto_run"
+    assert body["execution"]["market_transitions_recorded"] is True
+    assert body["execution"]["agent_decision_traces_generated"] is False
+    assert all(
+        resolution["source"] == "rule-auto-run"
+        for row in body["rounds"]
+        for resolution in row["decision_resolutions"].values()
+    )
+    assert body["retrospective"]["status"] == "complete"
+    session = SESSIONS["auto-run-test"]
+    replayed = verify_replay(
+        MarketEnv(CONFIG), session.manifest, session.transitions
+    )
+    assert replayed[-1].state_hash == body["state"]["state_hash"]
+
+
+def test_auto_run_is_idempotent_for_the_same_run_id(monkeypatch):
+    SESSIONS.clear()
+    monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", CONTROLLER_TOKEN)
+    created = client.post(
+        "/api/episodes",
+        headers=_controller_headers(),
+        json={
+            "episode_id": "auto-run-json",
+            "episode_seed": 11,
+            "company_ids": ["company_A", "company_B"],
+            "game_mode": "single_company",
+            "player_company_id": "company_A",
+            "max_rounds": 5,
+        },
+    )
+    assert created.status_code == 201
+    first = client.post(
+        "/api/v1/controller/episodes/auto-run-json/auto-run",
+        headers=_controller_headers(),
+        json=_auto_run_body("auto-run-json:1", created.json()["state"]),
+    )
+    repeated = client.post(
+        "/api/v1/controller/episodes/auto-run-json/auto-run",
+        headers=_controller_headers(),
+        json=_auto_run_body("auto-run-json:1", created.json()["state"]),
+    )
+    assert first.status_code == 200, first.text
+    assert repeated.status_code == 200, repeated.text
+    assert repeated.json() == first.json()
+    assert len(SESSIONS["auto-run-json"].transitions) == 5
+    reused_body = _auto_run_body(
+        "auto-run-json:1", created.json()["state"]
+    )
+    reused_body["expected_round"] = 2
+    reused = client.post(
+        "/api/v1/controller/episodes/auto-run-json/auto-run",
+        headers=_controller_headers(),
+        json=reused_body,
+    )
+    assert reused.status_code == 409
+    assert reused.json()["detail"]["code"] == "RULE_AUTO_RUN_ID_REUSED"
+
+
+def test_auto_run_rejects_interaction_barrier(monkeypatch):
+    SESSIONS.clear()
+    monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", CONTROLLER_TOKEN)
+    created = client.post(
+        "/api/episodes",
+        json={
+            "episode_id": "auto-run-blocked",
+            "episode_seed": 13,
+            "company_ids": ["company_A", "company_B"],
+            "communication_mode": "public_private",
+            "max_rounds": 5,
+        },
+        headers=_controller_headers(),
+    )
+    assert created.status_code == 201, created.text
+    blocked = client.post(
+        "/api/v1/controller/episodes/auto-run-blocked/auto-run",
+        headers=_controller_headers(),
+        json=_auto_run_body("auto-run-blocked:1", created.json()["state"]),
+    )
+    assert blocked.status_code == 409
+    assert blocked.json()["detail"]["code"] == "INTERACTION_REQUIRES_AGENT_BARRIER"
+
+
+def test_auto_run_rejects_strategic_agent_pipeline(monkeypatch):
+    SESSIONS.clear()
+    monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", CONTROLLER_TOKEN)
+    created = client.post(
+        "/api/episodes",
+        headers=_controller_headers(),
+        json={
+            "episode_id": "auto-run-strategic-blocked",
+            "episode_seed": 15,
+            "company_ids": ["company_A", "company_B"],
+            "belief_mode": "public_action_v1",
+            "max_rounds": 5,
+        },
+    )
+    assert created.status_code == 201, created.text
+
+    blocked = client.post(
+        "/api/v1/controller/episodes/auto-run-strategic-blocked/auto-run",
+        headers=_controller_headers(),
+        json=_auto_run_body(
+            "auto-run-strategic-blocked:1", created.json()["state"]
+        ),
+    )
+
+    assert blocked.status_code == 409
+    detail = blocked.json()["detail"]
+    assert detail["code"] == "RULE_AUTO_RUN_REQUIRES_PLAIN_MARKET"
+    assert detail["enabled_strategic_modes"] == ["belief"]
+
+
+def test_api_creates_ten_company_episode(monkeypatch):
+    SESSIONS.clear()
+    monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", CONTROLLER_TOKEN)
+    company_ids = [f"company_{chr(65 + index)}" for index in range(10)]
+    created = client.post(
+        "/api/episodes",
+        headers=_controller_headers(),
+        json={
+            "episode_id": "ten-company-test",
+            "episode_seed": 21,
+            "company_ids": company_ids,
+            "game_mode": "single_company",
+            "player_company_id": "company_A",
+            "max_rounds": 5,
+        },
+    )
+    assert created.status_code == 201, created.text
+    assert created.json()["state"]["company_order"] == company_ids
+    finished = client.post(
+        "/api/v1/controller/episodes/ten-company-test/auto-run",
+        headers=_controller_headers(),
+        json=_auto_run_body("ten-company-test:1", created.json()["state"]),
+    )
+    assert finished.status_code == 200, finished.text
+    assert finished.json()["state"]["terminal"] is True
+    assert len(finished.json()["rounds"]) == 5
+
+
+def test_controller_token_is_allowed_by_local_frontend_cors():
+    response = client.options(
+        "/api/v1/controller/episodes/example/auto-run",
+        headers={
+            "Origin": "http://localhost:3210",
+            "Access-Control-Request-Method": "POST",
+            "Access-Control-Request-Headers": (
+                "content-type,x-controller-token"
+            ),
+        },
+    )
+
+    assert response.status_code == 200
+    allowed = response.headers["access-control-allow-headers"].lower()
+    assert "x-controller-token" in allowed

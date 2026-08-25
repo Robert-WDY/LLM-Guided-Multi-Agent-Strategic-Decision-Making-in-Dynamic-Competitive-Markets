@@ -327,6 +327,8 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .settle-round-button { width: 100%; min-height: 44px; margin-top: 11px; border: 0; background: var(--ink); color: white; font-size: 9px; }
 .settle-round-button:disabled { cursor: not-allowed; background: #aaa9a5; }
 .settle-round-button i { margin-left: 12px; color: #70dcc4; font-style: normal; }
+.live-action-panel .ghost-button,
+.observer-round-panel .ghost-button { width: 100%; min-height: 40px; margin-top: 8px; }
 .primary-task { border-top: 3px solid var(--mint); }
 .observer-round-panel p { max-width: 480px; color: var(--muted); font-size: 9px; line-height: 1.7; }
 .settlement-table { border: 1px solid #dfdcd4; }

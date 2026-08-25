@@ -108,7 +108,9 @@ class CreateEpisodeRequest(BaseModel):
             "company_B",
             "company_C",
             "company_D",
-        ]
+        ],
+        min_length=2,
+        max_length=10,
     )
     personas: dict[str, Persona] = Field(default_factory=dict)
     agent_configs: dict[str, dict[str, Any]] = Field(default_factory=dict)
@@ -143,6 +145,18 @@ class StepRequest(BaseModel):
 class PlayerStepRequest(BaseModel):
     step_id: str
     player_action: dict[str, Any]
+
+
+class AutoRunRequest(BaseModel):
+    """Explicit, idempotent authorization to replace remaining decisions."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    run_id: str = Field(min_length=1, max_length=200)
+    confirm_rule_override: Literal[True]
+    expected_round: int = Field(ge=1)
+    expected_state_version: int = Field(ge=0)
+    expected_state_hash: str = Field(min_length=1)
 
 
 class SubmitAgentIntentRequest(BaseModel):
@@ -240,6 +254,9 @@ class EpisodeSession:
     agent_settlements: dict[str, tuple[dict[str, Any], dict[str, Any]]] = field(
         default_factory=dict
     )
+    rule_auto_runs: dict[
+        str, tuple[dict[str, Any], dict[str, Any]]
+    ] = field(default_factory=dict)
     communication_mode: CommunicationMode = "off"
     cooperation_mode: CooperationMode = "off"
     cooperation_ledger: CooperationLedger | None = None
@@ -289,7 +306,7 @@ app.add_middleware(
     ],
     allow_credentials=False,
     allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Content-Type"],
+    allow_headers=["Content-Type", "X-Controller-Token"],
 )
 
 
@@ -543,6 +560,37 @@ def _reject_direct_step_when_interaction_enabled(
                     "submit authenticated intents after Communication Close and use "
                     "the protected controller settlement endpoint"
                 ),
+            },
+        )
+
+
+def _reject_rule_auto_run_when_strategic_pipeline_enabled(
+    session: EpisodeSession,
+) -> None:
+    """Prevent a rule continuation from masquerading as an Agent experiment."""
+
+    enabled = sorted(
+        name
+        for name, mode in {
+            "belief": session.belief_mode,
+            "opponent_model": session.opponent_model_mode,
+            "utility_inference": session.utility_inference_mode,
+            "advisor": session.advisor_mode,
+            "repeated_game": session.repeated_game_mode,
+        }.items()
+        if mode != "off"
+    )
+    if enabled:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "code": "RULE_AUTO_RUN_REQUIRES_PLAIN_MARKET",
+                "message": (
+                    "rule auto-run cannot replace an enabled strategic Agent "
+                    "pipeline; use the Coordinator so observations, beliefs, "
+                    "advice, decisions, and outcomes remain attributable"
+                ),
+                "enabled_strategic_modes": enabled,
             },
         )
 
@@ -1162,6 +1210,11 @@ def _episode_options() -> dict[str, Any]:
             "fixed_supported": True,
             "request_semantics": "episode_seed omitted/null = random uint64; integer = fixed",
             "note": "随机 Seed 由受信任 Controller 生成；固定 Seed 用于可重放与配对评估。",
+        },
+        "company_count": {
+            "min": CONFIG.min_agents,
+            "max": CONFIG.max_agents,
+            "default": CONFIG.integer("market", "default_agents"),
         },
         "market_models": {
             "random": {
@@ -2145,6 +2198,135 @@ def settle_agent_round(
             ),
         }
         session.agent_settlements[request.step_id] = (request_key, payload)
+        return payload
+
+
+def _auto_run_remaining(
+    session: EpisodeSession,
+    *,
+    run_id: str,
+) -> list[dict[str, Any]]:
+    """Settle every remaining round with the deterministic rule policy."""
+
+    rounds: list[dict[str, Any]] = []
+    while not session.env.get_state().terminal:
+        state_before = session.env.get_state()
+        resolutions: dict[str, ResolvedDecision] = {}
+        for company_id in state_before.company_ids:
+            rule_action = build_rule_action(CONFIG, state_before, company_id)
+            resolutions[company_id] = _resolve(
+                state_before,
+                company_id,
+                rule_action.to_dict(),
+                source="rule-auto-run",
+                action_id=rule_action.action_id,
+            )
+        actions = {
+            company_id: decision.action
+            for company_id, decision in resolutions.items()
+        }
+        step_id = (
+            f"{state_before.episode_id}:{state_before.round}:"
+            f"{state_before.state_version}"
+        )
+        result = session.env.step(step_id, actions)
+        _record_transition(session, state_before, actions, result)
+        rounds.append(
+            {
+                "execution_mode": "rule_auto_run",
+                "run_id": run_id,
+                "settled_round": result.settled_round,
+                "state": result.state_after.to_dict(),
+                "settled_market": settled_market_snapshot(session.transitions[-1]),
+                "decision_resolutions": {
+                    company_id: decision.to_dict()
+                    for company_id, decision in resolutions.items()
+                },
+            }
+        )
+    return rounds
+
+
+@app.post("/api/v1/controller/episodes/{episode_id}/auto-run")
+def auto_run_episode(
+    episode_id: str,
+    request: AutoRunRequest,
+    controller_token: str | None = Header(
+        default=None, alias="X-Controller-Token"
+    ),
+) -> dict[str, Any]:
+    """Protected, idempotent rule continuation for a plain market Episode."""
+
+    _require_controller_token(controller_token)
+    session = _session(episode_id)
+    with session.lock:
+        request_key = request.model_dump(mode="json")
+        cached = session.rule_auto_runs.get(request.run_id)
+        if cached is not None:
+            cached_key, cached_payload = cached
+            if cached_key != request_key:
+                raise HTTPException(
+                    status_code=409,
+                    detail={
+                        "code": "RULE_AUTO_RUN_ID_REUSED",
+                        "message": "run_id was already used with different inputs",
+                    },
+                )
+            return cached_payload
+        _reject_direct_step_when_interaction_enabled(session)
+        _reject_rule_auto_run_when_strategic_pipeline_enabled(session)
+        state_before = session.env.get_state()
+        if state_before.terminal:
+            raise HTTPException(status_code=409, detail="episode is terminal")
+        if (
+            request.expected_round != state_before.round
+            or request.expected_state_version != state_before.state_version
+            or request.expected_state_hash != state_before.state_hash
+        ):
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    "code": "STALE_RULE_AUTO_RUN",
+                    "message": (
+                        "rule auto-run was bound to an older market state; "
+                        "refresh the Episode before retrying"
+                    ),
+                    "current_round": state_before.round,
+                    "current_state_version": state_before.state_version,
+                    "current_state_hash": state_before.state_hash,
+                },
+            )
+        agent_configs = dict(session.manifest.agent_configs)
+        overridden_company_ids = [
+            company_id
+            for company_id in state_before.company_ids
+            if str(agent_configs.get(company_id, {}).get("agent_type", "rule"))
+            != "rule"
+        ]
+        rounds = _auto_run_remaining(session, run_id=request.run_id)
+        payload = _episode_payload(session)
+        payload["rounds"] = rounds
+        state = session.env.get_state()
+        payload["execution"] = {
+            "mode": "rule_auto_run",
+            "run_id": request.run_id,
+            "rule_override_confirmed": request.confirm_rule_override,
+            "started_round": state_before.round,
+            "started_state_hash": state_before.state_hash,
+            "settled_round_count": len(rounds),
+            "overridden_company_ids": overridden_company_ids,
+            "decision_source": "deterministic_rule",
+            "agent_decision_traces_generated": False,
+            "market_transitions_recorded": True,
+        }
+        if session.player_company_id and state.terminal:
+            payload["retrospective"] = build_retrospective(
+                session.manifest,
+                session.transitions,
+                session.player_company_id,
+                CONFIG,
+            )
+        session.rule_auto_runs[request.run_id] = (request_key, payload)
         return payload
 
 

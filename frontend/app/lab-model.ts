@@ -189,12 +189,23 @@ export const PERSONAS: Record<PersonaKey, PersonaProfile> = {
   },
 };
 
-export const DEFAULT_AGENTS: AgentConfig[] = [
+export const MIN_COMPANIES = 2;
+export const MAX_COMPANIES = 10;
+
+export const AGENT_TEMPLATES: AgentConfig[] = [
   { companyId: "company_A", shortName: "A", companyName: "青禾速配", color: "#4ee0bd", driver: "human", model: "Human", persona: "balanced_v1", information: "public", communication: true, gameTheory: false },
   { companyId: "company_B", shortName: "B", companyName: "橙选到家", color: "#ff8468", driver: "doubao", model: "Doubao Seed 2.0 Lite", persona: "aggressive_v1_extreme", information: "public", communication: true, gameTheory: true },
   { companyId: "company_C", shortName: "C", companyName: "蓝仓鲜送", color: "#7196ff", driver: "deepseek", model: "DeepSeek V3", persona: "selfish_long_term_v1", information: "public", communication: true, gameTheory: true },
   { companyId: "company_D", shortName: "D", companyName: "紫藤优鲜", color: "#b38cff", driver: "rule", model: "Deterministic Rule", persona: "risk_guarded_v1", information: "public", communication: false, gameTheory: false },
+  { companyId: "company_E", shortName: "E", companyName: "赤焰鲜达", color: "#dc2626", driver: "rule", model: "Deterministic Rule", persona: "free_rider", information: "public", communication: true, gameTheory: false },
+  { companyId: "company_F", shortName: "F", companyName: "金穗到家", color: "#ca8a04", driver: "rule", model: "Deterministic Rule", persona: "cooperator", information: "public", communication: true, gameTheory: false },
+  { companyId: "company_G", shortName: "G", companyName: "翠湾配送", color: "#059669", driver: "rule", model: "Deterministic Rule", persona: "retaliator", information: "public", communication: true, gameTheory: false },
+  { companyId: "company_H", shortName: "H", companyName: "墨兰冷链", color: "#1d4ed8", driver: "rule", model: "Deterministic Rule", persona: "balanced_v1", information: "public", communication: false, gameTheory: false },
+  { companyId: "company_I", shortName: "I", companyName: "雪梨优送", color: "#0ea5e9", driver: "rule", model: "Deterministic Rule", persona: "aggressive_v1_extreme", information: "public", communication: true, gameTheory: false },
+  { companyId: "company_J", shortName: "J", companyName: "枫桥鲜配", color: "#c2410c", driver: "rule", model: "Deterministic Rule", persona: "selfish_long_term_v1", information: "public", communication: false, gameTheory: false },
 ];
+
+export const DEFAULT_AGENTS: AgentConfig[] = AGENT_TEMPLATES.slice(0, 4);
 
 const commonPublic = [
   { label: "实现需求", value: "12,480 单" },
@@ -203,10 +214,18 @@ const commonPublic = [
   { label: "行业共享韧性", value: "62.4%" },
 ];
 
-function runtime(agent: AgentConfig, index: number): AgentRuntimeView {
-  const prices = [9800, 9600, 10100, 9900];
-  const shares = [27.5, 26, 24.5, 22];
-  const profits = [0, 0, 0, 0];
+function equalShares(count: number): number[] {
+  const base = Math.round((100 / count) * 10) / 10;
+  const shares = Array.from({ length: count }, () => base);
+  shares[count - 1] = Math.round((100 - base * (count - 1)) * 10) / 10;
+  return shares;
+}
+
+function runtime(agent: AgentConfig, index: number, roster: AgentConfig[]): AgentRuntimeView {
+  const prices = [9800, 9600, 10100, 9900, 9700, 10000, 10200, 9850, 9950, 10150];
+  const fourShares = [27.5, 26, 24.5, 22];
+  const shares = roster.length === 4 ? fourShares : equalShares(roster.length);
+  const hashes = ["8e31b4d9", "112fa4c0", "7232ec18", "c9e04bd1", "a1b2c3d4", "55ee9012", "7c8d9e0f", "b3c4d5e6", "f1029384", "0a1b2c3d"];
   return {
     companyId: agent.companyId,
     companyName: agent.companyName,
@@ -214,12 +233,12 @@ function runtime(agent: AgentConfig, index: number): AgentRuntimeView {
     persona: PERSONAS[agent.persona].label,
     driver: agent.model,
     cash: 24_800_000 - index * 1_420_000,
-    profit: profits[index],
+    profit: 0,
     share: shares[index],
     shareDelta: 0,
     price: prices[index],
     resilience: 68 - index * 4,
-    observationHash: `sha256:${["8e31b4d9", "112fa4c0", "7232ec18", "c9e04bd1"][index]}…`,
+    observationHash: `sha256:${hashes[index]}…`,
     observation: {
       public: commonPublic,
       private: [
@@ -233,7 +252,7 @@ function runtime(agent: AgentConfig, index: number): AgentRuntimeView {
         { label: "对手 Persona", value: "Belief only" },
       ],
     },
-    beliefs: DEFAULT_AGENTS.filter((item) => item.companyId !== agent.companyId).map((opponent) => ({
+    beliefs: roster.filter((item) => item.companyId !== agent.companyId).map((opponent) => ({
       companyId: opponent.companyId,
       strategy: { growth: 33, profit: 34, defensive: 33 },
       nextAction: { cut: 33, maintain: 34, raise: 33 },
@@ -269,7 +288,11 @@ function runtime(agent: AgentConfig, index: number): AgentRuntimeView {
   };
 }
 
-export const DEMO_AGENTS = DEFAULT_AGENTS.map(runtime);
+export function buildRuntimeAgents(configs: AgentConfig[]): AgentRuntimeView[] {
+  return configs.map((agent, index) => runtime(agent, index, configs));
+}
+
+export const DEMO_AGENTS = buildRuntimeAgents(DEFAULT_AGENTS);
 
 export type DemoHumanAction = {
   price: number;
@@ -306,13 +329,14 @@ export function advanceDemoRound(
     if (index === 0) {
       return { ...agent.action, price: humanAction.price, advertising: humanAction.advertising, contribution: humanAction.contribution };
     }
-    const anchor = [9800, 9500, 10100, 9900][index];
+    const fourIndex = index % 4;
+    const anchor = [9800, 9500, 10100, 9900][fourIndex] + Math.floor(index / 4) * 50;
     return {
       ...agent.action,
-      price: Math.max(8000, Math.min(12000, anchor + pattern[index])),
+      price: Math.max(8000, Math.min(12000, anchor + pattern[fourIndex])),
       advertising: Math.max(0, agent.action.advertising + ((settledRound + index) % 3 - 1) * 100_000),
       service: Math.max(0, agent.action.service + ((settledRound * index) % 3 - 1) * 100_000),
-      contribution: index === 3 && settledRound % 2 === 0 ? 0 : agent.action.contribution,
+      contribution: fourIndex === 3 && settledRound % 2 === 0 ? 0 : agent.action.contribution,
     };
   });
   const averagePrice = nextActions.reduce((sum, action) => sum + action.price, 0) / nextActions.length;
@@ -321,13 +345,13 @@ export function advanceDemoRound(
     const pricePull = Math.pow(averagePrice / action.price, 2.6);
     const investmentPull = 1 + action.advertising / 3_500_000 + action.service / 5_000_000 + action.capacity / 9_000_000;
     const continuity = 0.82 + agent.share / 140;
-    return Math.max(0.05, pricePull * investmentPull * continuity * shocks[index]);
+    return Math.max(0.05, pricePull * investmentPull * continuity * shocks[index % shocks.length]);
   });
   const scoreTotal = scores.reduce((sum, value) => sum + value, 0);
   const roundedShares = scores.map((score) => Math.round((score / scoreTotal) * 1000) / 10);
   roundedShares[roundedShares.length - 1] = Math.round((100 - roundedShares.slice(0, -1).reduce((sum, value) => sum + value, 0)) * 10) / 10;
   const realizedDemand = 11_600 + ((settledRound * 811) % 1_900);
-  const unitCosts = [6200, 6000, 6500, 6300];
+  const unitCosts = agents.map((_, index) => [6200, 6000, 6500, 6300][index % 4] + Math.floor(index / 4) * 40);
 
   return agents.map((agent, index) => {
     const action = nextActions[index];

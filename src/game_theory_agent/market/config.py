@@ -130,8 +130,8 @@ class MarketConfig:
         for field in ("config_id", "config_version", "environment_version"):
             self.text(field)
 
-        if not 2 <= self.min_agents <= self.max_agents <= 8:
-            raise ConfigError("market agent bounds must satisfy 2 <= min <= max <= 8")
+        if not 2 <= self.min_agents <= self.max_agents <= 10:
+            raise ConfigError("market agent bounds must satisfy 2 <= min <= max <= 10")
         if self.rounds <= 0 or self.base_demand_orders <= 0:
             raise ConfigError("market rounds and base demand must be positive")
 

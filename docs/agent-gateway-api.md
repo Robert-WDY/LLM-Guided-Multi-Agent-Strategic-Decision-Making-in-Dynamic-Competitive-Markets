@@ -258,6 +258,24 @@ X-Controller-Token: <MARKET_CONTROLLER_TOKEN>
 
 通信开启时，旧 `/api/episodes/{episode_id}/steps` 和 `/player-steps` 直连路由返回 `409 INTERACTION_REQUIRES_AGENT_BARRIER`，不能绕过消息关闭、视图绑定和受保护结算。
 
+### `POST /api/v1/controller/episodes/{episode_id}/auto-run`
+
+仅用于普通市场 Episode，由确定性规则代理跑完剩余回合。请求必须携带 Controller Token，并显式绑定点击时看到的状态：
+
+```json
+{
+  "run_id": "episode-123:rule-auto-run:4",
+  "confirm_rule_override": true,
+  "expected_round": 4,
+  "expected_state_version": 3,
+  "expected_state_hash": "sha256:..."
+}
+```
+
+相同 `run_id` 和相同请求可安全重试并返回首次完整结果；相同 ID 搭配不同输入返回 `409 RULE_AUTO_RUN_ID_REUSED`，状态已推进则返回 `409 STALE_RULE_AUTO_RUN`。Communication、Cooperation、Belief、Opponent Model、Utility Inference、Advisor 或 Repeated Game 任一链路开启时均拒绝规则续跑，必须由 Coordinator 生成可归因的 Observation、Advice、Decision 和 RoundEvent。
+
+响应将 `execution.mode` 标记为 `rule_auto_run`，记录起始状态、结算轮数、被规则覆盖的非 Rule 公司和是否生成 Agent Decision Trace；每轮 `decision_resolutions.source` 为 `rule-auto-run`，Market Transition 仍完整记录并可 Economic Replay。该接口验证市场可结算性，不是 LLM 行为实验。
+
 ### `POST /api/v1/controller/evaluations/presets`
 
 运行多 Seed 档位校准：

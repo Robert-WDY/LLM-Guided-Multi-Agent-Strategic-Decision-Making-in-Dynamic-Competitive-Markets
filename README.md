@@ -19,6 +19,7 @@
 - 统一决策规则层：人类、规则对手和外部 Agent 的请求都先经过状态护栏与现金约束；
 - 独立 Agent Gateway：Agent 只读取观察和提交意图，受保护 Controller 才能执行联合结算；
 - Game Theory Lab 研究控制台：实验配置、Human/LLM/Rule Agent 编排、Persona Profile、Agent-scoped Observation、Belief/Advisor、通信可见性、市场结果、Replay 调试和实验报告；
+- 市场与研究控制台支持 2–10 家公司；普通无通信、无合作、无战略链的 Episode 可由受保护 Controller 使用确定性规则代理跑完剩余回合，规则覆盖会明确标记且不能冒充真实 LLM 行为；
 - 随机 / 固定 Seed 前端入口和 200 Seed 投入档位校准。
 - 规则对手使用 Seed 固定的价值型、溢价型、增长型或谨慎型行为，并带可复现的回合扰动；不调用 Agent 或模型；
 - 利润计入固定运营和逐单履约成本，声誉采用慢变量更新，完全维修当轮保留残余事故影响；

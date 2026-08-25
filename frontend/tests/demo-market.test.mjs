@@ -36,3 +36,14 @@ test("opponent judgment starts without evidence and updates only after settlemen
   assert.ok(afterFirstSettlement.every((agent) => agent.beliefs.every((belief) => belief.evidence.length === 2)));
   assert.ok(afterFirstSettlement[0].beliefs.some((belief) => belief.nextAction.cut !== 33));
 });
+
+test("ten-company demo market still conserves total share", async () => {
+  const { AGENT_TEMPLATES, buildRuntimeAgents } = await import("../app/lab-model.ts");
+  let agents = buildRuntimeAgents(AGENT_TEMPLATES);
+  for (let round = 1; round <= 3; round += 1) {
+    agents = advanceDemoRound(agents, round, baseAction);
+    const totalShare = agents.reduce((sum, agent) => sum + agent.share, 0);
+    assert.equal(agents.length, 10);
+    assert.ok(Math.abs(totalShare - 100) < 1e-9, `round ${round} share total was ${totalShare}`);
+  }
+});
