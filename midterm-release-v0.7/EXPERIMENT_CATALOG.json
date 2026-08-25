@@ -1,0 +1,51 @@
+{
+  "catalog_schema_version": "midterm-experiment-catalog-v1.0.0",
+  "catalog_hash": "sha256:c5d45bbef4c54d67f3f0f76c5f68fac712ef4101708180fd43c03bdefe8149f8",
+  "experiments": [
+    {
+      "experiment_id": "persona-heterogeneity-seed101",
+      "title": "人格异质性真实市场样例",
+      "evidence_type": "REAL",
+      "research_theme": "persona_heterogeneity",
+      "artifact_root": "midterm-release-v0.7/selected-runs/persona-heterogeneity-seed101",
+      "round_events_path": "round-events.jsonl",
+      "summary_path": "summary.json",
+      "round_events_sha256": "sha256:fd05f1173363813a0c8d50ed9798e362462daafe2dd2b8788c63cf3a08e6ab71",
+      "summary_sha256": "sha256:8d14a9f401d026a0fb30017022d7d28ff86b1f24ff0821b9b9a6553a5b97a40f",
+      "visibility": "public-demo",
+      "round_count": 20,
+      "company_ids": ["company_A", "company_B", "company_C", "company_D"],
+      "claim_boundary": "单 Seed 真实 Episode 只用于逐轮回放；跨 Seed 结论以发布报告为准。"
+    },
+    {
+      "experiment_id": "cooperation-mechanism-acceptance",
+      "title": "合作、承诺、部分背叛与搭便车机制验收",
+      "evidence_type": "ENGINEERING",
+      "research_theme": "cooperation_and_betrayal",
+      "artifact_root": "midterm-release-v0.7/selected-runs/cooperation-betrayal-seed101",
+      "round_events_path": "round-events.jsonl",
+      "summary_path": "summary.json",
+      "round_events_sha256": "sha256:1b39f54df94ba4ad11f33f40902463e0016568d3fd02b1a1847892936bce1bfa",
+      "summary_sha256": "sha256:020a40411dcebfe7313f81f1736264daf2f81a9cca0aec6f4e05c2d58a31f678",
+      "visibility": "public-demo",
+      "round_count": 5,
+      "company_ids": ["company_A", "company_B", "company_C", "company_D"],
+      "claim_boundary": "确定性工程验收证明合作机制可结算和重建；不代表真实 LLM 合作行为，也不证明专用合作人格已完成。"
+    },
+    {
+      "experiment_id": "advisor-evolution-risk-seed4",
+      "title": "旧 Bayesian Advisor 真实决策与回放样例",
+      "evidence_type": "REAL",
+      "research_theme": "advisor_evolution",
+      "artifact_root": "midterm-release-v0.7/selected-runs/advisor-evolution-risk-seed4",
+      "round_events_path": "round-events.jsonl",
+      "summary_path": "summary.json",
+      "round_events_sha256": "sha256:bac87b45a1516522e01930936f688fc609ee60f3045d36360198b6bb553b364e",
+      "summary_sha256": "sha256:4a50eea75e3807308581a193c052ef78ef9271438cdeb0a01f07bc4ebcfc2589",
+      "visibility": "public-demo",
+      "round_count": 10,
+      "company_ids": ["company_A", "company_B", "company_C", "company_D"],
+      "claim_boundary": "展示旧 Bayesian Advisor 的真实决策链与当前 Replay；v5/v6 修复和 Forecast 失败结论来自另行发布的配对与校准汇总。"
+    }
+  ]
+}

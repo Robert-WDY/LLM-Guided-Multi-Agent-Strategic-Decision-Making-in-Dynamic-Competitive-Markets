@@ -1,0 +1,80 @@
+{
+  "advisor_mode": "pareto_reliable_v7",
+  "baseline_policy": "build_rule_action-current-checkout",
+  "company_ids": [
+    "company_A",
+    "company_B",
+    "company_C",
+    "company_D"
+  ],
+  "continuation_policy": "after the first focal action, all companies use the same deterministic build_rule_action policy for up to three rounds",
+  "engineering_thresholds": {
+    "abstention_executable_action_count": 0,
+    "abstention_nonzero_delta_count": 0,
+    "deterministic_advice_rebuild_rate_ppm": 1000000,
+    "deterministic_market_replay_rate_ppm": 1000000,
+    "deterministic_observation_hash_rate_ppm": 1000000,
+    "hidden_state_leak_count": 0,
+    "illegal_action_count": 0,
+    "safe_set_mismatch_count": 0
+  },
+  "evidence_type": "SYNTHETIC_RULE_HOLDOUT",
+  "focal_company_id": "company_A",
+  "forbidden_after_results": [
+    "replace or delete a seed after observing its result",
+    "change thresholds after observing outcomes",
+    "tune Market v4, Persona weights or Advisor v7 on these labels",
+    "describe round windows as independent samples",
+    "start paid calls when any hard gate fails"
+  ],
+  "horizon_rounds": 3,
+  "market_model": "balanced",
+  "outcome_thresholds": {
+    "minimum_mean_ev_delta_cents": 0,
+    "minimum_mean_regret_reduction_cents": 0,
+    "minimum_recommendation_coverage_ppm": 100000,
+    "minimum_worst_seed_persona_mean_ev_delta_cents": 0,
+    "released_recommendation_negative_window_count": 0
+  },
+  "persona_ids": [
+    "balanced_v1",
+    "aggressive_v1_extreme",
+    "risk_guarded_v1"
+  ],
+  "preregistration_hash": "sha256:bf2981175079eb9234e1062f97c9e8e4263f1d3617d14180bcf9a9a75068ac5e",
+  "preregistration_schema_version": "stage6.10-v7-zero-token-holdout-v1.0.0",
+  "primary_outcome": "final_composite_enterprise_value_delta_cents",
+  "real_llm_gate": {
+    "calls_during_this_holdout": 0,
+    "does_not_auto_start_paid_calls": true,
+    "maximum_calls_if_open": 6,
+    "paired_design_if_open": "3 new seeds x baseline/treatment",
+    "requires_all_engineering_and_outcome_checks": true
+  },
+  "repair_commit": "77eb4d565e42fed644b73f05acfc2122633aad52",
+  "research_boundary": "This is a deterministic synthetic Rule holdout. Passing can open a small paid Smoke gate but cannot establish real-LLM or real-market effectiveness. Overlapping round windows are not independent; aggregate conclusions use seed-persona clusters.",
+  "rounds_per_seed": 10,
+  "scenario_count": 5,
+  "secondary_outcomes": [
+    "counterfactual_regret_reduction_cents",
+    "cumulative_profit_delta_cents",
+    "recommendation_coverage_ppm",
+    "abstention_executable_action_count",
+    "hidden_state_leak_count"
+  ],
+  "seed_count": 10,
+  "seed_identifiers_absent_before_preregistration": true,
+  "seeds": [
+    260825001,
+    260825002,
+    260825003,
+    260825004,
+    260825005,
+    260825006,
+    260825007,
+    260825008,
+    260825009,
+    260825010
+  ],
+  "treatment_policy": "execute v7 recommendation only when disposition=recommend; otherwise retain the focal rule action"
+}

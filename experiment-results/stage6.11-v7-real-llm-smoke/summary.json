@@ -1,0 +1,142 @@
+{
+  "action_change_pairs": 2,
+  "evidence_level": "EXPLORATORY_REAL_LLM_PAIRED_SMOKE",
+  "experiment_schema_version": "stage6.11-v7-real-llm-smoke-v1.0.0",
+  "lost_provider_calls": 1,
+  "mean_enterprise_value_delta_cents": 4243993,
+  "model": "doubao-seed-2-0-lite-260215",
+  "paired_complete": 2,
+  "pairs": [
+    {
+      "action_changed": true,
+      "advisor_adoption": {
+        "accepted": true,
+        "action_alignment_ppm": 1000000,
+        "adoption_status": "exact_action",
+        "advisor_action": {
+          "advertising_budget_cents": 350475,
+          "capacity_investment_cents": 800000,
+          "incident_response_mode": "wait",
+          "price_cents": 10778,
+          "repair_budget_cents": 0,
+          "resilience_budget_cents": 0,
+          "service_budget_cents": 856161,
+          "shared_resilience_contribution_cents": 0
+        },
+        "advisor_candidate_id": "maintain",
+        "advisor_mode": "pareto_reliable_v7",
+        "advisor_rank": 1,
+        "agent_reason": "接受推荐策略，维持报价，保留符合边际收益要求的投入，平衡利润与风险，保护领先位置；当前处于高需求节日旺季，剩余1轮活动，市场成本处于危机状态，产能约束明显，竞争正常；我方当前排名第一，单位经济健康，现金储备充足，符合增长阶段条件；预测对手有较高概率涨价或降价，所有非价格边际投入均未通过边际收益门槛，仅维持现有价格的候选在安全Pareto前沿",
+        "chosen_candidate_id": "maintain",
+        "chosen_rank": 1,
+        "classification_method": "exact-economic-fields-and-target-direction-v1",
+        "execution_disposition": "recommend",
+        "final_action": {
+          "advertising_budget_cents": 350475,
+          "capacity_investment_cents": 800000,
+          "incident_response_mode": "wait",
+          "price_cents": 10778,
+          "repair_budget_cents": 0,
+          "resilience_budget_cents": 0,
+          "service_budget_cents": 856161,
+          "shared_resilience_contribution_cents": 0
+        },
+        "llm_requested_action": {
+          "advertising_budget_cents": 350475,
+          "capacity_investment_cents": 800000,
+          "incident_response_mode": "wait",
+          "price_cents": 10778,
+          "repair_budget_cents": 0,
+          "resilience_budget_cents": 0,
+          "service_budget_cents": 856161,
+          "shared_resilience_contribution_cents": 0
+        },
+        "target_alignment_ppm": 1000000,
+        "trace_hash": "sha256:195392c3a86de2277b99d883a39915c15e373f4d2a518fce076bdb502c91d809",
+        "trace_schema_version": "advisor-adoption-trace-v2.0.0"
+      },
+      "enterprise_value_delta_cents": 5796409,
+      "persona_id": "balanced_v1",
+      "profit_delta_cents": 5876641,
+      "round": 8,
+      "seed": 260825005
+    },
+    {
+      "action_changed": true,
+      "advisor_adoption": {
+        "accepted": true,
+        "action_alignment_ppm": 750000,
+        "adoption_status": "accepted_target",
+        "advisor_action": {
+          "advertising_budget_cents": 356102,
+          "capacity_investment_cents": 0,
+          "incident_response_mode": "wait",
+          "price_cents": 10484,
+          "repair_budget_cents": 0,
+          "resilience_budget_cents": 0,
+          "service_budget_cents": 869906,
+          "shared_resilience_contribution_cents": 0
+        },
+        "advisor_candidate_id": "price_increase",
+        "advisor_mode": "pareto_reliable_v7",
+        "advisor_rank": 1,
+        "agent_reason": "选择小幅涨价，依托当前高需求，在保持最坏情景风险可控的前提下，提升单位利润与总利润，符合主动风险管理与利润优先的人格目标；当前处于高需求节日旺季，同时存在轻度供应链冲击，仅剩最后一轮；市场为正常竞争格局，自身现金储备充足且连续盈利，当前排名第一；对手预测偏向降价或涨价，自身当前产能已饱和；所有非价格额外投入均未通过边际收益门槛，仅维持价格和小幅涨价候选通过所有安全检验",
+        "chosen_candidate_id": null,
+        "chosen_rank": null,
+        "classification_method": "exact-economic-fields-and-target-direction-v1",
+        "execution_disposition": "recommend",
+        "final_action": {
+          "advertising_budget_cents": 0,
+          "capacity_investment_cents": 0,
+          "incident_response_mode": "wait",
+          "price_cents": 10484,
+          "repair_budget_cents": 0,
+          "resilience_budget_cents": 0,
+          "service_budget_cents": 0,
+          "shared_resilience_contribution_cents": 0
+        },
+        "llm_requested_action": {
+          "advertising_budget_cents": 0,
+          "capacity_investment_cents": 0,
+          "incident_response_mode": "wait",
+          "price_cents": 10484,
+          "repair_budget_cents": 0,
+          "resilience_budget_cents": 0,
+          "service_budget_cents": 0,
+          "shared_resilience_contribution_cents": 0
+        },
+        "target_alignment_ppm": 1000000,
+        "trace_hash": "sha256:469ced28b8b97d9ab97734b01e7cf15b1d221e45ccf42f6b919cf78db2728408",
+        "trace_schema_version": "advisor-adoption-trace-v2.0.0"
+      },
+      "enterprise_value_delta_cents": 2691577,
+      "persona_id": "risk_guarded_v1",
+      "profit_delta_cents": 3112365,
+      "round": 10,
+      "seed": 260825006
+    }
+  ],
+  "planned_calls": 6,
+  "positive_zero_negative_pairs": {
+    "negative": 0,
+    "positive": 2,
+    "zero": 0
+  },
+  "provider": "doubao",
+  "recorded_calls": 5,
+  "research_boundary": "Stage 6.10 outcome gate failed on coverage. This user-authorized experiment is exploratory only and cannot overwrite or pass that preregistered gate.",
+  "reserved_usage": {
+    "calls": 5,
+    "completion_tokens": 20000,
+    "estimated_cost_microunits": 400000,
+    "prompt_tokens": 160000
+  },
+  "successful_calls": 5,
+  "usage": {
+    "calls": 5,
+    "completion_tokens": 2881,
+    "estimated_cost_microunits": 148758,
+    "prompt_tokens": 68617
+  },
+  "worst_enterprise_value_delta_cents": 2691577
+}

@@ -7,6 +7,7 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict
 
+from game_theory_agent.agent_registry import AgentInstanceBinding
 from game_theory_agent.agents.contracts import (
     AgentCommunicationResult,
     AgentDecisionResult,
@@ -111,13 +112,15 @@ class RoundCoordinator:
         acceptances: dict[str, dict[str, Any]],
         submission_errors: dict[str, str],
         information_snapshots: dict[str, ObservationSnapshot],
+        version_bindings: dict[str, AgentInstanceBinding],
     ) -> list[CommunicationGenerationTrace]:
         traces: list[CommunicationGenerationTrace] = []
         for company_id in state_before.company_ids:
             result = results.get(company_id)
             information_snapshot = information_snapshots.get(company_id)
+            runtime = self.runtimes.get(company_id)
+            version_binding = version_bindings.get(company_id)
             if result is None:
-                runtime = self.runtimes.get(company_id)
                 traces.append(
                     CommunicationGenerationTrace(
                         company_id=company_id,
@@ -125,6 +128,46 @@ class RoundCoordinator:
                             runtime.agent_id
                             if runtime is not None
                             else "controller-rule"
+                        ),
+                        agent_family_id=(
+                            version_binding.family_id
+                            if version_binding is not None
+                            else None
+                        ),
+                        agent_version_id=(
+                            version_binding.agent_version_id
+                            if version_binding is not None
+                            else None
+                        ),
+                        agent_instance_id=(
+                            version_binding.agent_instance_id
+                            if version_binding is not None
+                            else None
+                        ),
+                        registry_manifest_hash=(
+                            version_binding.registry_manifest_hash
+                            if version_binding is not None
+                            else None
+                        ),
+                        behavior_spec_hash=(
+                            version_binding.behavior_spec_hash
+                            if version_binding is not None
+                            else None
+                        ),
+                        prompt_bundle_hash=(
+                            version_binding.prompt_bundle_hash
+                            if version_binding is not None
+                            else None
+                        ),
+                        source_bundle_hash=(
+                            version_binding.source_bundle_hash
+                            if version_binding is not None
+                            else None
+                        ),
+                        checkpoint_id=(
+                            version_binding.checkpoint_id
+                            if version_binding is not None
+                            else None
                         ),
                         agent_type=(
                             self._agent_type(
@@ -174,6 +217,46 @@ class RoundCoordinator:
                 CommunicationGenerationTrace(
                     company_id=company_id,
                     agent_id=result.agent_id,
+                    agent_family_id=(
+                        version_binding.family_id
+                        if version_binding is not None
+                        else None
+                    ),
+                    agent_version_id=(
+                        version_binding.agent_version_id
+                        if version_binding is not None
+                        else None
+                    ),
+                    agent_instance_id=(
+                        version_binding.agent_instance_id
+                        if version_binding is not None
+                        else None
+                    ),
+                    registry_manifest_hash=(
+                        version_binding.registry_manifest_hash
+                        if version_binding is not None
+                        else None
+                    ),
+                    behavior_spec_hash=(
+                        version_binding.behavior_spec_hash
+                        if version_binding is not None
+                        else None
+                    ),
+                    prompt_bundle_hash=(
+                        version_binding.prompt_bundle_hash
+                        if version_binding is not None
+                        else None
+                    ),
+                    source_bundle_hash=(
+                        version_binding.source_bundle_hash
+                        if version_binding is not None
+                        else None
+                    ),
+                    checkpoint_id=(
+                        version_binding.checkpoint_id
+                        if version_binding is not None
+                        else None
+                    ),
                     agent_type=self._agent_type(model_name),
                     generation_status=generation_status,
                     observation_hash=(
@@ -195,6 +278,7 @@ class RoundCoordinator:
                     input_tokens=result.input_tokens,
                     output_tokens=result.output_tokens,
                     retry_count=result.retry_count,
+                    provider_audit=result.provider_audit,
                     validation_errors=error_messages,
                     error_code=(
                         result.error_code
@@ -236,6 +320,30 @@ class RoundCoordinator:
         belief_mode = str(
             episode.get("manifest", {}).get("belief_mode", "off")
         )
+        manifest_payload = episode.get("manifest", {})
+        versioning_mode = str(
+            manifest_payload.get("agent_versioning_mode", "legacy")
+        )
+        version_bindings: dict[str, AgentInstanceBinding]
+        if versioning_mode == "immutable_v1":
+            raw_roster = manifest_payload.get("agent_roster", {})
+            if set(raw_roster) != set(state_before.company_ids):
+                raise ValueError("immutable episode roster does not match companies")
+            version_bindings = {
+                company_id: AgentInstanceBinding.model_validate(payload)
+                for company_id, payload in raw_roster.items()
+            }
+            for company_id, runtime in self.runtimes.items():
+                if runtime.version_binding != version_bindings.get(company_id):
+                    raise ValueError(
+                        f"runtime {company_id} is not constructed from the bound Agent version"
+                    )
+        else:
+            version_bindings = {
+                company_id: runtime.version_binding
+                for company_id, runtime in self.runtimes.items()
+                if runtime.version_binding is not None
+            }
         if state_before.terminal:
             raise RuntimeError("episode is terminal")
         unknown = set(self.runtimes) - set(state_before.company_ids)
@@ -511,6 +619,7 @@ class RoundCoordinator:
             communication_acceptances,
             communication_submission_errors,
             communication_information_snapshots,
+            version_bindings,
         )
         communication_phase = CommunicationPhaseRecord.from_closure(
             communication_closure,
@@ -675,6 +784,7 @@ class RoundCoordinator:
                 if company_id in self.runtimes
                 else None
             )
+            version_binding = version_bindings.get(company_id)
             if result is not None and result.success and result.decision is not None:
                 model_name = result.model_name
                 agent_type = self._agent_type(model_name)
@@ -688,6 +798,46 @@ class RoundCoordinator:
                 trace = AgentRoundTrace(
                     company_id=company_id,
                     agent_id=result.agent_id,
+                    agent_family_id=(
+                        version_binding.family_id
+                        if version_binding is not None
+                        else None
+                    ),
+                    agent_version_id=(
+                        version_binding.agent_version_id
+                        if version_binding is not None
+                        else None
+                    ),
+                    agent_instance_id=(
+                        version_binding.agent_instance_id
+                        if version_binding is not None
+                        else None
+                    ),
+                    registry_manifest_hash=(
+                        version_binding.registry_manifest_hash
+                        if version_binding is not None
+                        else None
+                    ),
+                    behavior_spec_hash=(
+                        version_binding.behavior_spec_hash
+                        if version_binding is not None
+                        else None
+                    ),
+                    prompt_bundle_hash=(
+                        version_binding.prompt_bundle_hash
+                        if version_binding is not None
+                        else None
+                    ),
+                    source_bundle_hash=(
+                        version_binding.source_bundle_hash
+                        if version_binding is not None
+                        else None
+                    ),
+                    checkpoint_id=(
+                        version_binding.checkpoint_id
+                        if version_binding is not None
+                        else None
+                    ),
                     agent_type=agent_type,
                     decision_status="submitted",
                     observation_hash=information_snapshot.observation_hash,
@@ -764,6 +914,7 @@ class RoundCoordinator:
                     input_tokens=result.input_tokens,
                     output_tokens=result.output_tokens,
                     retry_count=result.retry_count,
+                    provider_audit=result.provider_audit,
                     validation_errors=[
                         str(item.get("reason_code", "adjusted"))
                         for item in resolution["adjustments"]
@@ -779,6 +930,46 @@ class RoundCoordinator:
                 trace = AgentRoundTrace(
                     company_id=company_id,
                     agent_id=(result.agent_id if result else "controller-rule"),
+                    agent_family_id=(
+                        version_binding.family_id
+                        if version_binding is not None
+                        else None
+                    ),
+                    agent_version_id=(
+                        version_binding.agent_version_id
+                        if version_binding is not None
+                        else None
+                    ),
+                    agent_instance_id=(
+                        version_binding.agent_instance_id
+                        if version_binding is not None
+                        else None
+                    ),
+                    registry_manifest_hash=(
+                        version_binding.registry_manifest_hash
+                        if version_binding is not None
+                        else None
+                    ),
+                    behavior_spec_hash=(
+                        version_binding.behavior_spec_hash
+                        if version_binding is not None
+                        else None
+                    ),
+                    prompt_bundle_hash=(
+                        version_binding.prompt_bundle_hash
+                        if version_binding is not None
+                        else None
+                    ),
+                    source_bundle_hash=(
+                        version_binding.source_bundle_hash
+                        if version_binding is not None
+                        else None
+                    ),
+                    checkpoint_id=(
+                        version_binding.checkpoint_id
+                        if version_binding is not None
+                        else None
+                    ),
                     agent_type="rule",
                     decision_status="fallback",
                     observation_hash=(
@@ -895,6 +1086,7 @@ class RoundCoordinator:
                     error_code=(result.error_code if result else None),
                     error_message=(result.error_message if result else None),
                     retry_count=(result.retry_count if result else 0),
+                    provider_audit=(result.provider_audit if result else None),
                     validation_errors=(
                         [str(result.error_code)]
                         if result is not None and result.error_code

@@ -1,0 +1,48 @@
+{
+  "acceptance_schema_version": "mixed-agent-acceptance-v1.0.0",
+  "episode_id": "four-agent-acceptance-d1456979",
+  "seed": 101,
+  "rounds": 20,
+  "agent_count": 4,
+  "provider": "doubao",
+  "model": null,
+  "persona": null,
+  "personas": [
+    "balanced",
+    "aggressive",
+    "conservative",
+    "selfish_long_term"
+  ],
+  "persona_by_company": {
+    "company_A": "balanced",
+    "company_B": "aggressive",
+    "company_C": "conservative",
+    "company_D": "selfish_long_term"
+  },
+  "persona_treatment": "heterogeneous",
+  "llm_count": 4,
+  "rule_count": 0,
+  "llm_companies": [
+    "company_A",
+    "company_B",
+    "company_C",
+    "company_D"
+  ],
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "decision_count": 80,
+  "checks": {
+    "episode_complete": true,
+    "same_state_version_for_all_agents": true,
+    "single_settlement_per_round": true,
+    "duplicate_action_zero": true,
+    "partial_state_update_zero": true,
+    "round_event_complete_100pct": true,
+    "llm_fallback_zero": true,
+    "rule_fallback_count_expected": true,
+    "replay_match_100pct": true
+  },
+  "passed": true,
+  "final_state_hash": "sha256:955285c66d4d8946effc8da5416e6d1ba6ab922b9ecba4dd55653b0b8b758633",
+  "round_event_path": "C:\\Users\\12204\\Desktop\\game-theory-agent\\runs\\four-llm-heterogeneous-seed101\\round-events.jsonl"
+}

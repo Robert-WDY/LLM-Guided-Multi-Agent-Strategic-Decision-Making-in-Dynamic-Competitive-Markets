@@ -26,6 +26,7 @@ const API_URL = process.env.NEXT_PUBLIC_MARKET_API_URL ?? "http://localhost:8010
 type EntryMode = "participant" | "observer" | "research";
 
 const NAV_ITEMS: Array<{ id: ViewId; index: string; label: string; hint: string }> = [
+  { id: "archive", index: "00", label: "真实实验档案", hint: "只读证据" },
   { id: "live", index: "01", label: "实时现场", hint: "回合进行" },
   { id: "observatory", index: "02", label: "智能体观察", hint: "输入与判断" },
   { id: "communication", index: "03", label: "通信记录", hint: "消息" },
@@ -83,6 +84,11 @@ type BackendEpisode = {
 };
 
 type RuntimeMode = "draft" | "demo" | "backend";
+type BackendPersonaCatalog = {
+  catalog_version: string;
+  profiles: Array<{ persona_id: string; display_name: string; validation_status: string; experiment_selectable: boolean }>;
+  demo_only_personas: Array<{ persona_id: string; validation_status: string; experiment_selectable: boolean }>;
+};
 
 function formatMoney(cents: number, compact = false) {
   if (compact) return `¥${new Intl.NumberFormat("zh-CN", { notation: "compact", maximumFractionDigits: 1 }).format(cents / 100)}`;
@@ -105,7 +111,7 @@ function AppShell({ active, setActive, children, runtimeMode, backendOnline, epi
   if (active === "home") return <main className="landing-shell">{children}</main>;
   const nav = NAV_ITEMS.find((item) => item.id === active);
   if (active === "setup") return <main className="configuration-shell"><header className="simple-workspace-header"><button type="button" onClick={onHome}>← 返回主页</button><div><span>{ENTRY_META[entryMode].eyebrow} · 环境配置</span><strong>{ENTRY_META[entryMode].label}</strong></div><b>博弈实验室</b></header>{children}</main>;
-  const allowed = entryMode === "participant" ? ["live", "replay", "report"] : entryMode === "observer" ? ["live", "observatory", "communication", "market", "replay", "report"] : ["live", "observatory", "communication", "strategy", "market", "replay", "report"];
+  const allowed = entryMode === "participant" ? ["live", "replay", "report"] : entryMode === "observer" ? ["live", "observatory", "communication", "market", "replay", "report"] : ["archive", "live", "observatory", "communication", "strategy", "market", "replay", "report"];
   const visibleNavigation = NAV_ITEMS.filter((item) => allowed.includes(item.id) && (item.id !== "report" || completed));
   return <main className="lab-shell">
     <aside className="lab-sidebar">
@@ -127,7 +133,7 @@ function SectionHead({ eyebrow, title, description, action }: { eyebrow: string;
   return <div className="section-head"><div><span>{eyebrow}</span><h2>{title}</h2>{description && <p>{description}</p>}</div>{action}</div>;
 }
 
-function SetupView({ config, setConfig, agents, setAgents, editingAgent, setEditingAgent, start, busy, notice, backendOnline, entryMode }: { config: LabConfig; setConfig: React.Dispatch<React.SetStateAction<LabConfig>>; agents: AgentConfig[]; setAgents: React.Dispatch<React.SetStateAction<AgentConfig[]>>; editingAgent: string | null; setEditingAgent: (id: string | null) => void; start: (forceDemo: boolean) => void; busy: boolean; notice: string; backendOnline: boolean | null; entryMode: EntryMode }) {
+function SetupView({ config, setConfig, agents, setAgents, editingAgent, setEditingAgent, start, busy, notice, backendOnline, entryMode, personaOptions, personaLabels, personaCatalogVerified }: { config: LabConfig; setConfig: React.Dispatch<React.SetStateAction<LabConfig>>; agents: AgentConfig[]; setAgents: React.Dispatch<React.SetStateAction<AgentConfig[]>>; editingAgent: string | null; setEditingAgent: (id: string | null) => void; start: (forceDemo: boolean) => void; busy: boolean; notice: string; backendOnline: boolean | null; entryMode: EntryMode; personaOptions: PersonaKey[]; personaLabels: Record<string, string>; personaCatalogVerified: boolean }) {
   const editor = agents.find((agent) => agent.companyId === editingAgent) ?? null;
   const patchAgent = (companyId: string, patch: Partial<AgentConfig>) => setAgents((current) => current.map((agent) => agent.companyId === companyId ? { ...agent, ...patch } : agent));
   function removeAgent(companyId: string) { setAgents((current) => current.filter((agent) => agent.companyId !== companyId)); if (editingAgent === companyId) setEditingAgent(null); }
@@ -140,10 +146,10 @@ function SetupView({ config, setConfig, agents, setAgents, editingAgent, setEdit
         <div className="field-row"><label className="field"><span>回合数</span><select value={config.rounds} onChange={(event) => setConfig((current) => ({ ...current, rounds: Number(event.target.value) as LabConfig["rounds"] }))}>{[5, 10, 15, 20].map((rounds) => <option value={rounds} key={rounds}>{rounds} 回合</option>)}</select></label><label className="field"><span>共同随机种子</span><input type="number" value={config.seed} min={0} onChange={(event) => setConfig((current) => ({ ...current, seed: Math.max(0, Number(event.target.value) || 0) }))} /></label></div>
         <div className="capability-list"><div><span><b>智能体通信</b><small>公开消息与点对点私信</small></span><Toggle checked={config.communication} label="启用通信" onChange={(value) => setConfig((current) => ({ ...current, communication: value }))} /></div><div><span><b>共享抗冲击投入</b><small>当前唯一合作机制</small></span><Toggle checked={config.cooperation} label="启用合作" onChange={(value) => setConfig((current) => ({ ...current, cooperation: value, communication: value || current.communication }))} /></div><div><span><b>博弈分析辅助</b><small>对手判断 → 效用推断 → 策略建议</small></span><Toggle checked={config.gameTheory} label="启用博弈论增强" onChange={(value) => setConfig((current) => ({ ...current, gameTheory: value }))} /></div></div>
       </section>
-      <section className="card agent-config-card"><SectionHead eyebrow="02 · 智能体" title="智能体构成" description="点击人格标签可以查看研究参数。支持 2 到 10 家公司。" action={<button className="ghost-button" type="button" disabled={agents.length >= MAX_COMPANIES} onClick={addAgent}>＋ 添加智能体</button>} /><div className="agent-config-list">{agents.map((agent) => <article key={agent.companyId} style={{ "--agent": agent.color } as React.CSSProperties}><span className="agent-letter">{agent.shortName}</span><div className="agent-identity"><strong>{agent.companyName}</strong><small>{agent.companyId}</small></div><label><span>控制方式</span><select value={agent.driver} onChange={(event) => { const driver = event.target.value as AgentConfig["driver"]; patchAgent(agent.companyId, { driver, model: DRIVER_MODELS[driver] }); }}><option value="human">人类参与者</option><option value="doubao">豆包模型</option><option value="deepseek">深度求索模型</option><option value="rule">确定性规则</option></select></label><label><span>人格</span><button type="button" className="persona-chip" onClick={() => setEditingAgent(agent.companyId)}>{PERSONAS[agent.persona].label}<i>↗</i></button></label><div className="agent-flags"><span>{agent.information === "full" ? "完整信息" : agent.information === "public" ? "公共信息" : "不完全信息"}</span><span className={agent.communication ? "on" : ""}>通信</span><span className={agent.gameTheory ? "on" : ""}>博弈辅助</span></div>{agents.length > 2 && <button className="remove-agent" type="button" aria-label={`移除 ${agent.companyName}`} onClick={() => removeAgent(agent.companyId)}>×</button>}</article>)}</div></section>
+      <section className="card agent-config-card"><SectionHead eyebrow="02 · 智能体" title="智能体构成" description={personaCatalogVerified ? "人格选项来自后端已验收目录；合作人格尚未实现。" : "正在读取后端人格目录；离线演示仅使用本地快照。"} action={<button className="ghost-button" type="button" disabled={agents.length >= MAX_COMPANIES} onClick={addAgent}>＋ 添加智能体</button>} /><div className="agent-config-list">{agents.map((agent) => <article key={agent.companyId} style={{ "--agent": agent.color } as React.CSSProperties}><span className="agent-letter">{agent.shortName}</span><div className="agent-identity"><strong>{agent.companyName}</strong><small>{agent.companyId}</small></div><label><span>控制方式</span><select value={agent.driver} onChange={(event) => { const driver = event.target.value as AgentConfig["driver"]; patchAgent(agent.companyId, { driver, model: DRIVER_MODELS[driver] }); }}><option value="human">人类参与者</option><option value="doubao">豆包模型</option><option value="deepseek">深度求索模型</option><option value="rule">确定性规则</option></select></label><label><span>人格</span><button type="button" className="persona-chip" onClick={() => setEditingAgent(agent.companyId)}>{personaLabels[agent.persona] ?? PERSONAS[agent.persona].label}<i>↗</i></button></label><div className="agent-flags"><span>{agent.information === "full" ? "完整信息" : agent.information === "public" ? "公共信息" : "不完全信息"}</span><span className={agent.communication ? "on" : ""}>通信</span><span className={agent.gameTheory ? "on" : ""}>博弈辅助</span></div>{agents.length > 2 && <button className="remove-agent" type="button" aria-label={`移除 ${agent.companyName}`} onClick={() => removeAgent(agent.companyId)}>×</button>}</article>)}</div></section>
     </div>
     <section className="launch-bar"><div className="controller-field"><span>本地控制器令牌</span><input type="password" placeholder="只保存在当前浏览器内存；高级后端实验必填" value={config.controllerToken} onChange={(event) => setConfig((current) => ({ ...current, controllerToken: event.target.value }))} /></div><div className="launch-status"><StatusDot tone={backendOnline ? "ok" : "warn"} /><span>{notice}</span></div><button className="secondary-launch" type="button" disabled={busy} onClick={() => start(true)}>进入交互演示</button><button className="primary-launch" type="button" disabled={busy} onClick={() => start(false)}>{busy ? "创建中…" : "创建真实实验"}<i>→</i></button></section>
-    {editor && <div className="drawer-backdrop" role="presentation" onMouseDown={() => setEditingAgent(null)}><aside className="persona-drawer" role="dialog" aria-modal="true" aria-label="人格配置" onMouseDown={(event) => event.stopPropagation()}><div className="drawer-head"><div><span>人格配置</span><h2>{editor.companyName}</h2></div><button type="button" aria-label="关闭" onClick={() => setEditingAgent(null)}>×</button></div><label className="field"><span>人格预设</span><select value={editor.persona} onChange={(event) => patchAgent(editor.companyId, { persona: event.target.value as PersonaKey })}>{Object.values(PERSONAS).map((persona) => <option key={persona.key} value={persona.key}>{persona.label}</option>)}</select></label><p className="persona-summary">{PERSONAS[editor.persona].summary}</p><div className="persona-section"><span>目标权重</span>{Object.entries(PERSONAS[editor.persona].weights).map(([key, value]) => <div className="persona-slider" key={key}><label><b>{PERSONA_WEIGHT_LABELS[key]}</b><span>{value}%</span></label><input type="range" value={value} min={0} max={100} readOnly /></div>)}</div><div className="persona-section"><span>行为倾向</span>{Object.entries(PERSONAS[editor.persona].traits).map(([key, value]) => <div className="persona-slider" key={key}><label><b>{PERSONA_TRAIT_LABELS[key]}</b><span>{value}%</span></label><input type="range" value={value} min={0} max={100} readOnly /></div>)}</div><div className="drawer-note"><b>研究边界</b><p>前端展示的是版本化人格参数，不是模型内部心理状态；自定义参数写入后也必须由后端实验清单固化。</p></div></aside></div>}
+    {editor && <div className="drawer-backdrop" role="presentation" onMouseDown={() => setEditingAgent(null)}><aside className="persona-drawer" role="dialog" aria-modal="true" aria-label="人格配置" onMouseDown={(event) => event.stopPropagation()}><div className="drawer-head"><div><span>人格配置</span><h2>{editor.companyName}</h2></div><button type="button" aria-label="关闭" onClick={() => setEditingAgent(null)}>×</button></div><label className="field"><span>人格预设</span><select value={editor.persona} onChange={(event) => patchAgent(editor.companyId, { persona: event.target.value as PersonaKey })}>{personaOptions.map((personaId) => <option key={personaId} value={personaId}>{personaLabels[personaId] ?? PERSONAS[personaId].label}</option>)}</select></label><p className="persona-summary">{PERSONAS[editor.persona].summary}</p><div className="persona-section"><span>目标权重</span>{Object.entries(PERSONAS[editor.persona].weights).map(([key, value]) => <div className="persona-slider" key={key}><label><b>{PERSONA_WEIGHT_LABELS[key]}</b><span>{value}%</span></label><input type="range" value={value} min={0} max={100} readOnly /></div>)}</div><div className="persona-section"><span>行为倾向</span>{Object.entries(PERSONAS[editor.persona].traits).map(([key, value]) => <div className="persona-slider" key={key}><label><b>{PERSONA_TRAIT_LABELS[key]}</b><span>{value}%</span></label><input type="range" value={value} min={0} max={100} readOnly /></div>)}</div><div className="drawer-note"><b>研究边界</b><p>合作、承诺、部分背叛和搭便车是市场机制；合作型、搭便车型和报复型数学人格尚未实现或验收。</p></div></aside></div>}
   </div>;
 }
 
@@ -239,6 +245,77 @@ function ReplayView() {
   return <div className="view-pad replay-view"><SectionHead eyebrow="确定性输入重建" title="回合重建" description="按照市场状态 → 可见信息 → 对手判断 → 通信 → 决策 → 动作 → 结果重建过程；不会重新调用模型生成语义。" action={<div className="replay-selectors"><select aria-label="实验"><option>第 1001 号随机种子实验</option></select><select aria-label="回合"><option>第 5 回合</option></select><select aria-label="智能体"><option>全部智能体</option></select></div>} /><div className="replay-layout"><section className="replay-timeline card">{DEMO_REPLAY.map((item, index) => <button type="button" key={`${item.phase}-${index}`} className={`${item.tone}${selected === index ? " selected" : ""}`} onClick={() => setSelected(index)}><i>{index + 1}</i><div><span>{item.phase} · {item.agent}</span><strong>{item.title}</strong><small>{item.detail}</small></div><em>{item.hash ?? "—"}</em></button>)}</section><section className="replay-inspector card"><div className="inspector-head"><span>过程详情</span><b>{step.phase}</b></div><div className="trace-summary"><span>{step.agent}</span><h3>{step.title}</h3><p>{step.detail}</p></div><div className="json-view"><span>{`{`}</span><p><i>"round"</i>: <b>5</b>,</p><p><i>"phase"</i>: <em>"{step.phase.toLowerCase().replace(" ", "_")}"</em>,</p><p><i>"company_scope"</i>: <em>"{step.agent}"</em>,</p><p><i>"source_hash"</i>: <em>"{step.hash ?? "derived"}"</em>,</p><p><i>"replay_match"</i>: <b>true</b></p><span>{`}`}</span></div><div className="replay-checks"><div><StatusDot />经济状态重建 <b>100%</b></div><div><StatusDot />交互过程重建 <b>100%</b></div><div><StatusDot />可见信息重建 <b>100%</b></div><div><StatusDot />博弈分析重建 <b>100%</b></div></div></section></div></div>;
 }
 
+type ResearchExperiment = { experiment_id: string; title: string; evidence_type: string; research_theme: string; round_count: number; company_ids: string[]; claim_boundary: string };
+
+function ResearchArchiveView({ controllerToken }: { controllerToken: string }) {
+  const [experiments, setExperiments] = useState<ResearchExperiment[]>([]);
+  const [experimentId, setExperimentId] = useState("");
+  const [roundNumber, setRoundNumber] = useState(3);
+  const [companyId, setCompanyId] = useState("company_B");
+  const [viewMode, setViewMode] = useState<"agent" | "authority">("agent");
+  const [manifest, setManifest] = useState<Record<string, unknown> | null>(null);
+  const [trace, setTrace] = useState<Record<string, unknown> | null>(null);
+  const [integrity, setIntegrity] = useState<Record<string, unknown> | null>(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch(`${API_URL}/v1/research/experiments`).then(async (response) => {
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.json() as Promise<{ experiments: ResearchExperiment[] }>;
+    }).then((payload) => {
+      setExperiments(payload.experiments);
+      const first = payload.experiments[0];
+      if (first) {
+        setExperimentId(first.experiment_id);
+        setRoundNumber(Math.min(3, first.round_count));
+        setCompanyId(first.company_ids.includes("company_B") ? "company_B" : first.company_ids[0]);
+      }
+    }).catch((reason) => setError(`真实档案加载失败：${reason instanceof Error ? reason.message : "未知错误"}`));
+  }, []);
+
+  useEffect(() => {
+    if (!experimentId) return;
+    Promise.all([
+      fetch(`${API_URL}/v1/research/experiments/${experimentId}/manifest`).then((response) => response.json()),
+      fetch(`${API_URL}/v1/research/experiments/${experimentId}/integrity`).then((response) => response.json()),
+    ]).then(([manifestPayload, integrityPayload]) => { setManifest(manifestPayload); setIntegrity(integrityPayload); }).catch(() => setError("档案清单或完整性校验加载失败。"));
+  }, [experimentId]);
+
+  useEffect(() => {
+    if (!experimentId || !companyId) return;
+    if (viewMode === "authority" && !controllerToken) return;
+    fetch(`${API_URL}/v1/research/experiments/${experimentId}/rounds/${roundNumber}/agents/${companyId}?view=${viewMode}`, { headers: viewMode === "authority" ? { "X-Controller-Token": controllerToken } : {} })
+      .then(async (response) => { const payload = await response.json() as Record<string, unknown> & { detail?: string }; if (!response.ok) throw new Error(payload.detail ?? `HTTP ${response.status}`); return payload; })
+      .then((payload) => { setTrace(payload); setError(""); })
+      .catch((reason) => { setTrace(null); setError(`回合档案加载失败：${reason instanceof Error ? reason.message : "未知错误"}`); });
+  }, [experimentId, roundNumber, companyId, viewMode, controllerToken]);
+
+  const selected = experiments.find((item) => item.experiment_id === experimentId);
+  const authorityBlocked = viewMode === "authority" && !controllerToken;
+  const chooseExperiment = (nextId: string) => {
+    const next = experiments.find((item) => item.experiment_id === nextId);
+    if (next) {
+      setRoundNumber(Math.min(3, next.round_count));
+      setCompanyId(next.company_ids.includes("company_B") ? "company_B" : next.company_ids[0]);
+    }
+    setExperimentId(nextId);
+  };
+  const chooseAuthorityView = () => {
+    if (!controllerToken) {
+      setError("权威审计视角需要本地 Controller Token；智能体当时视角不需要。");
+      return;
+    }
+    setViewMode("authority");
+  };
+  const traceView = trace as { observation_hash?: string; advisor?: { advice_hash?: string }; replay_status?: Record<string, string>; final_action?: Record<string, unknown>; agent_version?: Record<string, unknown> } | null;
+  return <div className="view-pad archive-view"><SectionHead eyebrow="冻结的研究证据" title="真实实验只读档案" description="这里读取发布清单登记的真实或工程 Episode，不重新调用模型，也不允许输入任意文件路径。" action={<span className="real-badge">{selected?.evidence_type ?? "档案"} · 只读</span>} />
+    <section className="archive-controls card"><label><span>实验档案</span><select value={experimentId} onChange={(event) => chooseExperiment(event.target.value)}>{experiments.map((item) => <option key={item.experiment_id} value={item.experiment_id}>{item.title}</option>)}</select></label><label><span>回合</span><select value={roundNumber} onChange={(event) => setRoundNumber(Number(event.target.value))}>{Array.from({ length: selected?.round_count ?? 1 }, (_, index) => index + 1).map((item) => <option key={item} value={item}>第 {item} 回合</option>)}</select></label><label><span>智能体</span><select value={companyId} onChange={(event) => setCompanyId(event.target.value)}>{(selected?.company_ids ?? []).map((item) => <option key={item}>{item}</option>)}</select></label><div className="archive-view-switch"><button type="button" className={viewMode === "agent" ? "active" : ""} onClick={() => setViewMode("agent")}>智能体当时视角</button><button type="button" className={viewMode === "authority" ? "active" : ""} onClick={chooseAuthorityView}>权威审计视角</button></div></section>
+    {error && <div className="archive-error">{error}</div>}
+    <div className="archive-grid"><aside className="card archive-evidence"><span>证据边界</span><h3>{selected?.title ?? "正在加载"}</h3><p>{selected?.claim_boundary}</p><dl><div><dt>证据类型</dt><dd>{selected?.evidence_type ?? "—"}</dd></div><div><dt>完整性</dt><dd>{(integrity as { artifact_integrity_passed?: boolean } | null)?.artifact_integrity_passed ? "通过" : "待校验"}</dd></div><div><dt>观察校验值</dt><dd>{traceView?.observation_hash ?? "—"}</dd></div><div><dt>建议校验值</dt><dd>{traceView?.advisor?.advice_hash ?? "无建议或审计视角"}</dd></div></dl><div className="archive-boundary"><b>视角隔离</b><p>智能体视角只返回它当时收到的 Observation、可见消息、判断、建议和动作；完整权威状态必须经过 Controller 授权。</p></div></aside><section className="card archive-json"><div><span>逐轮证据</span><b>{viewMode === "agent" ? "智能体当时视角" : "权威审计视角"}</b></div><pre>{authorityBlocked ? "权威审计视角已锁定。" : trace ? JSON.stringify(trace, null, 2) : "正在加载登记档案…"}</pre></section></div>
+    <section className="archive-hashline card"><span>Agent Version</span><code>{JSON.stringify(traceView?.agent_version ?? manifest?.agents ?? {})}</code><span>Replay</span><code>{JSON.stringify(traceView?.replay_status ?? {})}</code></section>
+  </div>;
+}
+
 function ReportView({ agents, runtimeMode, ruleAutoRunUsed }: { agents: AgentRuntimeView[]; runtimeMode: RuntimeMode; ruleAutoRunUsed: boolean }) {
   const profitWinner = [...agents].sort((a, b) => b.profit - a.profit)[0];
   const shareWinner = [...agents].sort((a, b) => b.share - a.share)[0];
@@ -286,10 +363,31 @@ export default function Home() {
   const [demoCompleted, setDemoCompleted] = useState(false);
   const [ruleAutoRunUsed, setRuleAutoRunUsed] = useState(false);
   const [backendStateIdentity, setBackendStateIdentity] = useState({ round: 1, stateVersion: 0, stateHash: "" });
+  const [personaOptions, setPersonaOptions] = useState<PersonaKey[]>(Object.keys(PERSONAS) as PersonaKey[]);
+  const [personaLabels, setPersonaLabels] = useState<Record<string, string>>({});
+  const [personaCatalogVerified, setPersonaCatalogVerified] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
     fetch(`${API_URL}/health`, { signal: controller.signal }).then((response) => { setBackendOnline(response.ok); setNotice((current) => current.startsWith("研究演示") ? current : response.ok ? "Market API 在线，可创建真实 Episode。" : "Market API 不可用，可载入演示。"); }).catch(() => { setBackendOnline(false); setNotice((current) => current.startsWith("研究演示") ? current : "Market API 离线；可载入有明确标识的研究演示。"); });
+    return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch(`${API_URL}/v1/capabilities/personas`, { signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const catalog = await response.json() as BackendPersonaCatalog;
+        const supported = catalog.profiles
+          .filter((item) => item.validation_status === "validated" && item.experiment_selectable && item.persona_id in PERSONAS)
+          .map((item) => item.persona_id as PersonaKey);
+        if (supported.length === 0) throw new Error("后端未返回已验收人格");
+        setPersonaOptions(supported);
+        setPersonaLabels(Object.fromEntries(catalog.profiles.map((item) => [item.persona_id, item.display_name])));
+        setPersonaCatalogVerified(true);
+      })
+      .catch(() => setPersonaCatalogVerified(false));
     return () => controller.abort();
   }, []);
 
@@ -301,6 +399,7 @@ export default function Home() {
 
   async function startExperiment(forceDemo: boolean) {
     if (forceDemo || !backendOnline) { setRuntimeMode("demo"); setEpisodeId(`demo-${config.seed}`); setRound(1); setDemoCompleted(false); setRuleAutoRunUsed(false); setRuntimeAgents(hydrateDemoAgents(agents)); setNotice("研究演示从第 1 回合开始；所有示例字段均标记为 DEMO，不代表一次真实模型调用。"); setActive("live"); return; }
+    if (!personaCatalogVerified || agents.some((agent) => !personaOptions.includes(agent.persona))) { setNotice("真实实验已阻止：必须先从后端已验收人格目录选择全部人格。"); return; }
     const protectedMode = config.communication || config.cooperation || config.gameTheory || config.informationMode !== "perfect";
     if (protectedMode && !config.controllerToken) { setNotice("高级实验需要本地 Controller Token。可填写 Token，或先载入研究演示。"); return; }
     setBusy(true);
@@ -389,6 +488,6 @@ export default function Home() {
     setActive("setup");
   }
 
-  const view = active === "home" ? <LandingView choose={chooseEntry} resume={() => setActive("live")} hasSession={Boolean(episodeId)} /> : active === "setup" ? <SetupView config={config} setConfig={setConfig} agents={agents} setAgents={setAgents} editingAgent={editingAgent} setEditingAgent={setEditingAgent} start={(forceDemo) => void startExperiment(forceDemo)} busy={busy} notice={notice} backendOnline={backendOnline} entryMode={entryMode} /> : active === "live" ? <LiveView agents={runtimeAgents} round={round} maxRounds={config.rounds} nextRound={nextRound} autoRun={(action) => void autoRunRemaining(action)} runtimeMode={runtimeMode} notice={notice} completed={demoCompleted} interactive={entryMode === "participant"} busy={busy} /> : active === "observatory" ? <ObservatoryView agents={runtimeAgents} /> : active === "communication" ? <CommunicationView /> : active === "strategy" ? <StrategyView agents={runtimeAgents} /> : active === "market" ? <MarketView agents={runtimeAgents} /> : active === "replay" ? <ReplayView /> : <ReportView agents={runtimeAgents} runtimeMode={runtimeMode} ruleAutoRunUsed={ruleAutoRunUsed} />;
+  const view = active === "home" ? <LandingView choose={chooseEntry} resume={() => setActive("live")} hasSession={Boolean(episodeId)} /> : active === "setup" ? <SetupView config={config} setConfig={setConfig} agents={agents} setAgents={setAgents} editingAgent={editingAgent} setEditingAgent={setEditingAgent} start={(forceDemo) => void startExperiment(forceDemo)} busy={busy} notice={notice} backendOnline={backendOnline} entryMode={entryMode} personaOptions={personaOptions} personaLabels={personaLabels} personaCatalogVerified={personaCatalogVerified} /> : active === "archive" ? <ResearchArchiveView controllerToken={config.controllerToken} /> : active === "live" ? <LiveView agents={runtimeAgents} round={round} maxRounds={config.rounds} nextRound={nextRound} autoRun={(action) => void autoRunRemaining(action)} runtimeMode={runtimeMode} notice={notice} completed={demoCompleted} interactive={entryMode === "participant"} busy={busy} /> : active === "observatory" ? <ObservatoryView agents={runtimeAgents} /> : active === "communication" ? <CommunicationView /> : active === "strategy" ? <StrategyView agents={runtimeAgents} /> : active === "market" ? <MarketView agents={runtimeAgents} /> : active === "replay" ? <ReplayView /> : <ReportView agents={runtimeAgents} runtimeMode={runtimeMode} ruleAutoRunUsed={ruleAutoRunUsed} />;
   return <AppShell active={active} setActive={setActive} runtimeMode={runtimeMode} backendOnline={backendOnline} episodeId={episodeId} entryMode={entryMode} completed={demoCompleted} onHome={() => setActive("home")}>{view}</AppShell>;
 }

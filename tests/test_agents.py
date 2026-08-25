@@ -161,6 +161,10 @@ class _FakeResponse:
     def __init__(self, output_text: str) -> None:
         self.output_text = output_text
         self.usage = _FakeUsage()
+        self.id = "ark-request-test"
+        self.model = "doubao-test-snapshot"
+        self.system_fingerprint = "ark-fingerprint-test"
+        self.created_at = 1_700_000_000
 
 
 class _FakeResponses:
@@ -207,10 +211,13 @@ def test_doubao_client_repairs_json_and_returns_valid_decision():
 
     assert result.success
     assert result.model_name == "doubao-test"
-    assert result.prompt_version == "market-planner-prompt-v1.15.0"
+    assert result.prompt_version == "market-planner-prompt-v1.16.0"
     assert result.input_tokens == 200
     assert result.output_tokens == 100
     assert result.retry_count == 1
+    assert result.provider_audit is not None
+    assert result.provider_audit.request_id == "ark-request-test"
+    assert result.provider_audit.system_fingerprint == "ark-fingerprint-test"
     assert len(fake.responses.calls) == 2
     assert fake.responses.calls[0]["extra_body"] == {
         "thinking": {"type": "disabled"}
@@ -243,6 +250,10 @@ class _FakeChatResponse:
     def __init__(self, content: str) -> None:
         self.choices = [_FakeChoice(content)]
         self.usage = _FakeChatUsage()
+        self.id = "deepseek-request-test"
+        self.model = "deepseek-test-snapshot"
+        self.system_fingerprint = "deepseek-fingerprint-test"
+        self.created = 1_700_000_001
 
 
 class _FakeCompletions:
@@ -290,6 +301,9 @@ def test_deepseek_client_uses_json_mode_and_validates_decision():
     assert result.model_name == "deepseek-test"
     assert result.input_tokens == 80
     assert result.output_tokens == 40
+    assert result.provider_audit is not None
+    assert result.provider_audit.request_id == "deepseek-request-test"
+    assert result.provider_audit.response_model == "deepseek-test-snapshot"
     call = fake.chat.completions.calls[0]
     assert call["response_format"] == {"type": "json_object"}
     assert call["extra_body"] == {"thinking": {"type": "disabled"}}

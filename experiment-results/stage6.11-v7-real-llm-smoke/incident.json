@@ -1,0 +1,8 @@
+{
+  "incident_schema_version": "real-model-call-persistence-incident-v1.0.0",
+  "lost_provider_call_count": 1,
+  "lost_call_key": [260825002, 10, "balanced_v1", "baseline_without_advice"],
+  "cause": "The real decision completed, but the runner attempted a three-round continuation from round 10 and raised EpisodeCompleteError before persisting the row.",
+  "recovery_policy": "Do not repeat the lost call. Run only the remaining five calls so total provider requests remain at or below the preregistered maximum of six.",
+  "token_usage": "unknown_not_recoverable_from_local_trace"
+}

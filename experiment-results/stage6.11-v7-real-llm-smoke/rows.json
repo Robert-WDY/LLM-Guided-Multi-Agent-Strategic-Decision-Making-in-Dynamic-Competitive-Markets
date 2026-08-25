@@ -1,0 +1,563 @@
+[
+  {
+    "advisor_adoption": {
+      "accepted": true,
+      "action_alignment_ppm": 1000000,
+      "adoption_status": "exact_action",
+      "advisor_action": {
+        "advertising_budget_cents": 413550,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10811,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 608161,
+        "shared_resilience_contribution_cents": 0
+      },
+      "advisor_candidate_id": "price_increase",
+      "advisor_mode": "pareto_reliable_v7",
+      "advisor_rank": 1,
+      "agent_reason": "选择涨价策略，符合均衡经营人格的利润优先目标，通过提升单位利润兑现终局价值，同时维持现金缓冲，满足所有安全约束，位于Pareto有效前沿；当前处于第10轮，剩余轮数1轮，市场存在节日需求增长和区域物流中断，成本处于危机区间，竞争正常；当前公司现金流充足，单位盈利为正，处于增长阶段，对手B、C、D均有较高概率涨价或降价，当前为保护领先位置的终局阶段；增长投入和降价均未通过边际收益和风险门槛，仅维持价格、涨价和现状为安全候选",
+      "chosen_candidate_id": "price_increase",
+      "chosen_rank": 1,
+      "classification_method": "exact-economic-fields-and-target-direction-v1",
+      "execution_disposition": "recommend",
+      "final_action": {
+        "advertising_budget_cents": 413550,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10811,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 608161,
+        "shared_resilience_contribution_cents": 0
+      },
+      "llm_requested_action": {
+        "advertising_budget_cents": 413550,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10811,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 608161,
+        "shared_resilience_contribution_cents": 0
+      },
+      "target_alignment_ppm": 1000000,
+      "trace_hash": "sha256:cec67cc5b2a7658722fb87bce959a9661a9282d31caf9c825d22ebd135ffc501",
+      "trace_schema_version": "advisor-adoption-trace-v2.0.0"
+    },
+    "condition": "treatment_with_v7_advice",
+    "cumulative_profit_cents": 24324196,
+    "enterprise_value_cents": 62636807,
+    "error_code": null,
+    "error_message": null,
+    "final_action": {
+      "action_id": "resolved:stage611:treatment_with_v7_advice:stage610-rule-260825002:10:company_A",
+      "advertising_budget_cents": 413550,
+      "agent_id": "company_A",
+      "capacity_investment_cents": 0,
+      "episode_id": "stage610-rule-260825002",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10811,
+      "resilience_budget_cents": 0,
+      "round": 10,
+      "service_budget_cents": 608161,
+      "state_version": 9,
+      "strategy_summary": "遵循Pareto推荐，选择涨价提升单位利润，兑现终局价值，维持合规投入，平衡各项目标"
+    },
+    "input_snapshot_hash": "sha256:7944f409da77004f89ab306861aa90b214f02f6c893433eef86b522a777a7719",
+    "input_tokens": 16324,
+    "latency_ms": 13406,
+    "model_name": "doubao-seed-2-0-lite-260215",
+    "observation_hash": "sha256:9ae3d057255a04868f329533e9c4b93d7b1b78373ca1d2395715c01a9943ec21",
+    "output_tokens": 601,
+    "persona_id": "balanced_v1",
+    "plan": {
+      "expected_outcome": {
+        "capacity": "stable",
+        "market_share": "stable",
+        "profit": "up",
+        "risk_exposure": "down"
+      },
+      "key_factors": [
+        "剩余仅1轮，优先兑现当期利润",
+        "当前处于领先位置，需保护价值",
+        "涨价通过所有风险与效用门槛",
+        "广告和服务投入边际收益为负，已剔除",
+        "降价和大幅降价未通过价值门槛",
+        "现金流充足满足最低现金储备要求"
+      ],
+      "objective": "在安全现金约束内平衡利润与份额，保护当前领先位置，追求稳健长期价值",
+      "situation_summary": "当前处于第10轮，剩余轮数1轮，市场存在节日需求增长和区域物流中断，成本处于危机区间，竞争正常；当前公司现金流充足，单位盈利为正，处于增长阶段，对手B、C、D均有较高概率涨价或降价，当前为保护领先位置的终局阶段；增长投入和降价均未通过边际收益和风险门槛，仅维持价格、涨价和现状为安全候选",
+      "strategy_summary": "选择涨价策略，符合均衡经营人格的利润优先目标，通过提升单位利润兑现终局价值，同时维持现金缓冲，满足所有安全约束，位于Pareto有效前沿",
+      "success_criteria": {
+        "maximum_fixed_spend_cents": 1021711,
+        "minimum_cash_reserve_cents": 3500000,
+        "minimum_market_share_ppm": 180000,
+        "minimum_round_profit_cents": 0
+      }
+    },
+    "prompt_version": "market-planner-prompt-v1.16.0",
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787649917,
+      "request_id": "resp_021787649916173bfe35b6525b6a24c7ddbea7b420bd558bfe21c",
+      "request_started_at": "2026-08-25T09:25:15.096743+00:00",
+      "response_model": "doubao-seed-2-0-lite-260215",
+      "response_received_at": "2026-08-25T09:25:28.502795+00:00",
+      "system_fingerprint": null
+    },
+    "requested_action": {
+      "advertising_budget_cents": 413550,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10811,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 608161,
+      "shared_resilience_contribution_cents": null,
+      "strategy_summary": "遵循Pareto推荐，选择涨价提升单位利润，兑现终局价值，维持合规投入，平衡各项目标"
+    },
+    "retry_count": 0,
+    "round": 10,
+    "seed": 260825002,
+    "state_hash": "sha256:11e03953473eab8f31ff582ce5ece02b8ebe79b0aee79ac15ff9061c4f83d14d",
+    "success": true
+  },
+  {
+    "advisor_adoption": {
+      "accepted": true,
+      "action_alignment_ppm": 1000000,
+      "adoption_status": "exact_action",
+      "advisor_action": {
+        "advertising_budget_cents": 350475,
+        "capacity_investment_cents": 800000,
+        "incident_response_mode": "wait",
+        "price_cents": 10778,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 856161,
+        "shared_resilience_contribution_cents": 0
+      },
+      "advisor_candidate_id": "maintain",
+      "advisor_mode": "pareto_reliable_v7",
+      "advisor_rank": 1,
+      "agent_reason": "接受推荐策略，维持报价，保留符合边际收益要求的投入，平衡利润与风险，保护领先位置；当前处于高需求节日旺季，剩余1轮活动，市场成本处于危机状态，产能约束明显，竞争正常；我方当前排名第一，单位经济健康，现金储备充足，符合增长阶段条件；预测对手有较高概率涨价或降价，所有非价格边际投入均未通过边际收益门槛，仅维持现有价格的候选在安全Pareto前沿",
+      "chosen_candidate_id": "maintain",
+      "chosen_rank": 1,
+      "classification_method": "exact-economic-fields-and-target-direction-v1",
+      "execution_disposition": "recommend",
+      "final_action": {
+        "advertising_budget_cents": 350475,
+        "capacity_investment_cents": 800000,
+        "incident_response_mode": "wait",
+        "price_cents": 10778,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 856161,
+        "shared_resilience_contribution_cents": 0
+      },
+      "llm_requested_action": {
+        "advertising_budget_cents": 350475,
+        "capacity_investment_cents": 800000,
+        "incident_response_mode": "wait",
+        "price_cents": 10778,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 856161,
+        "shared_resilience_contribution_cents": 0
+      },
+      "target_alignment_ppm": 1000000,
+      "trace_hash": "sha256:195392c3a86de2277b99d883a39915c15e373f4d2a518fce076bdb502c91d809",
+      "trace_schema_version": "advisor-adoption-trace-v2.0.0"
+    },
+    "condition": "treatment_with_v7_advice",
+    "cumulative_profit_cents": 14290482,
+    "enterprise_value_cents": 54324479,
+    "error_code": null,
+    "error_message": null,
+    "final_action": {
+      "action_id": "resolved:stage611:treatment_with_v7_advice:stage610-rule-260825005:8:company_A",
+      "advertising_budget_cents": 350475,
+      "agent_id": "company_A",
+      "capacity_investment_cents": 800000,
+      "episode_id": "stage610-rule-260825005",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10778,
+      "resilience_budget_cents": 0,
+      "round": 8,
+      "service_budget_cents": 856161,
+      "state_version": 7,
+      "strategy_summary": "维持价格，保留推荐的广告与服务投入，符合安全Pareto约束，平衡利润与风险"
+    },
+    "input_snapshot_hash": "sha256:9c4ada38ad9e9886945decca572c7ae28cdc1cb02123684e097aec2c38069990",
+    "input_tokens": 18972,
+    "latency_ms": 14771,
+    "model_name": "doubao-seed-2-0-lite-260215",
+    "observation_hash": "sha256:d7818240c2bfcdb0e29101ca2382b90f7e9b0f599bc9ee5a6fd654ad5f684502",
+    "output_tokens": 564,
+    "persona_id": "balanced_v1",
+    "plan": {
+      "expected_outcome": {
+        "capacity": "stable",
+        "market_share": "stable",
+        "profit": "up",
+        "risk_exposure": "stable"
+      },
+      "key_factors": [
+        "高节日需求，剩余1轮活动",
+        "成本处于危机状态",
+        "我方当前排名第一",
+        "所有非价格边际投入预期收益为负",
+        "仅维持价格候选通过全部安全约束",
+        "符合均衡经营人格效用要求"
+      ],
+      "objective": "在安全现金约束内，平衡利润、份额与风险，维持稳健经营",
+      "situation_summary": "当前处于高需求节日旺季，剩余1轮活动，市场成本处于危机状态，产能约束明显，竞争正常；我方当前排名第一，单位经济健康，现金储备充足，符合增长阶段条件；预测对手有较高概率涨价或降价，所有非价格边际投入均未通过边际收益门槛，仅维持现有价格的候选在安全Pareto前沿",
+      "strategy_summary": "接受推荐策略，维持报价，保留符合边际收益要求的投入，平衡利润与风险，保护领先位置",
+      "success_criteria": {
+        "maximum_fixed_spend_cents": 2006636,
+        "minimum_cash_reserve_cents": 10500000,
+        "minimum_market_share_ppm": 240000,
+        "minimum_round_profit_cents": 500000
+      }
+    },
+    "prompt_version": "market-planner-prompt-v1.16.0",
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787649932,
+      "request_id": "resp_021787649929834402c3547e09b7409e300241a04980e225c5046",
+      "request_started_at": "2026-08-25T09:25:29.408061+00:00",
+      "response_model": "doubao-seed-2-0-lite-260215",
+      "response_received_at": "2026-08-25T09:25:44.178615+00:00",
+      "system_fingerprint": null
+    },
+    "requested_action": {
+      "advertising_budget_cents": 350475,
+      "capacity_investment_cents": 800000,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10778,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 856161,
+      "shared_resilience_contribution_cents": null,
+      "strategy_summary": "维持价格，保留推荐的广告与服务投入，符合安全Pareto约束，平衡利润与风险"
+    },
+    "retry_count": 0,
+    "round": 8,
+    "seed": 260825005,
+    "state_hash": "sha256:427e61ef04f3b84d3e85053826e75ea0c4d8058b68cbc01dbd5dbed6ae41532f",
+    "success": true
+  },
+  {
+    "advisor_adoption": null,
+    "condition": "baseline_without_advice",
+    "cumulative_profit_cents": 8413841,
+    "enterprise_value_cents": 48528070,
+    "error_code": null,
+    "error_message": null,
+    "final_action": {
+      "action_id": "resolved:stage611:baseline_without_advice:stage610-rule-260825005:8:company_A",
+      "advertising_budget_cents": 500000,
+      "agent_id": "company_A",
+      "capacity_investment_cents": 800000,
+      "episode_id": "stage610-rule-260825005",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 9750,
+      "resilience_budget_cents": 0,
+      "round": 8,
+      "service_budget_cents": 700000,
+      "state_version": 7,
+      "strategy_summary": "维持合理价格保障利润，适度投入产能应对需求缺口，投入广告服务维持声誉份额，保留充足现金缓冲，平衡多项目标符合均衡经营要求"
+    },
+    "input_snapshot_hash": "sha256:ff426702bad894e37b1cae3f779bc9c8a062f9427f4db126d58b4064519f532c",
+    "input_tokens": 8324,
+    "latency_ms": 16321,
+    "model_name": "doubao-seed-2-0-lite-260215",
+    "observation_hash": "sha256:d7818240c2bfcdb0e29101ca2382b90f7e9b0f599bc9ee5a6fd654ad5f684502",
+    "output_tokens": 608,
+    "persona_id": "balanced_v1",
+    "plan": {
+      "expected_outcome": {
+        "capacity": "up",
+        "market_share": "stable",
+        "profit": "stable",
+        "risk_exposure": "stable"
+      },
+      "key_factors": [
+        "高节日需求剩余1轮",
+        "当前产能存在157单缺口",
+        "单位贡献正符合增长条件",
+        "对手D降价概率最高达50%",
+        "现金充足保留1050万以上储备",
+        "均衡人格要求平衡利润份额现金"
+      ],
+      "objective": "在安全现金约束内平衡利润与份额，抓住节日需求缺口适度增长",
+      "situation_summary": "当前处于高节日需求阶段，剩余1轮需求激增，市场整体容量受限供不应求，供应成本处于危机水平，竞争正常；我方现金流健康，连续多轮盈利，当前处于增长阶段，保留足够现金缓冲，单位贡献为正；对手预测偏向涨价或降价，公司D降价概率更高，对手价格集中在9600-10450之间，我方当前市场份额约25%，与头部对手差距极小",
+      "strategy_summary": "维持现有价格水平保障单位利润，匹配节日需求小幅投入广告与服务维持声誉份额，补充capacity缺口应对需求增长，保留充足现金缓冲符合均衡经营目标",
+      "success_criteria": {
+        "maximum_fixed_spend_cents": 24784714,
+        "minimum_cash_reserve_cents": 10500000,
+        "minimum_market_share_ppm": 240000,
+        "minimum_round_profit_cents": 0
+      }
+    },
+    "prompt_version": "market-planner-prompt-v1.16.0",
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787649947,
+      "request_id": "resp_021787649945593c65202e590747a44f6b901a7b0655cff866fa3",
+      "request_started_at": "2026-08-25T09:25:45.159508+00:00",
+      "response_model": "doubao-seed-2-0-lite-260215",
+      "response_received_at": "2026-08-25T09:26:01.480484+00:00",
+      "system_fingerprint": null
+    },
+    "requested_action": {
+      "advertising_budget_cents": 500000,
+      "capacity_investment_cents": 800000,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 9750,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 700000,
+      "shared_resilience_contribution_cents": null,
+      "strategy_summary": "维持合理价格保障利润，适度投入产能应对需求缺口，投入广告服务维持声誉份额，保留充足现金缓冲，平衡多项目标符合均衡经营要求"
+    },
+    "retry_count": 0,
+    "round": 8,
+    "seed": 260825005,
+    "state_hash": "sha256:427e61ef04f3b84d3e85053826e75ea0c4d8058b68cbc01dbd5dbed6ae41532f",
+    "success": true
+  },
+  {
+    "advisor_adoption": null,
+    "condition": "baseline_without_advice",
+    "cumulative_profit_cents": 5403392,
+    "enterprise_value_cents": 43846272,
+    "error_code": null,
+    "error_message": null,
+    "final_action": {
+      "action_id": "resolved:stage611:baseline_without_advice:stage610-rule-260825006:10:company_A",
+      "advertising_budget_cents": 350000,
+      "agent_id": "company_A",
+      "capacity_investment_cents": 0,
+      "episode_id": "stage610-rule-260825006",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 9899,
+      "resilience_budget_cents": 0,
+      "round": 10,
+      "service_budget_cents": 850000,
+      "state_version": 9,
+      "strategy_summary": "价格定在盈亏平衡线之上，小幅投入广告服务巩固份额，保留现金缓冲，控制风险，抓住本轮节日需求实现盈利"
+    },
+    "input_snapshot_hash": "sha256:f07afcf372eb040971e4b835f9db1127c890fa5cfe85cb1bcea32e60c2198e42",
+    "input_tokens": 8589,
+    "latency_ms": 14983,
+    "model_name": "doubao-seed-2-0-lite-260215",
+    "observation_hash": "sha256:9cc3e4d64ffc418722dd042e1bcacd9596f8b0035547216f731d21b0005362e5",
+    "output_tokens": 565,
+    "persona_id": "risk_guarded_v1",
+    "plan": {
+      "expected_outcome": {
+        "capacity": "stable",
+        "market_share": "stable",
+        "profit": "up",
+        "risk_exposure": "stable"
+      },
+      "key_factors": [
+        "剩余轮数仅1轮",
+        "高节日需求，低供应链冲击",
+        "对手预计降价概率较高",
+        "当前产能已饱和",
+        "单位贡献为正，连续盈利",
+        "现金储备充足",
+        "风险厌恶型人格优先控制下行风险"
+      ],
+      "objective": "在安全现金约束内抓住节日需求，控制风险并保持盈利，维持市场份额稳定",
+      "situation_summary": "当前处于高节日需求叠加低供应链冲击的最后一轮，市场供需紧张成本上涨，预计对手降价概率较高；本公司现金储备充足，连续三轮盈利，当前产能已饱和，单位贡献为正，处于健康增长阶段，符合persona主动风险管理的要求",
+      "strategy_summary": "价格维持在盈亏平衡线以上，略低于行业平均价格，匹配当前单位经济；保留安全现金缓冲，小幅投入广告与服务巩固份额，不进行违规长期投资，控制风险暴露",
+      "success_criteria": {
+        "maximum_fixed_spend_cents": 1500000,
+        "minimum_cash_reserve_cents": 3500000,
+        "minimum_market_share_ppm": 230000,
+        "minimum_round_profit_cents": 0
+      }
+    },
+    "prompt_version": "market-planner-prompt-v1.16.0",
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787649965,
+      "request_id": "resp_0217876499627612add8b472a5fbe1ec0e05874620a4ba021fbcd",
+      "request_started_at": "2026-08-25T09:26:02.311631+00:00",
+      "response_model": "doubao-seed-2-0-lite-260215",
+      "response_received_at": "2026-08-25T09:26:17.294348+00:00",
+      "system_fingerprint": null
+    },
+    "requested_action": {
+      "advertising_budget_cents": 350000,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 9899,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 850000,
+      "shared_resilience_contribution_cents": null,
+      "strategy_summary": "价格定在盈亏平衡线之上，小幅投入广告服务巩固份额，保留现金缓冲，控制风险，抓住本轮节日需求实现盈利"
+    },
+    "retry_count": 0,
+    "round": 10,
+    "seed": 260825006,
+    "state_hash": "sha256:07f534498c15ecc9d2532e6f8ed040f7c65a0dba8174e2d32e1b38c6f5e7ad78",
+    "success": true
+  },
+  {
+    "advisor_adoption": {
+      "accepted": true,
+      "action_alignment_ppm": 750000,
+      "adoption_status": "accepted_target",
+      "advisor_action": {
+        "advertising_budget_cents": 356102,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10484,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 869906,
+        "shared_resilience_contribution_cents": 0
+      },
+      "advisor_candidate_id": "price_increase",
+      "advisor_mode": "pareto_reliable_v7",
+      "advisor_rank": 1,
+      "agent_reason": "选择小幅涨价，依托当前高需求，在保持最坏情景风险可控的前提下，提升单位利润与总利润，符合主动风险管理与利润优先的人格目标；当前处于高需求节日旺季，同时存在轻度供应链冲击，仅剩最后一轮；市场为正常竞争格局，自身现金储备充足且连续盈利，当前排名第一；对手预测偏向降价或涨价，自身当前产能已饱和；所有非价格额外投入均未通过边际收益门槛，仅维持价格和小幅涨价候选通过所有安全检验",
+      "chosen_candidate_id": null,
+      "chosen_rank": null,
+      "classification_method": "exact-economic-fields-and-target-direction-v1",
+      "execution_disposition": "recommend",
+      "final_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10484,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "llm_requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10484,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "target_alignment_ppm": 1000000,
+      "trace_hash": "sha256:469ced28b8b97d9ab97734b01e7cf15b1d221e45ccf42f6b919cf78db2728408",
+      "trace_schema_version": "advisor-adoption-trace-v2.0.0"
+    },
+    "condition": "treatment_with_v7_advice",
+    "cumulative_profit_cents": 8515757,
+    "enterprise_value_cents": 46537849,
+    "error_code": null,
+    "error_message": null,
+    "final_action": {
+      "action_id": "resolved:stage611:treatment_with_v7_advice:stage610-rule-260825006:10:company_A",
+      "advertising_budget_cents": 0,
+      "agent_id": "company_A",
+      "capacity_investment_cents": 0,
+      "episode_id": "stage610-rule-260825006",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10484,
+      "resilience_budget_cents": 0,
+      "round": 10,
+      "service_budget_cents": 0,
+      "state_version": 9,
+      "strategy_summary": "选择小幅涨价，在最后一轮高需求窗口兑现利润，控制风险，守住领先位置，不做额外无效投入"
+    },
+    "input_snapshot_hash": "sha256:9834b045c83ae7fc890d97acb9b932a90c7a397af87438e15fac27802746d75a",
+    "input_tokens": 16408,
+    "latency_ms": 11860,
+    "model_name": "doubao-seed-2-0-lite-260215",
+    "observation_hash": "sha256:9cc3e4d64ffc418722dd042e1bcacd9596f8b0035547216f731d21b0005362e5",
+    "output_tokens": 543,
+    "persona_id": "risk_guarded_v1",
+    "plan": {
+      "expected_outcome": {
+        "capacity": "stable",
+        "market_share": "down",
+        "profit": "up",
+        "risk_exposure": "stable"
+      },
+      "key_factors": [
+        "仅剩最后一轮，优先兑现当前利润",
+        "高需求可部分抵消价格上涨的需求损失",
+        "涨价候选通过所有安全与人格效用约束",
+        "额外投入均未通过边际收益门槛",
+        "现金储备充足，保留安全缓冲",
+        "当前排名第一，需要守住领先位置"
+      ],
+      "objective": "在安全现金约束内，利用当前需求高峰提升单位利润，守住领先位置，控制下行风险",
+      "situation_summary": "当前处于高需求节日旺季，同时存在轻度供应链冲击，仅剩最后一轮；市场为正常竞争格局，自身现金储备充足且连续盈利，当前排名第一；对手预测偏向降价或涨价，自身当前产能已饱和；所有非价格额外投入均未通过边际收益门槛，仅维持价格和小幅涨价候选通过所有安全检验",
+      "strategy_summary": "选择小幅涨价，依托当前高需求，在保持最坏情景风险可控的前提下，提升单位利润与总利润，符合主动风险管理与利润优先的人格目标",
+      "success_criteria": {
+        "maximum_fixed_spend_cents": 0,
+        "minimum_cash_reserve_cents": 3500000,
+        "minimum_market_share_ppm": null,
+        "minimum_round_profit_cents": 0
+      }
+    },
+    "prompt_version": "market-planner-prompt-v1.16.0",
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787649980,
+      "request_id": "resp_0217876499787728f5df55c078e9f0cf923961e89d651d19afdb3",
+      "request_started_at": "2026-08-25T09:26:18.245056+00:00",
+      "response_model": "doubao-seed-2-0-lite-260215",
+      "response_received_at": "2026-08-25T09:26:30.104961+00:00",
+      "system_fingerprint": null
+    },
+    "requested_action": {
+      "advertising_budget_cents": 0,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10484,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": null,
+      "strategy_summary": "选择小幅涨价，在最后一轮高需求窗口兑现利润，控制风险，守住领先位置，不做额外无效投入"
+    },
+    "retry_count": 0,
+    "round": 10,
+    "seed": 260825006,
+    "state_hash": "sha256:07f534498c15ecc9d2532e6f8ed040f7c65a0dba8174e2d32e1b38c6f5e7ad78",
+    "success": true
+  }
+]

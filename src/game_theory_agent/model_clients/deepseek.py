@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import time
+from datetime import UTC, datetime
 from typing import Any
 
 from pydantic import ValidationError
@@ -14,6 +15,7 @@ from game_theory_agent.agents.contracts import (
     CommunicationContext,
     DecisionContext,
     ModelGeneration,
+    ProviderAuditMetadata,
 )
 from game_theory_agent.agents.prompt_builder import (
     AgentPromptBuilder,
@@ -27,6 +29,17 @@ DEFAULT_DEEPSEEK_BASE_URL = "https://api.deepseek.com"
 DEFAULT_DEEPSEEK_MODEL = "deepseek-v4-flash"
 
 
+def _provider_audit(response: Any, request_started_at: str) -> ProviderAuditMetadata:
+    return ProviderAuditMetadata(
+        request_started_at=request_started_at,
+        response_received_at=datetime.now(UTC).isoformat(),
+        request_id=getattr(response, "id", None),
+        response_model=getattr(response, "model", None),
+        system_fingerprint=getattr(response, "system_fingerprint", None),
+        provider_created_at=getattr(response, "created", None),
+    )
+
+
 class DeepSeekModelClient:
     """JSON-mode decision client with one optional schema repair request."""
 
@@ -38,6 +51,7 @@ class DeepSeekModelClient:
         base_url: str | None = None,
         timeout_seconds: float = 40.0,
         max_schema_attempts: int = 2,
+        max_transport_retries: int = 1,
         temperature: float | None = None,
         top_p: float | None = None,
         prompt_builder: AgentPromptBuilder | None = None,
@@ -46,6 +60,8 @@ class DeepSeekModelClient:
     ) -> None:
         if max_schema_attempts not in {1, 2}:
             raise ValueError("max_schema_attempts must be 1 or 2")
+        if max_transport_retries not in {0, 1, 2}:
+            raise ValueError("max_transport_retries must be 0, 1, or 2")
         self.model = model or os.getenv(
             "DEEPSEEK_MODEL", DEFAULT_DEEPSEEK_MODEL
         )
@@ -71,13 +87,14 @@ class DeepSeekModelClient:
             api_key=resolved_key,
             base_url=self.base_url,
             timeout=timeout_seconds,
-            max_retries=1,
+            max_retries=max_transport_retries,
         )
 
     async def generate_communication(
         self, context: CommunicationContext
     ) -> ModelGeneration:
         started = time.perf_counter()
+        request_started_at = datetime.now(UTC).isoformat()
         prompt = self.communication_prompt_builder.build(context)
         total_input_tokens = 0
         total_output_tokens = 0
@@ -129,6 +146,7 @@ class DeepSeekModelClient:
                     input_tokens=total_input_tokens or None,
                     output_tokens=total_output_tokens or None,
                     retry_count=attempt,
+                    provider_audit=_provider_audit(response, request_started_at),
                 )
             except (
                 IndexError,
@@ -149,6 +167,7 @@ class DeepSeekModelClient:
 
     async def generate_decision(self, context: DecisionContext) -> ModelGeneration:
         started = time.perf_counter()
+        request_started_at = datetime.now(UTC).isoformat()
         prompt = self.prompt_builder.build(context)
         total_input_tokens = 0
         total_output_tokens = 0
@@ -200,6 +219,7 @@ class DeepSeekModelClient:
                     input_tokens=total_input_tokens or None,
                     output_tokens=total_output_tokens or None,
                     retry_count=attempt,
+                    provider_audit=_provider_audit(response, request_started_at),
                 )
             except (
                 IndexError,

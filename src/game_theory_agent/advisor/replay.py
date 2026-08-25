@@ -72,6 +72,8 @@ def verify_advisor_replay(
                 "public_rollout_v3",
                 "pareto_rollout_v4",
                 "pareto_reliable_v5",
+                "pareto_reliable_v6",
+                "pareto_reliable_v7",
             }:
                 opponent_model = observation.get("opponent_model_state")
                 if not isinstance(opponent_model, dict):

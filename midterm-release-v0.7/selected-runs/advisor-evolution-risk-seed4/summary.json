@@ -1,0 +1,249 @@
+{
+  "acceptance_schema_version": "mixed-agent-acceptance-v1.3.0",
+  "episode_id": "stage65-4-risk_guarded_v1",
+  "seed": 4,
+  "seed_split": "custom",
+  "experiment_condition": null,
+  "rotation_index": 0,
+  "rounds": 10,
+  "agent_count": 4,
+  "provider": "doubao",
+  "model": null,
+  "persona": "risk_guarded_v1",
+  "personas": [
+    "risk_guarded_v1"
+  ],
+  "persona_by_company": {
+    "company_A": "risk_guarded_v1"
+  },
+  "persona_treatment": "homogeneous",
+  "decision_support_version": "economic_v2",
+  "persona_semantics_version": "economic_v2",
+  "diagnostic_mode": "off",
+  "information_mode": "public",
+  "observer_information_modes": {},
+  "privileged_observer_company_id": null,
+  "belief_mode": "public_action_v1",
+  "communication_mode": "off",
+  "communication_timeout_seconds": 30.0,
+  "mock_communication_scenario": "silence",
+  "acceptance_scope": "communication_barrier",
+  "llm_count": 1,
+  "rule_count": 3,
+  "llm_companies": [
+    "company_A"
+  ],
+  "temperature": 0.0,
+  "top_p": 0.1,
+  "decision_count": 40,
+  "protocol_checks": {
+    "episode_complete": true,
+    "round_event_log_episode_only": true,
+    "round_event_log_count_matches_runtime": true,
+    "round_event_log_content_matches_runtime": true,
+    "same_state_version_for_all_agents": true,
+    "single_settlement_per_round": true,
+    "duplicate_action_zero": true,
+    "partial_state_update_zero": true,
+    "round_event_complete_100pct": true,
+    "llm_fallback_zero": true,
+    "rule_fallback_count_expected": true,
+    "replay_match_100pct": true,
+    "communication_phase_complete_100pct": true,
+    "interaction_replay_match_100pct": true,
+    "interaction_replay_from_round_event_log_100pct": true,
+    "information_replay_match_100pct": true,
+    "belief_replay_match_100pct": true,
+    "game_theory_replay_match_100pct": true
+  },
+  "active_interaction_checks": {},
+  "active_round_evidence": [],
+  "checks": {
+    "episode_complete": true,
+    "round_event_log_episode_only": true,
+    "round_event_log_count_matches_runtime": true,
+    "round_event_log_content_matches_runtime": true,
+    "same_state_version_for_all_agents": true,
+    "single_settlement_per_round": true,
+    "duplicate_action_zero": true,
+    "partial_state_update_zero": true,
+    "round_event_complete_100pct": true,
+    "llm_fallback_zero": true,
+    "rule_fallback_count_expected": true,
+    "replay_match_100pct": true,
+    "communication_phase_complete_100pct": true,
+    "interaction_replay_match_100pct": true,
+    "interaction_replay_from_round_event_log_100pct": true,
+    "information_replay_match_100pct": true,
+    "belief_replay_match_100pct": true,
+    "game_theory_replay_match_100pct": true
+  },
+  "protocol_passed": true,
+  "active_interaction_passed": null,
+  "passed": true,
+  "research_metrics": {
+    "metrics_schema_version": "multi-agent-research-v1.0.0",
+    "episode_rounds": 10,
+    "market_total_profit_cents": 57050202,
+    "cumulative_unserved_demand_orders": 318,
+    "cumulative_outside_option_orders": 13487,
+    "strategy_diversity": {
+      "mean_price_dispersion_cents": 225.037,
+      "mean_normalized_price_entropy": 0.890564,
+      "mean_normalized_full_action_distance": 0.048371
+    },
+    "resource_allocation": {
+      "capacity_investment_std_cents": 346410.162,
+      "mean_round_capacity_investment_hhi": 0.466667,
+      "mean_demand_capacity_absolute_gap_orders": 786.75,
+      "minimum_resilience_ppm": 97048,
+      "positive_return_capacity_gap_no_investment_rounds": 0,
+      "material_uncovered_risk_no_investment_rounds": 0
+    },
+    "decision_quality_proxies": {
+      "mean_historical_growth_spend_efficiency_ppm": null,
+      "growth_efficiency_method": "historical_proxy_not_causal_counterfactual",
+      "diagnostic_flag_counts": {}
+    },
+    "metric_classification": {
+      "hard_engineering_acceptance": [],
+      "soft_market_health": [
+        "cumulative_unserved_demand_orders",
+        "cumulative_outside_option_orders",
+        "resource_allocation"
+      ],
+      "research_no_required_direction": [
+        "market_total_profit_cents",
+        "strategy_diversity",
+        "decision_quality_proxies"
+      ]
+    }
+  },
+  "interaction_metrics": {
+    "metrics_schema_version": "interaction-metrics-v1.1.0",
+    "classification": {
+      "engineering_health": [
+        "communication_rounds",
+        "generation_status_counts",
+        "communication_input_tokens",
+        "communication_output_tokens",
+        "communication_latency_ms"
+      ],
+      "research_no_required_direction": [
+        "message_count",
+        "channel_counts",
+        "speech_act_counts",
+        "decision_message_response_count",
+        "message_disposition_counts",
+        "structured_claim_alignment_ppm",
+        "requested_peer_claim_alignment_ppm"
+      ]
+    },
+    "communication_rounds": 10,
+    "message_count": 0,
+    "messages_per_round_milli": 0,
+    "channel_counts": {},
+    "speech_act_counts": {},
+    "generation_status_counts": {
+      "disabled": 40
+    },
+    "silence_reason_counts": {},
+    "decision_message_response_count": 0,
+    "message_disposition_counts": {},
+    "structured_claim_field_count": 0,
+    "structured_claim_aligned_field_count": 0,
+    "structured_claim_deviated_field_count": 0,
+    "structured_claim_alignment_ppm": null,
+    "requested_peer_claim_field_count": 0,
+    "requested_peer_claim_aligned_field_count": 0,
+    "requested_peer_claim_deviated_field_count": 0,
+    "requested_peer_claim_alignment_ppm": null,
+    "communication_input_tokens": 0,
+    "communication_output_tokens": 0,
+    "communication_latency_ms": 0
+  },
+  "interaction_replay_error": null,
+  "information_replay_error": null,
+  "belief_replay_error": null,
+  "game_theory_replay_error": null,
+  "game_theory_replay": {
+    "report_schema_version": "game-theory-replay-report-v1.0.0",
+    "event_count": 10,
+    "opponent_model_view_count": 10,
+    "utility_inference_view_count": 10,
+    "advisor_view_count": 10,
+    "repeated_game_view_count": 0,
+    "trace_binding_count": 30,
+    "hidden_state_leak_count": 0,
+    "replay_hash": "sha256:73bf7828e672443acde3b789a6027def9ef78ee0a5a1f15a20d99656bb0cccdb"
+  },
+  "belief_calibration": {
+    "metrics_schema_version": "belief-calibration-v1.0.0",
+    "prediction_count": 30,
+    "top1_accuracy_ppm": 433333,
+    "mean_brier_score": 0.6672648560188,
+    "mean_log_loss": 1.1058212719902187,
+    "belief_hash_protocol_version": "belief-view-hash-v1.0.0"
+  },
+  "reproducibility": {
+    "project_name": "game-theory-agent",
+    "project_version": "0.1.0",
+    "acceptance_runner_sha256": "sha256:4c44988662b8f7aefe7803354a7b5aa38bb94308d5eecf0781c9cf6c493fa67a",
+    "market_config_path": "C:\\Users\\12204\\Desktop\\game-theory-agent\\configs\\market_v4.yaml",
+    "market_config_id": "market-v4-default",
+    "market_config_version": "market-v4.10.0",
+    "market_config_sha256": "sha256:9f038e7027ee68474388010908ddd96aa4ccebecd317030f1ca608f78275b57f",
+    "environment_version": "market-env-v4.2.0",
+    "episode_manifest_version": "episode-manifest-v1.7.0",
+    "episode_manifest_sha256": "sha256:833152dc13ad2522d360273f61e4f4dff7f2d7664b69909b38be46df54c439d2",
+    "event_schema_versions": [
+      "agent-round-event-v1.10.0"
+    ],
+    "interaction_metrics_schema_version": "interaction-metrics-v1.1.0",
+    "persona_catalog_version": "persona-catalog-v1.1.0",
+    "persona_profile_hashes": {
+      "company_A": "sha256:c095ceb72a89769c8edbee436a40473bbbc2ad9a423cbc6fe9a6126a57639d25"
+    },
+    "run_configuration": {
+      "episode_id": "stage65-4-risk_guarded_v1",
+      "seed": 4,
+      "rounds": 10,
+      "market_model": "balanced",
+      "information_mode": "public",
+      "observer_information_modes": {},
+      "privileged_observer_company_id": null,
+      "communication_mode": "off",
+      "belief_mode": "public_action_v1",
+      "opponent_model_mode": "public_strategy_v1",
+      "utility_inference_mode": "strategy_utility_v1",
+      "advisor_mode": "bayesian_strategy_v2",
+      "repeated_game_mode": "off",
+      "cooperation_mode": "off",
+      "honor_game_theory_advice": false,
+      "communication_timeout_seconds": 30.0,
+      "mock_communication_scenario": "silence",
+      "provider": "doubao",
+      "model": null,
+      "llm_count": 1,
+      "llm_companies": [
+        "company_A"
+      ],
+      "personas": [
+        "risk_guarded_v1"
+      ],
+      "persona_by_company": {
+        "company_A": "risk_guarded_v1"
+      },
+      "decision_support_version": "economic_v2",
+      "persona_semantics_version": "economic_v2",
+      "diagnostic_mode": "off",
+      "temperature": 0.0,
+      "top_p": 0.1,
+      "decision_timeout_seconds": 120.0
+    },
+    "run_configuration_sha256": "sha256:de187d2e8f70cd7081778b228d9ee30e9907ee3bfecffe2c7f4fe118cb651a6a",
+    "round_event_log_sha256": "sha256:95fa37e07a4a3f1541feb795610d1b9416b28338587a89400c262bdc1cf59319"
+  },
+  "final_state_hash": "sha256:7078e610a7295bfbf6fec82df2905fbd50982d2e4482a93b1dd2ba897ff43a36",
+  "round_event_path": "C:\\Users\\12204\\Desktop\\game-theory-agent\\runs\\stage6.5-supplement-risk_guarded_v1\\seed-4\\risk_guarded_v1\\bayesian_v2\\round-events.jsonl"
+}

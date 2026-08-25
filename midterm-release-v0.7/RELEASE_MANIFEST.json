@@ -1,0 +1,28 @@
+{
+  "release_manifest_schema_version": "strategic-research-mvp-release-v1.0.0",
+  "release_name": "Strategic Research MVP v0.7",
+  "release_tag": "strategic-research-mvp-v0.7.0",
+  "release_branch": "release/midterm-v0.7",
+  "precalibration_tag": "midterm-v0.7-precalibration",
+  "precalibration_commit": "e853df86b7e70e312c6d85933e0fb90f1c207f65",
+  "implementation_commit": "913e8099d89bcb4eb9927a33bdd77bfe036827f0",
+  "market_config_hash": "sha256:d3139e6939023a81c430e5ab257d2a9808a57c07d1f01d14ddc922bb7b9d2f01",
+  "persona_catalog_hash": "sha256:d2e1f4e661b955ba893e61ffa3ea89cb219ef99661109a20e6d504050be0934b",
+  "environment_version": "market-env-v4.2.0",
+  "advisor_mode": "pareto_reliable_v6",
+  "forecast_profile_hash": "sha256:54d6a5c2dadbba2c74442caad8cef65293d7031876b2b58d33e7d51b1ed47de2",
+  "forecast_profile_status": "diagnostic_not_promoted",
+  "forecast_holdout_gate_passed": false,
+  "real_v6_retest_calls": 0,
+  "backend_tests": {"passed": 253, "failed": 0},
+  "frontend_tests": {"passed": 5, "failed": 0},
+  "experiment_catalog_hash": "sha256:c5d45bbef4c54d67f3f0f76c5f68fac712ef4101708180fd43c03bdefe8149f8",
+  "selected_archive_count": 3,
+  "release_policy": "tag commit contains this manifest; implementation_commit identifies the frozen feature baseline before release metadata",
+  "forbidden_claims": [
+    "v6 generalized successfully",
+    "cooperator/free-rider/retaliator mathematical personas are complete",
+    "belief and opponent model improve long-term value",
+    "synthetic market parameters are empirically calibrated"
+  ]
+}

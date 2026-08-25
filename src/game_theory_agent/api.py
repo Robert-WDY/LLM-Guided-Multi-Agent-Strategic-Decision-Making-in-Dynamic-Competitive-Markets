@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import secrets
 import threading
@@ -17,6 +18,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 
+from game_theory_agent.agent_registry import (
+    AgentInstanceBinding,
+    AgentRegistry,
+    AgentRegistryError,
+)
 from game_theory_agent.agents.contracts import AgentRequestedAction
 from game_theory_agent.agents.personas import PersonaRegistry
 from game_theory_agent.agents.market_regime import MarketRegimeEvaluator
@@ -71,6 +77,7 @@ from game_theory_agent.interaction import (
 )
 from game_theory_agent.information import seal_observation
 from game_theory_agent.strategic_reliability import PublicMarketRolloutAdvisor
+from game_theory_agent.orchestration import JsonlRoundEventLogger
 
 from game_theory_agent.gameplay import (
     build_company_analysis,
@@ -93,10 +100,27 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 CONFIG_PATH = Path(
     os.environ.get("MARKET_CONFIG_PATH", PROJECT_ROOT / "configs" / "market_v4.yaml")
 )
+AGENT_REGISTRY_PATH = Path(
+    os.environ.get("AGENT_REGISTRY_PATH", PROJECT_ROOT / ".agent-registry")
+)
 CONFIG = load_market_config(CONFIG_PATH)
 MARKET_REGIME_EVALUATOR = MarketRegimeEvaluator(CONFIG)
 PERSONA_REGISTRY = PersonaRegistry.from_market_config(CONFIG)
 PUBLIC_ROLLOUT_ADVISOR = PublicMarketRolloutAdvisor(CONFIG)
+RESEARCH_CATALOG_PATH = Path(
+    os.environ.get(
+        "RESEARCH_EXPERIMENT_CATALOG",
+        PROJECT_ROOT / "midterm-release-v0.7" / "EXPERIMENT_CATALOG.json",
+    )
+)
+MIDTERM_VALIDATED_PERSONA_IDS = (
+    "balanced_v1",
+    "aggressive_v1_extreme",
+    "risk_guarded_v1",
+    "profit_myopic",
+    "selfish_long_term",
+    "disciplined_growth_v1",
+)
 
 
 class CreateEpisodeRequest(BaseModel):
@@ -114,6 +138,8 @@ class CreateEpisodeRequest(BaseModel):
     )
     personas: dict[str, Persona] = Field(default_factory=dict)
     agent_configs: dict[str, dict[str, Any]] = Field(default_factory=dict)
+    agent_versioning_mode: Literal["legacy", "immutable_v1"] = "legacy"
+    agent_version_ids: dict[str, str] = Field(default_factory=dict)
     game_mode: Literal["market", "single_company"] = "market"
     player_company_id: str | None = None
     market_model: Literal[
@@ -963,7 +989,13 @@ def _agent_observation(session: EpisodeSession, company_id: str) -> dict[str, An
         ).model_dump(mode="json")
     elif (
         session.advisor_mode
-        in {"public_rollout_v3", "pareto_rollout_v4", "pareto_reliable_v5"}
+        in {
+            "public_rollout_v3",
+            "pareto_rollout_v4",
+            "pareto_reliable_v5",
+            "pareto_reliable_v6",
+            "pareto_reliable_v7",
+        }
         and belief_state is not None
         and opponent_model_state is not None
         and observer_information_mode == "public"
@@ -1145,6 +1177,100 @@ def _require_controller_token(token: str | None) -> None:
         raise HTTPException(status_code=401, detail="invalid controller token")
 
 
+def _research_catalog() -> dict[str, Any]:
+    if not RESEARCH_CATALOG_PATH.is_file():
+        raise HTTPException(status_code=503, detail="research catalogue unavailable")
+    try:
+        payload = json.loads(RESEARCH_CATALOG_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise HTTPException(status_code=500, detail="invalid research catalogue") from exc
+    entries = payload.get("experiments")
+    if not isinstance(entries, list):
+        raise HTTPException(status_code=500, detail="invalid research catalogue")
+    ids = [str(item.get("experiment_id")) for item in entries]
+    if len(ids) != len(set(ids)):
+        raise HTTPException(status_code=500, detail="duplicate research experiment id")
+    return payload
+
+
+def _research_entry(experiment_id: str) -> tuple[dict[str, Any], Path]:
+    entry = next(
+        (
+            item
+            for item in _research_catalog()["experiments"]
+            if item.get("experiment_id") == experiment_id
+        ),
+        None,
+    )
+    if entry is None:
+        raise HTTPException(status_code=404, detail="research experiment not found")
+    root = (PROJECT_ROOT / str(entry["artifact_root"])).resolve()
+    project_root = PROJECT_ROOT.resolve()
+    if root != project_root and project_root not in root.parents:
+        raise HTTPException(status_code=500, detail="research artifact escaped project root")
+    if not root.is_dir():
+        raise HTTPException(status_code=503, detail="research artifact unavailable")
+    return dict(entry), root
+
+
+def _research_file(root: Path, entry: dict[str, Any], key: str) -> Path:
+    path = (root / str(entry[key])).resolve()
+    if path != root and root not in path.parents:
+        raise HTTPException(status_code=500, detail="research file escaped artifact root")
+    if not path.is_file():
+        raise HTTPException(status_code=503, detail=f"research {key} unavailable")
+    return path
+
+
+def _file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return "sha256:" + digest.hexdigest()
+
+
+def _research_events(entry: dict[str, Any], root: Path) -> tuple[Any, ...]:
+    return JsonlRoundEventLogger(
+        _research_file(root, entry, "round_events_path")
+    ).read_all()
+
+
+def _public_company_state(raw: dict[str, Any]) -> dict[str, Any]:
+    commercial = dict(raw.get("commercial", {}))
+    brand = dict(raw.get("brand", {}))
+    return {
+        "company_id": raw.get("company_id"),
+        "price_cents": commercial.get("price_cents"),
+        "market_share_ppm": commercial.get("market_share_ppm"),
+        "sales_orders": commercial.get("sales_orders"),
+        "reputation_ppm": brand.get("reputation_ppm"),
+    }
+
+
+def _public_round_event(event: Any) -> dict[str, Any]:
+    after = dict(event.state_after)
+    companies = after.get("companies", {})
+    company_rows = (
+        list(companies.values()) if isinstance(companies, dict) else list(companies)
+    )
+    return {
+        "event_id": event.event_id,
+        "episode_id": event.episode_id,
+        "settled_round": event.settled_round,
+        "state_before_hash": event.state_before_hash,
+        "state_after_hash": event.state_after_hash,
+        "joint_action_hash": event.joint_action_hash,
+        "phases": list(event.phases),
+        "public_result": {
+            "market": after.get("market", {}),
+            "shared_resilience": after.get("shared_resilience"),
+            "companies": [_public_company_state(row) for row in company_rows],
+        },
+        "trace_company_ids": [trace.company_id for trace in event.traces],
+    }
+
+
 @agent_app.get("/health")
 def agent_health() -> dict[str, Any]:
     return {
@@ -1194,6 +1320,8 @@ def agent_capabilities() -> dict[str, Any]:
             "public_rollout_v3",
             "pareto_rollout_v4",
             "pareto_reliable_v5",
+            "pareto_reliable_v6",
+            "pareto_reliable_v7",
         ],
         "repeated_game_modes": ["off", "reciprocity_v1"],
     }
@@ -1590,6 +1718,288 @@ def health() -> dict[str, Any]:
     }
 
 
+@app.get("/api/v1/capabilities/personas")
+def persona_capabilities() -> dict[str, Any]:
+    """Expose the authoritative, experiment-selectable persona catalogue."""
+
+    profiles = []
+    for persona_id in MIDTERM_VALIDATED_PERSONA_IDS:
+        profile = PERSONA_REGISTRY.get(persona_id)
+        profiles.append(
+            {
+                "persona_id": profile.persona_id,
+                "display_name": profile.label,
+                "objective": profile.objective,
+                "catalog_version": profile.catalog_version,
+                "profile_hash": profile.profile_hash,
+                "utility_weights_ppm": profile.utility_weights_ppm.model_dump(
+                    mode="json"
+                ),
+                "traits_ppm": profile.traits_ppm.model_dump(mode="json"),
+                "capabilities": {
+                    "commercial": True,
+                    "cooperation": profile.cooperation_enabled,
+                    "social_welfare": profile.social_welfare_enabled,
+                },
+                "validation_status": "validated",
+                "experiment_selectable": True,
+            }
+        )
+    return {
+        "catalog_version": PERSONA_REGISTRY.catalog_version,
+        "catalog_source": "backend-market-config",
+        "profiles": profiles,
+        "demo_only_personas": [
+            {
+                "persona_id": persona_id,
+                "validation_status": "ui_demo_not_implemented",
+                "experiment_selectable": False,
+            }
+            for persona_id in ("cooperator", "free_rider", "retaliator")
+        ],
+        "cooperation_persona_claim": "not_implemented_or_validated",
+    }
+
+
+@app.get("/api/v1/research/experiments")
+def list_research_experiments() -> dict[str, Any]:
+    catalog = _research_catalog()
+    return {
+        "catalog_schema_version": catalog.get("catalog_schema_version"),
+        "catalog_hash": catalog.get("catalog_hash"),
+        "experiments": [
+            {
+                key: item.get(key)
+                for key in (
+                    "experiment_id",
+                    "title",
+                    "evidence_type",
+                    "research_theme",
+                    "visibility",
+                    "round_count",
+                    "company_ids",
+                    "claim_boundary",
+                )
+            }
+            for item in catalog["experiments"]
+        ],
+    }
+
+
+@app.get("/api/v1/research/experiments/{experiment_id}")
+def get_research_experiment(experiment_id: str) -> dict[str, Any]:
+    entry, _ = _research_entry(experiment_id)
+    return {
+        key: value
+        for key, value in entry.items()
+        if key not in {"artifact_root", "round_events_path", "summary_path"}
+    }
+
+
+@app.get("/api/v1/research/experiments/{experiment_id}/manifest")
+def get_research_manifest(experiment_id: str) -> dict[str, Any]:
+    entry, root = _research_entry(experiment_id)
+    events = _research_events(entry, root)
+    if not events:
+        raise HTTPException(status_code=503, detail="research episode is empty")
+    first = events[0]
+    agents = [
+        {
+            "company_id": trace.company_id,
+            "agent_id": trace.agent_id,
+            "agent_version_id": trace.agent_version_id,
+            "agent_instance_id": trace.agent_instance_id,
+            "registry_manifest_hash": trace.registry_manifest_hash,
+            "behavior_spec_hash": trace.behavior_spec_hash,
+            "prompt_bundle_hash": trace.prompt_bundle_hash,
+            "source_bundle_hash": trace.source_bundle_hash,
+            "persona": trace.persona,
+            "persona_profile_hash": trace.persona_profile_hash,
+            "model_name": trace.model_name,
+            "prompt_version": trace.prompt_version,
+        }
+        for trace in first.traces
+    ]
+    focal_observation = next(
+        (trace.observation for trace in first.traces if trace.observation), {}
+    )
+    return {
+        "experiment_id": experiment_id,
+        "episode_id": first.episode_id,
+        "evidence_type": entry["evidence_type"],
+        "episode_config": focal_observation.get("episode_config", {}),
+        "agents": agents,
+        "round_event_schema_version": first.event_schema_version,
+        "artifact_hashes": {
+            "round_events": _file_sha256(
+                _research_file(root, entry, "round_events_path")
+            ),
+            "summary": _file_sha256(_research_file(root, entry, "summary_path")),
+        },
+    }
+
+
+@app.get("/api/v1/research/experiments/{experiment_id}/rounds")
+def list_research_rounds(experiment_id: str) -> dict[str, Any]:
+    entry, root = _research_entry(experiment_id)
+    return {
+        "experiment_id": experiment_id,
+        "rounds": [
+            _public_round_event(event) for event in _research_events(entry, root)
+        ],
+    }
+
+
+@app.get("/api/v1/research/experiments/{experiment_id}/rounds/{round_number}")
+def get_research_round(
+    experiment_id: str,
+    round_number: int,
+    view: Literal["agent", "authority"] = "agent",
+    controller_token: str | None = Header(default=None, alias="X-Controller-Token"),
+) -> dict[str, Any]:
+    entry, root = _research_entry(experiment_id)
+    event = next(
+        (
+            item
+            for item in _research_events(entry, root)
+            if item.settled_round == round_number
+        ),
+        None,
+    )
+    if event is None:
+        raise HTTPException(status_code=404, detail="research round not found")
+    if view == "authority":
+        _require_controller_token(controller_token)
+        return {
+            "view": "authority_audit",
+            "event": event.model_dump(mode="json"),
+        }
+    return {"view": "agent_safe_public", "event": _public_round_event(event)}
+
+
+@app.get(
+    "/api/v1/research/experiments/{experiment_id}/rounds/{round_number}/agents/{company_id}"
+)
+def get_research_agent_round(
+    experiment_id: str,
+    round_number: int,
+    company_id: str,
+    view: Literal["agent", "authority"] = "agent",
+    controller_token: str | None = Header(default=None, alias="X-Controller-Token"),
+) -> dict[str, Any]:
+    entry, root = _research_entry(experiment_id)
+    event = next(
+        (
+            item
+            for item in _research_events(entry, root)
+            if item.settled_round == round_number
+        ),
+        None,
+    )
+    if event is None:
+        raise HTTPException(status_code=404, detail="research round not found")
+    trace = next(
+        (item for item in event.traces if item.company_id == company_id), None
+    )
+    if trace is None:
+        raise HTTPException(status_code=404, detail="research agent trace not found")
+    if view == "authority":
+        _require_controller_token(controller_token)
+        return {
+            "view": "authority_audit",
+            "event": event.model_dump(mode="json"),
+            "trace": trace.model_dump(mode="json"),
+        }
+    raw_output_hash = (
+        "sha256:" + hashlib.sha256(trace.raw_model_output.encode("utf-8")).hexdigest()
+        if trace.raw_model_output
+        else None
+    )
+    return {
+        "view": "agent_at_the_time",
+        "experiment_id": experiment_id,
+        "round": round_number,
+        "company_id": company_id,
+        "agent_version": {
+            "agent_id": trace.agent_id,
+            "agent_version_id": trace.agent_version_id,
+            "agent_instance_id": trace.agent_instance_id,
+            "registry_manifest_hash": trace.registry_manifest_hash,
+            "behavior_spec_hash": trace.behavior_spec_hash,
+            "prompt_bundle_hash": trace.prompt_bundle_hash,
+            "source_bundle_hash": trace.source_bundle_hash,
+            "persona": trace.persona,
+            "persona_profile_hash": trace.persona_profile_hash,
+        },
+        "observation": trace.observation,
+        "observation_hash": trace.observation_hash,
+        "visible_messages": (
+            trace.communication_view.model_dump(mode="json")
+            if trace.communication_view is not None
+            else None
+        ),
+        "belief": trace.belief_before,
+        "opponent_model": trace.opponent_model,
+        "advisor": trace.advisor_output,
+        "plan_summary": trace.planner_output,
+        "raw_model_output_ref": {
+            "present": bool(trace.raw_model_output),
+            "sha256": raw_output_hash,
+            "content_exposed_in_agent_view": False,
+        },
+        "requested_action": trace.requested_action,
+        "final_action": trace.final_action,
+        "result": trace.result_analysis.model_dump(mode="json"),
+        "replay_status": {
+            "recorded_state_before_hash": event.state_before_hash,
+            "recorded_state_after_hash": event.state_after_hash,
+            "recorded_joint_action_hash": event.joint_action_hash,
+            "catalog_integrity": "see_integrity_endpoint",
+        },
+    }
+
+
+@app.get("/api/v1/research/experiments/{experiment_id}/report")
+def get_research_report(experiment_id: str) -> dict[str, Any]:
+    entry, root = _research_entry(experiment_id)
+    summary = _research_file(root, entry, "summary_path")
+    return {
+        "experiment_id": experiment_id,
+        "evidence_type": entry["evidence_type"],
+        "claim_boundary": entry["claim_boundary"],
+        "summary_hash": _file_sha256(summary),
+        "summary": json.loads(summary.read_text(encoding="utf-8")),
+    }
+
+
+@app.get("/api/v1/research/experiments/{experiment_id}/integrity")
+def get_research_integrity(experiment_id: str) -> dict[str, Any]:
+    entry, root = _research_entry(experiment_id)
+    artifacts = {}
+    all_match = True
+    for key, expected_key in (
+        ("round_events_path", "round_events_sha256"),
+        ("summary_path", "summary_sha256"),
+    ):
+        path = _research_file(root, entry, key)
+        actual = _file_sha256(path)
+        expected = entry.get(expected_key)
+        matches = expected is None or expected == actual
+        all_match = all_match and matches
+        artifacts[key] = {
+            "sha256": actual,
+            "expected_sha256": expected,
+            "matches_catalog": matches,
+        }
+    return {
+        "experiment_id": experiment_id,
+        "read_only": True,
+        "arbitrary_path_access": False,
+        "artifact_integrity_passed": all_match,
+        "artifacts": artifacts,
+    }
+
+
 @app.post("/api/v1/controller/evaluations/presets")
 def evaluate_preset_endpoint(
     request: PresetCalibrationRequest,
@@ -1666,6 +2076,8 @@ def create_episode(
         "public_rollout_v3",
         "pareto_rollout_v4",
         "pareto_reliable_v5",
+        "pareto_reliable_v6",
+        "pareto_reliable_v7",
     } and (
         request.information_mode != "public"
         or request.opponent_model_mode != "public_strategy_v1"
@@ -1693,6 +2105,26 @@ def create_episode(
                 "agent_configs contains unknown companies: "
                 f"{sorted(unknown_agent_configs)}"
             ),
+        )
+    unknown_version_ids = set(request.agent_version_ids) - set(request.company_ids)
+    if unknown_version_ids:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                "agent_version_ids contains unknown companies: "
+                f"{sorted(unknown_version_ids)}"
+            ),
+        )
+    if request.agent_versioning_mode == "immutable_v1":
+        if set(request.agent_version_ids) != set(request.company_ids):
+            raise HTTPException(
+                status_code=422,
+                detail="immutable_v1 requires one registered version for every company",
+            )
+    elif request.agent_version_ids:
+        raise HTTPException(
+            status_code=422,
+            detail="agent_version_ids requires immutable_v1 versioning mode",
         )
     unknown_observer_modes = set(request.observer_information_modes) - set(
         request.company_ids
@@ -1729,6 +2161,27 @@ def create_episode(
         max_rounds=request.max_rounds,
         cooperation_mode=request.cooperation_mode,
     )
+    agent_roster: dict[str, dict[str, Any]] = {}
+    if request.agent_versioning_mode == "immutable_v1":
+        try:
+            registry = AgentRegistry(AGENT_REGISTRY_PATH)
+            for company_id in state.company_ids:
+                resolved = registry.resolve(request.agent_version_ids[company_id])
+                configured = request.agent_configs.get(company_id, {})
+                binding = AgentInstanceBinding.create(
+                    episode_id=state.episode_id,
+                    company_id=company_id,
+                    agent_id=str(
+                        configured.get("agent_id", f"agent-{company_id}")
+                    ),
+                    manifest=resolved.manifest,
+                )
+                agent_roster[company_id] = binding.model_dump(mode="json")
+        except (AgentRegistryError, ValueError) as exc:
+            raise HTTPException(
+                status_code=422,
+                detail=f"cannot resolve immutable agent roster: {exc}",
+            ) from exc
     manifest = EpisodeManifest.create(
         env,
         state,
@@ -1743,6 +2196,8 @@ def create_episode(
         repeated_game_mode=request.repeated_game_mode,
         observer_information_modes=request.observer_information_modes,
         agent_configs=request.agent_configs,
+        agent_versioning_mode=request.agent_versioning_mode,
+        agent_roster=agent_roster,
     )
     raw_agent_tokens, agent_token_hashes = _new_agent_credentials(
         tuple(state.company_ids)

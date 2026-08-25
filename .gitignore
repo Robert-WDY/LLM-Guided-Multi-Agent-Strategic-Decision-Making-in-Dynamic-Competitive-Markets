@@ -37,6 +37,7 @@ frontend/.wrangler/
 logs/
 runs/
 .tmp/
+.agent-registry/
 
 # IDE / operating system files
 .DS_Store

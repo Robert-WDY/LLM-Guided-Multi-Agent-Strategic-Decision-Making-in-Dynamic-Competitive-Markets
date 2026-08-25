@@ -14,6 +14,7 @@ from game_theory_agent.market import (
     CommercialState,
     CompanyHistory,
     CompanyAction,
+    IncidentResponse,
     IncidentResponseMode,
     CompanyState,
     MarketConfig,
@@ -43,7 +44,11 @@ from .pareto_planner import (
     PROMOTION_EVIDENCE_SHA256,
     select_pareto_decision,
 )
-from .reliable_planner import build_reliability_gate
+from .reliable_planner import build_abstention_gate, build_reliability_gate
+from .marginal_investment import (
+    MarginalInvestmentPlan,
+    build_marginal_investment_plan,
+)
 
 
 def _public_decision_payload(
@@ -596,6 +601,132 @@ def generate_public_reliable_candidates(
     return tuple(candidates)
 
 
+def generate_public_marginal_candidates(
+    config: MarketConfig,
+    state: MarketState,
+    company_id: str,
+    decision_support: Mapping[str, Any],
+    marginal_plan: MarginalInvestmentPlan,
+) -> tuple[StrategicActionCandidate, ...]:
+    """Build v6 candidates around the screened operating baseline.
+
+    ``status_quo`` no longer means zero discretionary spending.  It means the
+    current price plus only those operating investments whose standalone and
+    combined public-forecast marginal returns clear the reliability floors.
+    """
+
+    candidates = list(generate_public_overlay_candidates(config, state, company_id))
+    env = MarketEnv(config)
+    env.load_state(state)
+    company = state.company(company_id)
+    screened = marginal_plan.selected_action
+    current_price = company.commercial.price_cents
+    break_even = int(decision_support.get("estimated_break_even_price_cents", 0))
+    recovery_price = max(current_price, ((break_even + 99) // 100) * 100)
+    current_spend = sum(
+        (
+            screened.advertising_budget_cents,
+            screened.service_budget_cents,
+            screened.capacity_investment_cents,
+            screened.resilience_budget_cents,
+            screened.shared_resilience_contribution_cents or 0,
+            screened.repair_budget_cents,
+        )
+    )
+    risk_increment = min(
+        500_000,
+        max(0, company.financial.cash_balance_cents - current_spend),
+        max(0, company.financial.cash_balance_cents // 20),
+    )
+    specs = (
+        (
+            "status_quo",
+            "status_quo",
+            screened,
+            "保持当前价格，并只保留通过逐项及组合边际收益门槛的经营投入。",
+        ),
+        (
+            "profit_recovery",
+            "profit_recovery",
+            screened.model_copy(update={"price_cents": recovery_price}),
+            "在边际筛选经营基线上，将价格提高到公开测算的保本线。",
+        ),
+        (
+            "risk_buffer",
+            "risk_buffer",
+            screened.model_copy(
+                update={
+                    "resilience_budget_cents": (
+                        screened.resilience_budget_cents + risk_increment
+                    )
+                }
+            ),
+            "在边际筛选经营基线上增加不超过剩余现金的抗冲击投入。",
+        ),
+    )
+    seen = {
+        sha256_hash(item.action.model_dump(mode="json")) for item in candidates
+    }
+    for candidate_id, label, proposed, rationale in specs:
+        raw = CompanyAction(
+            action_id=(
+                f"public-marginal:{state.episode_id}:{state.round}:"
+                f"{company_id}:{candidate_id}"
+            ),
+            episode_id=state.episode_id,
+            agent_id=company_id,
+            round=state.round,
+            state_version=state.state_version,
+            price_cents=proposed.price_cents,
+            advertising_budget_cents=proposed.advertising_budget_cents,
+            service_budget_cents=proposed.service_budget_cents,
+            capacity_investment_cents=proposed.capacity_investment_cents,
+            resilience_budget_cents=proposed.resilience_budget_cents,
+            shared_resilience_contribution_cents=(
+                proposed.shared_resilience_contribution_cents
+            ),
+            incident_response=IncidentResponse(
+                IncidentResponseMode(proposed.incident_response_mode),
+                proposed.repair_budget_cents,
+            ),
+            strategy_summary=f"Stage 6.7 边际筛选候选：{candidate_id}",
+        )
+        validated = env.validate_action(raw, company_id)
+        if not validated.valid or validated.action is None:
+            continue
+        action = validated.action
+        payload = CandidateEconomicAction(
+            price_cents=action.price_cents,
+            advertising_budget_cents=action.advertising_budget_cents,
+            service_budget_cents=action.service_budget_cents,
+            capacity_investment_cents=action.capacity_investment_cents,
+            resilience_budget_cents=action.resilience_budget_cents,
+            shared_resilience_contribution_cents=(
+                action.shared_resilience_contribution_cents
+            ),
+            incident_response_mode=action.incident_response.mode.value,
+            repair_budget_cents=action.incident_response.repair_budget_cents,
+        )
+        key = sha256_hash(payload.model_dump(mode="json"))
+        # Keep status_quo even when it happens to equal another baseline: the
+        # distinct ID carries the new screened-baseline semantics.
+        if key in seen and candidate_id != "status_quo":
+            continue
+        seen.add(key)
+        candidates.append(
+            StrategicActionCandidate(
+                candidate_id=candidate_id,
+                label=label,
+                action=payload,
+                changed_dimensions=["marginally_screened_portfolio"],
+                rationale=rationale,
+            )
+        )
+    if not any(item.candidate_id == "status_quo" for item in candidates):
+        raise ValueError("v6 screened status_quo candidate is missing")
+    return tuple(candidates)
+
+
 def _reliability_fallback_candidate_id(
     *,
     candidates: tuple[StrategicActionCandidate, ...],
@@ -643,6 +774,8 @@ class PublicMarketRolloutAdvisor:
             "public_rollout_v3",
             "pareto_rollout_v4",
             "pareto_reliable_v5",
+            "pareto_reliable_v6",
+            "pareto_reliable_v7",
         ] = "public_rollout_v3",
     ) -> PublicStrategicAdvice:
         parsed_belief = (
@@ -678,7 +811,31 @@ class PublicMarketRolloutAdvisor:
             belief_state=parsed_belief,
             opponent_model=parsed_model,
         )
+        marginal_plan = (
+            build_marginal_investment_plan(
+                config=self.config,
+                state=forecast,
+                company_id=company_id,
+                persona_profile=persona_profile,
+                public_decision_input_hash=record.public_decision_input_hash,
+                opponent_model=parsed_model,
+                belief_state=parsed_belief,
+                horizon_rounds=horizon_rounds,
+                scenario_count=scenario_count,
+            )
+            if advisor_mode in {"pareto_reliable_v6", "pareto_reliable_v7"}
+            else None
+        )
         candidates = (
+            generate_public_marginal_candidates(
+                self.config,
+                forecast,
+                company_id,
+                observation.get("decision_support", {}),
+                marginal_plan,
+            )
+            if marginal_plan is not None
+            else
             generate_public_reliable_candidates(
                 self.config,
                 forecast,
@@ -722,7 +879,12 @@ class PublicMarketRolloutAdvisor:
         ]
         pareto_decision = None
         reliability_gate = None
-        if advisor_mode in {"pareto_rollout_v4", "pareto_reliable_v5"}:
+        if advisor_mode in {
+            "pareto_rollout_v4",
+            "pareto_reliable_v5",
+            "pareto_reliable_v6",
+            "pareto_reliable_v7",
+        }:
             values = {
                 str(item["company_id"]): int(item["value_cents"])
                 for item in build_terminal_rankings(
@@ -746,7 +908,11 @@ class PublicMarketRolloutAdvisor:
                 rounds_remaining=forecast.rounds_remaining,
             )
             selected_id = pareto_decision.recommended_candidate_id
-            if advisor_mode == "pareto_reliable_v5":
+            if advisor_mode in {
+                "pareto_reliable_v5",
+                "pareto_reliable_v6",
+                "pareto_reliable_v7",
+            }:
                 if parsed_model is None:
                     raise ValueError("reliable Pareto advice requires opponent model")
                 fallback_id = _reliability_fallback_candidate_id(
@@ -754,34 +920,79 @@ class PublicMarketRolloutAdvisor:
                     observation=observation,
                     persona_profile=persona_profile,
                 )
-                reliability_gate = build_reliability_gate(
-                    plan=oracle,
-                    decision=pareto_decision,
-                    fallback_candidate_id=fallback_id,
-                    public_decision_input_hash=record.public_decision_input_hash,
-                    observation=observation,
-                    opponent_model=parsed_model,
+                reliability_gate = (
+                    build_abstention_gate(
+                        plan=oracle,
+                        decision=pareto_decision,
+                        diagnostic_fallback_candidate_id=fallback_id,
+                        public_decision_input_hash=(
+                            record.public_decision_input_hash
+                        ),
+                        observation=observation,
+                        opponent_model=parsed_model,
+                        marginal_investment_plan_hash=marginal_plan.plan_hash,
+                    )
+                    if advisor_mode == "pareto_reliable_v7"
+                    else build_reliability_gate(
+                        plan=oracle,
+                        decision=pareto_decision,
+                        fallback_candidate_id=fallback_id,
+                        public_decision_input_hash=(
+                            record.public_decision_input_hash
+                        ),
+                        observation=observation,
+                        opponent_model=parsed_model,
+                        marginal_investment_plan_hash=(
+                            marginal_plan.plan_hash
+                            if marginal_plan is not None
+                            else None
+                        ),
+                    )
                 )
                 selected_id = reliability_gate.effective_candidate_id
         else:
             selected_id = oracle.recommended_candidate_id
-        selected = next(
-            item
-            for item in summaries
-            if item.candidate.candidate_id == selected_id
+        selected = (
+            next(
+                item
+                for item in summaries
+                if item.candidate.candidate_id == selected_id
+            )
+            if selected_id is not None
+            else None
         )
         baseline = next(
             item for item in summaries if item.candidate.candidate_id == "maintain"
         )
         expected_gain = (
-            selected.certainty_equivalent_value_cents
+            0
+            if selected is None
+            else selected.certainty_equivalent_value_cents
             - baseline.certainty_equivalent_value_cents
         )
-        is_pareto = advisor_mode in {"pareto_rollout_v4", "pareto_reliable_v5"}
-        is_reliable = advisor_mode == "pareto_reliable_v5"
+        is_pareto = advisor_mode in {
+            "pareto_rollout_v4",
+            "pareto_reliable_v5",
+            "pareto_reliable_v6",
+            "pareto_reliable_v7",
+        }
+        is_reliable = advisor_mode in {
+            "pareto_reliable_v5",
+            "pareto_reliable_v6",
+            "pareto_reliable_v7",
+        }
+        is_marginal = advisor_mode in {
+            "pareto_reliable_v6",
+            "pareto_reliable_v7",
+        }
+        is_abstention = advisor_mode == "pareto_reliable_v7"
         payload: dict[str, Any] = {
             "advice_schema_version": (
-                "public-pareto-reliable-advice-v5.0.0"
+                "public-pareto-abstention-advice-v7.0.0"
+                if is_abstention
+                else "public-pareto-marginal-advice-v6.0.0"
+                if is_marginal
+                else "public-pareto-reliable-advice-v5.0.0"
                 if is_reliable
                 else "public-pareto-advice-v4.0.0"
                 if is_pareto
@@ -789,7 +1000,11 @@ class PublicMarketRolloutAdvisor:
             ),
             "advisor_mode": advisor_mode,
             "advisor_model_version": (
-                "public-pareto-reliable-market-rollout-v1.0.0"
+                "public-pareto-abstention-market-rollout-v3.0.0"
+                if is_abstention
+                else "public-pareto-marginal-market-rollout-v2.0.0"
+                if is_marginal
+                else "public-pareto-reliable-market-rollout-v1.0.0"
                 if is_reliable
                 else "public-pareto-market-rollout-v1.0.0"
                 if is_pareto
@@ -816,12 +1031,22 @@ class PublicMarketRolloutAdvisor:
             "horizon_rounds": oracle.horizon_rounds,
             "scenario_count": oracle.scenario_count,
             "candidate_actions": [item.model_dump(mode="json") for item in summaries],
-            "recommended_candidate_id": selected.candidate.candidate_id,
-            "recommended_action": selected.candidate.action.model_dump(mode="json"),
+            "recommended_candidate_id": (
+                selected.candidate.candidate_id if selected is not None else None
+            ),
+            "recommended_action": (
+                selected.candidate.action.model_dump(mode="json")
+                if selected is not None
+                else None
+            ),
             "expected_gain_over_baseline_cents": expected_gain,
             "baseline_regret_cents": max(0, expected_gain),
             "recommendation_reason": (
-                "公开预测证据不足，可靠性门禁已放弃强建议并回退到可审计的安全经营候选。"
+                "公开预测证据不足，可靠性门禁已弃权；系统没有生成替代动作，Agent 应保留自己的合法经营判断。"
+                if is_abstention
+                and reliability_gate is not None
+                and reliability_gate.should_abstain
+                else "公开预测证据不足，可靠性门禁已放弃强建议并回退到可审计的安全经营候选。"
                 if reliability_gate is not None and reliability_gate.should_abstain
                 else "在合法公开信息重建的预测市场中，该候选通过了价值、竞争、最坏情景与人格效用约束，并位于安全 Pareto 前沿。"
                 if is_pareto
@@ -870,6 +1095,21 @@ class PublicMarketRolloutAdvisor:
                 if reliability_gate is not None
                 else None
             ),
+            "investment_marginal_plan": (
+                marginal_plan.model_dump(mode="json")
+                if marginal_plan is not None
+                else None
+            ),
+            "execution_disposition": (
+                reliability_gate.execution_disposition
+                if is_abstention and reliability_gate is not None
+                else None
+            ),
+            "withheld_candidate_id": (
+                reliability_gate.withheld_candidate_id
+                if is_abstention and reliability_gate is not None
+                else None
+            ),
             "limitations": [
                 *record.assumptions,
                 "finite candidate set and bounded horizon do not establish equilibrium",
@@ -886,6 +1126,20 @@ class PublicMarketRolloutAdvisor:
                         "Stage 6.6 reliability gating uses public opponent confidence, forecast dispersion and own decision support only"
                     ]
                     if is_reliable
+                    else []
+                ),
+                *(
+                    [
+                        "Stage 6.7 status_quo retains only investments that pass standalone and portfolio marginal-return floors"
+                    ]
+                    if is_marginal
+                    else []
+                ),
+                *(
+                    [
+                        "Stage 6.9 fail-closed abstention emits no executable fallback; the Agent retains its independently generated legal action"
+                    ]
+                    if is_abstention
                     else []
                 ),
             ],

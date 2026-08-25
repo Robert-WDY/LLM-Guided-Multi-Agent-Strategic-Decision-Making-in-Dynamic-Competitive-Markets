@@ -35,6 +35,14 @@ from .public_rollout import (
     build_public_forecast_state,
     generate_public_overlay_candidates,
     generate_public_reliable_candidates,
+    generate_public_marginal_candidates,
+)
+from .marginal_investment import (
+    InvestmentMarginalAssessment,
+    MarginalInvestmentPlan,
+    build_marginal_investment_plan,
+    compute_marginal_assessment_hash,
+    compute_marginal_investment_plan_hash,
 )
 from .objective_calibration import (
     ObjectiveCalibrationDecision,
@@ -56,8 +64,11 @@ from .pareto_planner import (
 )
 from .reliable_planner import (
     ExcludedCandidate,
+    ParetoAbstentionGate,
     ParetoReliabilityGate,
+    build_abstention_gate,
     build_reliability_gate,
+    compute_abstention_gate_hash,
     compute_reliability_gate_hash,
 )
 
@@ -84,7 +95,10 @@ __all__ = [
     "PROMOTION_EVIDENCE_SHA256",
     "ParetoSituation",
     "ParetoReliabilityGate",
+    "ParetoAbstentionGate",
     "ExcludedCandidate",
+    "InvestmentMarginalAssessment",
+    "MarginalInvestmentPlan",
     "StrategicActionCandidate",
     "StrategicObjectiveMode",
     "StrategicReliabilityPlan",
@@ -93,15 +107,21 @@ __all__ = [
     "compute_objective_decision_hash",
     "compute_pareto_decision_hash",
     "compute_reliability_gate_hash",
+    "compute_abstention_gate_hash",
     "calibrate_objective_decision",
     "select_pareto_decision",
     "build_reliability_gate",
+    "build_abstention_gate",
+    "build_marginal_investment_plan",
     "build_calibrated_strategy_model_v2",
     "build_calibrated_opponent_state_v2",
     "deterministic_dirichlet_weights",
     "generate_candidate_actions",
     "generate_public_overlay_candidates",
     "generate_public_reliable_candidates",
+    "generate_public_marginal_candidates",
+    "compute_marginal_assessment_hash",
+    "compute_marginal_investment_plan_hash",
     "run_opponent_benchmark",
     "build_public_forecast_state",
 ]

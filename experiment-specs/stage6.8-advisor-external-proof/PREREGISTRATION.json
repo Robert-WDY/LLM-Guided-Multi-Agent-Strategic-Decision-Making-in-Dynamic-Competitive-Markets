@@ -1,0 +1,129 @@
+{
+  "advisor_mode": "pareto_reliable_v6",
+  "focal_company_id": "company_A",
+  "forbidden_after_audit": [
+    "refit the frozen profile on these labels",
+    "change thresholds after observing outcomes",
+    "call the model when any hard gate fails",
+    "describe overlapping round windows as independent samples"
+  ],
+  "frozen_profile_hash": "sha256:54d6a5c2dadbba2c74442caad8cef65293d7031876b2b58d33e7d51b1ed47de2",
+  "horizon_rounds": 3,
+  "independent_seed_count": 4,
+  "outcome_thresholds": {
+    "minimum_mean_ev_delta_cents": 1,
+    "minimum_mean_regret_reduction_cents": 1,
+    "minimum_nonnegative_episode_count": 5,
+    "minimum_worst_episode_mean_ev_delta_cents": 0,
+    "minimum_worst_window_ev_delta_cents": -1000000
+  },
+  "prediction_thresholds": {
+    "all_candidate_direction_accuracy_ppm": 800000,
+    "released_coverage_ppm": 300000,
+    "released_direction_accuracy_ppm": 900000,
+    "released_negative_actual_count": 0
+  },
+  "preregistration_hash": "sha256:ec7461abed5648dc018d2f4bdccdac708111b415f85e679ab35c78f14e788bd7",
+  "preregistration_schema_version": "stage6.8-preregistration-v1.0.0",
+  "primary_outcome": "frozen_tape_final_enterprise_value_cents",
+  "profile_is_not_refit": true,
+  "profile_path": "C:\\Users\\12204\\Desktop\\game-theory-agent\\midterm-release-v0.7\\selected-runs\\forecast-calibration\\profile.json",
+  "real_llm_gate": {
+    "calls_if_closed": 0,
+    "maximum_calls_if_open": 6,
+    "paired_design_if_open": "3 new seeds x control/treatment",
+    "requires_all_engineering_prediction_and_outcome_checks": true
+  },
+  "release_commit": "0747032bbd7b468c03010d874a820060153f933c",
+  "release_tag": "strategic-research-mvp-v0.7.0",
+  "scenario_count": 5,
+  "secondary_outcomes": [
+    "counterfactual_regret_cents",
+    "cumulative_profit_cents",
+    "forecast_direction_accuracy",
+    "released_candidate_negative_actual_count"
+  ],
+  "source_episode_count": 6,
+  "source_round_window_count": 45,
+  "sources": [
+    {
+      "directory": "runs/belief-real-paired-20260821/seed-701/belief_on",
+      "episode_id": "belief-real-paired-701",
+      "evidence_type": "REAL_RECORDED_LLM_EPISODE",
+      "model": "doubao-seed-2-0-lite-260215",
+      "persona_id": "balanced_v1",
+      "provider": "doubao",
+      "round_count": 5,
+      "round_events_sha256": "sha256:ec5e1600f61d9a125932cc109bdc3e73db7e99fd1df7be793085bca15b643259",
+      "seed": 701,
+      "source_id": "belief-real-701",
+      "summary_sha256": "sha256:e5169a81f0004df52aff27af136c10094745ba23a709932b1122178d175b4cfb"
+    },
+    {
+      "directory": "runs/belief-real-paired-20260821/seed-702/belief_on",
+      "episode_id": "belief-real-paired-702",
+      "evidence_type": "REAL_RECORDED_LLM_EPISODE",
+      "model": "doubao-seed-2-0-lite-260215",
+      "persona_id": "balanced_v1",
+      "provider": "doubao",
+      "round_count": 5,
+      "round_events_sha256": "sha256:70ded7d9ae6568dc5f76c30c020641dec0e56ccb8a23582851d709c39ba1cf6a",
+      "seed": 702,
+      "source_id": "belief-real-702",
+      "summary_sha256": "sha256:5ac7ee2ce32bc1ab7a1a69785e545def83233dc3b96df2ac1733fd441fbf31f9"
+    },
+    {
+      "directory": "runs/belief-real-paired-20260821/seed-703/belief_on",
+      "episode_id": "belief-real-paired-703",
+      "evidence_type": "REAL_RECORDED_LLM_EPISODE",
+      "model": "doubao-seed-2-0-lite-260215",
+      "persona_id": "balanced_v1",
+      "provider": "doubao",
+      "round_count": 5,
+      "round_events_sha256": "sha256:b83e3792383fe1658d24cd35c0cbf5d84450fe382d0c924ea570c9c3e719464c",
+      "seed": 703,
+      "source_id": "belief-real-703",
+      "summary_sha256": "sha256:15c4c814bb26a2812aacfd98a4afc1a558ccc4113cad4ace5aa09aede9d692b3"
+    },
+    {
+      "directory": "runs/privileged-information-persona-doubao-3seed-20260821/aggressive_v1_extreme/seed-6101/public_control",
+      "episode_id": "privileged-info-aggressive_v1_extreme-6101",
+      "evidence_type": "REAL_RECORDED_LLM_EPISODE",
+      "model": null,
+      "persona_id": "aggressive_v1_extreme",
+      "provider": "doubao",
+      "round_count": 10,
+      "round_events_sha256": "sha256:30f9c39ed34ca4988326986748d0e06060eceb6e64fe192d9e936e7c28962847",
+      "seed": 6101,
+      "source_id": "privileged-public-aggressive-6101",
+      "summary_sha256": "sha256:9f672204e84d6526a423ec44c028a0b4ceb25414ffa1f3e71c33b3ad84ca7b78"
+    },
+    {
+      "directory": "runs/privileged-information-persona-doubao-3seed-20260821/balanced_v1/seed-6101/public_control",
+      "episode_id": "privileged-info-balanced_v1-6101",
+      "evidence_type": "REAL_RECORDED_LLM_EPISODE",
+      "model": null,
+      "persona_id": "balanced_v1",
+      "provider": "doubao",
+      "round_count": 10,
+      "round_events_sha256": "sha256:39804b8c9133e1e8463e81f34bac6e739fc149288fcde5e832ddc15bfec9aae2",
+      "seed": 6101,
+      "source_id": "privileged-public-balanced-6101",
+      "summary_sha256": "sha256:7fe19cb4999b0248fee4e683dea1eb42ec961b5e057cf740d9604b75385f7d24"
+    },
+    {
+      "directory": "runs/privileged-information-persona-doubao-3seed-20260821/conservative_v1_extreme/seed-6101/public_control",
+      "episode_id": "privileged-info-conservative_v1_extreme-6101",
+      "evidence_type": "REAL_RECORDED_LLM_EPISODE",
+      "model": null,
+      "persona_id": "conservative_v1_extreme",
+      "provider": "doubao",
+      "round_count": 10,
+      "round_events_sha256": "sha256:f2a3e1dc6ca8363fbadcd98763a0feb19fd0b6cedb5195f993d1ba4fca08c05e",
+      "seed": 6101,
+      "source_id": "privileged-public-conservative-6101",
+      "summary_sha256": "sha256:1c3bf8e18da6cf50cf1432fc9f15770f0abb1453e0b966a69b03344f8aba23fd"
+    }
+  ],
+  "statistical_boundary": "four independent seeds cannot establish a general statistical conclusion; report exact seed-cluster sign test and directional evidence"
+}
