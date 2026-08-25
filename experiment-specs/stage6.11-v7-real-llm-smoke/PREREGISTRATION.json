@@ -1,0 +1,34 @@
+{
+  "experiment_schema_version": "stage6.11-v7-real-llm-smoke-preregistration-v1.0.0",
+  "evidence_level": "EXPLORATORY_REAL_LLM_PAIRED_SMOKE",
+  "authorization": "user_explicitly_requested_real_llm_experiment_2026-08-25",
+  "research_boundary": "Stage 6.10 outcome gate failed on coverage. This user-authorized experiment is exploratory only and cannot overwrite or pass that preregistered gate.",
+  "provider": "doubao",
+  "model": "doubao-seed-2-0-lite-260215",
+  "temperature": 0.0,
+  "top_p": 0.1,
+  "maximum_provider_calls": 6,
+  "reserved_prompt_tokens_per_call": 32000,
+  "reserved_completion_tokens_per_call": 4000,
+  "maximum_prompt_tokens": 192000,
+  "maximum_completion_tokens": 24000,
+  "price_snapshot": {
+    "status": "project_budget_estimate_not_provider_invoice",
+    "input_price_microunits_per_token": 2,
+    "output_price_microunits_per_token": 4,
+    "currency": "CNY"
+  },
+  "maximum_estimated_cost_microunits": 480000,
+  "conditions": ["baseline_without_advice", "treatment_with_v7_advice"],
+  "paired_cells": [
+    {"seed": 260825002, "round": 10, "persona_id": "balanced_v1", "call_order": ["baseline_without_advice", "treatment_with_v7_advice"]},
+    {"seed": 260825005, "round": 8, "persona_id": "balanced_v1", "call_order": ["treatment_with_v7_advice", "baseline_without_advice"]},
+    {"seed": 260825006, "round": 10, "persona_id": "risk_guarded_v1", "call_order": ["baseline_without_advice", "treatment_with_v7_advice"]}
+  ],
+  "frozen_controls": ["market_state", "observation_visibility", "persona", "provider", "model", "opponent_continuation_policy", "market_seed"],
+  "primary_metrics": ["advisor_adoption", "enterprise_value_delta_cents", "regret_reduction_cents"],
+  "secondary_metrics": ["requested_action_change", "cumulative_profit_delta_cents", "worst_pair_delta_cents", "token_usage", "estimated_cost"],
+  "continuation_policy": "three-round closed-loop; after the first focal action all companies use deterministic build_rule_action",
+  "success_interpretation": "Directional smoke only. Three pairs cannot establish statistical stability or generalization.",
+  "failure_policy": "No retries beyond the model client's single schema-repair allowance; preserve every failed call and stop before any seventh provider request."
+}
