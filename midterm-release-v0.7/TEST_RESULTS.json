@@ -1,0 +1,46 @@
+{
+  "test_results_schema_version": "midterm-test-results-v1.0.0",
+  "tested_on": "2026-08-25",
+  "backend": {
+    "pytest_collected": 253,
+    "pytest_passed": 253,
+    "pytest_failed": 0,
+    "compileall": "passed",
+    "ruff_release_scope": "passed",
+    "ruff_full_repository": "historical_experiment_entrypoint_warnings_outside_release_scope"
+  },
+  "frontend": {
+    "lint": "passed",
+    "production_build": "passed",
+    "test_count": 5,
+    "passed": 5,
+    "failed": 0
+  },
+  "research_archive": {
+    "catalog_hash_replay": "passed",
+    "selected_archive_count": 3,
+    "economic_replay": "100_percent",
+    "interaction_replay": "100_percent",
+    "information_replay": "100_percent",
+    "belief_replay": "100_percent",
+    "advisor_replay": "100_percent",
+    "adoption_replay": "100_percent",
+    "hidden_state_leak_count": 0,
+    "api_end_to_end": "round_3_company_B_agent_view_passed"
+  },
+  "forecast_calibration": {
+    "sample_count": 435,
+    "development_sample_count": 345,
+    "holdout_sample_count": 90,
+    "deterministic_rebuild": "100_percent",
+    "profile_hash_replay": "100_percent",
+    "holdout_direction_accuracy_ppm": 911111,
+    "holdout_released_direction_accuracy_ppm": 941176,
+    "holdout_coverage_ppm": 629629,
+    "holdout_released_negative_count": 1,
+    "zero_token_holdout_gate_passed": false,
+    "new_real_model_calls": 0,
+    "new_total_tokens": 0,
+    "new_estimated_cost_cny": 0
+  }
+}

@@ -1,0 +1,2684 @@
+[
+  {
+    "advisor_adoption": null,
+    "agent_version_id": "sha256:dd8c8bf1c2572431a176f883be2fb22074687dbd56beff499c9ddaf25bea9210",
+    "condition": "strategy_utility_control",
+    "decision": {
+      "confidence_ppm": 700000,
+      "message_responses": [],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "up",
+          "risk_exposure": "down"
+        },
+        "key_factors": [
+          "单位贡献2711分，高于最低要求300分",
+          "产能利用率62%，无缺口，无需扩产",
+          "现金充裕，但需保留缓冲",
+          "预期事故损失25.9万，韧性投入可降低风险",
+          "市场份额20.1%，低于对手，但降价空间有限",
+          "剩余4轮，长期投资回收期可能过长",
+          "对手价格高于我司，维持价格有竞争力"
+        ],
+        "objective": "在安全现金约束内提高长期竞争力，优先保障单位经济与现金缓冲。",
+        "situation_summary": "当前处于正常竞争市场，公司现金充裕（3642万），连续两轮盈利，单位贡献2711分，产能利用率62%，无库存损失。市场份额20.1%，低于三家对手。对手价格在10407-10890分之间，我司价格10000分，低于对手。预期需求3000单，产能3339单，无缺口。预期事故损失均值25.9万，韧性覆盖10%。",
+        "strategy_summary": "维持价格10000分以保持竞争力，不降价以免损害单位经济。适度投入广告提升品牌知名度，投入少量韧性预算降低事故风险。不进行产能投资，因当前产能充足且剩余轮数有限。控制总支出在安全预算内。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 5000000,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": 190000,
+          "minimum_round_profit_cents": 1000000
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 1000000,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 500000,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": null,
+        "strategy_summary": "维持价格，适度广告和韧性投入，控制风险。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "strategic_v5_failure_retest",
+    "final_action": {
+      "action_id": "resolved:core-real-strategic:strategy_utility_control:stage65-1-risk_guarded_v1:7:company_A",
+      "advertising_budget_cents": 1000000,
+      "agent_id": "company_A",
+      "capacity_investment_cents": 0,
+      "episode_id": "stage65-1-risk_guarded_v1",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 500000,
+      "round": 7,
+      "service_budget_cents": 0,
+      "state_version": 6,
+      "strategy_summary": "维持价格，适度广告和韧性投入，控制风险。"
+    },
+    "frozen_state_hash": "sha256:a95c6630d45b75e92fd73ffac6cc68f04c0b8d4e3bac7bfb688122cc9004e265",
+    "input_snapshot_hash": "sha256:900b5ad5e24528fc85e80a49b8b184cbf832a9925eed9a731fd0267953558467",
+    "input_tokens": 8437,
+    "latency_ms": 5861,
+    "manifest_hash": "sha256:078c66c0d7ea92cb2c91af7c3dda03729dc746f57e34c4999aa344ca6a077fae",
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 572,
+    "paid_round": 7,
+    "persona_id": "risk_guarded_v1",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631769,
+      "request_id": "b0c1b0d9-773b-4ab2-8f1d-b103682f1b30",
+      "request_started_at": "2026-08-25T04:22:48.714710+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:22:54.575800+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"在安全现金约束内提高长期竞争力，优先保障单位经济与现金缓冲。\",\n    \"situation_summary\": \"当前处于正常竞争市场，公司现金充裕（3642万），连续两轮盈利，单位贡献2711分，产能利用率62%，无库存损失。市场份额20.1%，低于三家对手。对手价格在10407-10890分之间，我司价格10000分，低于对手。预期需求3000单，产能3339单，无缺口。预期事故损失均值25.9万，韧性覆盖10%。\",\n    \"strategy_summary\": \"维持价格10000分以保持竞争力，不降价以免损害单位经济。适度投入广告提升品牌知名度，投入少量韧性预算降低事故风险。不进行产能投资，因当前产能充足且剩余轮数有限。控制总支出在安全预算内。\",\n    \"key_factors\": [\n      \"单位贡献2711分，高于最低要求300分\",\n      \"产能利用率62%，无缺口，无需扩产\",\n      \"现金充裕，但需保留缓冲\",\n      \"预期事故损失25.9万，韧性投入可降低风险\",\n      \"市场份额20.1%，低于对手，但降价空间有限\",\n      \"剩余4轮，长期投资回收期可能过长\",\n      \"对手价格高于我司，维持价格有竞争力\"\n    ],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 1000000,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"minimum_market_share_ppm\": 190000,\n      \"maximum_fixed_spend_cents\": 5000000\n    },\n    \"expected_outcome\": {\n      \"profit\": \"up\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"down\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 1000000,\n    \"capacity_investment_cents\": 0,\n    \"resilience_budget_cents\": 500000,\n    \"service_budget_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"shared_resilience_contribution_cents\": null,\n    \"strategy_summary\": \"维持价格，适度广告和韧性投入，控制风险。\"\n  },\n  \"message_responses\": [],\n  \"confidence_ppm\": 700000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "requested_action": {
+      "advertising_budget_cents": 1000000,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 500000,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": null,
+      "strategy_summary": "维持价格，适度广告和韧性投入，控制风险。"
+    },
+    "resolution_adjustments": [],
+    "retry_count": 0,
+    "seed": 1,
+    "source_directory": "C:\\Users\\12204\\Desktop\\game-theory-agent\\runs\\stage6.5-pilot-risk_guarded_v1\\seed-1\\risk_guarded_v1\\pareto_v4",
+    "success": true,
+    "terminal_enterprise_value_cents": 42829336
+  },
+  {
+    "advisor_adoption": {
+      "accepted": true,
+      "action_alignment_ppm": 1000000,
+      "adoption_status": "exact_action",
+      "advisor_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10000,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "advisor_candidate_id": "status_quo",
+      "advisor_mode": "pareto_reliable_v5",
+      "advisor_rank": 1,
+      "agent_reason": "维持当前价格和固定支出，避免不必要的降价或扩张，保留现金缓冲，同时关注对手动向和潜在风险。；当前处于增长阶段，现金充裕，连续两轮盈利，市场份额约20%，排名第一。市场正常竞争，对手价格略高，预计可能提价。决策支持显示单位贡献为正，但增长投入效率证据不足。博弈建议因证据不足而弃权，推荐维持现状。",
+      "chosen_candidate_id": "status_quo",
+      "chosen_rank": 1,
+      "classification_method": "exact-economic-fields-and-target-direction-v1",
+      "final_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10000,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "llm_requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10000,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "target_alignment_ppm": 1000000,
+      "trace_hash": "sha256:c07dd2ca2165af602616e643b83c275758ad643015adbe520bfcf5d58caa49dc",
+      "trace_schema_version": "advisor-adoption-trace-v1.0.0"
+    },
+    "agent_version_id": "sha256:448d8819c2152cf6555a791915bd0713706398872ed912ac452ef3a7f6631b51",
+    "condition": "pareto_reliable_v5",
+    "decision": {
+      "confidence_ppm": 600000,
+      "message_responses": [],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "stable",
+          "risk_exposure": "stable"
+        },
+        "key_factors": [
+          "连续盈利，现金充裕",
+          "市场份额领先",
+          "对手可能提价",
+          "增长投入效率不明",
+          "博弈建议弃权",
+          "风险规避偏好"
+        ],
+        "objective": "在安全现金约束内提高长期竞争力，保持领先地位并控制风险。",
+        "situation_summary": "当前处于增长阶段，现金充裕，连续两轮盈利，市场份额约20%，排名第一。市场正常竞争，对手价格略高，预计可能提价。决策支持显示单位贡献为正，但增长投入效率证据不足。博弈建议因证据不足而弃权，推荐维持现状。",
+        "strategy_summary": "维持当前价格和固定支出，避免不必要的降价或扩张，保留现金缓冲，同时关注对手动向和潜在风险。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 25925278,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": 180000,
+          "minimum_round_profit_cents": 0
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": null,
+        "strategy_summary": "维持现状，保留现金，等待更多信息。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "strategic_v5_failure_retest",
+    "final_action": {
+      "action_id": "resolved:core-real-strategic:pareto_reliable_v5:stage65-1-risk_guarded_v1:7:company_A",
+      "advertising_budget_cents": 0,
+      "agent_id": "company_A",
+      "capacity_investment_cents": 0,
+      "episode_id": "stage65-1-risk_guarded_v1",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "round": 7,
+      "service_budget_cents": 0,
+      "state_version": 6,
+      "strategy_summary": "维持现状，保留现金，等待更多信息。"
+    },
+    "frozen_state_hash": "sha256:a95c6630d45b75e92fd73ffac6cc68f04c0b8d4e3bac7bfb688122cc9004e265",
+    "input_snapshot_hash": "sha256:1646d768ab1c0426711b6addcc3231ef06e507b5207762304169b9f45067fb73",
+    "input_tokens": 15475,
+    "latency_ms": 4296,
+    "manifest_hash": "sha256:8cc1a072de12e485eb2d4724e004c47034280213730ce9274119248c6a7c0ce7",
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 443,
+    "paid_round": 7,
+    "persona_id": "risk_guarded_v1",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631776,
+      "request_id": "6d11c7e8-3d9d-4784-ab9a-69a2823b51d5",
+      "request_started_at": "2026-08-25T04:22:55.784540+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:23:00.080727+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"在安全现金约束内提高长期竞争力，保持领先地位并控制风险。\",\n    \"situation_summary\": \"当前处于增长阶段，现金充裕，连续两轮盈利，市场份额约20%，排名第一。市场正常竞争，对手价格略高，预计可能提价。决策支持显示单位贡献为正，但增长投入效率证据不足。博弈建议因证据不足而弃权，推荐维持现状。\",\n    \"strategy_summary\": \"维持当前价格和固定支出，避免不必要的降价或扩张，保留现金缓冲，同时关注对手动向和潜在风险。\",\n    \"key_factors\": [\"连续盈利，现金充裕\", \"市场份额领先\", \"对手可能提价\", \"增长投入效率不明\", \"博弈建议弃权\", \"风险规避偏好\"],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 0,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 25925278,\n      \"minimum_market_share_ppm\": 180000\n    },\n    \"expected_outcome\": {\n      \"profit\": \"stable\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"stable\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"capacity_investment_cents\": 0,\n    \"resilience_budget_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"shared_resilience_contribution_cents\": null,\n    \"strategy_summary\": \"维持现状，保留现金，等待更多信息。\"\n  },\n  \"message_responses\": [],\n  \"confidence_ppm\": 600000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "requested_action": {
+      "advertising_budget_cents": 0,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": null,
+      "strategy_summary": "维持现状，保留现金，等待更多信息。"
+    },
+    "resolution_adjustments": [],
+    "retry_count": 0,
+    "seed": 1,
+    "source_directory": "C:\\Users\\12204\\Desktop\\game-theory-agent\\runs\\stage6.5-pilot-risk_guarded_v1\\seed-1\\risk_guarded_v1\\pareto_v4",
+    "success": true,
+    "terminal_enterprise_value_cents": 42935641
+  },
+  {
+    "advisor_adoption": {
+      "accepted": true,
+      "action_alignment_ppm": 1000000,
+      "adoption_status": "exact_action",
+      "advisor_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10000,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "advisor_candidate_id": "status_quo",
+      "advisor_mode": "pareto_reliable_v5",
+      "advisor_rank": 1,
+      "agent_reason": "维持当前价格10000分，不增加固定投入，以保持利润和现金。；当前为市场领先者，现金充裕，单位利润健康，但市场份额近期下滑。对手价格略低，但预测显示他们可能提价。可靠性门禁建议维持现状，避免风险。",
+      "chosen_candidate_id": "status_quo",
+      "chosen_rank": 1,
+      "classification_method": "exact-economic-fields-and-target-direction-v1",
+      "final_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10000,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "llm_requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10000,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "target_alignment_ppm": 1000000,
+      "trace_hash": "sha256:5014a703c4b150ee27282ff14c2c72b1300dbd56dd18d9343c871d4f0ffae926",
+      "trace_schema_version": "advisor-adoption-trace-v1.0.0"
+    },
+    "agent_version_id": "sha256:50a3fe8414e46b096e2b59509cea3444b7f0865adc2dc956f397ddfb75550e91",
+    "condition": "pareto_reliable_v5",
+    "decision": {
+      "confidence_ppm": 700000,
+      "message_responses": [],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "stable",
+          "risk_exposure": "stable"
+        },
+        "key_factors": [
+          "单位贡献2873分",
+          "现金余额4199万",
+          "对手可能提价",
+          "可靠性门禁建议维持",
+          "剩余轮数4"
+        ],
+        "objective": "在剩余4轮内最大化累计利润，保持当前价格并控制固定支出。",
+        "situation_summary": "当前为市场领先者，现金充裕，单位利润健康，但市场份额近期下滑。对手价格略低，但预测显示他们可能提价。可靠性门禁建议维持现状，避免风险。",
+        "strategy_summary": "维持当前价格10000分，不增加固定投入，以保持利润和现金。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 0,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 1500000
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": null,
+        "strategy_summary": "维持价格，零固定支出，最大化利润。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "strategic_v5_failure_retest",
+    "final_action": {
+      "action_id": "resolved:core-real-strategic:pareto_reliable_v5:stage65-2-profit_myopic:7:company_A",
+      "advertising_budget_cents": 0,
+      "agent_id": "company_A",
+      "capacity_investment_cents": 0,
+      "episode_id": "stage65-2-profit_myopic",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "round": 7,
+      "service_budget_cents": 0,
+      "state_version": 6,
+      "strategy_summary": "维持价格，零固定支出，最大化利润。"
+    },
+    "frozen_state_hash": "sha256:386b0719d22033a499ca46ca47541dd5d495acbda74cfcafd5e99571450ef999",
+    "input_snapshot_hash": "sha256:0e3332e931e691fe56f7853219408f21b34ffbf869d75f05ff81a6f0b4db45c8",
+    "input_tokens": 15405,
+    "latency_ms": 3440,
+    "manifest_hash": "sha256:fb7252f65390785c409e573f4c2b74de68613f57438055f3d74d314fe319efe5",
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 402,
+    "paid_round": 7,
+    "persona_id": "profit_myopic",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631781,
+      "request_id": "b76e5ca1-442d-4f20-b335-aacfe9e7e891",
+      "request_started_at": "2026-08-25T04:23:01.358547+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:23:04.798736+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"在剩余4轮内最大化累计利润，保持当前价格并控制固定支出。\",\n    \"situation_summary\": \"当前为市场领先者，现金充裕，单位利润健康，但市场份额近期下滑。对手价格略低，但预测显示他们可能提价。可靠性门禁建议维持现状，避免风险。\",\n    \"strategy_summary\": \"维持当前价格10000分，不增加固定投入，以保持利润和现金。\",\n    \"key_factors\": [\"单位贡献2873分\", \"现金余额4199万\", \"对手可能提价\", \"可靠性门禁建议维持\", \"剩余轮数4\"],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 1500000,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 0\n    },\n    \"expected_outcome\": {\n      \"profit\": \"stable\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"stable\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"capacity_investment_cents\": 0,\n    \"resilience_budget_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"shared_resilience_contribution_cents\": null,\n    \"strategy_summary\": \"维持价格，零固定支出，最大化利润。\"\n  },\n  \"message_responses\": [],\n  \"confidence_ppm\": 700000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "requested_action": {
+      "advertising_budget_cents": 0,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": null,
+      "strategy_summary": "维持价格，零固定支出，最大化利润。"
+    },
+    "resolution_adjustments": [],
+    "retry_count": 0,
+    "seed": 2,
+    "source_directory": "C:\\Users\\12204\\Desktop\\game-theory-agent\\runs\\stage6.5-pilot-profit_myopic\\seed-2\\profit_myopic\\pareto_v4",
+    "success": true,
+    "terminal_enterprise_value_cents": 41586987
+  },
+  {
+    "advisor_adoption": null,
+    "agent_version_id": "sha256:a3fe9e9d9f6ca1057714a3dba46eaa4272e490be629d1cc20846e9c54bae3ef8",
+    "condition": "strategy_utility_control",
+    "decision": {
+      "confidence_ppm": 700000,
+      "message_responses": [],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "stable",
+          "risk_exposure": "stable"
+        },
+        "key_factors": [
+          "单位贡献为正",
+          "现金充足",
+          "对手可能提价",
+          "剩余轮数少",
+          "无风险事件"
+        ],
+        "objective": "在剩余4轮内最大化累计利润，保持价格竞争力，控制固定支出。",
+        "situation_summary": "当前市场份额16.16%，价格10000分，单位贡献2873分，连续3轮盈利，现金充足。竞争对手价格在9523-10123分之间，预计对手可能提价或维持。市场正常，无事件。",
+        "strategy_summary": "维持当前价格以保持利润，不进行额外投资，控制固定支出，确保现金储备。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 0,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 1000000
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": null,
+        "strategy_summary": "维持价格，零固定支出，最大化近期利润。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "strategic_v5_failure_retest",
+    "final_action": {
+      "action_id": "resolved:core-real-strategic:strategy_utility_control:stage65-2-profit_myopic:7:company_A",
+      "advertising_budget_cents": 0,
+      "agent_id": "company_A",
+      "capacity_investment_cents": 0,
+      "episode_id": "stage65-2-profit_myopic",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "round": 7,
+      "service_budget_cents": 0,
+      "state_version": 6,
+      "strategy_summary": "维持价格，零固定支出，最大化近期利润。"
+    },
+    "frozen_state_hash": "sha256:386b0719d22033a499ca46ca47541dd5d495acbda74cfcafd5e99571450ef999",
+    "input_snapshot_hash": "sha256:b86e2f2c264f48753d5b4ea12dd7072a795bae68de38424cb9b2a387eae98401",
+    "input_tokens": 8397,
+    "latency_ms": 4127,
+    "manifest_hash": "sha256:7fa8884bce773a631ed30ac9ee125a520412c392cb8c5cacbca0ef51263cf17c",
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 393,
+    "paid_round": 7,
+    "persona_id": "profit_myopic",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631786,
+      "request_id": "0a23ea5d-9661-4ab3-9805-a70982898d59",
+      "request_started_at": "2026-08-25T04:23:06.035740+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:23:10.162371+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"在剩余4轮内最大化累计利润，保持价格竞争力，控制固定支出。\",\n    \"situation_summary\": \"当前市场份额16.16%，价格10000分，单位贡献2873分，连续3轮盈利，现金充足。竞争对手价格在9523-10123分之间，预计对手可能提价或维持。市场正常，无事件。\",\n    \"strategy_summary\": \"维持当前价格以保持利润，不进行额外投资，控制固定支出，确保现金储备。\",\n    \"key_factors\": [\"单位贡献为正\", \"现金充足\", \"对手可能提价\", \"剩余轮数少\", \"无风险事件\"],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 1000000,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 0\n    },\n    \"expected_outcome\": {\n      \"profit\": \"stable\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"stable\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"capacity_investment_cents\": 0,\n    \"resilience_budget_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"strategy_summary\": \"维持价格，零固定支出，最大化近期利润。\"\n  },\n  \"confidence_ppm\": 700000,\n  \"message_responses\": [],\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "requested_action": {
+      "advertising_budget_cents": 0,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": null,
+      "strategy_summary": "维持价格，零固定支出，最大化近期利润。"
+    },
+    "resolution_adjustments": [],
+    "retry_count": 0,
+    "seed": 2,
+    "source_directory": "C:\\Users\\12204\\Desktop\\game-theory-agent\\runs\\stage6.5-pilot-profit_myopic\\seed-2\\profit_myopic\\pareto_v4",
+    "success": true,
+    "terminal_enterprise_value_cents": 41586987
+  },
+  {
+    "advisor_adoption": null,
+    "agent_version_id": "sha256:dd8c8bf1c2572431a176f883be2fb22074687dbd56beff499c9ddaf25bea9210",
+    "condition": "strategy_utility_control",
+    "decision": {
+      "confidence_ppm": 700000,
+      "message_responses": [],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "up",
+          "market_share": "up",
+          "profit": "stable",
+          "risk_exposure": "down"
+        },
+        "key_factors": [
+          "区域物流中断风险",
+          "产能缺口",
+          "单位经济健康",
+          "现金充裕",
+          "竞争对手价格分化"
+        ],
+        "objective": "在安全现金约束内提高长期竞争力",
+        "situation_summary": "市场处于区域物流中断风险中，剩余1轮；公司现金充裕，单位经济健康，但产能利用率高，存在预期产能缺口。竞争对手价格分化，B降价，C和D涨价。",
+        "strategy_summary": "维持价格稳定，适度投资产能和韧性，以应对风险并支持增长。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 31625641,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 0
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 3000000,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 1000000,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": null,
+        "strategy_summary": "维持价格，投资产能和韧性以应对风险。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "strategic_v5_failure_retest",
+    "final_action": {
+      "action_id": "resolved:core-real-strategic:strategy_utility_control:stage65-3-risk_guarded_v1:7:company_A",
+      "advertising_budget_cents": 0,
+      "agent_id": "company_A",
+      "capacity_investment_cents": 3000000,
+      "episode_id": "stage65-3-risk_guarded_v1",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 1000000,
+      "round": 7,
+      "service_budget_cents": 0,
+      "state_version": 6,
+      "strategy_summary": "维持价格，投资产能和韧性以应对风险。"
+    },
+    "frozen_state_hash": "sha256:5ff881088f4650ee122cf6d5c0dd850971797ea801471ca5f80a20294d66fb72",
+    "input_snapshot_hash": "sha256:d815c5739e9df5331650111b132ec7502d6a359e07b25efc42b731bf0b237ea6",
+    "input_tokens": 8514,
+    "latency_ms": 3650,
+    "manifest_hash": "sha256:078c66c0d7ea92cb2c91af7c3dda03729dc746f57e34c4999aa344ca6a077fae",
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 401,
+    "paid_round": 7,
+    "persona_id": "risk_guarded_v1",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631791,
+      "request_id": "76d2d81c-bbfb-4ab5-ae6e-18a95918b267",
+      "request_started_at": "2026-08-25T04:23:11.363301+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:23:15.012890+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"在安全现金约束内提高长期竞争力\",\n    \"situation_summary\": \"市场处于区域物流中断风险中，剩余1轮；公司现金充裕，单位经济健康，但产能利用率高，存在预期产能缺口。竞争对手价格分化，B降价，C和D涨价。\",\n    \"strategy_summary\": \"维持价格稳定，适度投资产能和韧性，以应对风险并支持增长。\",\n    \"key_factors\": [\"区域物流中断风险\", \"产能缺口\", \"单位经济健康\", \"现金充裕\", \"竞争对手价格分化\"],\n    \"success_criteria\": {\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"minimum_round_profit_cents\": 0,\n      \"maximum_fixed_spend_cents\": 31625641,\n      \"minimum_market_share_ppm\": null\n    },\n    \"expected_outcome\": {\n      \"profit\": \"stable\",\n      \"market_share\": \"up\",\n      \"capacity\": \"up\",\n      \"risk_exposure\": \"down\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"capacity_investment_cents\": 3000000,\n    \"resilience_budget_cents\": 1000000,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"shared_resilience_contribution_cents\": null,\n    \"strategy_summary\": \"维持价格，投资产能和韧性以应对风险。\"\n  },\n  \"message_responses\": [],\n  \"confidence_ppm\": 700000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "requested_action": {
+      "advertising_budget_cents": 0,
+      "capacity_investment_cents": 3000000,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 1000000,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": null,
+      "strategy_summary": "维持价格，投资产能和韧性以应对风险。"
+    },
+    "resolution_adjustments": [],
+    "retry_count": 0,
+    "seed": 3,
+    "source_directory": "C:\\Users\\12204\\Desktop\\game-theory-agent\\runs\\stage6.5-pilot-risk_guarded_v1\\seed-3\\risk_guarded_v1\\pareto_v4",
+    "success": true,
+    "terminal_enterprise_value_cents": 41593968
+  },
+  {
+    "advisor_adoption": {
+      "accepted": true,
+      "action_alignment_ppm": 1000000,
+      "adoption_status": "exact_action",
+      "advisor_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10000,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 500000,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "advisor_candidate_id": "risk_buffer",
+      "advisor_mode": "pareto_reliable_v5",
+      "advisor_rank": 1,
+      "agent_reason": "维持当前价格，不进行激进降价或扩张。投入少量韧性预算以降低潜在损失，保持现金储备。；当前处于市场扰动期，成本高企，需求正常。本公司市场份额约21%，排名第一，但近期利润下滑。对手价格分化，B可能降价，C和D可能涨价。预测市场建议提价或维持，但可靠性不足，回退至安全候选。现金充裕，但需保留缓冲。",
+      "chosen_candidate_id": "risk_buffer",
+      "chosen_rank": 1,
+      "classification_method": "exact-economic-fields-and-target-direction-v1",
+      "final_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10000,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 500000,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "llm_requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10000,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 500000,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "target_alignment_ppm": 1000000,
+      "trace_hash": "sha256:c0a8eac281d20c90be3ff36b21cd1caa3a32df50d41e9f453eee27de2a307af4",
+      "trace_schema_version": "advisor-adoption-trace-v1.0.0"
+    },
+    "agent_version_id": "sha256:448d8819c2152cf6555a791915bd0713706398872ed912ac452ef3a7f6631b51",
+    "condition": "pareto_reliable_v5",
+    "decision": {
+      "confidence_ppm": 700000,
+      "message_responses": [],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "stable",
+          "risk_exposure": "down"
+        },
+        "key_factors": [
+          "市场扰动",
+          "成本高企",
+          "利润下滑",
+          "对手价格分化",
+          "预测不确定性",
+          "现金充裕"
+        ],
+        "objective": "在安全现金约束内提高长期竞争力，优先保障利润与稳定性，适度投入韧性以应对市场扰动。",
+        "situation_summary": "当前处于市场扰动期，成本高企，需求正常。本公司市场份额约21%，排名第一，但近期利润下滑。对手价格分化，B可能降价，C和D可能涨价。预测市场建议提价或维持，但可靠性不足，回退至安全候选。现金充裕，但需保留缓冲。",
+        "strategy_summary": "维持当前价格，不进行激进降价或扩张。投入少量韧性预算以降低潜在损失，保持现金储备。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 31625641,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 0
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 500000,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": null,
+        "strategy_summary": "维持价格，投入韧性预算，保留现金。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "strategic_v5_failure_retest",
+    "final_action": {
+      "action_id": "resolved:core-real-strategic:pareto_reliable_v5:stage65-3-risk_guarded_v1:7:company_A",
+      "advertising_budget_cents": 0,
+      "agent_id": "company_A",
+      "capacity_investment_cents": 0,
+      "episode_id": "stage65-3-risk_guarded_v1",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 500000,
+      "round": 7,
+      "service_budget_cents": 0,
+      "state_version": 6,
+      "strategy_summary": "维持价格，投入韧性预算，保留现金。"
+    },
+    "frozen_state_hash": "sha256:5ff881088f4650ee122cf6d5c0dd850971797ea801471ca5f80a20294d66fb72",
+    "input_snapshot_hash": "sha256:b7302618385939b69853d95ee9b64b64d0bfaddcb28797befa225b645ff3436b",
+    "input_tokens": 15455,
+    "latency_ms": 4072,
+    "manifest_hash": "sha256:8cc1a072de12e485eb2d4724e004c47034280213730ce9274119248c6a7c0ce7",
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 445,
+    "paid_round": 7,
+    "persona_id": "risk_guarded_v1",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631796,
+      "request_id": "532a9b62-8f5b-4591-97dd-f9d39ef7d054",
+      "request_started_at": "2026-08-25T04:23:16.190562+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:23:20.262308+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"在安全现金约束内提高长期竞争力，优先保障利润与稳定性，适度投入韧性以应对市场扰动。\",\n    \"situation_summary\": \"当前处于市场扰动期，成本高企，需求正常。本公司市场份额约21%，排名第一，但近期利润下滑。对手价格分化，B可能降价，C和D可能涨价。预测市场建议提价或维持，但可靠性不足，回退至安全候选。现金充裕，但需保留缓冲。\",\n    \"strategy_summary\": \"维持当前价格，不进行激进降价或扩张。投入少量韧性预算以降低潜在损失，保持现金储备。\",\n    \"key_factors\": [\"市场扰动\", \"成本高企\", \"利润下滑\", \"对手价格分化\", \"预测不确定性\", \"现金充裕\"],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 0,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 31625641,\n      \"minimum_market_share_ppm\": null\n    },\n    \"expected_outcome\": {\n      \"profit\": \"stable\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"down\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"capacity_investment_cents\": 0,\n    \"resilience_budget_cents\": 500000,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"shared_resilience_contribution_cents\": null,\n    \"strategy_summary\": \"维持价格，投入韧性预算，保留现金。\"\n  },\n  \"message_responses\": [],\n  \"confidence_ppm\": 700000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "requested_action": {
+      "advertising_budget_cents": 0,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 500000,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": null,
+      "strategy_summary": "维持价格，投入韧性预算，保留现金。"
+    },
+    "resolution_adjustments": [],
+    "retry_count": 0,
+    "seed": 3,
+    "source_directory": "C:\\Users\\12204\\Desktop\\game-theory-agent\\runs\\stage6.5-pilot-risk_guarded_v1\\seed-3\\risk_guarded_v1\\pareto_v4",
+    "success": true,
+    "terminal_enterprise_value_cents": 42372211
+  },
+  {
+    "advisor_adoption": {
+      "accepted": true,
+      "action_alignment_ppm": 1000000,
+      "adoption_status": "exact_action",
+      "advisor_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10400,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "advisor_candidate_id": "profit_recovery",
+      "advisor_mode": "pareto_reliable_v5",
+      "advisor_rank": 1,
+      "agent_reason": "提高价格至10400分，停止所有可选固定投入，以恢复单位利润并减少亏损。；连续两轮亏损，当前处于利润恢复阶段。市场成本高企，需求低迷，但竞争对手普遍提价，我方可适度提价以改善单位利润。现金充裕，但需控制固定支出。",
+      "chosen_candidate_id": "profit_recovery",
+      "chosen_rank": 1,
+      "classification_method": "exact-economic-fields-and-target-direction-v1",
+      "final_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10400,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "llm_requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10400,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "target_alignment_ppm": 1000000,
+      "trace_hash": "sha256:427fa714cfb54258ab7bafc527487492650b3704c443bf0124a94fb7759a500a",
+      "trace_schema_version": "advisor-adoption-trace-v1.0.0"
+    },
+    "agent_version_id": "sha256:50a3fe8414e46b096e2b59509cea3444b7f0865adc2dc956f397ddfb75550e91",
+    "condition": "pareto_reliable_v5",
+    "decision": {
+      "confidence_ppm": 700000,
+      "message_responses": [],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "down",
+          "profit": "up",
+          "risk_exposure": "stable"
+        },
+        "key_factors": [
+          "连续亏损",
+          "成本高企",
+          "竞争对手提价",
+          "现金充裕",
+          "利润恢复阶段"
+        ],
+        "objective": "停止无效扩张并恢复稳定盈利",
+        "situation_summary": "连续两轮亏损，当前处于利润恢复阶段。市场成本高企，需求低迷，但竞争对手普遍提价，我方可适度提价以改善单位利润。现金充裕，但需控制固定支出。",
+        "strategy_summary": "提高价格至10400分，停止所有可选固定投入，以恢复单位利润并减少亏损。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 0,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 0
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10400,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": null,
+        "strategy_summary": "提价至10400分，停止可选投入，恢复盈利。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "strategic_v5_failure_retest",
+    "final_action": {
+      "action_id": "resolved:core-real-strategic:pareto_reliable_v5:stage65-4-profit_myopic:7:company_A",
+      "advertising_budget_cents": 0,
+      "agent_id": "company_A",
+      "capacity_investment_cents": 0,
+      "episode_id": "stage65-4-profit_myopic",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10400,
+      "resilience_budget_cents": 0,
+      "round": 7,
+      "service_budget_cents": 0,
+      "state_version": 6,
+      "strategy_summary": "提价至10400分，停止可选投入，恢复盈利。"
+    },
+    "frozen_state_hash": "sha256:b9fc7fe978db3674dc811d69e14f7db34b0dfdd74cffb3c71e9b3d8cb1157855",
+    "input_snapshot_hash": "sha256:4f94408a3f3ab15c8b0a220c6cc66d4fad73cbf247a58b0ad644e56e28aca8a9",
+    "input_tokens": 15837,
+    "latency_ms": 3864,
+    "manifest_hash": "sha256:fb7252f65390785c409e573f4c2b74de68613f57438055f3d74d314fe319efe5",
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 390,
+    "paid_round": 7,
+    "persona_id": "profit_myopic",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631802,
+      "request_id": "2c6d788e-b8e7-454b-b26f-396178e77b9c",
+      "request_started_at": "2026-08-25T04:23:21.525025+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:23:25.389349+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"停止无效扩张并恢复稳定盈利\",\n    \"situation_summary\": \"连续两轮亏损，当前处于利润恢复阶段。市场成本高企，需求低迷，但竞争对手普遍提价，我方可适度提价以改善单位利润。现金充裕，但需控制固定支出。\",\n    \"strategy_summary\": \"提高价格至10400分，停止所有可选固定投入，以恢复单位利润并减少亏损。\",\n    \"key_factors\": [\"连续亏损\", \"成本高企\", \"竞争对手提价\", \"现金充裕\", \"利润恢复阶段\"],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 0,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 0\n    },\n    \"expected_outcome\": {\n      \"profit\": \"up\",\n      \"market_share\": \"down\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"stable\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10400,\n    \"advertising_budget_cents\": 0,\n    \"capacity_investment_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"resilience_budget_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"shared_resilience_contribution_cents\": null,\n    \"strategy_summary\": \"提价至10400分，停止可选投入，恢复盈利。\"\n  },\n  \"message_responses\": [],\n  \"confidence_ppm\": 700000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "requested_action": {
+      "advertising_budget_cents": 0,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10400,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": null,
+      "strategy_summary": "提价至10400分，停止可选投入，恢复盈利。"
+    },
+    "resolution_adjustments": [],
+    "retry_count": 0,
+    "seed": 4,
+    "source_directory": "C:\\Users\\12204\\Desktop\\game-theory-agent\\runs\\stage6.5-supplement-profit_myopic\\seed-4\\profit_myopic\\pareto_v4",
+    "success": true,
+    "terminal_enterprise_value_cents": 42974646
+  },
+  {
+    "advisor_adoption": null,
+    "agent_version_id": "sha256:a3fe9e9d9f6ca1057714a3dba46eaa4272e490be629d1cc20846e9c54bae3ef8",
+    "condition": "strategy_utility_control",
+    "decision": {
+      "confidence_ppm": 700000,
+      "message_responses": [],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "up",
+          "risk_exposure": "stable"
+        },
+        "key_factors": [
+          "连续两轮亏损",
+          "对手普遍提价",
+          "成本危机",
+          "需求低迷",
+          "现金充裕",
+          "利润恢复优先"
+        ],
+        "objective": "停止无效扩张并恢复稳定盈利",
+        "situation_summary": "连续两轮亏损，现金充裕但利润承压；市场处于成本危机和需求低迷，节日需求与物流中断叠加；对手普遍提价，我方可维持价格并压缩投入以恢复盈利。",
+        "strategy_summary": "维持当前价格，不降价；零广告、零服务、零产能和韧性投入；仅承担固定成本，确保本轮盈利。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 0,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 0
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": null,
+        "strategy_summary": "维持价格，零投入，恢复盈利"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "strategic_v5_failure_retest",
+    "final_action": {
+      "action_id": "resolved:core-real-strategic:strategy_utility_control:stage65-4-profit_myopic:7:company_A",
+      "advertising_budget_cents": 0,
+      "agent_id": "company_A",
+      "capacity_investment_cents": 0,
+      "episode_id": "stage65-4-profit_myopic",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "round": 7,
+      "service_budget_cents": 0,
+      "state_version": 6,
+      "strategy_summary": "维持价格，零投入，恢复盈利"
+    },
+    "frozen_state_hash": "sha256:b9fc7fe978db3674dc811d69e14f7db34b0dfdd74cffb3c71e9b3d8cb1157855",
+    "input_snapshot_hash": "sha256:b84520360d02f55aafb823f029779a23ef6dbde22d9eaeeea7c20012e5f1dd80",
+    "input_tokens": 8566,
+    "latency_ms": 3375,
+    "manifest_hash": "sha256:7fa8884bce773a631ed30ac9ee125a520412c392cb8c5cacbca0ef51263cf17c",
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 408,
+    "paid_round": 7,
+    "persona_id": "profit_myopic",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631806,
+      "request_id": "77b4a192-567d-4ddc-84d4-b23d72468d3f",
+      "request_started_at": "2026-08-25T04:23:26.595468+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:23:29.970282+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"停止无效扩张并恢复稳定盈利\",\n    \"situation_summary\": \"连续两轮亏损，现金充裕但利润承压；市场处于成本危机和需求低迷，节日需求与物流中断叠加；对手普遍提价，我方可维持价格并压缩投入以恢复盈利。\",\n    \"strategy_summary\": \"维持当前价格，不降价；零广告、零服务、零产能和韧性投入；仅承担固定成本，确保本轮盈利。\",\n    \"key_factors\": [\"连续两轮亏损\", \"对手普遍提价\", \"成本危机\", \"需求低迷\", \"现金充裕\", \"利润恢复优先\"],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 0,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 0,\n      \"minimum_market_share_ppm\": null\n    },\n    \"expected_outcome\": {\n      \"profit\": \"up\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"stable\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"capacity_investment_cents\": 0,\n    \"resilience_budget_cents\": 0,\n    \"shared_resilience_contribution_cents\": null,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"strategy_summary\": \"维持价格，零投入，恢复盈利\"\n  },\n  \"message_responses\": [],\n  \"confidence_ppm\": 700000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "requested_action": {
+      "advertising_budget_cents": 0,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": null,
+      "strategy_summary": "维持价格，零投入，恢复盈利"
+    },
+    "resolution_adjustments": [],
+    "retry_count": 0,
+    "seed": 4,
+    "source_directory": "C:\\Users\\12204\\Desktop\\game-theory-agent\\runs\\stage6.5-supplement-profit_myopic\\seed-4\\profit_myopic\\pareto_v4",
+    "success": true,
+    "terminal_enterprise_value_cents": 41655835
+  },
+  {
+    "advisor_adoption": null,
+    "agent_version_id": "sha256:dd8c8bf1c2572431a176f883be2fb22074687dbd56beff499c9ddaf25bea9210",
+    "condition": "strategy_utility_control",
+    "decision": {
+      "confidence_ppm": 600000,
+      "message_responses": [],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "up",
+          "risk_exposure": "stable"
+        },
+        "key_factors": [
+          "连续亏损",
+          "价格低于对手",
+          "产能不足",
+          "现金充足",
+          "需求预期3000",
+          "风险偏好高"
+        ],
+        "objective": "停止亏损，恢复盈利，同时保持现金储备和风险韧性。",
+        "situation_summary": "连续两轮亏损，当前处于profit_recovery阶段。市场份额21.6%，价格10000分，低于竞争对手。单位贡献2765分，但固定成本高，需提高销量或价格。现金充足，但需控制支出。预计需求3000单，产能1739单，存在缺口。",
+        "strategy_summary": "维持价格不低于10000分，避免降价。适度投入服务预算提升竞争力，不进行产能或韧性投资。控制总支出在预算内，确保现金储备。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 17435478,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": 200000,
+          "minimum_round_profit_cents": 0
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 500000,
+        "shared_resilience_contribution_cents": null,
+        "strategy_summary": "维持价格，适度提升服务以增加需求，控制支出。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "strategic_v5_failure_retest",
+    "final_action": {
+      "action_id": "resolved:core-real-strategic:strategy_utility_control:stage65-4-risk_guarded_v1:7:company_A",
+      "advertising_budget_cents": 0,
+      "agent_id": "company_A",
+      "capacity_investment_cents": 0,
+      "episode_id": "stage65-4-risk_guarded_v1",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "round": 7,
+      "service_budget_cents": 500000,
+      "state_version": 6,
+      "strategy_summary": "维持价格，适度提升服务以增加需求，控制支出。"
+    },
+    "frozen_state_hash": "sha256:b10d12106ecd140ec6e02e191ec157b0e80c27a0bba4796b35b75c5c4012d72a",
+    "input_snapshot_hash": "sha256:ccda3de87adddc0a4e9da9681c1e3f6677040fa54047a632121a4ed3cafc885c",
+    "input_tokens": 8466,
+    "latency_ms": 3518,
+    "manifest_hash": "sha256:078c66c0d7ea92cb2c91af7c3dda03729dc746f57e34c4999aa344ca6a077fae",
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 452,
+    "paid_round": 7,
+    "persona_id": "risk_guarded_v1",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631811,
+      "request_id": "05146a69-28ff-4ad2-a203-b8d536f9f64d",
+      "request_started_at": "2026-08-25T04:23:31.283243+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:23:34.801240+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"停止亏损，恢复盈利，同时保持现金储备和风险韧性。\",\n    \"situation_summary\": \"连续两轮亏损，当前处于profit_recovery阶段。市场份额21.6%，价格10000分，低于竞争对手。单位贡献2765分，但固定成本高，需提高销量或价格。现金充足，但需控制支出。预计需求3000单，产能1739单，存在缺口。\",\n    \"strategy_summary\": \"维持价格不低于10000分，避免降价。适度投入服务预算提升竞争力，不进行产能或韧性投资。控制总支出在预算内，确保现金储备。\",\n    \"key_factors\": [\"连续亏损\", \"价格低于对手\", \"产能不足\", \"现金充足\", \"需求预期3000\", \"风险偏好高\"],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 0,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 17435478,\n      \"minimum_market_share_ppm\": 200000\n    },\n    \"expected_outcome\": {\n      \"profit\": \"up\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"stable\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 0,\n    \"service_budget_cents\": 500000,\n    \"capacity_investment_cents\": 0,\n    \"resilience_budget_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"shared_resilience_contribution_cents\": null,\n    \"strategy_summary\": \"维持价格，适度提升服务以增加需求，控制支出。\"\n  },\n  \"message_responses\": [],\n  \"confidence_ppm\": 600000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "requested_action": {
+      "advertising_budget_cents": 0,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 500000,
+      "shared_resilience_contribution_cents": null,
+      "strategy_summary": "维持价格，适度提升服务以增加需求，控制支出。"
+    },
+    "resolution_adjustments": [],
+    "retry_count": 0,
+    "seed": 4,
+    "source_directory": "C:\\Users\\12204\\Desktop\\game-theory-agent\\runs\\stage6.5-supplement-risk_guarded_v1\\seed-4\\risk_guarded_v1\\pareto_v4",
+    "success": true,
+    "terminal_enterprise_value_cents": 43495190
+  },
+  {
+    "advisor_adoption": {
+      "accepted": true,
+      "action_alignment_ppm": 1000000,
+      "adoption_status": "exact_action",
+      "advisor_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10000,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "advisor_candidate_id": "status_quo",
+      "advisor_mode": "pareto_reliable_v5",
+      "advisor_rank": 1,
+      "agent_reason": "维持价格10000分，不进行额外广告、服务、产能或韧性投资，仅保留必要运营支出。通过停止降价和压缩低效投入，利用现有产能和需求恢复盈利。；公司已连续两轮亏损，当前处于利润恢复阶段。市场份额约21.6%，排名第一但领先优势不大。竞争对手价格略高，预计可能继续提价。现金充足，但需控制支出。建议维持当前价格，停止额外固定投入，以恢复盈利。",
+      "chosen_candidate_id": "status_quo",
+      "chosen_rank": 1,
+      "classification_method": "exact-economic-fields-and-target-direction-v1",
+      "final_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10000,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "llm_requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10000,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "target_alignment_ppm": 1000000,
+      "trace_hash": "sha256:227f9be10ed5655f2d7c3a9860b01234b12327b0f448948a4b0c989216491093",
+      "trace_schema_version": "advisor-adoption-trace-v1.0.0"
+    },
+    "agent_version_id": "sha256:448d8819c2152cf6555a791915bd0713706398872ed912ac452ef3a7f6631b51",
+    "condition": "pareto_reliable_v5",
+    "decision": {
+      "confidence_ppm": 700000,
+      "message_responses": [],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "up",
+          "risk_exposure": "stable"
+        },
+        "key_factors": [
+          "连续两轮亏损，需恢复盈利",
+          "当前价格10000分，高于最低价7535分",
+          "竞争对手价格略高，预计可能提价",
+          "现金充足，但需控制支出",
+          "产能利用率高，无需额外投资",
+          "风险缓冲已足够，无需额外韧性投入"
+        ],
+        "objective": "停止无效扩张并恢复稳定盈利，同时保持风险缓冲和现金安全。",
+        "situation_summary": "公司已连续两轮亏损，当前处于利润恢复阶段。市场份额约21.6%，排名第一但领先优势不大。竞争对手价格略高，预计可能继续提价。现金充足，但需控制支出。建议维持当前价格，停止额外固定投入，以恢复盈利。",
+        "strategy_summary": "维持价格10000分，不进行额外广告、服务、产能或韧性投资，仅保留必要运营支出。通过停止降价和压缩低效投入，利用现有产能和需求恢复盈利。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 0,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 0
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": null,
+        "strategy_summary": "维持价格，停止额外投入，恢复盈利。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "strategic_v5_failure_retest",
+    "final_action": {
+      "action_id": "resolved:core-real-strategic:pareto_reliable_v5:stage65-4-risk_guarded_v1:7:company_A",
+      "advertising_budget_cents": 0,
+      "agent_id": "company_A",
+      "capacity_investment_cents": 0,
+      "episode_id": "stage65-4-risk_guarded_v1",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "round": 7,
+      "service_budget_cents": 0,
+      "state_version": 6,
+      "strategy_summary": "维持价格，停止额外投入，恢复盈利。"
+    },
+    "frozen_state_hash": "sha256:b10d12106ecd140ec6e02e191ec157b0e80c27a0bba4796b35b75c5c4012d72a",
+    "input_snapshot_hash": "sha256:b3e9b14e97440d1fa9c63d5d74ce703603b99fc961358706c11b5ddbbf66ede5",
+    "input_tokens": 15414,
+    "latency_ms": 3912,
+    "manifest_hash": "sha256:8cc1a072de12e485eb2d4724e004c47034280213730ce9274119248c6a7c0ce7",
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 480,
+    "paid_round": 7,
+    "persona_id": "risk_guarded_v1",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631819,
+      "request_id": "101ffb16-5e09-4ba0-a95b-fcbdc643d8cd",
+      "request_started_at": "2026-08-25T04:23:39.181119+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:23:43.093170+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"停止无效扩张并恢复稳定盈利，同时保持风险缓冲和现金安全。\",\n    \"situation_summary\": \"公司已连续两轮亏损，当前处于利润恢复阶段。市场份额约21.6%，排名第一但领先优势不大。竞争对手价格略高，预计可能继续提价。现金充足，但需控制支出。建议维持当前价格，停止额外固定投入，以恢复盈利。\",\n    \"strategy_summary\": \"维持价格10000分，不进行额外广告、服务、产能或韧性投资，仅保留必要运营支出。通过停止降价和压缩低效投入，利用现有产能和需求恢复盈利。\",\n    \"key_factors\": [\n      \"连续两轮亏损，需恢复盈利\",\n      \"当前价格10000分，高于最低价7535分\",\n      \"竞争对手价格略高，预计可能提价\",\n      \"现金充足，但需控制支出\",\n      \"产能利用率高，无需额外投资\",\n      \"风险缓冲已足够，无需额外韧性投入\"\n    ],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 0,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 0\n    },\n    \"expected_outcome\": {\n      \"profit\": \"up\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"stable\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"capacity_investment_cents\": 0,\n    \"resilience_budget_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"shared_resilience_contribution_cents\": null,\n    \"strategy_summary\": \"维持价格，停止额外投入，恢复盈利。\"\n  },\n  \"message_responses\": [],\n  \"confidence_ppm\": 700000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "requested_action": {
+      "advertising_budget_cents": 0,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": null,
+      "strategy_summary": "维持价格，停止额外投入，恢复盈利。"
+    },
+    "resolution_adjustments": [],
+    "retry_count": 0,
+    "seed": 4,
+    "source_directory": "C:\\Users\\12204\\Desktop\\game-theory-agent\\runs\\stage6.5-supplement-risk_guarded_v1\\seed-4\\risk_guarded_v1\\pareto_v4",
+    "success": true,
+    "terminal_enterprise_value_cents": 43409345
+  },
+  {
+    "agent_version_id": "sha256:bf6fae698bfe251b2ba1368dc01f0344ccb4df4227e11e2f162b9d1d1cbd725c",
+    "condition": "no_message",
+    "contribution_cents": 500000,
+    "decision": {
+      "confidence_ppm": 700000,
+      "message_responses": [],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "stable",
+          "risk_exposure": "down"
+        },
+        "key_factors": [
+          "单位贡献2800，盈利良好",
+          "产能充足，无需扩产",
+          "行业韧性低，预期损失中等",
+          "现金充裕，可承受适度投入",
+          "无历史数据，保持稳健"
+        ],
+        "objective": "在安全现金约束内提高长期竞争力，平衡利润、份额、现金、声誉和韧性。",
+        "situation_summary": "市场处于正常竞争，需求未观测但预期订单约3000，公司产能3500，单位成本6000，当前价格10000，单位贡献2800，固定成本350万，现金3000万，无事件，无历史。行业韧性为0，预期事故损失约25万。",
+        "strategy_summary": "保持价格稳定，适度投入广告和韧性，暂不扩产能，保留现金缓冲。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 19500000,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 0
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 500000,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 500000,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 500000,
+        "strategy_summary": "保持价格，适度广告和韧性投入，贡献公共韧性。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "cooperation_credibility_persona",
+    "final_action": {
+      "action_id": "resolved:core-real-cooperation:no_message:core-real-cooperation-credibility:1:company_B",
+      "advertising_budget_cents": 500000,
+      "agent_id": "company_B",
+      "capacity_investment_cents": 0,
+      "episode_id": "core-real-cooperation-credibility",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 500000,
+      "round": 1,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 500000,
+      "state_version": 0,
+      "strategy_summary": "保持价格，适度广告和韧性投入，贡献公共韧性。"
+    },
+    "frozen_state_hash": "sha256:e5e7c5c299b1a008a9fbebfcd6d91fe3b6e4cfeb5a795c71ec656924eb9a0a2e",
+    "input_snapshot_hash": "sha256:d43e082159bea4795cb7d23908c1840bbe5bcbb7e16f970ab60013af3a548804",
+    "input_tokens": 7474,
+    "latency_ms": 3690,
+    "manifest_hash": "sha256:bad59cd4c42277f17322e26061b05b9d935914ad0b7dfe99189a56739e897714",
+    "message_responses": [],
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 457,
+    "paid_round": 1,
+    "persona_id": "balanced_v1",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "proposal_accepted": false,
+    "proposal_rejected": false,
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631828,
+      "request_id": "6315f912-d508-4c27-8cf7-760d31031ee7",
+      "request_started_at": "2026-08-25T04:23:47.945375+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:23:51.634955+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"在安全现金约束内提高长期竞争力，平衡利润、份额、现金、声誉和韧性。\",\n    \"situation_summary\": \"市场处于正常竞争，需求未观测但预期订单约3000，公司产能3500，单位成本6000，当前价格10000，单位贡献2800，固定成本350万，现金3000万，无事件，无历史。行业韧性为0，预期事故损失约25万。\",\n    \"strategy_summary\": \"保持价格稳定，适度投入广告和韧性，暂不扩产能，保留现金缓冲。\",\n    \"key_factors\": [\"单位贡献2800，盈利良好\", \"产能充足，无需扩产\", \"行业韧性低，预期损失中等\", \"现金充裕，可承受适度投入\", \"无历史数据，保持稳健\"],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 0,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 19500000,\n      \"minimum_market_share_ppm\": null\n    },\n    \"expected_outcome\": {\n      \"profit\": \"stable\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"down\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 500000,\n    \"capacity_investment_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"resilience_budget_cents\": 500000,\n    \"shared_resilience_contribution_cents\": 500000,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"strategy_summary\": \"保持价格，适度广告和韧性投入，贡献公共韧性。\"\n  },\n  \"message_responses\": [],\n  \"confidence_ppm\": 700000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "repetition": 1,
+    "requested_action": {
+      "advertising_budget_cents": 500000,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 500000,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 500000,
+      "strategy_summary": "保持价格，适度广告和韧性投入，贡献公共韧性。"
+    },
+    "retry_count": 0,
+    "seed": 20260825,
+    "success": true
+  },
+  {
+    "agent_version_id": "sha256:bf6fae698bfe251b2ba1368dc01f0344ccb4df4227e11e2f162b9d1d1cbd725c",
+    "condition": "high_credibility_proposal",
+    "contribution_cents": 1000000,
+    "decision": {
+      "confidence_ppm": 700000,
+      "message_responses": [
+        {
+          "disposition": "accepted",
+          "message_id": "sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c",
+          "rationale": "公司A信誉较高，贡献100万分在预算内，且能提升行业韧性，降低未来风险。"
+        }
+      ],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "up",
+          "profit": "stable",
+          "risk_exposure": "down"
+        },
+        "key_factors": [
+          "单位贡献2800分，价格高于盈亏平衡价8367分",
+          "产能充足，无需投资产能",
+          "现金充裕，可支持适度投入",
+          "行业韧性为0，预期事故损失约25万分",
+          "公司A提议贡献100万分，其信誉较高",
+          "剩余5轮，长期投资需考虑回收期"
+        ],
+        "objective": "在安全现金约束内提高长期竞争力，平衡利润、份额、现金、声誉和韧性。",
+        "situation_summary": "市场处于正常竞争，需求未观测但预期约3000单，当前价格10000分，单位成本6000分，单位贡献2800分，固定成本350万分。现金3000万分，安全储备1050万分，可自由支配预算1950万分。无活跃事件，产能3500单，预期需求3000单，产能充足。行业韧性为0，预期事故损失约25万分。收到公司A的共享韧性贡献提议，要求贡献100万分。",
+        "strategy_summary": "维持当前价格以保持单位贡献，适度投入广告和韧性以提升竞争力和降低风险，接受共享韧性贡献以增强行业韧性并建立合作信誉。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 19500000,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 0
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 500000,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 500000,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 1000000,
+        "strategy_summary": "维持价格，适度广告和韧性投入，接受共享韧性贡献。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "cooperation_credibility_persona",
+    "final_action": {
+      "action_id": "resolved:core-real-cooperation:high_credibility_proposal:core-real-cooperation-credibility:1:company_B",
+      "advertising_budget_cents": 500000,
+      "agent_id": "company_B",
+      "capacity_investment_cents": 0,
+      "episode_id": "core-real-cooperation-credibility",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 500000,
+      "round": 1,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 1000000,
+      "state_version": 0,
+      "strategy_summary": "维持价格，适度广告和韧性投入，接受共享韧性贡献。"
+    },
+    "frozen_state_hash": "sha256:e5e7c5c299b1a008a9fbebfcd6d91fe3b6e4cfeb5a795c71ec656924eb9a0a2e",
+    "input_snapshot_hash": "sha256:bcad31fed5b819f75c08efe90ed28c60eb66572e405b61f04cc2069ccea1fe8e",
+    "input_tokens": 8293,
+    "latency_ms": 5318,
+    "manifest_hash": "sha256:bad59cd4c42277f17322e26061b05b9d935914ad0b7dfe99189a56739e897714",
+    "message_responses": [
+      {
+        "disposition": "accepted",
+        "message_id": "sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c",
+        "rationale": "公司A信誉较高，贡献100万分在预算内，且能提升行业韧性，降低未来风险。"
+      }
+    ],
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 640,
+    "paid_round": 1,
+    "persona_id": "balanced_v1",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "proposal_accepted": true,
+    "proposal_rejected": false,
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631836,
+      "request_id": "94db45a1-1066-48bb-a5d5-e8614265037b",
+      "request_started_at": "2026-08-25T04:23:55.704077+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:24:01.022277+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"在安全现金约束内提高长期竞争力，平衡利润、份额、现金、声誉和韧性。\",\n    \"situation_summary\": \"市场处于正常竞争，需求未观测但预期约3000单，当前价格10000分，单位成本6000分，单位贡献2800分，固定成本350万分。现金3000万分，安全储备1050万分，可自由支配预算1950万分。无活跃事件，产能3500单，预期需求3000单，产能充足。行业韧性为0，预期事故损失约25万分。收到公司A的共享韧性贡献提议，要求贡献100万分。\",\n    \"strategy_summary\": \"维持当前价格以保持单位贡献，适度投入广告和韧性以提升竞争力和降低风险，接受共享韧性贡献以增强行业韧性并建立合作信誉。\",\n    \"key_factors\": [\n      \"单位贡献2800分，价格高于盈亏平衡价8367分\",\n      \"产能充足，无需投资产能\",\n      \"现金充裕，可支持适度投入\",\n      \"行业韧性为0，预期事故损失约25万分\",\n      \"公司A提议贡献100万分，其信誉较高\",\n      \"剩余5轮，长期投资需考虑回收期\"\n    ],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 0,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 19500000,\n      \"minimum_market_share_ppm\": null\n    },\n    \"expected_outcome\": {\n      \"profit\": \"stable\",\n      \"market_share\": \"up\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"down\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 500000,\n    \"service_budget_cents\": 0,\n    \"resilience_budget_cents\": 500000,\n    \"capacity_investment_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"shared_resilience_contribution_cents\": 1000000,\n    \"strategy_summary\": \"维持价格，适度广告和韧性投入，接受共享韧性贡献。\"\n  },\n  \"message_responses\": [\n    {\n      \"message_id\": \"sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c\",\n      \"disposition\": \"accepted\",\n      \"rationale\": \"公司A信誉较高，贡献100万分在预算内，且能提升行业韧性，降低未来风险。\"\n    }\n  ],\n  \"confidence_ppm\": 700000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "repetition": 1,
+    "requested_action": {
+      "advertising_budget_cents": 500000,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 500000,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 1000000,
+      "strategy_summary": "维持价格，适度广告和韧性投入，接受共享韧性贡献。"
+    },
+    "retry_count": 0,
+    "seed": 20260825,
+    "success": true
+  },
+  {
+    "agent_version_id": "sha256:bf6fae698bfe251b2ba1368dc01f0344ccb4df4227e11e2f162b9d1d1cbd725c",
+    "condition": "low_credibility_proposal",
+    "contribution_cents": 0,
+    "decision": {
+      "confidence_ppm": 700000,
+      "message_responses": [
+        {
+          "disposition": "rejected",
+          "message_id": "sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c",
+          "rationale": "对手可信度低，且贡献无直接回报，不符合当前利润优先目标。"
+        }
+      ],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "up",
+          "risk_exposure": "stable"
+        },
+        "key_factors": [
+          "单位贡献2800分，利润空间健康",
+          "现金充足，但需保留缓冲",
+          "行业韧性低，但个人风险暴露有限",
+          "对手提议不可信，且贡献无直接回报",
+          "市场正常，无紧急事件"
+        ],
+        "objective": "在安全现金约束内提高长期竞争力，平衡利润、份额、现金、声誉和韧性。",
+        "situation_summary": "市场处于正常竞争，需求未观测但预期约3000单，当前价格10000分，单位贡献2800分，单位经济健康。现金充足，无事件，产能充足。行业韧性为0，存在共享韧性提议。",
+        "strategy_summary": "维持价格稳定，适度投入广告提升品牌，不进行产能投资，不进行韧性投资，拒绝共享韧性贡献提议。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 19500000,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 0
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 500000,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0,
+        "strategy_summary": "维持价格，适度广告，拒绝共享韧性贡献。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "cooperation_credibility_persona",
+    "final_action": {
+      "action_id": "resolved:core-real-cooperation:low_credibility_proposal:core-real-cooperation-credibility:1:company_B",
+      "advertising_budget_cents": 500000,
+      "agent_id": "company_B",
+      "capacity_investment_cents": 0,
+      "episode_id": "core-real-cooperation-credibility",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "round": 1,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "state_version": 0,
+      "strategy_summary": "维持价格，适度广告，拒绝共享韧性贡献。"
+    },
+    "frozen_state_hash": "sha256:e5e7c5c299b1a008a9fbebfcd6d91fe3b6e4cfeb5a795c71ec656924eb9a0a2e",
+    "input_snapshot_hash": "sha256:263d0877461a5dc29af746877d3967db91aa68d11e306fc1c88bbb1ddea285df",
+    "input_tokens": 8291,
+    "latency_ms": 4577,
+    "manifest_hash": "sha256:bad59cd4c42277f17322e26061b05b9d935914ad0b7dfe99189a56739e897714",
+    "message_responses": [
+      {
+        "disposition": "rejected",
+        "message_id": "sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c",
+        "rationale": "对手可信度低，且贡献无直接回报，不符合当前利润优先目标。"
+      }
+    ],
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 543,
+    "paid_round": 1,
+    "persona_id": "balanced_v1",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "proposal_accepted": false,
+    "proposal_rejected": true,
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631845,
+      "request_id": "23d2ef34-19c0-471f-8531-6358448eb9d5",
+      "request_started_at": "2026-08-25T04:24:05.186897+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:24:09.763703+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"在安全现金约束内提高长期竞争力，平衡利润、份额、现金、声誉和韧性。\",\n    \"situation_summary\": \"市场处于正常竞争，需求未观测但预期约3000单，当前价格10000分，单位贡献2800分，单位经济健康。现金充足，无事件，产能充足。行业韧性为0，存在共享韧性提议。\",\n    \"strategy_summary\": \"维持价格稳定，适度投入广告提升品牌，不进行产能投资，不进行韧性投资，拒绝共享韧性贡献提议。\",\n    \"key_factors\": [\"单位贡献2800分，利润空间健康\", \"现金充足，但需保留缓冲\", \"行业韧性低，但个人风险暴露有限\", \"对手提议不可信，且贡献无直接回报\", \"市场正常，无紧急事件\"],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 0,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 19500000,\n      \"minimum_market_share_ppm\": null\n    },\n    \"expected_outcome\": {\n      \"profit\": \"up\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"stable\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 500000,\n    \"capacity_investment_cents\": 0,\n    \"resilience_budget_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"shared_resilience_contribution_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"strategy_summary\": \"维持价格，适度广告，拒绝共享韧性贡献。\"\n  },\n  \"message_responses\": [\n    {\n      \"message_id\": \"sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c\",\n      \"disposition\": \"rejected\",\n      \"rationale\": \"对手可信度低，且贡献无直接回报，不符合当前利润优先目标。\"\n    }\n  ],\n  \"confidence_ppm\": 700000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "repetition": 1,
+    "requested_action": {
+      "advertising_budget_cents": 500000,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "strategy_summary": "维持价格，适度广告，拒绝共享韧性贡献。"
+    },
+    "retry_count": 0,
+    "seed": 20260825,
+    "success": true
+  },
+  {
+    "agent_version_id": "sha256:bf6fae698bfe251b2ba1368dc01f0344ccb4df4227e11e2f162b9d1d1cbd725c",
+    "condition": "high_credibility_proposal",
+    "contribution_cents": 0,
+    "decision": {
+      "confidence_ppm": 700000,
+      "message_responses": [
+        {
+          "disposition": "rejected",
+          "message_id": "sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c",
+          "rationale": "共享韧性非强制，当前风险低，贡献100万分将减少现金缓冲，且收益不确定，故拒绝。"
+        }
+      ],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "up",
+          "profit": "stable",
+          "risk_exposure": "stable"
+        },
+        "key_factors": [
+          "单位贡献2800分，价格高于盈亏平衡价8367分",
+          "预期需求3000单，产能3500单，无产能缺口",
+          "现金3000万分，安全储备1050万分，可承受适度投入",
+          "市场正常竞争，无风险事件，韧性覆盖153696ppm",
+          "公司A提议贡献100万分，但合作非强制且收益不确定",
+          "时间折扣高，注重近期利润，风险厌恶中等"
+        ],
+        "objective": "在保持正单位经济性和现金安全的前提下，通过适度广告投入提升品牌知名度，为后续增长奠定基础。",
+        "situation_summary": "市场处于正常竞争，需求未观测但预期约3000单，当前价格10000分，单位贡献2800分，固定成本350万分，盈亏平衡订单1250单。现金充足（3000万分），无风险事件。竞争对手价格均为10000分，品牌知名度相同。公司A提议贡献100万分共享韧性，但合作非强制，且当前韧性覆盖已足够。",
+        "strategy_summary": "维持价格10000分，投入广告预算200万分以提升品牌知名度，不进行产能投资（当前产能充足），不进行韧性投资（风险低），不响应共享韧性提议（非强制且收益不确定）。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 19500000,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 0
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 2000000,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0,
+        "strategy_summary": "维持价格，适度广告投入，不进行其他投资。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "cooperation_credibility_persona",
+    "final_action": {
+      "action_id": "resolved:core-real-cooperation:high_credibility_proposal:core-real-cooperation-credibility:1:company_B",
+      "advertising_budget_cents": 2000000,
+      "agent_id": "company_B",
+      "capacity_investment_cents": 0,
+      "episode_id": "core-real-cooperation-credibility",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "round": 1,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "state_version": 0,
+      "strategy_summary": "维持价格，适度广告投入，不进行其他投资。"
+    },
+    "frozen_state_hash": "sha256:e5e7c5c299b1a008a9fbebfcd6d91fe3b6e4cfeb5a795c71ec656924eb9a0a2e",
+    "input_snapshot_hash": "sha256:bcad31fed5b819f75c08efe90ed28c60eb66572e405b61f04cc2069ccea1fe8e",
+    "input_tokens": 8293,
+    "latency_ms": 5548,
+    "manifest_hash": "sha256:bad59cd4c42277f17322e26061b05b9d935914ad0b7dfe99189a56739e897714",
+    "message_responses": [
+      {
+        "disposition": "rejected",
+        "message_id": "sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c",
+        "rationale": "共享韧性非强制，当前风险低，贡献100万分将减少现金缓冲，且收益不确定，故拒绝。"
+      }
+    ],
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 658,
+    "paid_round": 1,
+    "persona_id": "balanced_v1",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "proposal_accepted": false,
+    "proposal_rejected": true,
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631854,
+      "request_id": "3bd052ef-7a7e-406a-91ae-3dfca00e5673",
+      "request_started_at": "2026-08-25T04:24:13.862276+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:24:19.409973+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"在保持正单位经济性和现金安全的前提下，通过适度广告投入提升品牌知名度，为后续增长奠定基础。\",\n    \"situation_summary\": \"市场处于正常竞争，需求未观测但预期约3000单，当前价格10000分，单位贡献2800分，固定成本350万分，盈亏平衡订单1250单。现金充足（3000万分），无风险事件。竞争对手价格均为10000分，品牌知名度相同。公司A提议贡献100万分共享韧性，但合作非强制，且当前韧性覆盖已足够。\",\n    \"strategy_summary\": \"维持价格10000分，投入广告预算200万分以提升品牌知名度，不进行产能投资（当前产能充足），不进行韧性投资（风险低），不响应共享韧性提议（非强制且收益不确定）。\",\n    \"key_factors\": [\n      \"单位贡献2800分，价格高于盈亏平衡价8367分\",\n      \"预期需求3000单，产能3500单，无产能缺口\",\n      \"现金3000万分，安全储备1050万分，可承受适度投入\",\n      \"市场正常竞争，无风险事件，韧性覆盖153696ppm\",\n      \"公司A提议贡献100万分，但合作非强制且收益不确定\",\n      \"时间折扣高，注重近期利润，风险厌恶中等\"\n    ],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 0,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 19500000,\n      \"minimum_market_share_ppm\": null\n    },\n    \"expected_outcome\": {\n      \"profit\": \"stable\",\n      \"market_share\": \"up\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"stable\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 2000000,\n    \"capacity_investment_cents\": 0,\n    \"resilience_budget_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"shared_resilience_contribution_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"strategy_summary\": \"维持价格，适度广告投入，不进行其他投资。\"\n  },\n  \"message_responses\": [\n    {\n      \"message_id\": \"sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c\",\n      \"disposition\": \"rejected\",\n      \"rationale\": \"共享韧性非强制，当前风险低，贡献100万分将减少现金缓冲，且收益不确定，故拒绝。\"\n    }\n  ],\n  \"confidence_ppm\": 700000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "repetition": 2,
+    "requested_action": {
+      "advertising_budget_cents": 2000000,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "strategy_summary": "维持价格，适度广告投入，不进行其他投资。"
+    },
+    "retry_count": 0,
+    "seed": 20260825,
+    "success": true
+  },
+  {
+    "agent_version_id": "sha256:bf6fae698bfe251b2ba1368dc01f0344ccb4df4227e11e2f162b9d1d1cbd725c",
+    "condition": "low_credibility_proposal",
+    "contribution_cents": 0,
+    "decision": {
+      "confidence_ppm": 700000,
+      "message_responses": [
+        {
+          "disposition": "rejected",
+          "message_id": "sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c",
+          "rationale": "A公司可信度低，且共享韧性贡献为公共品，当前现金充足但需保留缓冲，拒绝。"
+        }
+      ],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "up",
+          "risk_exposure": "down"
+        },
+        "key_factors": [
+          "单位贡献为正",
+          "现金充足",
+          "产能充足",
+          "行业韧性低",
+          "A公司可信度低"
+        ],
+        "objective": "在安全现金约束内提高长期竞争力",
+        "situation_summary": "市场处于正常竞争，需求未观测但预期约3000单，当前价格10000分，单位贡献2800分，固定成本350万分，预计盈利。现金充足，产能3500单，无缺口。行业韧性低，有来自A公司的共享韧性提议。",
+        "strategy_summary": "维持当前价格，适度投入广告和韧性，不进行产能投资，拒绝A公司的共享韧性提议，保留现金缓冲。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 19500000,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 0
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 500000,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 500000,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0,
+        "strategy_summary": "维持价格，适度广告和韧性投入，拒绝共享韧性贡献。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "cooperation_credibility_persona",
+    "final_action": {
+      "action_id": "resolved:core-real-cooperation:low_credibility_proposal:core-real-cooperation-credibility:1:company_B",
+      "advertising_budget_cents": 500000,
+      "agent_id": "company_B",
+      "capacity_investment_cents": 0,
+      "episode_id": "core-real-cooperation-credibility",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 500000,
+      "round": 1,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "state_version": 0,
+      "strategy_summary": "维持价格，适度广告和韧性投入，拒绝共享韧性贡献。"
+    },
+    "frozen_state_hash": "sha256:e5e7c5c299b1a008a9fbebfcd6d91fe3b6e4cfeb5a795c71ec656924eb9a0a2e",
+    "input_snapshot_hash": "sha256:263d0877461a5dc29af746877d3967db91aa68d11e306fc1c88bbb1ddea285df",
+    "input_tokens": 8291,
+    "latency_ms": 4315,
+    "manifest_hash": "sha256:bad59cd4c42277f17322e26061b05b9d935914ad0b7dfe99189a56739e897714",
+    "message_responses": [
+      {
+        "disposition": "rejected",
+        "message_id": "sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c",
+        "rationale": "A公司可信度低，且共享韧性贡献为公共品，当前现金充足但需保留缓冲，拒绝。"
+      }
+    ],
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 524,
+    "paid_round": 1,
+    "persona_id": "balanced_v1",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "proposal_accepted": false,
+    "proposal_rejected": true,
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631864,
+      "request_id": "590dab89-3bbe-45d4-816c-3286599bb818",
+      "request_started_at": "2026-08-25T04:24:23.515423+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:24:27.830314+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"在安全现金约束内提高长期竞争力\",\n    \"situation_summary\": \"市场处于正常竞争，需求未观测但预期约3000单，当前价格10000分，单位贡献2800分，固定成本350万分，预计盈利。现金充足，产能3500单，无缺口。行业韧性低，有来自A公司的共享韧性提议。\",\n    \"strategy_summary\": \"维持当前价格，适度投入广告和韧性，不进行产能投资，拒绝A公司的共享韧性提议，保留现金缓冲。\",\n    \"key_factors\": [\"单位贡献为正\", \"现金充足\", \"产能充足\", \"行业韧性低\", \"A公司可信度低\"],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 0,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 19500000,\n      \"minimum_market_share_ppm\": null\n    },\n    \"expected_outcome\": {\n      \"profit\": \"up\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"down\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 500000,\n    \"service_budget_cents\": 0,\n    \"resilience_budget_cents\": 500000,\n    \"capacity_investment_cents\": 0,\n    \"shared_resilience_contribution_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"strategy_summary\": \"维持价格，适度广告和韧性投入，拒绝共享韧性贡献。\"\n  },\n  \"message_responses\": [\n    {\n      \"message_id\": \"sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c\",\n      \"disposition\": \"rejected\",\n      \"rationale\": \"A公司可信度低，且共享韧性贡献为公共品，当前现金充足但需保留缓冲，拒绝。\"\n    }\n  ],\n  \"confidence_ppm\": 700000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "repetition": 2,
+    "requested_action": {
+      "advertising_budget_cents": 500000,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 500000,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "strategy_summary": "维持价格，适度广告和韧性投入，拒绝共享韧性贡献。"
+    },
+    "retry_count": 0,
+    "seed": 20260825,
+    "success": true
+  },
+  {
+    "agent_version_id": "sha256:bf6fae698bfe251b2ba1368dc01f0344ccb4df4227e11e2f162b9d1d1cbd725c",
+    "condition": "no_message",
+    "contribution_cents": 0,
+    "decision": {
+      "confidence_ppm": 700000,
+      "message_responses": [],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "up",
+          "profit": "up",
+          "risk_exposure": "down"
+        },
+        "key_factors": [
+          "单位经济为正，当前价格高于盈亏平衡价",
+          "产能充足，无需投资",
+          "现金充裕，但需保留安全储备",
+          "预期事故损失中等，韧性投入可降低风险",
+          "市场正常竞争，广告可提升份额",
+          "行业韧性为0，贡献有公共收益但需权衡"
+        ],
+        "objective": "在安全现金约束内提高长期竞争力，平衡利润、份额、现金、声誉和韧性。",
+        "situation_summary": "市场处于正常竞争，需求未观测，但预期需求约3000单，公司产能3500单，产能充足。单位成本6000分，当前价格10000分，单位贡献2800分，单位经济为正。现金3000万分，安全储备1050万分，可自由支配预算1950万分。无活跃事件，韧性覆盖15.37%，预期事故损失约25万分。行业韧性为0，合作模式为共享韧性贡献，但无可见提议。",
+        "strategy_summary": "维持当前价格，适度投入广告提升品牌和份额，少量投入韧性以降低风险，不进行产能投资。保持现金缓冲，确保盈利。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 19500000,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 0
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 500000,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 300000,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0,
+        "strategy_summary": "维持价格，适度广告和韧性投入，不投资产能。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "cooperation_credibility_persona",
+    "final_action": {
+      "action_id": "resolved:core-real-cooperation:no_message:core-real-cooperation-credibility:1:company_B",
+      "advertising_budget_cents": 500000,
+      "agent_id": "company_B",
+      "capacity_investment_cents": 0,
+      "episode_id": "core-real-cooperation-credibility",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 300000,
+      "round": 1,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "state_version": 0,
+      "strategy_summary": "维持价格，适度广告和韧性投入，不投资产能。"
+    },
+    "frozen_state_hash": "sha256:e5e7c5c299b1a008a9fbebfcd6d91fe3b6e4cfeb5a795c71ec656924eb9a0a2e",
+    "input_snapshot_hash": "sha256:d43e082159bea4795cb7d23908c1840bbe5bcbb7e16f970ab60013af3a548804",
+    "input_tokens": 7474,
+    "latency_ms": 4475,
+    "manifest_hash": "sha256:bad59cd4c42277f17322e26061b05b9d935914ad0b7dfe99189a56739e897714",
+    "message_responses": [],
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 537,
+    "paid_round": 1,
+    "persona_id": "balanced_v1",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "proposal_accepted": false,
+    "proposal_rejected": false,
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631872,
+      "request_id": "0a3677b7-572c-4443-8b19-054c67f2d069",
+      "request_started_at": "2026-08-25T04:24:31.941543+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:24:36.416392+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"在安全现金约束内提高长期竞争力，平衡利润、份额、现金、声誉和韧性。\",\n    \"situation_summary\": \"市场处于正常竞争，需求未观测，但预期需求约3000单，公司产能3500单，产能充足。单位成本6000分，当前价格10000分，单位贡献2800分，单位经济为正。现金3000万分，安全储备1050万分，可自由支配预算1950万分。无活跃事件，韧性覆盖15.37%，预期事故损失约25万分。行业韧性为0，合作模式为共享韧性贡献，但无可见提议。\",\n    \"strategy_summary\": \"维持当前价格，适度投入广告提升品牌和份额，少量投入韧性以降低风险，不进行产能投资。保持现金缓冲，确保盈利。\",\n    \"key_factors\": [\n      \"单位经济为正，当前价格高于盈亏平衡价\",\n      \"产能充足，无需投资\",\n      \"现金充裕，但需保留安全储备\",\n      \"预期事故损失中等，韧性投入可降低风险\",\n      \"市场正常竞争，广告可提升份额\",\n      \"行业韧性为0，贡献有公共收益但需权衡\"\n    ],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 0,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 19500000,\n      \"minimum_market_share_ppm\": null\n    },\n    \"expected_outcome\": {\n      \"profit\": \"up\",\n      \"market_share\": \"up\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"down\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 500000,\n    \"service_budget_cents\": 0,\n    \"resilience_budget_cents\": 300000,\n    \"capacity_investment_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"shared_resilience_contribution_cents\": 0,\n    \"strategy_summary\": \"维持价格，适度广告和韧性投入，不投资产能。\"\n  },\n  \"message_responses\": [],\n  \"confidence_ppm\": 700000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "repetition": 2,
+    "requested_action": {
+      "advertising_budget_cents": 500000,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 300000,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "strategy_summary": "维持价格，适度广告和韧性投入，不投资产能。"
+    },
+    "retry_count": 0,
+    "seed": 20260825,
+    "success": true
+  },
+  {
+    "agent_version_id": "sha256:48fa44312a33170d3a5c74a0ad063d176a529a8974ba2dc26e70b22169376656",
+    "condition": "high_credibility_proposal",
+    "contribution_cents": 0,
+    "decision": {
+      "confidence_ppm": 800000,
+      "message_responses": [
+        {
+          "disposition": "rejected",
+          "message_id": "sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c",
+          "rationale": "共享韧性贡献不直接增加利润，且当前无风险事件，不符合短期逐利目标。"
+        }
+      ],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "up",
+          "risk_exposure": "stable"
+        },
+        "key_factors": [
+          "单位贡献2800分，预期需求3000单，利润前景良好",
+          "固定成本350万分，需覆盖",
+          "现金充足，但短期利润权重极高",
+          "共享韧性贡献不直接产生利润，且风险厌恶低",
+          "无风险事件，无需额外韧性投入"
+        ],
+        "objective": "最大化本轮及近期利润，同时保持现金安全。",
+        "situation_summary": "市场处于正常竞争，需求未观测但预期约3000单，当前价格10000分，单位成本6000分，单位贡献2800分。固定成本350万分，预计利润约490万分。现金充足，无风险事件。收到公司A的共享韧性贡献提议，要求贡献100万分。",
+        "strategy_summary": "维持当前价格和运营，不进行额外投资，以最大化短期利润。拒绝共享韧性贡献，因为其不直接增加利润且存在不确定性。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 19500000,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 4000000
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0,
+        "strategy_summary": "维持价格，不投资，拒绝贡献，最大化短期利润。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "cooperation_credibility_persona",
+    "final_action": {
+      "action_id": "resolved:core-real-cooperation:high_credibility_proposal:core-real-cooperation-credibility:1:company_B",
+      "advertising_budget_cents": 0,
+      "agent_id": "company_B",
+      "capacity_investment_cents": 0,
+      "episode_id": "core-real-cooperation-credibility",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "round": 1,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "state_version": 0,
+      "strategy_summary": "维持价格，不投资，拒绝贡献，最大化短期利润。"
+    },
+    "frozen_state_hash": "sha256:e5e7c5c299b1a008a9fbebfcd6d91fe3b6e4cfeb5a795c71ec656924eb9a0a2e",
+    "input_snapshot_hash": "sha256:e830fbef77e9e591c4296611f3316de1d22e2003914e090df33fb94c45c9835c",
+    "input_tokens": 8258,
+    "latency_ms": 4938,
+    "manifest_hash": "sha256:99dd7628869ee19fc56f3816b4c9c885cb71f8c0c3dbdf07bc27a2043eeacd4b",
+    "message_responses": [
+      {
+        "disposition": "rejected",
+        "message_id": "sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c",
+        "rationale": "共享韧性贡献不直接增加利润，且当前无风险事件，不符合短期逐利目标。"
+      }
+    ],
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 565,
+    "paid_round": 1,
+    "persona_id": "profit_myopic",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "proposal_accepted": false,
+    "proposal_rejected": true,
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631881,
+      "request_id": "8827b54e-0d2a-4b87-9f19-9a7ff56197d5",
+      "request_started_at": "2026-08-25T04:24:40.570082+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:24:45.507806+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"最大化本轮及近期利润，同时保持现金安全。\",\n    \"situation_summary\": \"市场处于正常竞争，需求未观测但预期约3000单，当前价格10000分，单位成本6000分，单位贡献2800分。固定成本350万分，预计利润约490万分。现金充足，无风险事件。收到公司A的共享韧性贡献提议，要求贡献100万分。\",\n    \"strategy_summary\": \"维持当前价格和运营，不进行额外投资，以最大化短期利润。拒绝共享韧性贡献，因为其不直接增加利润且存在不确定性。\",\n    \"key_factors\": [\n      \"单位贡献2800分，预期需求3000单，利润前景良好\",\n      \"固定成本350万分，需覆盖\",\n      \"现金充足，但短期利润权重极高\",\n      \"共享韧性贡献不直接产生利润，且风险厌恶低\",\n      \"无风险事件，无需额外韧性投入\"\n    ],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 4000000,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 19500000\n    },\n    \"expected_outcome\": {\n      \"profit\": \"up\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"stable\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"capacity_investment_cents\": 0,\n    \"resilience_budget_cents\": 0,\n    \"shared_resilience_contribution_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"strategy_summary\": \"维持价格，不投资，拒绝贡献，最大化短期利润。\"\n  },\n  \"message_responses\": [\n    {\n      \"message_id\": \"sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c\",\n      \"disposition\": \"rejected\",\n      \"rationale\": \"共享韧性贡献不直接增加利润，且当前无风险事件，不符合短期逐利目标。\"\n    }\n  ],\n  \"confidence_ppm\": 800000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "repetition": 1,
+    "requested_action": {
+      "advertising_budget_cents": 0,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "strategy_summary": "维持价格，不投资，拒绝贡献，最大化短期利润。"
+    },
+    "retry_count": 0,
+    "seed": 20260825,
+    "success": true
+  },
+  {
+    "agent_version_id": "sha256:48fa44312a33170d3a5c74a0ad063d176a529a8974ba2dc26e70b22169376656",
+    "condition": "low_credibility_proposal",
+    "contribution_cents": 0,
+    "decision": {
+      "confidence_ppm": 800000,
+      "message_responses": [
+        {
+          "disposition": "rejected",
+          "message_id": "sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c",
+          "rationale": "公司A信誉低，且贡献不带来直接利润，不符合短期逐利目标。"
+        }
+      ],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "up",
+          "risk_exposure": "stable"
+        },
+        "key_factors": [
+          "预期需求3000单",
+          "单位贡献2800分",
+          "现金充足",
+          "无风险事件",
+          "公司A信誉低"
+        ],
+        "objective": "最大化本轮及近期利润，保持价格竞争力，控制固定支出。",
+        "situation_summary": "市场处于正常竞争，需求未观测但预期约3000单，当前价格10000分，单位成本6000分，单位贡献2800分。现金充足，无风险事件。竞争对手价格相同，品牌和服务水平相同。收到公司A的共享韧性贡献提议，但公司A信誉低（100000），且合作非强制。",
+        "strategy_summary": "维持当前价格以保持竞争力，不进行额外投资或贡献，控制固定支出以最大化利润。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 500000,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 1000000
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0,
+        "strategy_summary": "维持价格，不投入，拒绝贡献。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "cooperation_credibility_persona",
+    "final_action": {
+      "action_id": "resolved:core-real-cooperation:low_credibility_proposal:core-real-cooperation-credibility:1:company_B",
+      "advertising_budget_cents": 0,
+      "agent_id": "company_B",
+      "capacity_investment_cents": 0,
+      "episode_id": "core-real-cooperation-credibility",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "round": 1,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "state_version": 0,
+      "strategy_summary": "维持价格，不投入，拒绝贡献。"
+    },
+    "frozen_state_hash": "sha256:e5e7c5c299b1a008a9fbebfcd6d91fe3b6e4cfeb5a795c71ec656924eb9a0a2e",
+    "input_snapshot_hash": "sha256:3fb15197096733cb0f45d1cb36f2b5bd941ea5f6f303415fd2da6b58957b3ce5",
+    "input_tokens": 8256,
+    "latency_ms": 4552,
+    "manifest_hash": "sha256:99dd7628869ee19fc56f3816b4c9c885cb71f8c0c3dbdf07bc27a2043eeacd4b",
+    "message_responses": [
+      {
+        "disposition": "rejected",
+        "message_id": "sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c",
+        "rationale": "公司A信誉低，且贡献不带来直接利润，不符合短期逐利目标。"
+      }
+    ],
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 519,
+    "paid_round": 1,
+    "persona_id": "profit_myopic",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "proposal_accepted": false,
+    "proposal_rejected": true,
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631889,
+      "request_id": "786a8a0d-5e75-4a61-a25e-a7358a20f17d",
+      "request_started_at": "2026-08-25T04:24:49.612250+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:24:54.164248+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"最大化本轮及近期利润，保持价格竞争力，控制固定支出。\",\n    \"situation_summary\": \"市场处于正常竞争，需求未观测但预期约3000单，当前价格10000分，单位成本6000分，单位贡献2800分。现金充足，无风险事件。竞争对手价格相同，品牌和服务水平相同。收到公司A的共享韧性贡献提议，但公司A信誉低（100000），且合作非强制。\",\n    \"strategy_summary\": \"维持当前价格以保持竞争力，不进行额外投资或贡献，控制固定支出以最大化利润。\",\n    \"key_factors\": [\"预期需求3000单\", \"单位贡献2800分\", \"现金充足\", \"无风险事件\", \"公司A信誉低\"],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 1000000,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 500000\n    },\n    \"expected_outcome\": {\n      \"profit\": \"up\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"stable\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"capacity_investment_cents\": 0,\n    \"resilience_budget_cents\": 0,\n    \"shared_resilience_contribution_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"strategy_summary\": \"维持价格，不投入，拒绝贡献。\"\n  },\n  \"message_responses\": [\n    {\n      \"message_id\": \"sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c\",\n      \"disposition\": \"rejected\",\n      \"rationale\": \"公司A信誉低，且贡献不带来直接利润，不符合短期逐利目标。\"\n    }\n  ],\n  \"confidence_ppm\": 800000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "repetition": 1,
+    "requested_action": {
+      "advertising_budget_cents": 0,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "strategy_summary": "维持价格，不投入，拒绝贡献。"
+    },
+    "retry_count": 0,
+    "seed": 20260825,
+    "success": true
+  },
+  {
+    "agent_version_id": "sha256:48fa44312a33170d3a5c74a0ad063d176a529a8974ba2dc26e70b22169376656",
+    "condition": "no_message",
+    "contribution_cents": 0,
+    "decision": {
+      "confidence_ppm": 800000,
+      "message_responses": [],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "up",
+          "risk_exposure": "stable"
+        },
+        "key_factors": [
+          "预期需求3000单",
+          "单位贡献2800分",
+          "固定成本350万分",
+          "现金充足",
+          "无风险事件"
+        ],
+        "objective": "最大化本轮及近期利润，同时保持现金安全。",
+        "situation_summary": "市场处于正常竞争，需求未观测但预期约3000单，当前价格10000分，单位成本6000分，单位贡献2800分。固定成本350万分，现金3000万，无风险事件。竞争对手价格均为10000分，市场份额均等。",
+        "strategy_summary": "维持当前价格以保持单位贡献，不进行额外投资，控制固定支出，确保盈利。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 19500000,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 0
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0,
+        "strategy_summary": "维持价格，控制成本，追求短期利润。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "cooperation_credibility_persona",
+    "final_action": {
+      "action_id": "resolved:core-real-cooperation:no_message:core-real-cooperation-credibility:1:company_B",
+      "advertising_budget_cents": 0,
+      "agent_id": "company_B",
+      "capacity_investment_cents": 0,
+      "episode_id": "core-real-cooperation-credibility",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "round": 1,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "state_version": 0,
+      "strategy_summary": "维持价格，控制成本，追求短期利润。"
+    },
+    "frozen_state_hash": "sha256:e5e7c5c299b1a008a9fbebfcd6d91fe3b6e4cfeb5a795c71ec656924eb9a0a2e",
+    "input_snapshot_hash": "sha256:302005a88f1cc7913f643958115d0e5ea25d198df90997e8e8503bf7e36eef12",
+    "input_tokens": 7439,
+    "latency_ms": 4389,
+    "manifest_hash": "sha256:99dd7628869ee19fc56f3816b4c9c885cb71f8c0c3dbdf07bc27a2043eeacd4b",
+    "message_responses": [],
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 412,
+    "paid_round": 1,
+    "persona_id": "profit_myopic",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "proposal_accepted": false,
+    "proposal_rejected": false,
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631898,
+      "request_id": "428e0091-8108-4c3f-8531-b0d2f16618c4",
+      "request_started_at": "2026-08-25T04:24:58.261715+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:25:02.651163+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"最大化本轮及近期利润，同时保持现金安全。\",\n    \"situation_summary\": \"市场处于正常竞争，需求未观测但预期约3000单，当前价格10000分，单位成本6000分，单位贡献2800分。固定成本350万分，现金3000万，无风险事件。竞争对手价格均为10000分，市场份额均等。\",\n    \"strategy_summary\": \"维持当前价格以保持单位贡献，不进行额外投资，控制固定支出，确保盈利。\",\n    \"key_factors\": [\"预期需求3000单\", \"单位贡献2800分\", \"固定成本350万分\", \"现金充足\", \"无风险事件\"],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 0,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 19500000\n    },\n    \"expected_outcome\": {\n      \"profit\": \"up\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"stable\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"capacity_investment_cents\": 0,\n    \"resilience_budget_cents\": 0,\n    \"shared_resilience_contribution_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"strategy_summary\": \"维持价格，控制成本，追求短期利润。\"\n  },\n  \"message_responses\": [],\n  \"confidence_ppm\": 800000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "repetition": 1,
+    "requested_action": {
+      "advertising_budget_cents": 0,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "strategy_summary": "维持价格，控制成本，追求短期利润。"
+    },
+    "retry_count": 0,
+    "seed": 20260825,
+    "success": true
+  },
+  {
+    "agent_version_id": "sha256:48fa44312a33170d3a5c74a0ad063d176a529a8974ba2dc26e70b22169376656",
+    "condition": "low_credibility_proposal",
+    "contribution_cents": 0,
+    "decision": {
+      "confidence_ppm": 800000,
+      "message_responses": [
+        {
+          "disposition": "rejected",
+          "message_id": "sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c",
+          "rationale": "公司A可信度低，且贡献不带来直接利润，不符合短期逐利目标。"
+        }
+      ],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "up",
+          "risk_exposure": "stable"
+        },
+        "key_factors": [
+          "单位贡献2800分",
+          "预期需求3000单",
+          "固定成本350万",
+          "现金充足",
+          "公司A可信度低"
+        ],
+        "objective": "最大化本轮及近期利润，保持价格竞争力，控制固定支出。",
+        "situation_summary": "市场均衡，四家公司初始状态相同，价格均为10000分，成本6000分，产能3500，现金3000万。当前无事件，需求预期3000单，单位贡献2800分，固定成本350万，预计盈利可观。公司A提议贡献100万共享韧性，但其可信度低（10万ppm），且合作非强制。",
+        "strategy_summary": "维持价格10000分，不进行额外投资或贡献，以最大化短期利润。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 0,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 1000000
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0,
+        "strategy_summary": "维持价格，不投入，最大化利润。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "cooperation_credibility_persona",
+    "final_action": {
+      "action_id": "resolved:core-real-cooperation:low_credibility_proposal:core-real-cooperation-credibility:1:company_B",
+      "advertising_budget_cents": 0,
+      "agent_id": "company_B",
+      "capacity_investment_cents": 0,
+      "episode_id": "core-real-cooperation-credibility",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "round": 1,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "state_version": 0,
+      "strategy_summary": "维持价格，不投入，最大化利润。"
+    },
+    "frozen_state_hash": "sha256:e5e7c5c299b1a008a9fbebfcd6d91fe3b6e4cfeb5a795c71ec656924eb9a0a2e",
+    "input_snapshot_hash": "sha256:3fb15197096733cb0f45d1cb36f2b5bd941ea5f6f303415fd2da6b58957b3ce5",
+    "input_tokens": 8256,
+    "latency_ms": 4401,
+    "manifest_hash": "sha256:99dd7628869ee19fc56f3816b4c9c885cb71f8c0c3dbdf07bc27a2043eeacd4b",
+    "message_responses": [
+      {
+        "disposition": "rejected",
+        "message_id": "sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c",
+        "rationale": "公司A可信度低，且贡献不带来直接利润，不符合短期逐利目标。"
+      }
+    ],
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 523,
+    "paid_round": 1,
+    "persona_id": "profit_myopic",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "proposal_accepted": false,
+    "proposal_rejected": true,
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631907,
+      "request_id": "cae54c92-11a9-4581-a141-88c145b03719",
+      "request_started_at": "2026-08-25T04:25:06.750380+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:25:11.151653+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"最大化本轮及近期利润，保持价格竞争力，控制固定支出。\",\n    \"situation_summary\": \"市场均衡，四家公司初始状态相同，价格均为10000分，成本6000分，产能3500，现金3000万。当前无事件，需求预期3000单，单位贡献2800分，固定成本350万，预计盈利可观。公司A提议贡献100万共享韧性，但其可信度低（10万ppm），且合作非强制。\",\n    \"strategy_summary\": \"维持价格10000分，不进行额外投资或贡献，以最大化短期利润。\",\n    \"key_factors\": [\"单位贡献2800分\", \"预期需求3000单\", \"固定成本350万\", \"现金充足\", \"公司A可信度低\"],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 1000000,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 0\n    },\n    \"expected_outcome\": {\n      \"profit\": \"up\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"stable\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"capacity_investment_cents\": 0,\n    \"resilience_budget_cents\": 0,\n    \"shared_resilience_contribution_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"strategy_summary\": \"维持价格，不投入，最大化利润。\"\n  },\n  \"message_responses\": [\n    {\n      \"message_id\": \"sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c\",\n      \"disposition\": \"rejected\",\n      \"rationale\": \"公司A可信度低，且贡献不带来直接利润，不符合短期逐利目标。\"\n    }\n  ],\n  \"confidence_ppm\": 800000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "repetition": 2,
+    "requested_action": {
+      "advertising_budget_cents": 0,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "strategy_summary": "维持价格，不投入，最大化利润。"
+    },
+    "retry_count": 0,
+    "seed": 20260825,
+    "success": true
+  },
+  {
+    "agent_version_id": "sha256:48fa44312a33170d3a5c74a0ad063d176a529a8974ba2dc26e70b22169376656",
+    "condition": "no_message",
+    "contribution_cents": 0,
+    "decision": {
+      "confidence_ppm": 800000,
+      "message_responses": [],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "up",
+          "risk_exposure": "stable"
+        },
+        "key_factors": [
+          "单位贡献为正",
+          "预期需求3000单",
+          "现金充足",
+          "无事件",
+          "竞争对手价格相同"
+        ],
+        "objective": "最大化本轮及近期利润，同时保持现金安全。",
+        "situation_summary": "市场处于正常竞争，需求未观测但预期约3000单，单位成本6000分，当前价格10000分，单位贡献2800分。现金充足，无事件。竞争对手价格相同，品牌和服务相同。",
+        "strategy_summary": "维持当前价格以获取正贡献，不进行额外投资，控制固定支出，确保利润为正。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 19500000,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 0
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0,
+        "strategy_summary": "维持价格，不投资，控制成本。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "cooperation_credibility_persona",
+    "final_action": {
+      "action_id": "resolved:core-real-cooperation:no_message:core-real-cooperation-credibility:1:company_B",
+      "advertising_budget_cents": 0,
+      "agent_id": "company_B",
+      "capacity_investment_cents": 0,
+      "episode_id": "core-real-cooperation-credibility",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "round": 1,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "state_version": 0,
+      "strategy_summary": "维持价格，不投资，控制成本。"
+    },
+    "frozen_state_hash": "sha256:e5e7c5c299b1a008a9fbebfcd6d91fe3b6e4cfeb5a795c71ec656924eb9a0a2e",
+    "input_snapshot_hash": "sha256:302005a88f1cc7913f643958115d0e5ea25d198df90997e8e8503bf7e36eef12",
+    "input_tokens": 7439,
+    "latency_ms": 3409,
+    "manifest_hash": "sha256:99dd7628869ee19fc56f3816b4c9c885cb71f8c0c3dbdf07bc27a2043eeacd4b",
+    "message_responses": [],
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 405,
+    "paid_round": 1,
+    "persona_id": "profit_myopic",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "proposal_accepted": false,
+    "proposal_rejected": false,
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631915,
+      "request_id": "10362206-2f2a-44ae-a613-c6b02f2c7747",
+      "request_started_at": "2026-08-25T04:25:15.136947+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:25:18.546430+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"最大化本轮及近期利润，同时保持现金安全。\",\n    \"situation_summary\": \"市场处于正常竞争，需求未观测但预期约3000单，单位成本6000分，当前价格10000分，单位贡献2800分。现金充足，无事件。竞争对手价格相同，品牌和服务相同。\",\n    \"strategy_summary\": \"维持当前价格以获取正贡献，不进行额外投资，控制固定支出，确保利润为正。\",\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 0,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 19500000\n    },\n    \"expected_outcome\": {\n      \"profit\": \"up\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"stable\"\n    },\n    \"key_factors\": [\n      \"单位贡献为正\",\n      \"预期需求3000单\",\n      \"现金充足\",\n      \"无事件\",\n      \"竞争对手价格相同\"\n    ]\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"capacity_investment_cents\": 0,\n    \"resilience_budget_cents\": 0,\n    \"shared_resilience_contribution_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"strategy_summary\": \"维持价格，不投资，控制成本。\"\n  },\n  \"message_responses\": [],\n  \"confidence_ppm\": 800000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "repetition": 2,
+    "requested_action": {
+      "advertising_budget_cents": 0,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "strategy_summary": "维持价格，不投资，控制成本。"
+    },
+    "retry_count": 0,
+    "seed": 20260825,
+    "success": true
+  },
+  {
+    "agent_version_id": "sha256:48fa44312a33170d3a5c74a0ad063d176a529a8974ba2dc26e70b22169376656",
+    "condition": "high_credibility_proposal",
+    "contribution_cents": 0,
+    "decision": {
+      "confidence_ppm": 800000,
+      "message_responses": [
+        {
+          "disposition": "rejected",
+          "message_id": "sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c",
+          "rationale": "短期利润权重高，贡献不产生当期收益，且无风险事件，拒绝。"
+        }
+      ],
+      "plan": {
+        "expected_outcome": {
+          "capacity": "stable",
+          "market_share": "stable",
+          "profit": "up",
+          "risk_exposure": "stable"
+        },
+        "key_factors": [
+          "单位贡献2800分，利润空间良好",
+          "预期需求3000单，产能充足",
+          "现金充裕，但短期利润优先",
+          "共享韧性贡献不直接提升当期利润",
+          "无风险事件，韧性投资非紧急"
+        ],
+        "objective": "最大化本轮及近期利润，同时保持现金安全。",
+        "situation_summary": "市场处于正常竞争，需求未观测但预期约3000单，当前价格10000分，单位成本6000分，单位贡献2800分。固定成本350万分，现金3000万分，无风险事件。竞争对手价格均为10000分，市场份额均等。收到公司A的共享韧性贡献提议，要求贡献100万分。",
+        "strategy_summary": "维持当前价格以保持单位贡献，不进行额外投资或降价。拒绝共享韧性贡献提议，因为短期利润权重高，且贡献不直接产生当期收益。",
+        "success_criteria": {
+          "maximum_fixed_spend_cents": 19500000,
+          "minimum_cash_reserve_cents": 10500000,
+          "minimum_market_share_ppm": null,
+          "minimum_round_profit_cents": 1000000
+        }
+      },
+      "requested_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "price_cents": 10000,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0,
+        "strategy_summary": "维持价格，不投入，拒绝贡献。"
+      },
+      "schema_version": "agent-decision-v1.1.0"
+    },
+    "error_code": null,
+    "error_message": null,
+    "experiment": "cooperation_credibility_persona",
+    "final_action": {
+      "action_id": "resolved:core-real-cooperation:high_credibility_proposal:core-real-cooperation-credibility:1:company_B",
+      "advertising_budget_cents": 0,
+      "agent_id": "company_B",
+      "capacity_investment_cents": 0,
+      "episode_id": "core-real-cooperation-credibility",
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "round": 1,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "state_version": 0,
+      "strategy_summary": "维持价格，不投入，拒绝贡献。"
+    },
+    "frozen_state_hash": "sha256:e5e7c5c299b1a008a9fbebfcd6d91fe3b6e4cfeb5a795c71ec656924eb9a0a2e",
+    "input_snapshot_hash": "sha256:e830fbef77e9e591c4296611f3316de1d22e2003914e090df33fb94c45c9835c",
+    "input_tokens": 8258,
+    "latency_ms": 4714,
+    "manifest_hash": "sha256:99dd7628869ee19fc56f3816b4c9c885cb71f8c0c3dbdf07bc27a2043eeacd4b",
+    "message_responses": [
+      {
+        "disposition": "rejected",
+        "message_id": "sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c",
+        "rationale": "短期利润权重高，贡献不产生当期收益，且无风险事件，拒绝。"
+      }
+    ],
+    "model_name": "deepseek-v4-flash",
+    "output_tokens": 552,
+    "paid_round": 1,
+    "persona_id": "profit_myopic",
+    "prompt_version": "market-planner-prompt-v1.15.0",
+    "proposal_accepted": false,
+    "proposal_rejected": true,
+    "provider_audit": {
+      "audit_schema_version": "provider-audit-v1.0.0",
+      "provider_created_at": 1787631922,
+      "request_id": "2fca5f21-b933-4501-8fa8-1395d0319026",
+      "request_started_at": "2026-08-25T04:25:22.627348+00:00",
+      "response_model": "deepseek-v4-flash",
+      "response_received_at": "2026-08-25T04:25:27.341522+00:00",
+      "system_fingerprint": "a26a7955944dc5c60445bff77fac9c8e"
+    },
+    "raw_model_output": "{\n  \"plan\": {\n    \"objective\": \"最大化本轮及近期利润，同时保持现金安全。\",\n    \"situation_summary\": \"市场处于正常竞争，需求未观测但预期约3000单，当前价格10000分，单位成本6000分，单位贡献2800分。固定成本350万分，现金3000万分，无风险事件。竞争对手价格均为10000分，市场份额均等。收到公司A的共享韧性贡献提议，要求贡献100万分。\",\n    \"strategy_summary\": \"维持当前价格以保持单位贡献，不进行额外投资或降价。拒绝共享韧性贡献提议，因为短期利润权重高，且贡献不直接产生当期收益。\",\n    \"key_factors\": [\"单位贡献2800分，利润空间良好\", \"预期需求3000单，产能充足\", \"现金充裕，但短期利润优先\", \"共享韧性贡献不直接提升当期利润\", \"无风险事件，韧性投资非紧急\"],\n    \"success_criteria\": {\n      \"minimum_round_profit_cents\": 1000000,\n      \"minimum_cash_reserve_cents\": 10500000,\n      \"maximum_fixed_spend_cents\": 19500000\n    },\n    \"expected_outcome\": {\n      \"profit\": \"up\",\n      \"market_share\": \"stable\",\n      \"capacity\": \"stable\",\n      \"risk_exposure\": \"stable\"\n    }\n  },\n  \"requested_action\": {\n    \"price_cents\": 10000,\n    \"advertising_budget_cents\": 0,\n    \"service_budget_cents\": 0,\n    \"capacity_investment_cents\": 0,\n    \"resilience_budget_cents\": 0,\n    \"shared_resilience_contribution_cents\": 0,\n    \"incident_response\": {\n      \"mode\": \"wait\",\n      \"repair_budget_cents\": 0\n    },\n    \"strategy_summary\": \"维持价格，不投入，拒绝贡献。\"\n  },\n  \"message_responses\": [\n    {\n      \"message_id\": \"sha256:bdccbc3dd3eb021d6effd2f6209f4d5bf5f91ceb34360ef740f6f225db89d35c\",\n      \"disposition\": \"rejected\",\n      \"rationale\": \"短期利润权重高，贡献不产生当期收益，且无风险事件，拒绝。\"\n    }\n  ],\n  \"confidence_ppm\": 800000,\n  \"schema_version\": \"agent-decision-v1.1.0\"\n}",
+    "repetition": 2,
+    "requested_action": {
+      "advertising_budget_cents": 0,
+      "capacity_investment_cents": 0,
+      "incident_response": {
+        "mode": "wait",
+        "repair_budget_cents": 0
+      },
+      "price_cents": 10000,
+      "resilience_budget_cents": 0,
+      "service_budget_cents": 0,
+      "shared_resilience_contribution_cents": 0,
+      "strategy_summary": "维持价格，不投入，拒绝贡献。"
+    },
+    "retry_count": 0,
+    "seed": 20260825,
+    "success": true
+  }
+]

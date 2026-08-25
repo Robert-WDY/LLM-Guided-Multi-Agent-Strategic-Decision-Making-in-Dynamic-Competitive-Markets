@@ -84,24 +84,24 @@
   "research_metrics": {
     "metrics_schema_version": "multi-agent-research-v1.0.0",
     "episode_rounds": 10,
-    "market_total_profit_cents": 63210102,
+    "market_total_profit_cents": 57050202,
     "cumulative_unserved_demand_orders": 318,
-    "cumulative_outside_option_orders": 13297,
+    "cumulative_outside_option_orders": 13487,
     "strategy_diversity": {
-      "mean_price_dispersion_cents": 248.085,
-      "mean_normalized_price_entropy": 0.925,
-      "mean_normalized_full_action_distance": 0.04543
+      "mean_price_dispersion_cents": 225.037,
+      "mean_normalized_price_entropy": 0.890564,
+      "mean_normalized_full_action_distance": 0.048371
     },
     "resource_allocation": {
-      "capacity_investment_std_cents": 357211.422,
-      "mean_round_capacity_investment_hhi": 0.458333,
-      "mean_demand_capacity_absolute_gap_orders": 787.525,
-      "minimum_resilience_ppm": 72597,
+      "capacity_investment_std_cents": 346410.162,
+      "mean_round_capacity_investment_hhi": 0.466667,
+      "mean_demand_capacity_absolute_gap_orders": 786.75,
+      "minimum_resilience_ppm": 97048,
       "positive_return_capacity_gap_no_investment_rounds": 0,
       "material_uncovered_risk_no_investment_rounds": 0
     },
     "decision_quality_proxies": {
-      "mean_historical_growth_spend_efficiency_ppm": 1000000,
+      "mean_historical_growth_spend_efficiency_ppm": null,
       "growth_efficiency_method": "historical_proxy_not_causal_counterfactual",
       "diagnostic_flag_counts": {}
     },
@@ -181,8 +181,8 @@
     "metrics_schema_version": "belief-calibration-v1.0.0",
     "prediction_count": 30,
     "top1_accuracy_ppm": 433333,
-    "mean_brier_score": 0.6561537893521333,
-    "mean_log_loss": 1.0910935659618919,
+    "mean_brier_score": 0.6672648560188,
+    "mean_log_loss": 1.1058212719902187,
     "belief_hash_protocol_version": "belief-view-hash-v1.0.0"
   },
   "reproducibility": {
@@ -195,7 +195,7 @@
     "market_config_sha256": "sha256:9f038e7027ee68474388010908ddd96aa4ccebecd317030f1ca608f78275b57f",
     "environment_version": "market-env-v4.2.0",
     "episode_manifest_version": "episode-manifest-v1.7.0",
-    "episode_manifest_sha256": "sha256:b1c6a971ccef2024e7608f9b1ff643a94870d2caf259cccdfe572f0b062e5a82",
+    "episode_manifest_sha256": "sha256:833152dc13ad2522d360273f61e4f4dff7f2d7664b69909b38be46df54c439d2",
     "event_schema_versions": [
       "agent-round-event-v1.10.0"
     ],
@@ -216,7 +216,7 @@
       "belief_mode": "public_action_v1",
       "opponent_model_mode": "public_strategy_v1",
       "utility_inference_mode": "strategy_utility_v1",
-      "advisor_mode": "pareto_rollout_v4",
+      "advisor_mode": "bayesian_strategy_v2",
       "repeated_game_mode": "off",
       "cooperation_mode": "off",
       "honor_game_theory_advice": false,
@@ -241,9 +241,9 @@
       "top_p": 0.1,
       "decision_timeout_seconds": 120.0
     },
-    "run_configuration_sha256": "sha256:222946aa7dbaf3ff2624f5e7442909a7eabf6a770e147b39814ff80df4694f0a",
-    "round_event_log_sha256": "sha256:7aa398659f0dd35d0155805c5cc7855feb07e008c144246eb9d5078462946e30"
+    "run_configuration_sha256": "sha256:de187d2e8f70cd7081778b228d9ee30e9907ee3bfecffe2c7f4fe118cb651a6a",
+    "round_event_log_sha256": "sha256:95fa37e07a4a3f1541feb795610d1b9416b28338587a89400c262bdc1cf59319"
   },
-  "final_state_hash": "sha256:8e5af8678087ff849acce1d9ffea442df33716d5dd4303a07e2fab906df9c5ad",
-  "round_event_path": "C:\\Users\\12204\\Desktop\\game-theory-agent\\runs\\stage6.5-supplement-risk_guarded_v1\\seed-4\\risk_guarded_v1\\pareto_v4\\round-events.jsonl"
+  "final_state_hash": "sha256:7078e610a7295bfbf6fec82df2905fbd50982d2e4482a93b1dd2ba897ff43a36",
+  "round_event_path": "C:\\Users\\12204\\Desktop\\game-theory-agent\\runs\\stage6.5-supplement-risk_guarded_v1\\seed-4\\risk_guarded_v1\\bayesian_v2\\round-events.jsonl"
 }

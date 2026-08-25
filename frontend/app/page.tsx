@@ -264,39 +264,54 @@ function ResearchArchiveView({ controllerToken }: { controllerToken: string }) {
       return response.json() as Promise<{ experiments: ResearchExperiment[] }>;
     }).then((payload) => {
       setExperiments(payload.experiments);
-      if (payload.experiments.length > 0) setExperimentId(payload.experiments[0].experiment_id);
+      const first = payload.experiments[0];
+      if (first) {
+        setExperimentId(first.experiment_id);
+        setRoundNumber(Math.min(3, first.round_count));
+        setCompanyId(first.company_ids.includes("company_B") ? "company_B" : first.company_ids[0]);
+      }
     }).catch((reason) => setError(`真实档案加载失败：${reason instanceof Error ? reason.message : "未知错误"}`));
   }, []);
 
   useEffect(() => {
     if (!experimentId) return;
-    const selected = experiments.find((item) => item.experiment_id === experimentId);
-    if (selected) {
-      setRoundNumber(Math.min(3, selected.round_count));
-      setCompanyId(selected.company_ids.includes("company_B") ? "company_B" : selected.company_ids[0]);
-    }
     Promise.all([
       fetch(`${API_URL}/v1/research/experiments/${experimentId}/manifest`).then((response) => response.json()),
       fetch(`${API_URL}/v1/research/experiments/${experimentId}/integrity`).then((response) => response.json()),
     ]).then(([manifestPayload, integrityPayload]) => { setManifest(manifestPayload); setIntegrity(integrityPayload); }).catch(() => setError("档案清单或完整性校验加载失败。"));
-  }, [experimentId, experiments]);
+  }, [experimentId]);
 
   useEffect(() => {
     if (!experimentId || !companyId) return;
-    if (viewMode === "authority" && !controllerToken) { setTrace(null); setError("权威审计视角需要本地 Controller Token；智能体当时视角不需要。"); return; }
-    setError("");
+    if (viewMode === "authority" && !controllerToken) return;
     fetch(`${API_URL}/v1/research/experiments/${experimentId}/rounds/${roundNumber}/agents/${companyId}?view=${viewMode}`, { headers: viewMode === "authority" ? { "X-Controller-Token": controllerToken } : {} })
       .then(async (response) => { const payload = await response.json() as Record<string, unknown> & { detail?: string }; if (!response.ok) throw new Error(payload.detail ?? `HTTP ${response.status}`); return payload; })
-      .then(setTrace)
+      .then((payload) => { setTrace(payload); setError(""); })
       .catch((reason) => { setTrace(null); setError(`回合档案加载失败：${reason instanceof Error ? reason.message : "未知错误"}`); });
   }, [experimentId, roundNumber, companyId, viewMode, controllerToken]);
 
   const selected = experiments.find((item) => item.experiment_id === experimentId);
+  const authorityBlocked = viewMode === "authority" && !controllerToken;
+  const chooseExperiment = (nextId: string) => {
+    const next = experiments.find((item) => item.experiment_id === nextId);
+    if (next) {
+      setRoundNumber(Math.min(3, next.round_count));
+      setCompanyId(next.company_ids.includes("company_B") ? "company_B" : next.company_ids[0]);
+    }
+    setExperimentId(nextId);
+  };
+  const chooseAuthorityView = () => {
+    if (!controllerToken) {
+      setError("权威审计视角需要本地 Controller Token；智能体当时视角不需要。");
+      return;
+    }
+    setViewMode("authority");
+  };
   const traceView = trace as { observation_hash?: string; advisor?: { advice_hash?: string }; replay_status?: Record<string, string>; final_action?: Record<string, unknown>; agent_version?: Record<string, unknown> } | null;
-  return <div className="view-pad archive-view"><SectionHead eyebrow="冻结的真实研究证据" title="真实实验只读档案" description="这里读取发布清单登记的真实 Episode，不重新调用模型，也不允许输入任意文件路径。" action={<span className="real-badge">REAL · 只读</span>} />
-    <section className="archive-controls card"><label><span>实验档案</span><select value={experimentId} onChange={(event) => setExperimentId(event.target.value)}>{experiments.map((item) => <option key={item.experiment_id} value={item.experiment_id}>{item.title}</option>)}</select></label><label><span>回合</span><select value={roundNumber} onChange={(event) => setRoundNumber(Number(event.target.value))}>{Array.from({ length: selected?.round_count ?? 1 }, (_, index) => index + 1).map((item) => <option key={item} value={item}>第 {item} 回合</option>)}</select></label><label><span>智能体</span><select value={companyId} onChange={(event) => setCompanyId(event.target.value)}>{(selected?.company_ids ?? []).map((item) => <option key={item}>{item}</option>)}</select></label><div className="archive-view-switch"><button type="button" className={viewMode === "agent" ? "active" : ""} onClick={() => setViewMode("agent")}>智能体当时视角</button><button type="button" className={viewMode === "authority" ? "active" : ""} onClick={() => setViewMode("authority")}>权威审计视角</button></div></section>
+  return <div className="view-pad archive-view"><SectionHead eyebrow="冻结的研究证据" title="真实实验只读档案" description="这里读取发布清单登记的真实或工程 Episode，不重新调用模型，也不允许输入任意文件路径。" action={<span className="real-badge">{selected?.evidence_type ?? "档案"} · 只读</span>} />
+    <section className="archive-controls card"><label><span>实验档案</span><select value={experimentId} onChange={(event) => chooseExperiment(event.target.value)}>{experiments.map((item) => <option key={item.experiment_id} value={item.experiment_id}>{item.title}</option>)}</select></label><label><span>回合</span><select value={roundNumber} onChange={(event) => setRoundNumber(Number(event.target.value))}>{Array.from({ length: selected?.round_count ?? 1 }, (_, index) => index + 1).map((item) => <option key={item} value={item}>第 {item} 回合</option>)}</select></label><label><span>智能体</span><select value={companyId} onChange={(event) => setCompanyId(event.target.value)}>{(selected?.company_ids ?? []).map((item) => <option key={item}>{item}</option>)}</select></label><div className="archive-view-switch"><button type="button" className={viewMode === "agent" ? "active" : ""} onClick={() => setViewMode("agent")}>智能体当时视角</button><button type="button" className={viewMode === "authority" ? "active" : ""} onClick={chooseAuthorityView}>权威审计视角</button></div></section>
     {error && <div className="archive-error">{error}</div>}
-    <div className="archive-grid"><aside className="card archive-evidence"><span>证据边界</span><h3>{selected?.title ?? "正在加载"}</h3><p>{selected?.claim_boundary}</p><dl><div><dt>证据类型</dt><dd>{selected?.evidence_type ?? "—"}</dd></div><div><dt>完整性</dt><dd>{(integrity as { artifact_integrity_passed?: boolean } | null)?.artifact_integrity_passed ? "通过" : "待校验"}</dd></div><div><dt>观察校验值</dt><dd>{traceView?.observation_hash ?? "—"}</dd></div><div><dt>建议校验值</dt><dd>{traceView?.advisor?.advice_hash ?? "无建议或审计视角"}</dd></div></dl><div className="archive-boundary"><b>视角隔离</b><p>智能体视角只返回它当时收到的 Observation、可见消息、判断、建议和动作；完整权威状态必须经过 Controller 授权。</p></div></aside><section className="card archive-json"><div><span>逐轮证据</span><b>{viewMode === "agent" ? "智能体当时视角" : "权威审计视角"}</b></div><pre>{trace ? JSON.stringify(trace, null, 2) : "正在加载登记档案…"}</pre></section></div>
+    <div className="archive-grid"><aside className="card archive-evidence"><span>证据边界</span><h3>{selected?.title ?? "正在加载"}</h3><p>{selected?.claim_boundary}</p><dl><div><dt>证据类型</dt><dd>{selected?.evidence_type ?? "—"}</dd></div><div><dt>完整性</dt><dd>{(integrity as { artifact_integrity_passed?: boolean } | null)?.artifact_integrity_passed ? "通过" : "待校验"}</dd></div><div><dt>观察校验值</dt><dd>{traceView?.observation_hash ?? "—"}</dd></div><div><dt>建议校验值</dt><dd>{traceView?.advisor?.advice_hash ?? "无建议或审计视角"}</dd></div></dl><div className="archive-boundary"><b>视角隔离</b><p>智能体视角只返回它当时收到的 Observation、可见消息、判断、建议和动作；完整权威状态必须经过 Controller 授权。</p></div></aside><section className="card archive-json"><div><span>逐轮证据</span><b>{viewMode === "agent" ? "智能体当时视角" : "权威审计视角"}</b></div><pre>{authorityBlocked ? "权威审计视角已锁定。" : trace ? JSON.stringify(trace, null, 2) : "正在加载登记档案…"}</pre></section></div>
     <section className="archive-hashline card"><span>Agent Version</span><code>{JSON.stringify(traceView?.agent_version ?? manifest?.agents ?? {})}</code><span>Replay</span><code>{JSON.stringify(traceView?.replay_status ?? {})}</code></section>
   </div>;
 }

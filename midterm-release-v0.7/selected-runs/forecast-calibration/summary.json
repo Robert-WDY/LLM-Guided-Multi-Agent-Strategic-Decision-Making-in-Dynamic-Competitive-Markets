@@ -634,8 +634,8 @@
   "conclusion_limits": [
     "labels are synthetic-market frozen-tape outcomes, not real-market calibration",
     "continuation actions are frozen from prior recorded episodes",
-    "holdout covers seeds 4-5 and the personas available for those seeds",
+    "holdout covers historical Stage 5.1 seeds 1001-1005 with balanced_v1",
     "a failed gate forbids new real-model validation in this release closure"
   ],
-  "report_hash": "sha256:a5230a968777953e6bb9c5c7933a61ea65783857525ed34dfb11ddf2125ba639"
+  "report_hash": "sha256:7a43f9cf63c58768579dede61ad1617a8b85dc8f610761f04014500236eb48bb"
 }

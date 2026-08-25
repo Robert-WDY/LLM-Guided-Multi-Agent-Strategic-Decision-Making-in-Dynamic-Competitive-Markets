@@ -1,0 +1,1076 @@
+[
+  {
+    "agent_version_id": "sha256:448d8819c2152cf6555a791915bd0713706398872ed912ac452ef3a7f6631b51",
+    "behavior_spec": {
+      "action_stack": {
+        "action_schema_version": "company-action-v4.0.0",
+        "adoption_contract_version": "advisor-adoption-trace-v1.0.0",
+        "candidate_generator_version": "public-overlay-candidates-v2.0.0",
+        "fallback_policy_version": "controller-rule-fallback-v3.0.0",
+        "parser_version": "pydantic-agent-decision-parser-v1.0.0",
+        "resolver_version": "action-resolution-policy-v1.0.0",
+        "safety_policy_version": "market-action-guardrails-v4.2.0"
+      },
+      "behavior_schema_version": "agent-behavior-spec-v1.0.0",
+      "checkpoint": null,
+      "compatibility": {
+        "environment_versions": [
+          "market-env-v4.2.0"
+        ],
+        "event_schema_versions": [
+          "agent-round-event-v1.12.0"
+        ],
+        "information_modes": [
+          "public"
+        ],
+        "market_config_hashes": [
+          "sha256:d3139e6939023a81c430e5ab257d2a9808a57c07d1f01d14ddc922bb7b9d2f01"
+        ],
+        "observation_schema_versions": [
+          "agent-observation-v1.8.0"
+        ]
+      },
+      "context": {
+        "communication_context_version": "communication-context-v1.6.0",
+        "context_builder_version": "decision-context-builder-v1.15.0",
+        "context_mode": "full",
+        "cooperation_history_mode": "full",
+        "critical_event_selector_version": "critical-event-v1.0.0",
+        "decision_context_version": "decision-context-v1.15.0",
+        "decision_support_version": "economic_v2",
+        "diagnostic_mode": "off",
+        "memory_policy_version": "episode-memory-v1.2.0",
+        "memory_scope": "episode",
+        "observation_builder_version": "observation-builder-v2.0.0",
+        "observation_schema_version": "agent-observation-v1.8.0",
+        "persona_semantics_version": "economic_v2",
+        "visibility_policy_version": "visibility-public-v2.0.0"
+      },
+      "family_id": "core-real-strategic-agent",
+      "persona": {
+        "catalog_version": "persona-catalog-v1.1.0",
+        "persona_id": "risk_guarded_v1",
+        "planner_version": "persona-planning-layer-v1.0.0",
+        "planning_mode": "prompt-plus-persona-utility",
+        "profile_hash": "sha256:c095ceb72a89769c8edbee436a40473bbbc2ad9a423cbc6fe9a6126a57639d25"
+      },
+      "prompts": {
+        "communication_template": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:c27f421a6fd8ebfd971379da4e623d16964005ff2e69be7b5dfe208f04f853d2",
+          "size_bytes": 18618
+        },
+        "decision_template": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:c27f421a6fd8ebfd971379da4e623d16964005ff2e69be7b5dfe208f04f853d2",
+          "size_bytes": 18618
+        },
+        "parser_instruction": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:9b5309f294849de7d6652a45b5227e8eabcac9fae2a5ed0f4b3085c96b1d7651",
+          "size_bytes": 842
+        },
+        "prompt_schema_version": "market-prompt-stack-v1.15.0",
+        "system_prompt": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/json",
+          "sha256": "sha256:2fc14764af9f9d9524eb8200f8a0b8c54a1fcc1bd59cda3b9d0e369570230b4d",
+          "size_bytes": 245
+        }
+      },
+      "runtime": {
+        "agent_kind": "llm",
+        "communication_timeout_ms": 30000,
+        "decision_timeout_ms": 45000,
+        "endpoint_id": "https://api.deepseek.com",
+        "max_output_tokens": 4000,
+        "max_schema_attempts": 1,
+        "model": "deepseek-v4-flash",
+        "model_revision": "provider-alias:deepseek-v4-flash:2026-08-25",
+        "policy_parameters": [
+          [
+            "communication_mode",
+            "off"
+          ],
+          [
+            "experiment_stack",
+            "pareto_reliable_v5"
+          ],
+          [
+            "input_price_microunits_per_token",
+            2
+          ],
+          [
+            "max_transport_retries",
+            0
+          ],
+          [
+            "output_price_microunits_per_token",
+            4
+          ],
+          [
+            "paid_rounds_csv",
+            "7"
+          ],
+          [
+            "reserved_completion_tokens_per_call",
+            4000
+          ],
+          [
+            "reserved_prompt_tokens_per_call",
+            32000
+          ]
+        ],
+        "provider": "deepseek",
+        "request_schema_version": "decision-context-v1.15.0",
+        "request_timeout_ms": 40000,
+        "response_schema_version": "agent-decision-v1.5.0",
+        "seed_mode": "unsupported",
+        "temperature_ppm": 0,
+        "tool_schema_hash": null,
+        "top_p_ppm": 1000000
+      },
+      "source": {
+        "code_commit": "2ef181ab84732d8d69b64e9655e10fcfd45b87a7",
+        "container_image_digest": null,
+        "dependency_lock": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/json",
+          "sha256": "sha256:a24d447e123baf6f32b3e6ebe0cfccaccc1c46626b5a697daea95b5750acd425",
+          "size_bytes": 942
+        },
+        "source_bundle": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/zip",
+          "sha256": "sha256:cc3b7d0711cf5a35f6419ab5bd218ab4eb15add5b3d896ac9a81e03bc6c98599",
+          "size_bytes": 1610757
+        }
+      },
+      "strategic_stack": {
+        "advisor_mode": "pareto_reliable_v5",
+        "advisor_version": "public-pareto-reliable-market-rollout-v1.0.0",
+        "belief_mode": "public_action_v1",
+        "belief_updater_version": "dirichlet-public-price-v1.0.0",
+        "cooperation_mode": "off",
+        "cooperation_version": "none",
+        "opponent_model_mode": "public_strategy_v1",
+        "opponent_model_version": "public-strategy-rule-bayes-v1.0.0",
+        "repeated_game_mode": "off",
+        "repeated_game_version": "none",
+        "utility_inference_mode": "strategy_utility_v1",
+        "utility_inference_version": "strategy-mixture-utility-v1.0.0"
+      }
+    },
+    "behavior_spec_hash": "sha256:448d8819c2152cf6555a791915bd0713706398872ed912ac452ef3a7f6631b51",
+    "created_at": "2026-08-25T04:22:44.433112+00:00",
+    "family_id": "core-real-strategic-agent",
+    "human_version": "pareto_reliable_v5-risk_guarded_v1-1.0.0",
+    "lineage": {
+      "lineage_schema_version": "agent-lineage-v1.0.0",
+      "mutation_operator": null,
+      "parent_version_ids": [],
+      "reason": "initial",
+      "training_run_id": null
+    },
+    "manifest_schema_version": "agent-version-manifest-v1.0.0",
+    "reproducibility_tier": "C_recorded_output"
+  },
+  {
+    "agent_version_id": "sha256:48fa44312a33170d3a5c74a0ad063d176a529a8974ba2dc26e70b22169376656",
+    "behavior_spec": {
+      "action_stack": {
+        "action_schema_version": "company-action-v4.0.0",
+        "adoption_contract_version": "advisor-adoption-trace-v1.0.0",
+        "candidate_generator_version": "none",
+        "fallback_policy_version": "controller-rule-fallback-v3.0.0",
+        "parser_version": "pydantic-agent-decision-parser-v1.0.0",
+        "resolver_version": "action-resolution-policy-v1.0.0",
+        "safety_policy_version": "market-action-guardrails-v4.2.0"
+      },
+      "behavior_schema_version": "agent-behavior-spec-v1.0.0",
+      "checkpoint": null,
+      "compatibility": {
+        "environment_versions": [
+          "market-env-v4.2.0"
+        ],
+        "event_schema_versions": [
+          "agent-round-event-v1.12.0"
+        ],
+        "information_modes": [
+          "public"
+        ],
+        "market_config_hashes": [
+          "sha256:d3139e6939023a81c430e5ab257d2a9808a57c07d1f01d14ddc922bb7b9d2f01"
+        ],
+        "observation_schema_versions": [
+          "agent-observation-v1.8.0"
+        ]
+      },
+      "context": {
+        "communication_context_version": "communication-context-v1.6.0",
+        "context_builder_version": "decision-context-builder-v1.15.0",
+        "context_mode": "full",
+        "cooperation_history_mode": "full",
+        "critical_event_selector_version": "critical-event-v1.0.0",
+        "decision_context_version": "decision-context-v1.15.0",
+        "decision_support_version": "economic_v2",
+        "diagnostic_mode": "off",
+        "memory_policy_version": "episode-memory-v1.2.0",
+        "memory_scope": "episode",
+        "observation_builder_version": "observation-builder-v2.0.0",
+        "observation_schema_version": "agent-observation-v1.8.0",
+        "persona_semantics_version": "economic_v2",
+        "visibility_policy_version": "visibility-public-v2.0.0"
+      },
+      "family_id": "core-real-cooperation-agent",
+      "persona": {
+        "catalog_version": "persona-catalog-v1.1.0",
+        "persona_id": "profit_myopic",
+        "planner_version": "persona-planning-layer-v1.0.0",
+        "planning_mode": "prompt-plus-persona-utility",
+        "profile_hash": "sha256:7dba57d966540fd2978f26c95610361b750db18923c979af76ba8884e4dcf38a"
+      },
+      "prompts": {
+        "communication_template": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:c27f421a6fd8ebfd971379da4e623d16964005ff2e69be7b5dfe208f04f853d2",
+          "size_bytes": 18618
+        },
+        "decision_template": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:c27f421a6fd8ebfd971379da4e623d16964005ff2e69be7b5dfe208f04f853d2",
+          "size_bytes": 18618
+        },
+        "parser_instruction": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:9b5309f294849de7d6652a45b5227e8eabcac9fae2a5ed0f4b3085c96b1d7651",
+          "size_bytes": 842
+        },
+        "prompt_schema_version": "market-prompt-stack-v1.15.0",
+        "system_prompt": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/json",
+          "sha256": "sha256:2fc14764af9f9d9524eb8200f8a0b8c54a1fcc1bd59cda3b9d0e369570230b4d",
+          "size_bytes": 245
+        }
+      },
+      "runtime": {
+        "agent_kind": "llm",
+        "communication_timeout_ms": 30000,
+        "decision_timeout_ms": 45000,
+        "endpoint_id": "https://api.deepseek.com",
+        "max_output_tokens": 4000,
+        "max_schema_attempts": 1,
+        "model": "deepseek-v4-flash",
+        "model_revision": "provider-alias:deepseek-v4-flash:2026-08-25",
+        "policy_parameters": [
+          [
+            "communication_mode",
+            "public_private"
+          ],
+          [
+            "experiment_stack",
+            "cooperation_credibility_persona"
+          ],
+          [
+            "input_price_microunits_per_token",
+            2
+          ],
+          [
+            "max_transport_retries",
+            0
+          ],
+          [
+            "output_price_microunits_per_token",
+            4
+          ],
+          [
+            "paid_rounds_csv",
+            "1"
+          ],
+          [
+            "reserved_completion_tokens_per_call",
+            4000
+          ],
+          [
+            "reserved_prompt_tokens_per_call",
+            32000
+          ]
+        ],
+        "provider": "deepseek",
+        "request_schema_version": "decision-context-v1.15.0",
+        "request_timeout_ms": 40000,
+        "response_schema_version": "agent-decision-v1.5.0",
+        "seed_mode": "unsupported",
+        "temperature_ppm": 0,
+        "tool_schema_hash": null,
+        "top_p_ppm": 1000000
+      },
+      "source": {
+        "code_commit": "2ef181ab84732d8d69b64e9655e10fcfd45b87a7",
+        "container_image_digest": null,
+        "dependency_lock": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/json",
+          "sha256": "sha256:a24d447e123baf6f32b3e6ebe0cfccaccc1c46626b5a697daea95b5750acd425",
+          "size_bytes": 942
+        },
+        "source_bundle": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/zip",
+          "sha256": "sha256:cc3b7d0711cf5a35f6419ab5bd218ab4eb15add5b3d896ac9a81e03bc6c98599",
+          "size_bytes": 1610757
+        }
+      },
+      "strategic_stack": {
+        "advisor_mode": "off",
+        "advisor_version": "none",
+        "belief_mode": "off",
+        "belief_updater_version": "none",
+        "cooperation_mode": "shared_resilience_v1",
+        "cooperation_version": "shared-resilience-cooperation-v1.0.0",
+        "opponent_model_mode": "off",
+        "opponent_model_version": "none",
+        "repeated_game_mode": "off",
+        "repeated_game_version": "none",
+        "utility_inference_mode": "off",
+        "utility_inference_version": "none"
+      }
+    },
+    "behavior_spec_hash": "sha256:48fa44312a33170d3a5c74a0ad063d176a529a8974ba2dc26e70b22169376656",
+    "created_at": "2026-08-25T04:22:44.813761+00:00",
+    "family_id": "core-real-cooperation-agent",
+    "human_version": "cooperation_credibility_persona-profit_myopic-1.0.0",
+    "lineage": {
+      "lineage_schema_version": "agent-lineage-v1.0.0",
+      "mutation_operator": null,
+      "parent_version_ids": [],
+      "reason": "initial",
+      "training_run_id": null
+    },
+    "manifest_schema_version": "agent-version-manifest-v1.0.0",
+    "reproducibility_tier": "C_recorded_output"
+  },
+  {
+    "agent_version_id": "sha256:50a3fe8414e46b096e2b59509cea3444b7f0865adc2dc956f397ddfb75550e91",
+    "behavior_spec": {
+      "action_stack": {
+        "action_schema_version": "company-action-v4.0.0",
+        "adoption_contract_version": "advisor-adoption-trace-v1.0.0",
+        "candidate_generator_version": "public-overlay-candidates-v2.0.0",
+        "fallback_policy_version": "controller-rule-fallback-v3.0.0",
+        "parser_version": "pydantic-agent-decision-parser-v1.0.0",
+        "resolver_version": "action-resolution-policy-v1.0.0",
+        "safety_policy_version": "market-action-guardrails-v4.2.0"
+      },
+      "behavior_schema_version": "agent-behavior-spec-v1.0.0",
+      "checkpoint": null,
+      "compatibility": {
+        "environment_versions": [
+          "market-env-v4.2.0"
+        ],
+        "event_schema_versions": [
+          "agent-round-event-v1.12.0"
+        ],
+        "information_modes": [
+          "public"
+        ],
+        "market_config_hashes": [
+          "sha256:d3139e6939023a81c430e5ab257d2a9808a57c07d1f01d14ddc922bb7b9d2f01"
+        ],
+        "observation_schema_versions": [
+          "agent-observation-v1.8.0"
+        ]
+      },
+      "context": {
+        "communication_context_version": "communication-context-v1.6.0",
+        "context_builder_version": "decision-context-builder-v1.15.0",
+        "context_mode": "full",
+        "cooperation_history_mode": "full",
+        "critical_event_selector_version": "critical-event-v1.0.0",
+        "decision_context_version": "decision-context-v1.15.0",
+        "decision_support_version": "economic_v2",
+        "diagnostic_mode": "off",
+        "memory_policy_version": "episode-memory-v1.2.0",
+        "memory_scope": "episode",
+        "observation_builder_version": "observation-builder-v2.0.0",
+        "observation_schema_version": "agent-observation-v1.8.0",
+        "persona_semantics_version": "economic_v2",
+        "visibility_policy_version": "visibility-public-v2.0.0"
+      },
+      "family_id": "core-real-strategic-agent",
+      "persona": {
+        "catalog_version": "persona-catalog-v1.1.0",
+        "persona_id": "profit_myopic",
+        "planner_version": "persona-planning-layer-v1.0.0",
+        "planning_mode": "prompt-plus-persona-utility",
+        "profile_hash": "sha256:7dba57d966540fd2978f26c95610361b750db18923c979af76ba8884e4dcf38a"
+      },
+      "prompts": {
+        "communication_template": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:c27f421a6fd8ebfd971379da4e623d16964005ff2e69be7b5dfe208f04f853d2",
+          "size_bytes": 18618
+        },
+        "decision_template": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:c27f421a6fd8ebfd971379da4e623d16964005ff2e69be7b5dfe208f04f853d2",
+          "size_bytes": 18618
+        },
+        "parser_instruction": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:9b5309f294849de7d6652a45b5227e8eabcac9fae2a5ed0f4b3085c96b1d7651",
+          "size_bytes": 842
+        },
+        "prompt_schema_version": "market-prompt-stack-v1.15.0",
+        "system_prompt": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/json",
+          "sha256": "sha256:2fc14764af9f9d9524eb8200f8a0b8c54a1fcc1bd59cda3b9d0e369570230b4d",
+          "size_bytes": 245
+        }
+      },
+      "runtime": {
+        "agent_kind": "llm",
+        "communication_timeout_ms": 30000,
+        "decision_timeout_ms": 45000,
+        "endpoint_id": "https://api.deepseek.com",
+        "max_output_tokens": 4000,
+        "max_schema_attempts": 1,
+        "model": "deepseek-v4-flash",
+        "model_revision": "provider-alias:deepseek-v4-flash:2026-08-25",
+        "policy_parameters": [
+          [
+            "communication_mode",
+            "off"
+          ],
+          [
+            "experiment_stack",
+            "pareto_reliable_v5"
+          ],
+          [
+            "input_price_microunits_per_token",
+            2
+          ],
+          [
+            "max_transport_retries",
+            0
+          ],
+          [
+            "output_price_microunits_per_token",
+            4
+          ],
+          [
+            "paid_rounds_csv",
+            "7"
+          ],
+          [
+            "reserved_completion_tokens_per_call",
+            4000
+          ],
+          [
+            "reserved_prompt_tokens_per_call",
+            32000
+          ]
+        ],
+        "provider": "deepseek",
+        "request_schema_version": "decision-context-v1.15.0",
+        "request_timeout_ms": 40000,
+        "response_schema_version": "agent-decision-v1.5.0",
+        "seed_mode": "unsupported",
+        "temperature_ppm": 0,
+        "tool_schema_hash": null,
+        "top_p_ppm": 1000000
+      },
+      "source": {
+        "code_commit": "2ef181ab84732d8d69b64e9655e10fcfd45b87a7",
+        "container_image_digest": null,
+        "dependency_lock": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/json",
+          "sha256": "sha256:a24d447e123baf6f32b3e6ebe0cfccaccc1c46626b5a697daea95b5750acd425",
+          "size_bytes": 942
+        },
+        "source_bundle": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/zip",
+          "sha256": "sha256:cc3b7d0711cf5a35f6419ab5bd218ab4eb15add5b3d896ac9a81e03bc6c98599",
+          "size_bytes": 1610757
+        }
+      },
+      "strategic_stack": {
+        "advisor_mode": "pareto_reliable_v5",
+        "advisor_version": "public-pareto-reliable-market-rollout-v1.0.0",
+        "belief_mode": "public_action_v1",
+        "belief_updater_version": "dirichlet-public-price-v1.0.0",
+        "cooperation_mode": "off",
+        "cooperation_version": "none",
+        "opponent_model_mode": "public_strategy_v1",
+        "opponent_model_version": "public-strategy-rule-bayes-v1.0.0",
+        "repeated_game_mode": "off",
+        "repeated_game_version": "none",
+        "utility_inference_mode": "strategy_utility_v1",
+        "utility_inference_version": "strategy-mixture-utility-v1.0.0"
+      }
+    },
+    "behavior_spec_hash": "sha256:50a3fe8414e46b096e2b59509cea3444b7f0865adc2dc956f397ddfb75550e91",
+    "created_at": "2026-08-25T04:22:44.513350+00:00",
+    "family_id": "core-real-strategic-agent",
+    "human_version": "pareto_reliable_v5-profit_myopic-1.0.0",
+    "lineage": {
+      "lineage_schema_version": "agent-lineage-v1.0.0",
+      "mutation_operator": null,
+      "parent_version_ids": [],
+      "reason": "initial",
+      "training_run_id": null
+    },
+    "manifest_schema_version": "agent-version-manifest-v1.0.0",
+    "reproducibility_tier": "C_recorded_output"
+  },
+  {
+    "agent_version_id": "sha256:a3fe9e9d9f6ca1057714a3dba46eaa4272e490be629d1cc20846e9c54bae3ef8",
+    "behavior_spec": {
+      "action_stack": {
+        "action_schema_version": "company-action-v4.0.0",
+        "adoption_contract_version": "advisor-adoption-trace-v1.0.0",
+        "candidate_generator_version": "none",
+        "fallback_policy_version": "controller-rule-fallback-v3.0.0",
+        "parser_version": "pydantic-agent-decision-parser-v1.0.0",
+        "resolver_version": "action-resolution-policy-v1.0.0",
+        "safety_policy_version": "market-action-guardrails-v4.2.0"
+      },
+      "behavior_schema_version": "agent-behavior-spec-v1.0.0",
+      "checkpoint": null,
+      "compatibility": {
+        "environment_versions": [
+          "market-env-v4.2.0"
+        ],
+        "event_schema_versions": [
+          "agent-round-event-v1.12.0"
+        ],
+        "information_modes": [
+          "public"
+        ],
+        "market_config_hashes": [
+          "sha256:d3139e6939023a81c430e5ab257d2a9808a57c07d1f01d14ddc922bb7b9d2f01"
+        ],
+        "observation_schema_versions": [
+          "agent-observation-v1.8.0"
+        ]
+      },
+      "context": {
+        "communication_context_version": "communication-context-v1.6.0",
+        "context_builder_version": "decision-context-builder-v1.15.0",
+        "context_mode": "full",
+        "cooperation_history_mode": "full",
+        "critical_event_selector_version": "critical-event-v1.0.0",
+        "decision_context_version": "decision-context-v1.15.0",
+        "decision_support_version": "economic_v2",
+        "diagnostic_mode": "off",
+        "memory_policy_version": "episode-memory-v1.2.0",
+        "memory_scope": "episode",
+        "observation_builder_version": "observation-builder-v2.0.0",
+        "observation_schema_version": "agent-observation-v1.8.0",
+        "persona_semantics_version": "economic_v2",
+        "visibility_policy_version": "visibility-public-v2.0.0"
+      },
+      "family_id": "core-real-strategic-agent",
+      "persona": {
+        "catalog_version": "persona-catalog-v1.1.0",
+        "persona_id": "profit_myopic",
+        "planner_version": "persona-planning-layer-v1.0.0",
+        "planning_mode": "prompt-plus-persona-utility",
+        "profile_hash": "sha256:7dba57d966540fd2978f26c95610361b750db18923c979af76ba8884e4dcf38a"
+      },
+      "prompts": {
+        "communication_template": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:c27f421a6fd8ebfd971379da4e623d16964005ff2e69be7b5dfe208f04f853d2",
+          "size_bytes": 18618
+        },
+        "decision_template": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:c27f421a6fd8ebfd971379da4e623d16964005ff2e69be7b5dfe208f04f853d2",
+          "size_bytes": 18618
+        },
+        "parser_instruction": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:9b5309f294849de7d6652a45b5227e8eabcac9fae2a5ed0f4b3085c96b1d7651",
+          "size_bytes": 842
+        },
+        "prompt_schema_version": "market-prompt-stack-v1.15.0",
+        "system_prompt": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/json",
+          "sha256": "sha256:2fc14764af9f9d9524eb8200f8a0b8c54a1fcc1bd59cda3b9d0e369570230b4d",
+          "size_bytes": 245
+        }
+      },
+      "runtime": {
+        "agent_kind": "llm",
+        "communication_timeout_ms": 30000,
+        "decision_timeout_ms": 45000,
+        "endpoint_id": "https://api.deepseek.com",
+        "max_output_tokens": 4000,
+        "max_schema_attempts": 1,
+        "model": "deepseek-v4-flash",
+        "model_revision": "provider-alias:deepseek-v4-flash:2026-08-25",
+        "policy_parameters": [
+          [
+            "communication_mode",
+            "off"
+          ],
+          [
+            "experiment_stack",
+            "strategy_utility_control"
+          ],
+          [
+            "input_price_microunits_per_token",
+            2
+          ],
+          [
+            "max_transport_retries",
+            0
+          ],
+          [
+            "output_price_microunits_per_token",
+            4
+          ],
+          [
+            "paid_rounds_csv",
+            "7"
+          ],
+          [
+            "reserved_completion_tokens_per_call",
+            4000
+          ],
+          [
+            "reserved_prompt_tokens_per_call",
+            32000
+          ]
+        ],
+        "provider": "deepseek",
+        "request_schema_version": "decision-context-v1.15.0",
+        "request_timeout_ms": 40000,
+        "response_schema_version": "agent-decision-v1.5.0",
+        "seed_mode": "unsupported",
+        "temperature_ppm": 0,
+        "tool_schema_hash": null,
+        "top_p_ppm": 1000000
+      },
+      "source": {
+        "code_commit": "2ef181ab84732d8d69b64e9655e10fcfd45b87a7",
+        "container_image_digest": null,
+        "dependency_lock": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/json",
+          "sha256": "sha256:a24d447e123baf6f32b3e6ebe0cfccaccc1c46626b5a697daea95b5750acd425",
+          "size_bytes": 942
+        },
+        "source_bundle": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/zip",
+          "sha256": "sha256:cc3b7d0711cf5a35f6419ab5bd218ab4eb15add5b3d896ac9a81e03bc6c98599",
+          "size_bytes": 1610757
+        }
+      },
+      "strategic_stack": {
+        "advisor_mode": "off",
+        "advisor_version": "none",
+        "belief_mode": "public_action_v1",
+        "belief_updater_version": "dirichlet-public-price-v1.0.0",
+        "cooperation_mode": "off",
+        "cooperation_version": "none",
+        "opponent_model_mode": "public_strategy_v1",
+        "opponent_model_version": "public-strategy-rule-bayes-v1.0.0",
+        "repeated_game_mode": "off",
+        "repeated_game_version": "none",
+        "utility_inference_mode": "strategy_utility_v1",
+        "utility_inference_version": "strategy-mixture-utility-v1.0.0"
+      }
+    },
+    "behavior_spec_hash": "sha256:a3fe9e9d9f6ca1057714a3dba46eaa4272e490be629d1cc20846e9c54bae3ef8",
+    "created_at": "2026-08-25T04:22:44.613692+00:00",
+    "family_id": "core-real-strategic-agent",
+    "human_version": "strategy_utility_control-profit_myopic-1.0.0",
+    "lineage": {
+      "lineage_schema_version": "agent-lineage-v1.0.0",
+      "mutation_operator": null,
+      "parent_version_ids": [],
+      "reason": "initial",
+      "training_run_id": null
+    },
+    "manifest_schema_version": "agent-version-manifest-v1.0.0",
+    "reproducibility_tier": "C_recorded_output"
+  },
+  {
+    "agent_version_id": "sha256:bf6fae698bfe251b2ba1368dc01f0344ccb4df4227e11e2f162b9d1d1cbd725c",
+    "behavior_spec": {
+      "action_stack": {
+        "action_schema_version": "company-action-v4.0.0",
+        "adoption_contract_version": "advisor-adoption-trace-v1.0.0",
+        "candidate_generator_version": "none",
+        "fallback_policy_version": "controller-rule-fallback-v3.0.0",
+        "parser_version": "pydantic-agent-decision-parser-v1.0.0",
+        "resolver_version": "action-resolution-policy-v1.0.0",
+        "safety_policy_version": "market-action-guardrails-v4.2.0"
+      },
+      "behavior_schema_version": "agent-behavior-spec-v1.0.0",
+      "checkpoint": null,
+      "compatibility": {
+        "environment_versions": [
+          "market-env-v4.2.0"
+        ],
+        "event_schema_versions": [
+          "agent-round-event-v1.12.0"
+        ],
+        "information_modes": [
+          "public"
+        ],
+        "market_config_hashes": [
+          "sha256:d3139e6939023a81c430e5ab257d2a9808a57c07d1f01d14ddc922bb7b9d2f01"
+        ],
+        "observation_schema_versions": [
+          "agent-observation-v1.8.0"
+        ]
+      },
+      "context": {
+        "communication_context_version": "communication-context-v1.6.0",
+        "context_builder_version": "decision-context-builder-v1.15.0",
+        "context_mode": "full",
+        "cooperation_history_mode": "full",
+        "critical_event_selector_version": "critical-event-v1.0.0",
+        "decision_context_version": "decision-context-v1.15.0",
+        "decision_support_version": "economic_v2",
+        "diagnostic_mode": "off",
+        "memory_policy_version": "episode-memory-v1.2.0",
+        "memory_scope": "episode",
+        "observation_builder_version": "observation-builder-v2.0.0",
+        "observation_schema_version": "agent-observation-v1.8.0",
+        "persona_semantics_version": "economic_v2",
+        "visibility_policy_version": "visibility-public-v2.0.0"
+      },
+      "family_id": "core-real-cooperation-agent",
+      "persona": {
+        "catalog_version": "persona-catalog-v1.1.0",
+        "persona_id": "balanced_v1",
+        "planner_version": "persona-planning-layer-v1.0.0",
+        "planning_mode": "prompt-plus-persona-utility",
+        "profile_hash": "sha256:f98c9c0c64ad7959fb28864b47ee4f5d58114fa6115c3e4c6970debbc4d775ce"
+      },
+      "prompts": {
+        "communication_template": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:c27f421a6fd8ebfd971379da4e623d16964005ff2e69be7b5dfe208f04f853d2",
+          "size_bytes": 18618
+        },
+        "decision_template": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:c27f421a6fd8ebfd971379da4e623d16964005ff2e69be7b5dfe208f04f853d2",
+          "size_bytes": 18618
+        },
+        "parser_instruction": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:9b5309f294849de7d6652a45b5227e8eabcac9fae2a5ed0f4b3085c96b1d7651",
+          "size_bytes": 842
+        },
+        "prompt_schema_version": "market-prompt-stack-v1.15.0",
+        "system_prompt": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/json",
+          "sha256": "sha256:2fc14764af9f9d9524eb8200f8a0b8c54a1fcc1bd59cda3b9d0e369570230b4d",
+          "size_bytes": 245
+        }
+      },
+      "runtime": {
+        "agent_kind": "llm",
+        "communication_timeout_ms": 30000,
+        "decision_timeout_ms": 45000,
+        "endpoint_id": "https://api.deepseek.com",
+        "max_output_tokens": 4000,
+        "max_schema_attempts": 1,
+        "model": "deepseek-v4-flash",
+        "model_revision": "provider-alias:deepseek-v4-flash:2026-08-25",
+        "policy_parameters": [
+          [
+            "communication_mode",
+            "public_private"
+          ],
+          [
+            "experiment_stack",
+            "cooperation_credibility_persona"
+          ],
+          [
+            "input_price_microunits_per_token",
+            2
+          ],
+          [
+            "max_transport_retries",
+            0
+          ],
+          [
+            "output_price_microunits_per_token",
+            4
+          ],
+          [
+            "paid_rounds_csv",
+            "1"
+          ],
+          [
+            "reserved_completion_tokens_per_call",
+            4000
+          ],
+          [
+            "reserved_prompt_tokens_per_call",
+            32000
+          ]
+        ],
+        "provider": "deepseek",
+        "request_schema_version": "decision-context-v1.15.0",
+        "request_timeout_ms": 40000,
+        "response_schema_version": "agent-decision-v1.5.0",
+        "seed_mode": "unsupported",
+        "temperature_ppm": 0,
+        "tool_schema_hash": null,
+        "top_p_ppm": 1000000
+      },
+      "source": {
+        "code_commit": "2ef181ab84732d8d69b64e9655e10fcfd45b87a7",
+        "container_image_digest": null,
+        "dependency_lock": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/json",
+          "sha256": "sha256:a24d447e123baf6f32b3e6ebe0cfccaccc1c46626b5a697daea95b5750acd425",
+          "size_bytes": 942
+        },
+        "source_bundle": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/zip",
+          "sha256": "sha256:cc3b7d0711cf5a35f6419ab5bd218ab4eb15add5b3d896ac9a81e03bc6c98599",
+          "size_bytes": 1610757
+        }
+      },
+      "strategic_stack": {
+        "advisor_mode": "off",
+        "advisor_version": "none",
+        "belief_mode": "off",
+        "belief_updater_version": "none",
+        "cooperation_mode": "shared_resilience_v1",
+        "cooperation_version": "shared-resilience-cooperation-v1.0.0",
+        "opponent_model_mode": "off",
+        "opponent_model_version": "none",
+        "repeated_game_mode": "off",
+        "repeated_game_version": "none",
+        "utility_inference_mode": "off",
+        "utility_inference_version": "none"
+      }
+    },
+    "behavior_spec_hash": "sha256:bf6fae698bfe251b2ba1368dc01f0344ccb4df4227e11e2f162b9d1d1cbd725c",
+    "created_at": "2026-08-25T04:22:44.717751+00:00",
+    "family_id": "core-real-cooperation-agent",
+    "human_version": "cooperation_credibility_persona-balanced_v1-1.0.0",
+    "lineage": {
+      "lineage_schema_version": "agent-lineage-v1.0.0",
+      "mutation_operator": null,
+      "parent_version_ids": [],
+      "reason": "initial",
+      "training_run_id": null
+    },
+    "manifest_schema_version": "agent-version-manifest-v1.0.0",
+    "reproducibility_tier": "C_recorded_output"
+  },
+  {
+    "agent_version_id": "sha256:dd8c8bf1c2572431a176f883be2fb22074687dbd56beff499c9ddaf25bea9210",
+    "behavior_spec": {
+      "action_stack": {
+        "action_schema_version": "company-action-v4.0.0",
+        "adoption_contract_version": "advisor-adoption-trace-v1.0.0",
+        "candidate_generator_version": "none",
+        "fallback_policy_version": "controller-rule-fallback-v3.0.0",
+        "parser_version": "pydantic-agent-decision-parser-v1.0.0",
+        "resolver_version": "action-resolution-policy-v1.0.0",
+        "safety_policy_version": "market-action-guardrails-v4.2.0"
+      },
+      "behavior_schema_version": "agent-behavior-spec-v1.0.0",
+      "checkpoint": null,
+      "compatibility": {
+        "environment_versions": [
+          "market-env-v4.2.0"
+        ],
+        "event_schema_versions": [
+          "agent-round-event-v1.12.0"
+        ],
+        "information_modes": [
+          "public"
+        ],
+        "market_config_hashes": [
+          "sha256:d3139e6939023a81c430e5ab257d2a9808a57c07d1f01d14ddc922bb7b9d2f01"
+        ],
+        "observation_schema_versions": [
+          "agent-observation-v1.8.0"
+        ]
+      },
+      "context": {
+        "communication_context_version": "communication-context-v1.6.0",
+        "context_builder_version": "decision-context-builder-v1.15.0",
+        "context_mode": "full",
+        "cooperation_history_mode": "full",
+        "critical_event_selector_version": "critical-event-v1.0.0",
+        "decision_context_version": "decision-context-v1.15.0",
+        "decision_support_version": "economic_v2",
+        "diagnostic_mode": "off",
+        "memory_policy_version": "episode-memory-v1.2.0",
+        "memory_scope": "episode",
+        "observation_builder_version": "observation-builder-v2.0.0",
+        "observation_schema_version": "agent-observation-v1.8.0",
+        "persona_semantics_version": "economic_v2",
+        "visibility_policy_version": "visibility-public-v2.0.0"
+      },
+      "family_id": "core-real-strategic-agent",
+      "persona": {
+        "catalog_version": "persona-catalog-v1.1.0",
+        "persona_id": "risk_guarded_v1",
+        "planner_version": "persona-planning-layer-v1.0.0",
+        "planning_mode": "prompt-plus-persona-utility",
+        "profile_hash": "sha256:c095ceb72a89769c8edbee436a40473bbbc2ad9a423cbc6fe9a6126a57639d25"
+      },
+      "prompts": {
+        "communication_template": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:c27f421a6fd8ebfd971379da4e623d16964005ff2e69be7b5dfe208f04f853d2",
+          "size_bytes": 18618
+        },
+        "decision_template": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:c27f421a6fd8ebfd971379da4e623d16964005ff2e69be7b5dfe208f04f853d2",
+          "size_bytes": 18618
+        },
+        "parser_instruction": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "text/x-python",
+          "sha256": "sha256:9b5309f294849de7d6652a45b5227e8eabcac9fae2a5ed0f4b3085c96b1d7651",
+          "size_bytes": 842
+        },
+        "prompt_schema_version": "market-prompt-stack-v1.15.0",
+        "system_prompt": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/json",
+          "sha256": "sha256:2fc14764af9f9d9524eb8200f8a0b8c54a1fcc1bd59cda3b9d0e369570230b4d",
+          "size_bytes": 245
+        }
+      },
+      "runtime": {
+        "agent_kind": "llm",
+        "communication_timeout_ms": 30000,
+        "decision_timeout_ms": 45000,
+        "endpoint_id": "https://api.deepseek.com",
+        "max_output_tokens": 4000,
+        "max_schema_attempts": 1,
+        "model": "deepseek-v4-flash",
+        "model_revision": "provider-alias:deepseek-v4-flash:2026-08-25",
+        "policy_parameters": [
+          [
+            "communication_mode",
+            "off"
+          ],
+          [
+            "experiment_stack",
+            "strategy_utility_control"
+          ],
+          [
+            "input_price_microunits_per_token",
+            2
+          ],
+          [
+            "max_transport_retries",
+            0
+          ],
+          [
+            "output_price_microunits_per_token",
+            4
+          ],
+          [
+            "paid_rounds_csv",
+            "7"
+          ],
+          [
+            "reserved_completion_tokens_per_call",
+            4000
+          ],
+          [
+            "reserved_prompt_tokens_per_call",
+            32000
+          ]
+        ],
+        "provider": "deepseek",
+        "request_schema_version": "decision-context-v1.15.0",
+        "request_timeout_ms": 40000,
+        "response_schema_version": "agent-decision-v1.5.0",
+        "seed_mode": "unsupported",
+        "temperature_ppm": 0,
+        "tool_schema_hash": null,
+        "top_p_ppm": 1000000
+      },
+      "source": {
+        "code_commit": "2ef181ab84732d8d69b64e9655e10fcfd45b87a7",
+        "container_image_digest": null,
+        "dependency_lock": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/json",
+          "sha256": "sha256:a24d447e123baf6f32b3e6ebe0cfccaccc1c46626b5a697daea95b5750acd425",
+          "size_bytes": 942
+        },
+        "source_bundle": {
+          "artifact_schema_version": "agent-artifact-ref-v1.0.0",
+          "media_type": "application/zip",
+          "sha256": "sha256:cc3b7d0711cf5a35f6419ab5bd218ab4eb15add5b3d896ac9a81e03bc6c98599",
+          "size_bytes": 1610757
+        }
+      },
+      "strategic_stack": {
+        "advisor_mode": "off",
+        "advisor_version": "none",
+        "belief_mode": "public_action_v1",
+        "belief_updater_version": "dirichlet-public-price-v1.0.0",
+        "cooperation_mode": "off",
+        "cooperation_version": "none",
+        "opponent_model_mode": "public_strategy_v1",
+        "opponent_model_version": "public-strategy-rule-bayes-v1.0.0",
+        "repeated_game_mode": "off",
+        "repeated_game_version": "none",
+        "utility_inference_mode": "strategy_utility_v1",
+        "utility_inference_version": "strategy-mixture-utility-v1.0.0"
+      }
+    },
+    "behavior_spec_hash": "sha256:dd8c8bf1c2572431a176f883be2fb22074687dbd56beff499c9ddaf25bea9210",
+    "created_at": "2026-08-25T04:22:44.358092+00:00",
+    "family_id": "core-real-strategic-agent",
+    "human_version": "strategy_utility_control-risk_guarded_v1-1.0.0",
+    "lineage": {
+      "lineage_schema_version": "agent-lineage-v1.0.0",
+      "mutation_operator": null,
+      "parent_version_ids": [],
+      "reason": "initial",
+      "training_run_id": null
+    },
+    "manifest_schema_version": "agent-version-manifest-v1.0.0",
+    "reproducibility_tier": "C_recorded_output"
+  }
+]

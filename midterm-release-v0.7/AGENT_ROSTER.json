@@ -1,0 +1,16 @@
+{
+  "roster_schema_version": "midterm-agent-roster-v1.0.0",
+  "registry_evidence": "selected-runs/core-real-llm-validation/registered-versions.json",
+  "reproducibility_tier": "C_recorded_output",
+  "model": "deepseek-v4-flash",
+  "versions": [
+    {"human_version": "pareto_reliable_v5-risk_guarded_v1-1.0.0", "agent_version_id": "sha256:448d8819c2152cf6555a791915bd0713706398872ed912ac452ef3a7f6631b51", "persona_id": "risk_guarded_v1", "advisor_mode": "pareto_reliable_v5"},
+    {"human_version": "pareto_reliable_v5-profit_myopic-1.0.0", "agent_version_id": "sha256:50a3fe8414e46b096e2b59509cea3444b7f0865adc2dc956f397ddfb75550e91", "persona_id": "profit_myopic", "advisor_mode": "pareto_reliable_v5"},
+    {"human_version": "strategy_utility_control-risk_guarded_v1-1.0.0", "agent_version_id": "sha256:dd8c8bf1c2572431a176f883be2fb22074687dbd56beff499c9ddaf25bea9210", "persona_id": "risk_guarded_v1", "advisor_mode": "off"},
+    {"human_version": "strategy_utility_control-profit_myopic-1.0.0", "agent_version_id": "sha256:a3fe9e9d9f6ca1057714a3dba46eaa4272e490be629d1cc20846e9c54bae3ef8", "persona_id": "profit_myopic", "advisor_mode": "off"},
+    {"human_version": "cooperation_credibility_persona-balanced_v1-1.0.0", "agent_version_id": "sha256:bf6fae698bfe251b2ba1368dc01f0344ccb4df4227e11e2f162b9d1d1cbd725c", "persona_id": "balanced_v1", "advisor_mode": "off"},
+    {"human_version": "cooperation_credibility_persona-profit_myopic-1.0.0", "agent_version_id": "sha256:48fa44312a33170d3a5c74a0ad063d176a529a8974ba2dc26e70b22169376656", "persona_id": "profit_myopic", "advisor_mode": "off"}
+  ],
+  "v6_calibrated_version_registered": false,
+  "reason": "zero-token holdout gate failed; no real v6 calibrated Agent Version was called or promoted"
+}

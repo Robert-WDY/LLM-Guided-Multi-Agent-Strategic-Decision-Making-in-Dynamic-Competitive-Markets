@@ -1,0 +1,190 @@
+{
+  "conclusion_limits": [
+    "five strategic pairs are known historical failures, not unknown-seed generalization",
+    "strategic continuation actions and opponent actions are frozen after the paid decision",
+    "cooperation uses two repetitions per cell and supports directional, not statistical, inference",
+    "the current persona catalog has no dedicated cooperator or free-rider utility profile",
+    "provider outputs are recorded Tier C evidence and need not regenerate identically"
+  ],
+  "cooperation_credibility_persona": {
+    "all_cells_complete": true,
+    "cell_count": 6,
+    "cells": [
+      {
+        "acceptance_rate_ppm": 0,
+        "attempt_count": 2,
+        "condition": "no_message",
+        "mean_contribution_cents": 250000,
+        "persona_id": "balanced_v1",
+        "success_count": 2
+      },
+      {
+        "acceptance_rate_ppm": 500000,
+        "attempt_count": 2,
+        "condition": "high_credibility_proposal",
+        "mean_contribution_cents": 500000,
+        "persona_id": "balanced_v1",
+        "success_count": 2
+      },
+      {
+        "acceptance_rate_ppm": 0,
+        "attempt_count": 2,
+        "condition": "low_credibility_proposal",
+        "mean_contribution_cents": 0,
+        "persona_id": "balanced_v1",
+        "success_count": 2
+      },
+      {
+        "acceptance_rate_ppm": 0,
+        "attempt_count": 2,
+        "condition": "no_message",
+        "mean_contribution_cents": 0,
+        "persona_id": "profit_myopic",
+        "success_count": 2
+      },
+      {
+        "acceptance_rate_ppm": 0,
+        "attempt_count": 2,
+        "condition": "high_credibility_proposal",
+        "mean_contribution_cents": 0,
+        "persona_id": "profit_myopic",
+        "success_count": 2
+      },
+      {
+        "acceptance_rate_ppm": 0,
+        "attempt_count": 2,
+        "condition": "low_credibility_proposal",
+        "mean_contribution_cents": 0,
+        "persona_id": "profit_myopic",
+        "success_count": 2
+      }
+    ],
+    "contrasts": [
+      {
+        "high_minus_low_acceptance_ppm": 500000,
+        "high_minus_low_contribution_cents": 500000,
+        "high_minus_no_message_contribution_cents": 250000,
+        "persona_id": "balanced_v1"
+      },
+      {
+        "high_minus_low_acceptance_ppm": 0,
+        "high_minus_low_contribution_cents": 0,
+        "high_minus_no_message_contribution_cents": 0,
+        "persona_id": "profit_myopic"
+      }
+    ],
+    "directional_gate": {
+      "all_cells_complete": true,
+      "high_credibility_acceptance_not_lower_in_each_persona": true,
+      "high_credibility_contribution_not_lower_in_each_persona": true,
+      "persona_changes_at_least_one_response_distribution": true
+    }
+  },
+  "engineering": {
+    "all_decisions_successful": true,
+    "all_planned_calls_recorded": true,
+    "immutable_version_attribution_complete": true,
+    "provider_audit_complete": true,
+    "unique_called_agent_versions": 6
+  },
+  "evidence_level": "paired-small-sample-real-llm-directional",
+  "experiment_schema_version": "core-real-llm-validation-v1.0.0",
+  "model": "deepseek-v4-flash",
+  "plan": {
+    "cooperation_calls": 12,
+    "strategic_calls": 10,
+    "total_calls": 22
+  },
+  "provider": "deepseek",
+  "report_hash": "sha256:9b268e78a39bdf75cb73761a59c983b73d7f49ea51821783b5d034086ba20790",
+  "research_gate": {
+    "cooperation_directional_gate_passed": true,
+    "strategic_directional_gate_passed": false
+  },
+  "rows_file": "C:\\Users\\12204\\Desktop\\game-theory-agent\\runs\\core-real-llm-validation-20260825\\rows.json",
+  "strategic_v5": {
+    "accepted_advice_pair_count": 5,
+    "action_changed_pair_count": 5,
+    "complete_pair_count": 5,
+    "directional_gate": {
+      "advice_changes_or_is_explicitly_adopted": true,
+      "all_pairs_complete": true,
+      "mean_value_not_lower": true,
+      "worst_value_not_lower": false
+    },
+    "mean_ev_delta_cents": 423503,
+    "pair_count": 5,
+    "pairs": [
+      {
+        "action_changed": true,
+        "adoption_status": "exact_action",
+        "complete": true,
+        "persona_id": "risk_guarded_v1",
+        "seed": 1,
+        "target_alignment_ppm": 1000000,
+        "treatment_minus_control_ev_cents": 106305
+      },
+      {
+        "action_changed": true,
+        "adoption_status": "exact_action",
+        "complete": true,
+        "persona_id": "profit_myopic",
+        "seed": 2,
+        "target_alignment_ppm": 1000000,
+        "treatment_minus_control_ev_cents": 0
+      },
+      {
+        "action_changed": true,
+        "adoption_status": "exact_action",
+        "complete": true,
+        "persona_id": "risk_guarded_v1",
+        "seed": 3,
+        "target_alignment_ppm": 1000000,
+        "treatment_minus_control_ev_cents": 778243
+      },
+      {
+        "action_changed": true,
+        "adoption_status": "exact_action",
+        "complete": true,
+        "persona_id": "profit_myopic",
+        "seed": 4,
+        "target_alignment_ppm": 1000000,
+        "treatment_minus_control_ev_cents": 1318811
+      },
+      {
+        "action_changed": true,
+        "adoption_status": "exact_action",
+        "complete": true,
+        "persona_id": "risk_guarded_v1",
+        "seed": 4,
+        "target_alignment_ppm": 1000000,
+        "treatment_minus_control_ev_cents": -85845
+      }
+    ],
+    "positive_zero_negative": {
+      "negative": 1,
+      "positive": 3,
+      "zero": 1
+    },
+    "worst_ev_delta_cents": -85845
+  },
+  "usage": {
+    "estimated_actual_cost_cny": "0.474860",
+    "maximum_reserved_cost_cny": "1.760000",
+    "pricing_snapshot": "DeepSeek official 2026-08-25; input 1/output 2 CNY per million tokens, conservatively doubled for peak",
+    "reserved": {
+      "calls": 22,
+      "completion_tokens": 88000,
+      "estimated_cost_microunits": 1760000,
+      "prompt_tokens": 704000
+    },
+    "schema_retries_per_call": 0,
+    "successful": {
+      "calls": 22,
+      "completion_tokens": 10721,
+      "estimated_cost_microunits": 474860,
+      "prompt_tokens": 215988
+    },
+    "transport_retries_per_call": 0
+  }
+}
