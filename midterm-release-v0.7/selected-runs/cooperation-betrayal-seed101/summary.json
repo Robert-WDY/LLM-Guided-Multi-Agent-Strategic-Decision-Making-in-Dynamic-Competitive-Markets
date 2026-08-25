@@ -1,0 +1,81 @@
+{
+  "artifacts": {
+    "round_events": "round-events.jsonl"
+  },
+  "communication_mode": "public_private",
+  "completed_rounds": 10,
+  "condition": "communication_with_history",
+  "cooperation_history_mode": "full",
+  "episode_schema_version": "cooperation-real-episode-v1.0.0",
+  "llm_count": 2,
+  "metrics": {
+    "acceptance_count": 3,
+    "amount_weighted_fulfillment_ppm": 411764,
+    "betrayal_rate_ppm": 666666,
+    "commitment_count": 3,
+    "commitment_rate_ppm": 750000,
+    "company_incident_observation_count": 2,
+    "contributing_company_round_rate_ppm": 425000,
+    "cumulative_lost_after_stockout_orders": 0,
+    "event_exposed_round_count": 1,
+    "event_exposed_total_profit_cents": 1082212,
+    "free_rider_company_round_rate_ppm": 475000,
+    "fulfillment_status_counts": {
+      "betrayed": 1,
+      "fulfilled": 1,
+      "partial_betrayal": 1
+    },
+    "market_total_round_profit_cents": 39905979,
+    "mean_industry_resilience_after_ppm": 243751,
+    "mean_public_protection_applied_ppm": 170201,
+    "metrics_schema_version": "cooperation-metrics-v1.0.0",
+    "note": "Market total profit is reported, but no full social-welfare system is enabled in Cooperation MVP v1.",
+    "peer_acceptance_rate_ppm": 1000000,
+    "proposal_count": 4,
+    "proposal_rate_ppm": 100000,
+    "response_count": 3,
+    "round_count": 10,
+    "total_contribution_cents": 5900000,
+    "verification_count": 3
+  },
+  "model": null,
+  "passed": true,
+  "persona": "balanced_v1",
+  "provider": "deepseek",
+  "replay": {
+    "cooperation": true,
+    "economic": true,
+    "interaction": true
+  },
+  "rounds": 10,
+  "rule_count": 2,
+  "seed": 101,
+  "token_usage": {
+    "by_company": {
+      "company_A": {
+        "input_tokens": 374220,
+        "output_tokens": 9652,
+        "total_tokens": 383872
+      },
+      "company_B": {
+        "input_tokens": 349893,
+        "output_tokens": 9792,
+        "total_tokens": 359685
+      }
+    },
+    "calls_without_token_usage": 0,
+    "communication_input_tokens": 343622,
+    "communication_output_tokens": 4446,
+    "decision_input_tokens": 380491,
+    "decision_output_tokens": 14998,
+    "estimated_cost_usd": 0.0,
+    "input_tokens": 724113,
+    "llm_call_count": 40,
+    "models_used": [
+      "deepseek-v4-flash"
+    ],
+    "output_tokens": 19444,
+    "token_usage_schema_version": "model-token-usage-v1.0.0",
+    "total_tokens": 743557
+  }
+}

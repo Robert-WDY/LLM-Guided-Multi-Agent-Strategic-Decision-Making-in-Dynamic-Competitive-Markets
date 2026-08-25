@@ -1,0 +1,51 @@
+{
+  "catalog_schema_version": "midterm-experiment-catalog-v1.0.0",
+  "catalog_hash": "sha256:994eb5fc538b16dc7432fc653ce9fe000be2190f0572b0dd4cf727944c35ee7d",
+  "experiments": [
+    {
+      "experiment_id": "persona-heterogeneity-seed101",
+      "title": "人格异质性真实市场样例",
+      "evidence_type": "REAL",
+      "research_theme": "persona_heterogeneity",
+      "artifact_root": "midterm-release-v0.7/selected-runs/persona-heterogeneity-seed101",
+      "round_events_path": "round-events.jsonl",
+      "summary_path": "summary.json",
+      "round_events_sha256": "sha256:5c351239c2fa40b94397d462dbf633b953a9e3cefdf5398273b612cc04984cd9",
+      "summary_sha256": "sha256:ade836cccaaccbb3a8ba3b37940b27bc0a9adef6b7f7f9243f4614d314a4cd89",
+      "visibility": "public-demo",
+      "round_count": 20,
+      "company_ids": ["company_A", "company_B", "company_C", "company_D"],
+      "claim_boundary": "单 Seed 真实 Episode 只用于逐轮回放；跨 Seed 结论以发布报告为准。"
+    },
+    {
+      "experiment_id": "cooperation-betrayal-seed101",
+      "title": "合作、承诺与履约历史样例",
+      "evidence_type": "REAL",
+      "research_theme": "cooperation_and_betrayal",
+      "artifact_root": "midterm-release-v0.7/selected-runs/cooperation-betrayal-seed101",
+      "round_events_path": "round-events.jsonl",
+      "summary_path": "summary.json",
+      "round_events_sha256": "sha256:06e0f64fabf3fdaf5e5f6628fdcd36c533afce36085d94697cc9dcc8149d6175",
+      "summary_sha256": "sha256:7705949f1c6acfaea84458b131ca9c27cf24ebe25e4d2f9c969ef9b8924a6a20",
+      "visibility": "public-demo",
+      "round_count": 10,
+      "company_ids": ["company_A", "company_B", "company_C", "company_D"],
+      "claim_boundary": "合作机制已实现；本档案不证明合作型、搭便车型或报复型数学人格已完成。"
+    },
+    {
+      "experiment_id": "advisor-evolution-risk-seed4",
+      "title": "Advisor 演进与负面结果样例",
+      "evidence_type": "REAL",
+      "research_theme": "advisor_evolution",
+      "artifact_root": "midterm-release-v0.7/selected-runs/advisor-evolution-risk-seed4",
+      "round_events_path": "round-events.jsonl",
+      "summary_path": "summary.json",
+      "round_events_sha256": "sha256:7aa398659f0dd35d0155805c5cc7855feb07e008c144246eb9d5078462946e30",
+      "summary_sha256": "sha256:a7a0945e48c57428f0328f125eebc7298a85ecbb60c1d6daabe1df4a0636f30e",
+      "visibility": "public-demo",
+      "round_count": 10,
+      "company_ids": ["company_A", "company_B", "company_C", "company_D"],
+      "claim_boundary": "展示真实决策与失败证据；不把单 Episode 描述为 Advisor 泛化结论。"
+    }
+  ]
+}

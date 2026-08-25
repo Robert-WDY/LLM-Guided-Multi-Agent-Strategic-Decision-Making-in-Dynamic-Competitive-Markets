@@ -1,6 +1,7 @@
 export type ViewId =
   | "home"
   | "setup"
+  | "archive"
   | "live"
   | "observatory"
   | "communication"
@@ -13,10 +14,9 @@ export type PersonaKey =
   | "balanced_v1"
   | "aggressive_v1_extreme"
   | "risk_guarded_v1"
-  | "selfish_long_term_v1"
-  | "cooperator"
-  | "free_rider"
-  | "retaliator";
+  | "profit_myopic"
+  | "selfish_long_term"
+  | "disciplined_growth_v1";
 
 export type PersonaProfile = {
   key: PersonaKey;
@@ -159,33 +159,26 @@ export const PERSONAS: Record<PersonaKey, PersonaProfile> = {
     weights: { profit: 27, growth: 10, risk: 31, cash: 22, social: 10 },
     traits: { timeDiscount: 96, riskAversion: 70, cooperation: 25, opportunism: 20 },
   },
-  selfish_long_term_v1: {
-    key: "selfish_long_term_v1",
+  profit_myopic: {
+    key: "profit_myopic",
+    label: "短期逐利",
+    summary: "优先近期可实现利润，是经过后端版本化的人格压力测试基线。",
+    weights: { profit: 90, growth: 0, risk: 0, cash: 10, social: 0 },
+    traits: { timeDiscount: 40, riskAversion: 10, cooperation: 0, opportunism: 95 },
+  },
+  selfish_long_term: {
+    key: "selfish_long_term",
     label: "长期自利",
-    summary: "只在合作能改善自身长期回报时参与合作。",
-    weights: { profit: 38, growth: 13, risk: 13, cash: 28, social: 8 },
+    summary: "只最大化本公司的长期企业价值，不等同于合作人格。",
+    weights: { profit: 35, growth: 5, risk: 20, cash: 25, social: 15 },
     traits: { timeDiscount: 95, riskAversion: 35, cooperation: 10, opportunism: 60 },
   },
-  cooperator: {
-    key: "cooperator",
-    label: "合作共赢",
-    summary: "重视公共韧性、互惠和可持续的共同收益。",
-    weights: { profit: 23, growth: 14, risk: 20, cash: 13, social: 30 },
-    traits: { timeDiscount: 96, riskAversion: 42, cooperation: 88, opportunism: 10 },
-  },
-  free_rider: {
-    key: "free_rider",
-    label: "搭便车者",
-    summary: "偏好享受公共收益，同时尽量避免私人贡献成本。",
-    weights: { profit: 42, growth: 18, risk: 13, cash: 22, social: 5 },
-    traits: { timeDiscount: 72, riskAversion: 25, cooperation: 8, opportunism: 88 },
-  },
-  retaliator: {
-    key: "retaliator",
-    label: "报复者",
-    summary: "初始愿意合作，发现背叛后迅速转入对等反制。",
-    weights: { profit: 26, growth: 13, risk: 21, cash: 14, social: 26 },
-    traits: { timeDiscount: 91, riskAversion: 44, cooperation: 70, opportunism: 35 },
+  disciplined_growth_v1: {
+    key: "disciplined_growth_v1",
+    label: "有纪律增长",
+    summary: "在现金和风险边界内追求增长的版本化经营人格。",
+    weights: { profit: 38, growth: 30, risk: 16, cash: 7, social: 9 },
+    traits: { timeDiscount: 90, riskAversion: 30, cooperation: 15, opportunism: 50 },
   },
 };
 
@@ -195,14 +188,14 @@ export const MAX_COMPANIES = 10;
 export const AGENT_TEMPLATES: AgentConfig[] = [
   { companyId: "company_A", shortName: "A", companyName: "青禾速配", color: "#4ee0bd", driver: "human", model: "Human", persona: "balanced_v1", information: "public", communication: true, gameTheory: false },
   { companyId: "company_B", shortName: "B", companyName: "橙选到家", color: "#ff8468", driver: "doubao", model: "Doubao Seed 2.0 Lite", persona: "aggressive_v1_extreme", information: "public", communication: true, gameTheory: true },
-  { companyId: "company_C", shortName: "C", companyName: "蓝仓鲜送", color: "#7196ff", driver: "deepseek", model: "DeepSeek V3", persona: "selfish_long_term_v1", information: "public", communication: true, gameTheory: true },
+  { companyId: "company_C", shortName: "C", companyName: "蓝仓鲜送", color: "#7196ff", driver: "deepseek", model: "DeepSeek V3", persona: "selfish_long_term", information: "public", communication: true, gameTheory: true },
   { companyId: "company_D", shortName: "D", companyName: "紫藤优鲜", color: "#b38cff", driver: "rule", model: "Deterministic Rule", persona: "risk_guarded_v1", information: "public", communication: false, gameTheory: false },
-  { companyId: "company_E", shortName: "E", companyName: "赤焰鲜达", color: "#dc2626", driver: "rule", model: "Deterministic Rule", persona: "free_rider", information: "public", communication: true, gameTheory: false },
-  { companyId: "company_F", shortName: "F", companyName: "金穗到家", color: "#ca8a04", driver: "rule", model: "Deterministic Rule", persona: "cooperator", information: "public", communication: true, gameTheory: false },
-  { companyId: "company_G", shortName: "G", companyName: "翠湾配送", color: "#059669", driver: "rule", model: "Deterministic Rule", persona: "retaliator", information: "public", communication: true, gameTheory: false },
+  { companyId: "company_E", shortName: "E", companyName: "赤焰鲜达", color: "#dc2626", driver: "rule", model: "Deterministic Rule", persona: "profit_myopic", information: "public", communication: true, gameTheory: false },
+  { companyId: "company_F", shortName: "F", companyName: "金穗到家", color: "#ca8a04", driver: "rule", model: "Deterministic Rule", persona: "disciplined_growth_v1", information: "public", communication: true, gameTheory: false },
+  { companyId: "company_G", shortName: "G", companyName: "翠湾配送", color: "#059669", driver: "rule", model: "Deterministic Rule", persona: "selfish_long_term", information: "public", communication: true, gameTheory: false },
   { companyId: "company_H", shortName: "H", companyName: "墨兰冷链", color: "#1d4ed8", driver: "rule", model: "Deterministic Rule", persona: "balanced_v1", information: "public", communication: false, gameTheory: false },
   { companyId: "company_I", shortName: "I", companyName: "雪梨优送", color: "#0ea5e9", driver: "rule", model: "Deterministic Rule", persona: "aggressive_v1_extreme", information: "public", communication: true, gameTheory: false },
-  { companyId: "company_J", shortName: "J", companyName: "枫桥鲜配", color: "#c2410c", driver: "rule", model: "Deterministic Rule", persona: "selfish_long_term_v1", information: "public", communication: false, gameTheory: false },
+  { companyId: "company_J", shortName: "J", companyName: "枫桥鲜配", color: "#c2410c", driver: "rule", model: "Deterministic Rule", persona: "selfish_long_term", information: "public", communication: false, gameTheory: false },
 ];
 
 export const DEFAULT_AGENTS: AgentConfig[] = AGENT_TEMPLATES.slice(0, 4);

@@ -54,6 +54,77 @@ def test_api_creates_and_steps_v4_episode():
     assert next_state["state_hash"].startswith("sha256:")
 
 
+def test_persona_capabilities_are_backend_authoritative():
+    response = client.get("/api/v1/capabilities/personas")
+    assert response.status_code == 200
+    body = response.json()
+    ids = {item["persona_id"] for item in body["profiles"]}
+    assert ids == {
+        "balanced_v1",
+        "aggressive_v1_extreme",
+        "risk_guarded_v1",
+        "profit_myopic",
+        "selfish_long_term",
+        "disciplined_growth_v1",
+    }
+    assert all(item["experiment_selectable"] for item in body["profiles"])
+    assert all(
+        item["capabilities"]["cooperation"] is False
+        for item in body["profiles"]
+    )
+    assert {
+        item["persona_id"] for item in body["demo_only_personas"]
+    } == {"cooperator", "free_rider", "retaliator"}
+    assert not any(
+        item["experiment_selectable"]
+        for item in body["demo_only_personas"]
+    )
+
+
+def test_read_only_real_archive_agent_view_round_three_company_b():
+    listing = client.get("/api/v1/research/experiments")
+    assert listing.status_code == 200
+    assert any(
+        item["experiment_id"] == "persona-heterogeneity-seed101"
+        and item["evidence_type"] == "REAL"
+        for item in listing.json()["experiments"]
+    )
+    manifest = client.get(
+        "/api/v1/research/experiments/persona-heterogeneity-seed101/manifest"
+    )
+    assert manifest.status_code == 200
+    assert manifest.json()["artifact_hashes"]["round_events"].startswith(
+        "sha256:"
+    )
+    detail = client.get(
+        "/api/v1/research/experiments/persona-heterogeneity-seed101/"
+        "rounds/3/agents/company_B"
+    )
+    assert detail.status_code == 200
+    body = detail.json()
+    assert body["view"] == "agent_at_the_time"
+    assert body["company_id"] == "company_B"
+    assert body["observation"]
+    assert body["observation_hash"].startswith("sha256:")
+    assert body["final_action"]
+    assert body["result"]
+    assert body["raw_model_output_ref"]["content_exposed_in_agent_view"] is False
+    assert "event" not in body
+
+    authority = client.get(
+        "/api/v1/research/experiments/persona-heterogeneity-seed101/"
+        "rounds/3/agents/company_B?view=authority"
+    )
+    assert authority.status_code in {401, 503}
+
+    integrity = client.get(
+        "/api/v1/research/experiments/persona-heterogeneity-seed101/integrity"
+    )
+    assert integrity.status_code == 200
+    assert integrity.json()["read_only"] is True
+    assert integrity.json()["arbitrary_path_access"] is False
+
+
 def test_agent_can_discover_episode_choices_without_creation_access():
     response = agent_client.get("/v1/episode-options")
     assert response.status_code == 200
