@@ -235,6 +235,9 @@ def verify_information_replay(
             "agent-round-event-v1.7.0",
             "agent-round-event-v1.8.0",
             "agent-round-event-v1.9.0",
+            "agent-round-event-v1.10.0",
+            "agent-round-event-v1.11.0",
+            "agent-round-event-v1.12.0",
         }
         public_state: dict[str, Any] | None = None
         phase = getattr(event, "communication_phase", None)

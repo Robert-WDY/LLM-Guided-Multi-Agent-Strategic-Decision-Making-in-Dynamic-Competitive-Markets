@@ -106,6 +106,7 @@ def _ranked_candidates(advice: Mapping[str, Any]) -> list[tuple[str, dict[str, A
         "public_rollout_v3",
         "pareto_rollout_v4",
         "pareto_reliable_v5",
+        "pareto_reliable_v6",
     }:
         rows = [item for item in raw_candidates if isinstance(item, Mapping)]
         decision = advice.get("pareto_decision")
@@ -175,6 +176,7 @@ def build_advisor_adoption_trace(
         "public_rollout_v3",
         "pareto_rollout_v4",
         "pareto_reliable_v5",
+        "pareto_reliable_v6",
     }:
         candidate_id = str(advice.get("recommended_candidate_id", "")) or None
         advisor_action = _economic_action(

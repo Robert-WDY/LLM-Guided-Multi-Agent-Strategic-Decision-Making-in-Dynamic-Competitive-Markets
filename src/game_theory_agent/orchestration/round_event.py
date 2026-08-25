@@ -10,7 +10,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from game_theory_agent.advisor.adoption import AdvisorAdoptionTrace
 
-from game_theory_agent.agents.contracts import ResultAnalysis
+from game_theory_agent.agents.contracts import ProviderAuditMetadata, ResultAnalysis
 from game_theory_agent.agents.personas import PersonaUtilityAssessment
 from game_theory_agent.cooperation import CooperationRoundRecord
 from game_theory_agent.interaction.contracts import (
@@ -29,6 +29,14 @@ class CommunicationGenerationTrace(BaseModel):
 
     company_id: str
     agent_id: str
+    agent_family_id: str | None = None
+    agent_version_id: str | None = None
+    agent_instance_id: str | None = None
+    registry_manifest_hash: str | None = None
+    behavior_spec_hash: str | None = None
+    prompt_bundle_hash: str | None = None
+    source_bundle_hash: str | None = None
+    checkpoint_id: str | None = None
     agent_type: Literal["model", "mock", "random", "rule"]
     generation_status: Literal[
         "submitted",
@@ -53,6 +61,7 @@ class CommunicationGenerationTrace(BaseModel):
     output_tokens: int | None = Field(default=None, ge=0)
     retry_count: int = Field(default=0, ge=0)
     estimated_cost_usd: float | None = Field(default=None, ge=0)
+    provider_audit: ProviderAuditMetadata | None = None
     validation_errors: list[str] = Field(default_factory=list)
     error_code: str | None = None
     error_message: str | None = None
@@ -123,6 +132,14 @@ class AgentRoundTrace(BaseModel):
 
     company_id: str
     agent_id: str
+    agent_family_id: str | None = None
+    agent_version_id: str | None = None
+    agent_instance_id: str | None = None
+    registry_manifest_hash: str | None = None
+    behavior_spec_hash: str | None = None
+    prompt_bundle_hash: str | None = None
+    source_bundle_hash: str | None = None
+    checkpoint_id: str | None = None
     agent_type: Literal["model", "mock", "random", "rule"]
     decision_status: Literal["submitted", "fallback"]
     observation_hash: str | None = None
@@ -159,6 +176,7 @@ class AgentRoundTrace(BaseModel):
     output_tokens: int | None = Field(default=None, ge=0)
     retry_count: int = Field(default=0, ge=0)
     estimated_cost_usd: float | None = Field(default=None, ge=0)
+    provider_audit: ProviderAuditMetadata | None = None
     validation_errors: list[str] = Field(default_factory=list)
     error_code: str | None = None
     error_message: str | None = None
@@ -179,7 +197,9 @@ class RoundEvent(BaseModel):
         "agent-round-event-v1.8.0",
         "agent-round-event-v1.9.0",
         "agent-round-event-v1.10.0",
-    ] = "agent-round-event-v1.10.0"
+        "agent-round-event-v1.11.0",
+        "agent-round-event-v1.12.0",
+    ] = "agent-round-event-v1.12.0"
     event_id: str
     episode_id: str
     settled_round: int

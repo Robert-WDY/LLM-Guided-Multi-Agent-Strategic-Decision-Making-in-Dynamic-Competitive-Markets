@@ -1073,6 +1073,7 @@ def _parser() -> argparse.ArgumentParser:
             "public_rollout_v3",
             "pareto_rollout_v4",
             "pareto_reliable_v5",
+            "pareto_reliable_v6",
         ),
         default="off",
     )

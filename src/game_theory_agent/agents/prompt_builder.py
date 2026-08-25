@@ -106,6 +106,7 @@ class AgentPromptBuilder:
                 "public_rollout_v3",
                 "pareto_rollout_v4",
                 "pareto_reliable_v5",
+                "pareto_reliable_v6",
             }
         ):
             advisor_semantics = (
@@ -114,6 +115,7 @@ class AgentPromptBuilder:
                 "recommended_action 是非绑定建议；必须检查现金和硬约束，可以基于可说明的理由拒绝，且它不代表 Nash 均衡。",
                 "pareto_rollout_v4 还会先过滤破坏价值、竞争位置、最坏情景或人格效用底线的候选，再从安全 Pareto 前沿选择；selection_situation 说明当前是保护领先还是终局追赶。",
                 "pareto_reliable_v5 会额外给出安全候选、排除理由和可靠性门禁；should_abstain=true 表示证据不足，recommended_action 已回退为安全经营候选，不应再执行 planner_recommended_candidate_id。",
+                "pareto_reliable_v6 会把 status_quo 定义为逐项和组合边际收益筛选后的经营基线；investment_marginal_plan 可解释每项投入为何保留或剔除。",
             )
         elif context.game_theory_advice is not None:
             advisor_semantics = (

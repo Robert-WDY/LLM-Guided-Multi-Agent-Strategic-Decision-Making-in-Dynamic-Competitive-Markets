@@ -16,6 +16,7 @@ AdvisorMode = Literal[
     "public_rollout_v3",
     "pareto_rollout_v4",
     "pareto_reliable_v5",
+    "pareto_reliable_v6",
 ]
 ADVISOR_SCHEMA_VERSION = "bayesian-price-advice-v1.0.0"
 ADVISOR_MODEL_VERSION = "independent-direction-payoff-proxy-v1.0.0"

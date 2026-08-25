@@ -7,6 +7,7 @@ import time
 
 from pydantic import ValidationError
 
+from game_theory_agent.agent_registry import AgentInstanceBinding
 from game_theory_agent.agents.context import DecisionContextBuilder
 from game_theory_agent.agents.contracts import (
     AgentCommunicationResult,
@@ -47,9 +48,16 @@ class AgentRuntime:
         context_builder: DecisionContextBuilder | None = None,
         persona_profile: PersonaProfile | None = None,
         persona_registry: PersonaRegistry | None = None,
+        version_binding: AgentInstanceBinding | None = None,
     ) -> None:
+        if version_binding is not None and (
+            version_binding.company_id != company_id
+            or version_binding.agent_id != agent_id
+        ):
+            raise ValueError("Agent version binding does not match runtime identity")
         self.agent_id = agent_id
         self.company_id = company_id
+        self.version_binding = version_binding
         self.model_client = model_client
         self.memory = memory or EpisodeMemory()
         registry = persona_registry or load_persona_registry()
@@ -134,6 +142,7 @@ class AgentRuntime:
                 input_tokens=generation.input_tokens,
                 output_tokens=generation.output_tokens,
                 retry_count=generation.retry_count,
+                provider_audit=generation.provider_audit,
             )
         except TimeoutError:
             return self._communication_failure(
@@ -209,6 +218,7 @@ class AgentRuntime:
                 input_tokens=generation.input_tokens,
                 output_tokens=generation.output_tokens,
                 retry_count=generation.retry_count,
+                provider_audit=generation.provider_audit,
             )
         except TimeoutError:
             return self._failure(context, started, "MODEL_TIMEOUT", "model timed out")

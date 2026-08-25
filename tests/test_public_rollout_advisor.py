@@ -144,7 +144,8 @@ def test_public_candidates_preserve_operating_baseline(config):
     assert price_up.action.service_budget_cents == baseline.service_budget_cents
 
 
-def test_hidden_opponent_mutation_cannot_change_public_advice(config):
+@pytest.mark.parametrize("advisor_mode", ["public_rollout_v3", "pareto_reliable_v6"])
+def test_hidden_opponent_mutation_cannot_change_public_advice(config, advisor_mode):
     state, observation, belief, opponent = _inputs(config)
     company_b = state.company("company_B")
     hidden_b = replace(
@@ -187,6 +188,7 @@ def test_hidden_opponent_mutation_cannot_change_public_advice(config):
         opponent_model=opponent,
         horizon_rounds=2,
         scenario_count=2,
+        advisor_mode=advisor_mode,
     )
     second = advisor.advise(
         observation=hidden_observation,
@@ -196,6 +198,7 @@ def test_hidden_opponent_mutation_cannot_change_public_advice(config):
         opponent_model=opponent,
         horizon_rounds=2,
         scenario_count=2,
+        advisor_mode=advisor_mode,
     )
     assert first == second
 
@@ -319,6 +322,66 @@ def test_reliable_pareto_advice_has_conservative_coverage_and_audited_gate(confi
 
     forged = deepcopy(advice.model_dump(mode="json"))
     forged["reliability_gate"]["advisor_confidence_ppm"] += 1
+    with pytest.raises(ValidationError):
+        PublicStrategicAdvice.model_validate(forged)
+
+
+def test_v6_status_quo_is_marginally_screened_and_tamper_evident(config):
+    _state, observation, belief, opponent = _inputs(config, seed=42)
+    profile = PersonaRegistry.from_market_config(config).get("risk_guarded_v1")
+    advisor = PublicMarketRolloutAdvisor(config)
+    advice = advisor.advise(
+        observation=observation,
+        company_id="company_A",
+        persona_profile=profile,
+        belief_state=belief,
+        opponent_model=opponent,
+        horizon_rounds=2,
+        scenario_count=2,
+        advisor_mode="pareto_reliable_v6",
+    )
+    repeated = advisor.advise(
+        observation=observation,
+        company_id="company_A",
+        persona_profile=profile,
+        belief_state=belief,
+        opponent_model=opponent,
+        horizon_rounds=2,
+        scenario_count=2,
+        advisor_mode="pareto_reliable_v6",
+    )
+
+    assert advice == repeated
+    assert advice.advice_schema_version == "public-pareto-marginal-advice-v6.0.0"
+    assert advice.investment_marginal_plan is not None
+    plan = advice.investment_marginal_plan
+    assert plan["uses_only_public_and_own_private_inputs"]
+    assert not plan["uses_authoritative_hidden_market_state"]
+    assert set(plan["selected_dimensions"]) == {"advertising", "service"}
+    assessments = {item["dimension"]: item for item in plan["assessments"]}
+    assert assessments["advertising"]["selected_in_portfolio"]
+    assert assessments["service"]["selected_in_portfolio"]
+    assert not assessments["capacity"]["individually_eligible"]
+    assert not assessments["resilience"]["individually_eligible"]
+    status_quo = next(
+        item
+        for item in advice.candidate_actions
+        if item.candidate.candidate_id == "status_quo"
+    )
+    assert status_quo.candidate.action.model_dump(mode="json") == (
+        plan["selected_action"]
+    )
+    assert advice.reliability_gate["gate_schema_version"] == (
+        "pareto-reliability-gate-v2.0.0"
+    )
+    assert advice.reliability_gate["marginal_investment_plan_hash"] == (
+        plan["plan_hash"]
+    )
+
+    forged = deepcopy(advice.model_dump(mode="json"))
+    forged["investment_marginal_plan"]["selected_action"][
+        "service_budget_cents"
+    ] += 1
     with pytest.raises(ValidationError):
         PublicStrategicAdvice.model_validate(forged)
 
@@ -515,6 +578,53 @@ def test_pareto_reliable_v5_api_and_replay(monkeypatch):
     )
     replayed = verify_advisor_replay(
         [event], SimpleNamespace(advisor_mode="pareto_reliable_v5")
+    )
+    assert replayed == (advice,)
+
+
+def test_pareto_reliable_v6_api_and_replay(monkeypatch):
+    controller_token = "pareto-marginal-controller"
+    monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", controller_token)
+    SESSIONS.clear()
+    controller = TestClient(app)
+    gateway = TestClient(agent_app)
+    created = controller.post(
+        "/api/episodes",
+        headers={"X-Controller-Token": controller_token},
+        json={
+            "episode_id": "pareto-marginal-api",
+            "episode_seed": 94,
+            "max_rounds": 5,
+            "information_mode": "public",
+            "belief_mode": "public_action_v1",
+            "opponent_model_mode": "public_strategy_v1",
+            "advisor_mode": "pareto_reliable_v6",
+            "agent_configs": {
+                "company_A": {"persona": {"persona_id": "risk_guarded_v1"}}
+            },
+        },
+    )
+    assert created.status_code == 201, created.text
+    body = created.json()
+    assert body["manifest"]["advisor_schema_version"] == (
+        "public-pareto-marginal-advice-v6.0.0"
+    )
+    observation = gateway.get(
+        "/v1/episodes/pareto-marginal-api/companies/company_A/observation",
+        headers={"X-Agent-Token": body["agent_tokens"]["company_A"]},
+    )
+    assert observation.status_code == 200, observation.text
+    payload = observation.json()
+    advice = PublicStrategicAdvice.model_validate(payload["game_theory_advice"])
+    assert advice.advisor_mode == "pareto_reliable_v6"
+    assert advice.investment_marginal_plan is not None
+    snapshot = ObservationSnapshot.from_observation(payload, "company_A")
+    event = SimpleNamespace(
+        communication_phase=None,
+        traces=[SimpleNamespace(information_snapshot=snapshot)],
+    )
+    replayed = verify_advisor_replay(
+        [event], SimpleNamespace(advisor_mode="pareto_reliable_v6")
     )
     assert replayed == (advice,)
 

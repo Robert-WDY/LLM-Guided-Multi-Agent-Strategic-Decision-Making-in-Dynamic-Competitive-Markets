@@ -51,6 +51,7 @@ class PublicStrategicAdvice(StrictModel):
         "public-strategic-advice-v3.0.0",
         "public-pareto-advice-v4.0.0",
         "public-pareto-reliable-advice-v5.0.0",
+        "public-pareto-marginal-advice-v6.0.0",
     ] = (
         "public-strategic-advice-v3.0.0"
     )
@@ -58,6 +59,7 @@ class PublicStrategicAdvice(StrictModel):
         "public_rollout_v3",
         "pareto_rollout_v4",
         "pareto_reliable_v5",
+        "pareto_reliable_v6",
     ] = (
         "public_rollout_v3"
     )
@@ -65,6 +67,7 @@ class PublicStrategicAdvice(StrictModel):
         "public-observation-market-rollout-v1.0.0",
         "public-pareto-market-rollout-v1.0.0",
         "public-pareto-reliable-market-rollout-v1.0.0",
+        "public-pareto-marginal-market-rollout-v2.0.0",
     ] = "public-observation-market-rollout-v1.0.0"
     episode_id: str
     round: int = Field(ge=1)
@@ -98,6 +101,7 @@ class PublicStrategicAdvice(StrictModel):
     safe_candidate_ids: list[str] | None = None
     excluded_candidates: list[dict[str, Any]] | None = None
     reliability_gate: dict[str, Any] | None = None
+    investment_marginal_plan: dict[str, Any] | None = None
     limitations: list[str] = Field(min_length=1)
     advice_hash: str
 
@@ -123,6 +127,7 @@ class PublicStrategicAdvice(StrictModel):
                 or self.safe_candidate_ids is not None
                 or self.excluded_candidates is not None
                 or self.reliability_gate is not None
+                or self.investment_marginal_plan is not None
             ):
                 raise ValueError("public_rollout_v3 contract fields are inconsistent")
             selected = max(
@@ -140,14 +145,22 @@ class PublicStrategicAdvice(StrictModel):
                 ParetoPlannerDecision,
             )
             from .reliable_planner import ParetoReliabilityGate
+            from .marginal_investment import MarginalInvestmentPlan
 
             is_v5 = self.advisor_mode == "pareto_reliable_v5"
+            is_v6 = self.advisor_mode == "pareto_reliable_v6"
             expected_schema = (
+                "public-pareto-marginal-advice-v6.0.0"
+                if is_v6
+                else
                 "public-pareto-reliable-advice-v5.0.0"
                 if is_v5
                 else "public-pareto-advice-v4.0.0"
             )
             expected_model = (
+                "public-pareto-marginal-market-rollout-v2.0.0"
+                if is_v6
+                else
                 "public-pareto-reliable-market-rollout-v1.0.0"
                 if is_v5
                 else "public-pareto-market-rollout-v1.0.0"
@@ -162,7 +175,7 @@ class PublicStrategicAdvice(StrictModel):
             decision = ParetoPlannerDecision.model_validate(self.pareto_decision)
             if self.selection_situation != decision.situation.situation:
                 raise ValueError("Pareto selection situation mismatch")
-            if is_v5:
+            if is_v5 or is_v6:
                 if (
                     self.reliability_gate is None
                     or self.safe_candidate_ids is None
@@ -188,6 +201,25 @@ class PublicStrategicAdvice(StrictModel):
                     != self.excluded_candidates
                 ):
                     raise ValueError("reliable Pareto gate binding mismatch")
+                if is_v6:
+                    if self.investment_marginal_plan is None:
+                        raise ValueError("v6 marginal investment plan is missing")
+                    marginal = MarginalInvestmentPlan.model_validate(
+                        self.investment_marginal_plan
+                    )
+                    status_quo = by_id.get("status_quo")
+                    if (
+                        gate.gate_schema_version
+                        != "pareto-reliability-gate-v2.0.0"
+                        or gate.marginal_investment_plan_hash != marginal.plan_hash
+                        or marginal.public_decision_input_hash
+                        != self.public_decision_input_hash
+                        or status_quo is None
+                        or status_quo.candidate.action != marginal.selected_action
+                    ):
+                        raise ValueError("v6 marginal plan binding mismatch")
+                elif self.investment_marginal_plan is not None:
+                    raise ValueError("v5 cannot carry a marginal investment plan")
             else:
                 if (
                     self.recommended_candidate_id
@@ -196,6 +228,7 @@ class PublicStrategicAdvice(StrictModel):
                     or self.safe_candidate_ids is not None
                     or self.excluded_candidates is not None
                     or self.reliability_gate is not None
+                    or self.investment_marginal_plan is not None
                 ):
                     raise ValueError("Pareto v4 recommendation mismatch")
             selected = by_id[self.recommended_candidate_id]
@@ -240,9 +273,13 @@ def compute_public_advice_hash(
             "safe_candidate_ids",
             "excluded_candidates",
             "reliability_gate",
+            "investment_marginal_plan",
         ):
             if payload.get(field) is None:
                 payload.pop(field, None)
+    if payload.get("advisor_mode") == "pareto_reliable_v5":
+        if payload.get("investment_marginal_plan") is None:
+            payload.pop("investment_marginal_plan", None)
     return sha256_hash(
         {
             "hash_protocol_version": "public-strategic-advice-hash-v1.0.0",

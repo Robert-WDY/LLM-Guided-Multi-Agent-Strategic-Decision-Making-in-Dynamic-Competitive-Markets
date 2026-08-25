@@ -604,6 +604,9 @@ def verify_interaction_replay(
                     "agent-round-event-v1.7.0",
                     "agent-round-event-v1.8.0",
                     "agent-round-event-v1.9.0",
+                    "agent-round-event-v1.10.0",
+                    "agent-round-event-v1.11.0",
+                    "agent-round-event-v1.12.0",
                 }
             ):
                 episode_history = history_by_episode[episode_id]

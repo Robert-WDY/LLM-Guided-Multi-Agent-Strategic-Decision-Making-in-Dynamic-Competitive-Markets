@@ -26,7 +26,10 @@ class ExcludedCandidate(StrictModel):
 
 
 class ParetoReliabilityGate(StrictModel):
-    gate_schema_version: Literal["pareto-reliability-gate-v1.0.0"] = (
+    gate_schema_version: Literal[
+        "pareto-reliability-gate-v1.0.0",
+        "pareto-reliability-gate-v2.0.0",
+    ] = (
         "pareto-reliability-gate-v1.0.0"
     )
     planner_decision_hash: str
@@ -48,6 +51,7 @@ class ParetoReliabilityGate(StrictModel):
     uses_only_public_and_own_private_inputs: Literal[True] = True
     uses_authoritative_hidden_market_state: Literal[False] = False
     allowed_in_agent_context: Literal[True] = True
+    marginal_investment_plan_hash: str | None = None
     gate_hash: str
 
     @model_validator(mode="after")
@@ -65,6 +69,10 @@ class ParetoReliabilityGate(StrictModel):
         excluded_ids = {item.candidate_id for item in self.excluded_candidates}
         if excluded_ids.intersection(self.safe_candidate_ids):
             raise ValueError("safe and excluded reliability candidates must be disjoint")
+        if (
+            self.gate_schema_version == "pareto-reliability-gate-v1.0.0"
+        ) != (self.marginal_investment_plan_hash is None):
+            raise ValueError("reliability gate marginal-plan binding mismatch")
         if self.gate_hash != compute_reliability_gate_hash(self):
             raise ValueError("reliability gate hash mismatch")
         return self
@@ -79,6 +87,12 @@ def compute_reliability_gate_hash(
         else dict(gate)
     )
     payload.pop("gate_hash", None)
+    if (
+        payload.get("gate_schema_version")
+        == "pareto-reliability-gate-v1.0.0"
+        and payload.get("marginal_investment_plan_hash") is None
+    ):
+        payload.pop("marginal_investment_plan_hash", None)
     return sha256_hash(
         {
             "hash_protocol_version": "pareto-reliability-gate-hash-v1.0.0",
@@ -95,6 +109,7 @@ def build_reliability_gate(
     public_decision_input_hash: str,
     observation: Mapping[str, Any],
     opponent_model: OpponentModelState,
+    marginal_investment_plan_hash: str | None = None,
 ) -> ParetoReliabilityGate:
     evaluations = {
         item.candidate.candidate_id: item for item in plan.evaluations
@@ -190,7 +205,11 @@ def build_reliability_gate(
     advisor_confidence = min(opponent_confidence, gap_confidence)
     reliability_input_hash = sha256_hash(
         {
-            "protocol": "pareto-reliability-public-input-v1.0.0",
+            "protocol": (
+                "pareto-reliability-public-input-v2.0.0"
+                if marginal_investment_plan_hash is not None
+                else "pareto-reliability-public-input-v1.0.0"
+            ),
             "public_decision_input_hash": public_decision_input_hash,
             "planner_decision_hash": decision.decision_hash,
             "fallback_candidate_id": fallback_candidate_id,
@@ -198,10 +217,19 @@ def build_reliability_gate(
             "active_market_events": observation.get("active_market_events", []),
             "risk_signals": observation.get("risk_signals", []),
             "opponent_model_hash": compute_opponent_model_hash(opponent_model),
+            **(
+                {"marginal_investment_plan_hash": marginal_investment_plan_hash}
+                if marginal_investment_plan_hash is not None
+                else {}
+            ),
         }
     )
     payload: dict[str, Any] = {
-        "gate_schema_version": "pareto-reliability-gate-v1.0.0",
+        "gate_schema_version": (
+            "pareto-reliability-gate-v2.0.0"
+            if marginal_investment_plan_hash is not None
+            else "pareto-reliability-gate-v1.0.0"
+        ),
         "planner_decision_hash": decision.decision_hash,
         "reliability_input_hash": reliability_input_hash,
         "planner_candidate_id": planner_id,
@@ -221,6 +249,11 @@ def build_reliability_gate(
         "uses_only_public_and_own_private_inputs": True,
         "uses_authoritative_hidden_market_state": False,
         "allowed_in_agent_context": True,
+        **(
+            {"marginal_investment_plan_hash": marginal_investment_plan_hash}
+            if marginal_investment_plan_hash is not None
+            else {}
+        ),
         "gate_hash": "pending",
     }
     payload["gate_hash"] = compute_reliability_gate_hash(payload)

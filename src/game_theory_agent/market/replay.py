@@ -10,6 +10,7 @@ from typing import Any, Iterable, Mapping, Sequence
 from game_theory_agent.market.environment import MarketEnv
 from game_theory_agent.market.exceptions import ReplayMismatchError
 from game_theory_agent.market.models import CompanyAction, MarketState, StepResult
+from game_theory_agent.market.protocols import sha256_hash
 
 
 @dataclass(frozen=True, slots=True)
@@ -61,6 +62,9 @@ class EpisodeManifest:
     code_commit: str = "unknown"
     agent_configs: tuple[tuple[str, Mapping[str, Any]], ...] = ()
     observer_information_modes: tuple[tuple[str, str], ...] = ()
+    agent_versioning_mode: str = "legacy"
+    agent_roster: tuple[tuple[str, Mapping[str, Any]], ...] = ()
+    agent_roster_hash: str = "none"
 
     @classmethod
     def create(
@@ -80,6 +84,8 @@ class EpisodeManifest:
         advisor_mode: str = "off",
         repeated_game_mode: str = "off",
         observer_information_modes: Mapping[str, str] | None = None,
+        agent_versioning_mode: str = "legacy",
+        agent_roster: Mapping[str, Mapping[str, Any]] | None = None,
     ) -> "EpisodeManifest":
         if information_mode not in {"perfect", "public"}:
             raise ValueError(f"unsupported information mode: {information_mode}")
@@ -116,6 +122,38 @@ class EpisodeManifest:
         if repeated_game_mode != "off" and cooperation_mode == "off":
             raise ValueError("repeated game strategy requires cooperation")
         observer_modes = dict(observer_information_modes or {})
+        if agent_versioning_mode not in {"legacy", "immutable_v1"}:
+            raise ValueError(
+                f"unsupported agent versioning mode: {agent_versioning_mode}"
+            )
+        normalized_roster = {
+            str(company_id): dict(binding)
+            for company_id, binding in (agent_roster or {}).items()
+        }
+        if agent_versioning_mode == "immutable_v1":
+            if set(normalized_roster) != set(initial_state.company_ids):
+                raise ValueError(
+                    "immutable agent roster must bind every episode company exactly once"
+                )
+            for company_id, binding in normalized_roster.items():
+                if binding.get("episode_id") != initial_state.episode_id:
+                    raise ValueError("agent binding episode_id mismatch")
+                if binding.get("company_id") != company_id:
+                    raise ValueError("agent binding company_id mismatch")
+                required = {
+                    "family_id",
+                    "agent_version_id",
+                    "agent_instance_id",
+                    "registry_manifest_hash",
+                    "behavior_spec_hash",
+                    "prompt_bundle_hash",
+                    "source_bundle_hash",
+                    "reproducibility_tier",
+                }
+                if not required.issubset(binding):
+                    raise ValueError("agent binding is missing immutable identity fields")
+        elif normalized_roster:
+            raise ValueError("agent roster requires immutable_v1 versioning mode")
         unknown_observers = set(observer_modes) - set(initial_state.company_ids)
         if unknown_observers:
             raise ValueError(
@@ -139,6 +177,7 @@ class EpisodeManifest:
             "public_rollout_v3",
             "pareto_rollout_v4",
             "pareto_reliable_v5",
+            "pareto_reliable_v6",
         }:
             raise ValueError(f"unsupported advisor mode: {advisor_mode}")
         if advisor_mode != "off" and belief_mode == "off":
@@ -147,6 +186,7 @@ class EpisodeManifest:
             "public_rollout_v3",
             "pareto_rollout_v4",
             "pareto_reliable_v5",
+            "pareto_reliable_v6",
         } and (
             information_mode != "public"
             or opponent_model_mode != "public_strategy_v1"
@@ -225,7 +265,9 @@ class EpisodeManifest:
                     if advisor_mode == "bayesian_strategy_v2"
                     else (
                         (
-                            "public-pareto-reliable-advice-v5.0.0"
+                            "public-pareto-marginal-advice-v6.0.0"
+                            if advisor_mode == "pareto_reliable_v6"
+                            else "public-pareto-reliable-advice-v5.0.0"
                             if advisor_mode == "pareto_reliable_v5"
                             else "public-pareto-advice-v4.0.0"
                             if advisor_mode == "pareto_rollout_v4"
@@ -236,6 +278,7 @@ class EpisodeManifest:
                             "public_rollout_v3",
                             "pareto_rollout_v4",
                             "pareto_reliable_v5",
+                            "pareto_reliable_v6",
                         }
                         else "none"
                     )
@@ -249,7 +292,9 @@ class EpisodeManifest:
                     if advisor_mode == "bayesian_strategy_v2"
                     else (
                         (
-                            "public-pareto-reliable-market-rollout-v1.0.0"
+                            "public-pareto-marginal-market-rollout-v2.0.0"
+                            if advisor_mode == "pareto_reliable_v6"
+                            else "public-pareto-reliable-market-rollout-v1.0.0"
                             if advisor_mode == "pareto_reliable_v5"
                             else "public-pareto-market-rollout-v1.0.0"
                             if advisor_mode == "pareto_rollout_v4"
@@ -260,6 +305,7 @@ class EpisodeManifest:
                             "public_rollout_v3",
                             "pareto_rollout_v4",
                             "pareto_reliable_v5",
+                            "pareto_reliable_v6",
                         }
                         else "none"
                     )
@@ -310,6 +356,13 @@ class EpisodeManifest:
             ),
             agent_configs=tuple(sorted((agent_configs or {}).items())),
             observer_information_modes=tuple(sorted(observer_modes.items())),
+            agent_versioning_mode=agent_versioning_mode,
+            agent_roster=tuple(sorted(normalized_roster.items())),
+            agent_roster_hash=(
+                sha256_hash(normalized_roster)
+                if agent_versioning_mode == "immutable_v1"
+                else "none"
+            ),
             initial_state=initial_state,
         )
 
@@ -320,9 +373,21 @@ class EpisodeManifest:
             company_id, self.information_mode
         )
 
+    def agent_binding_for(self, company_id: str) -> Mapping[str, Any] | None:
+        return dict(self.agent_roster).get(company_id)
+
+    def verify_agent_roster_hash(self) -> None:
+        if self.agent_versioning_mode == "legacy":
+            if self.agent_roster or self.agent_roster_hash != "none":
+                raise ValueError("legacy episode cannot contain an immutable roster")
+            return
+        actual = sha256_hash(dict(self.agent_roster))
+        if actual != self.agent_roster_hash:
+            raise ValueError("agent roster hash mismatch")
+
     def to_dict(self) -> dict[str, Any]:
         return {
-            "manifest_version": "episode-manifest-v1.7.0",
+            "manifest_version": "episode-manifest-v1.8.0",
             "experiment_id": self.experiment_id,
             "config_id": self.config_id,
             "config_version": self.config_version,
@@ -387,6 +452,9 @@ class EpisodeManifest:
             "cooperation_mode": self.cooperation_mode,
             "cooperation_protocol_version": self.cooperation_protocol_version,
             "agent_configs": dict(self.agent_configs),
+            "agent_versioning_mode": self.agent_versioning_mode,
+            "agent_roster": dict(self.agent_roster),
+            "agent_roster_hash": self.agent_roster_hash,
             "initial_state": self.initial_state.to_dict(),
             "initial_state_hash": self.initial_state.state_hash,
         }

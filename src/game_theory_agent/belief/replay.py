@@ -119,6 +119,9 @@ def verify_belief_replay(
         strict = event.event_schema_version in {
             "agent-round-event-v1.8.0",
             "agent-round-event-v1.9.0",
+            "agent-round-event-v1.10.0",
+            "agent-round-event-v1.11.0",
+            "agent-round-event-v1.12.0",
         }
         required_companies = {
             trace.company_id

@@ -17,6 +17,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 
+from game_theory_agent.agent_registry import (
+    AgentInstanceBinding,
+    AgentRegistry,
+    AgentRegistryError,
+)
 from game_theory_agent.agents.contracts import AgentRequestedAction
 from game_theory_agent.agents.personas import PersonaRegistry
 from game_theory_agent.agents.market_regime import MarketRegimeEvaluator
@@ -93,6 +98,9 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 CONFIG_PATH = Path(
     os.environ.get("MARKET_CONFIG_PATH", PROJECT_ROOT / "configs" / "market_v4.yaml")
 )
+AGENT_REGISTRY_PATH = Path(
+    os.environ.get("AGENT_REGISTRY_PATH", PROJECT_ROOT / ".agent-registry")
+)
 CONFIG = load_market_config(CONFIG_PATH)
 MARKET_REGIME_EVALUATOR = MarketRegimeEvaluator(CONFIG)
 PERSONA_REGISTRY = PersonaRegistry.from_market_config(CONFIG)
@@ -114,6 +122,8 @@ class CreateEpisodeRequest(BaseModel):
     )
     personas: dict[str, Persona] = Field(default_factory=dict)
     agent_configs: dict[str, dict[str, Any]] = Field(default_factory=dict)
+    agent_versioning_mode: Literal["legacy", "immutable_v1"] = "legacy"
+    agent_version_ids: dict[str, str] = Field(default_factory=dict)
     game_mode: Literal["market", "single_company"] = "market"
     player_company_id: str | None = None
     market_model: Literal[
@@ -963,7 +973,12 @@ def _agent_observation(session: EpisodeSession, company_id: str) -> dict[str, An
         ).model_dump(mode="json")
     elif (
         session.advisor_mode
-        in {"public_rollout_v3", "pareto_rollout_v4", "pareto_reliable_v5"}
+        in {
+            "public_rollout_v3",
+            "pareto_rollout_v4",
+            "pareto_reliable_v5",
+            "pareto_reliable_v6",
+        }
         and belief_state is not None
         and opponent_model_state is not None
         and observer_information_mode == "public"
@@ -1194,6 +1209,7 @@ def agent_capabilities() -> dict[str, Any]:
             "public_rollout_v3",
             "pareto_rollout_v4",
             "pareto_reliable_v5",
+            "pareto_reliable_v6",
         ],
         "repeated_game_modes": ["off", "reciprocity_v1"],
     }
@@ -1666,6 +1682,7 @@ def create_episode(
         "public_rollout_v3",
         "pareto_rollout_v4",
         "pareto_reliable_v5",
+        "pareto_reliable_v6",
     } and (
         request.information_mode != "public"
         or request.opponent_model_mode != "public_strategy_v1"
@@ -1693,6 +1710,26 @@ def create_episode(
                 "agent_configs contains unknown companies: "
                 f"{sorted(unknown_agent_configs)}"
             ),
+        )
+    unknown_version_ids = set(request.agent_version_ids) - set(request.company_ids)
+    if unknown_version_ids:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                "agent_version_ids contains unknown companies: "
+                f"{sorted(unknown_version_ids)}"
+            ),
+        )
+    if request.agent_versioning_mode == "immutable_v1":
+        if set(request.agent_version_ids) != set(request.company_ids):
+            raise HTTPException(
+                status_code=422,
+                detail="immutable_v1 requires one registered version for every company",
+            )
+    elif request.agent_version_ids:
+        raise HTTPException(
+            status_code=422,
+            detail="agent_version_ids requires immutable_v1 versioning mode",
         )
     unknown_observer_modes = set(request.observer_information_modes) - set(
         request.company_ids
@@ -1729,6 +1766,27 @@ def create_episode(
         max_rounds=request.max_rounds,
         cooperation_mode=request.cooperation_mode,
     )
+    agent_roster: dict[str, dict[str, Any]] = {}
+    if request.agent_versioning_mode == "immutable_v1":
+        try:
+            registry = AgentRegistry(AGENT_REGISTRY_PATH)
+            for company_id in state.company_ids:
+                resolved = registry.resolve(request.agent_version_ids[company_id])
+                configured = request.agent_configs.get(company_id, {})
+                binding = AgentInstanceBinding.create(
+                    episode_id=state.episode_id,
+                    company_id=company_id,
+                    agent_id=str(
+                        configured.get("agent_id", f"agent-{company_id}")
+                    ),
+                    manifest=resolved.manifest,
+                )
+                agent_roster[company_id] = binding.model_dump(mode="json")
+        except (AgentRegistryError, ValueError) as exc:
+            raise HTTPException(
+                status_code=422,
+                detail=f"cannot resolve immutable agent roster: {exc}",
+            ) from exc
     manifest = EpisodeManifest.create(
         env,
         state,
@@ -1743,6 +1801,8 @@ def create_episode(
         repeated_game_mode=request.repeated_game_mode,
         observer_information_modes=request.observer_information_modes,
         agent_configs=request.agent_configs,
+        agent_versioning_mode=request.agent_versioning_mode,
+        agent_roster=agent_roster,
     )
     raw_agent_tokens, agent_token_hashes = _new_agent_credentials(
         tuple(state.company_ids)

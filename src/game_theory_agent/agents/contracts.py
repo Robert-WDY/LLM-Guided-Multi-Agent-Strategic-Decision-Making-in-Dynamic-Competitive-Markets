@@ -283,6 +283,20 @@ class DecisionContext(BaseModel):
         return self.own_company
 
 
+class ProviderAuditMetadata(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True, protected_namespaces=())
+
+    audit_schema_version: Literal["provider-audit-v1.0.0"] = (
+        "provider-audit-v1.0.0"
+    )
+    request_started_at: str
+    response_received_at: str
+    request_id: str | None = None
+    response_model: str | None = None
+    system_fingerprint: str | None = None
+    provider_created_at: int | str | None = None
+
+
 class ModelGeneration(BaseModel):
     model_config = ConfigDict(extra="forbid", protected_namespaces=())
 
@@ -294,6 +308,7 @@ class ModelGeneration(BaseModel):
     input_tokens: int | None = Field(default=None, ge=0)
     output_tokens: int | None = Field(default=None, ge=0)
     retry_count: int = Field(default=0, ge=0)
+    provider_audit: ProviderAuditMetadata | None = None
 
 
 CommunicationSilenceReason = Literal[
@@ -328,6 +343,7 @@ class AgentCommunicationResult(BaseModel):
     input_tokens: int | None = Field(default=None, ge=0)
     output_tokens: int | None = Field(default=None, ge=0)
     retry_count: int = Field(default=0, ge=0)
+    provider_audit: ProviderAuditMetadata | None = None
     error_code: str | None = None
     error_message: str | None = None
     fallback_to_silence: bool = False
@@ -385,6 +401,7 @@ class AgentDecisionResult(BaseModel):
     input_tokens: int | None = Field(default=None, ge=0)
     output_tokens: int | None = Field(default=None, ge=0)
     retry_count: int = Field(default=0, ge=0)
+    provider_audit: ProviderAuditMetadata | None = None
     error_code: str | None = None
     error_message: str | None = None
     fallback_required: bool = False

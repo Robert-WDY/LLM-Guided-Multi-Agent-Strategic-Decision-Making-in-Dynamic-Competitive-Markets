@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import time
+from datetime import UTC, datetime
 from typing import Any
 
 from pydantic import ValidationError
@@ -14,6 +15,7 @@ from game_theory_agent.agents.contracts import (
     CommunicationContext,
     DecisionContext,
     ModelGeneration,
+    ProviderAuditMetadata,
 )
 from game_theory_agent.agents.prompt_builder import (
     AgentPromptBuilder,
@@ -25,6 +27,20 @@ from game_theory_agent.model_clients.json_output import extract_json_object
 
 DEFAULT_ARK_BASE_URL = "https://ark.cn-beijing.volces.com/api/v3"
 DEFAULT_ARK_MODEL = "doubao-seed-2-0-lite-260215"
+
+
+def _provider_audit(response: Any, request_started_at: str) -> ProviderAuditMetadata:
+    return ProviderAuditMetadata(
+        request_started_at=request_started_at,
+        response_received_at=datetime.now(UTC).isoformat(),
+        request_id=getattr(response, "id", None),
+        response_model=getattr(response, "model", None),
+        system_fingerprint=getattr(response, "system_fingerprint", None),
+        provider_created_at=(
+            getattr(response, "created_at", None)
+            or getattr(response, "created", None)
+        ),
+    )
 
 
 def _response_text(response: Any) -> str:
@@ -88,6 +104,7 @@ class DoubaoModelClient:
         self, context: CommunicationContext
     ) -> ModelGeneration:
         started = time.perf_counter()
+        request_started_at = datetime.now(UTC).isoformat()
         prompt = self.communication_prompt_builder.build(context)
         total_input_tokens = 0
         total_output_tokens = 0
@@ -123,6 +140,7 @@ class DoubaoModelClient:
                     input_tokens=total_input_tokens or None,
                     output_tokens=total_output_tokens or None,
                     retry_count=attempt,
+                    provider_audit=_provider_audit(response, request_started_at),
                 )
             except (json.JSONDecodeError, ValidationError, ValueError) as exc:
                 last_error = str(exc)
@@ -138,6 +156,7 @@ class DoubaoModelClient:
 
     async def generate_decision(self, context: DecisionContext) -> ModelGeneration:
         started = time.perf_counter()
+        request_started_at = datetime.now(UTC).isoformat()
         prompt = self.prompt_builder.build(context)
         total_input_tokens = 0
         total_output_tokens = 0
@@ -173,6 +192,7 @@ class DoubaoModelClient:
                     input_tokens=total_input_tokens or None,
                     output_tokens=total_output_tokens or None,
                     retry_count=attempt,
+                    provider_audit=_provider_audit(response, request_started_at),
                 )
             except (json.JSONDecodeError, ValidationError, ValueError) as exc:
                 last_error = str(exc)
