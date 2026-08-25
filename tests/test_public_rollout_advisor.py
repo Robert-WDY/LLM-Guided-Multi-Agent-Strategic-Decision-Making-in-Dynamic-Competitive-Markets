@@ -144,7 +144,10 @@ def test_public_candidates_preserve_operating_baseline(config):
     assert price_up.action.service_budget_cents == baseline.service_budget_cents
 
 
-@pytest.mark.parametrize("advisor_mode", ["public_rollout_v3", "pareto_reliable_v6"])
+@pytest.mark.parametrize(
+    "advisor_mode",
+    ["public_rollout_v3", "pareto_reliable_v6", "pareto_reliable_v7"],
+)
 def test_hidden_opponent_mutation_cannot_change_public_advice(config, advisor_mode):
     state, observation, belief, opponent = _inputs(config)
     company_b = state.company("company_B")
@@ -382,6 +385,46 @@ def test_v6_status_quo_is_marginally_screened_and_tamper_evident(config):
     forged["investment_marginal_plan"]["selected_action"][
         "service_budget_cents"
     ] += 1
+    with pytest.raises(ValidationError):
+        PublicStrategicAdvice.model_validate(forged)
+
+
+def test_v7_abstention_emits_no_fallback_action_and_is_tamper_evident(config):
+    _state, observation, belief, opponent = _inputs(config, seed=42)
+    profile = PersonaRegistry.from_market_config(config).get("risk_guarded_v1")
+    advice = PublicMarketRolloutAdvisor(config).advise(
+        observation=observation,
+        company_id="company_A",
+        persona_profile=profile,
+        belief_state=belief,
+        opponent_model=opponent,
+        horizon_rounds=2,
+        scenario_count=2,
+        advisor_mode="pareto_reliable_v7",
+    )
+
+    gate = advice.reliability_gate
+    assert gate is not None
+    assert gate["gate_schema_version"] == "pareto-reliability-gate-v3.0.0"
+    assert gate["should_abstain"]
+    assert gate["execution_disposition"] == "defer_to_agent"
+    assert not gate["fallback_is_proven_safe"]
+    assert gate["effective_candidate_id"] is None
+    assert gate["withheld_candidate_id"] == gate["planner_candidate_id"]
+    assert advice.execution_disposition == "defer_to_agent"
+    assert advice.recommended_candidate_id is None
+    assert advice.recommended_action is None
+    eligible_ids = sorted(
+        item["candidate_id"]
+        for item in advice.pareto_decision["candidate_assessments"]
+        if item["eligible"]
+    )
+    assert gate["safe_candidate_ids"] == eligible_ids
+
+    forged = deepcopy(advice.model_dump(mode="json"))
+    forged["reliability_gate"]["effective_candidate_id"] = (
+        forged["reliability_gate"]["diagnostic_fallback_candidate_id"]
+    )
     with pytest.raises(ValidationError):
         PublicStrategicAdvice.model_validate(forged)
 
@@ -625,6 +668,67 @@ def test_pareto_reliable_v6_api_and_replay(monkeypatch):
     )
     replayed = verify_advisor_replay(
         [event], SimpleNamespace(advisor_mode="pareto_reliable_v6")
+    )
+    assert replayed == (advice,)
+
+
+def test_pareto_reliable_v7_api_abstains_and_replays(monkeypatch):
+    controller_token = "pareto-abstention-controller"
+    monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", controller_token)
+    SESSIONS.clear()
+    controller = TestClient(app)
+    gateway = TestClient(agent_app)
+    created = controller.post(
+        "/api/episodes",
+        headers={"X-Controller-Token": controller_token},
+        json={
+            "episode_id": "pareto-abstention-api",
+            "episode_seed": 95,
+            "max_rounds": 5,
+            "information_mode": "public",
+            "belief_mode": "public_action_v1",
+            "opponent_model_mode": "public_strategy_v1",
+            "advisor_mode": "pareto_reliable_v7",
+            "agent_configs": {
+                "company_A": {"persona": {"persona_id": "risk_guarded_v1"}}
+            },
+        },
+    )
+    assert created.status_code == 201, created.text
+    body = created.json()
+    assert body["manifest"]["advisor_schema_version"] == (
+        "public-pareto-abstention-advice-v7.0.0"
+    )
+    observation = gateway.get(
+        "/v1/episodes/pareto-abstention-api/companies/company_A/observation",
+        headers={"X-Agent-Token": body["agent_tokens"]["company_A"]},
+    )
+    assert observation.status_code == 200, observation.text
+    payload = observation.json()
+    advice = PublicStrategicAdvice.model_validate(payload["game_theory_advice"])
+    assert advice.advisor_mode == "pareto_reliable_v7"
+    assert advice.execution_disposition == "defer_to_agent"
+    assert advice.recommended_action is None
+    context = DecisionContextBuilder().build(
+        payload, "company_A", EpisodeMemory()
+    )
+    honoring = asyncio.run(
+        MockModelClient(honor_game_theory_advice=True).generate_decision(context)
+    )
+    independent = asyncio.run(
+        MockModelClient(honor_game_theory_advice=False).generate_decision(context)
+    )
+    assert (
+        honoring.parsed_output["requested_action"]
+        == independent.parsed_output["requested_action"]
+    )
+    snapshot = ObservationSnapshot.from_observation(payload, "company_A")
+    event = SimpleNamespace(
+        communication_phase=None,
+        traces=[SimpleNamespace(information_snapshot=snapshot)],
+    )
+    replayed = verify_advisor_replay(
+        [event], SimpleNamespace(advisor_mode="pareto_reliable_v7")
     )
     assert replayed == (advice,)
 

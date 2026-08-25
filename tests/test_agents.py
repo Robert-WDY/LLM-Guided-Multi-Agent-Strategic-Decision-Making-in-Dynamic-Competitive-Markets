@@ -211,7 +211,7 @@ def test_doubao_client_repairs_json_and_returns_valid_decision():
 
     assert result.success
     assert result.model_name == "doubao-test"
-    assert result.prompt_version == "market-planner-prompt-v1.15.0"
+    assert result.prompt_version == "market-planner-prompt-v1.16.0"
     assert result.input_tokens == 200
     assert result.output_tokens == 100
     assert result.retry_count == 1

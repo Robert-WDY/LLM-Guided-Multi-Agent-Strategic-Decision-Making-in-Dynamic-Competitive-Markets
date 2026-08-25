@@ -178,6 +178,7 @@ class EpisodeManifest:
             "pareto_rollout_v4",
             "pareto_reliable_v5",
             "pareto_reliable_v6",
+            "pareto_reliable_v7",
         }:
             raise ValueError(f"unsupported advisor mode: {advisor_mode}")
         if advisor_mode != "off" and belief_mode == "off":
@@ -187,6 +188,7 @@ class EpisodeManifest:
             "pareto_rollout_v4",
             "pareto_reliable_v5",
             "pareto_reliable_v6",
+            "pareto_reliable_v7",
         } and (
             information_mode != "public"
             or opponent_model_mode != "public_strategy_v1"
@@ -265,7 +267,9 @@ class EpisodeManifest:
                     if advisor_mode == "bayesian_strategy_v2"
                     else (
                         (
-                            "public-pareto-marginal-advice-v6.0.0"
+                            "public-pareto-abstention-advice-v7.0.0"
+                            if advisor_mode == "pareto_reliable_v7"
+                            else "public-pareto-marginal-advice-v6.0.0"
                             if advisor_mode == "pareto_reliable_v6"
                             else "public-pareto-reliable-advice-v5.0.0"
                             if advisor_mode == "pareto_reliable_v5"
@@ -279,6 +283,7 @@ class EpisodeManifest:
                             "pareto_rollout_v4",
                             "pareto_reliable_v5",
                             "pareto_reliable_v6",
+                            "pareto_reliable_v7",
                         }
                         else "none"
                     )
@@ -292,7 +297,9 @@ class EpisodeManifest:
                     if advisor_mode == "bayesian_strategy_v2"
                     else (
                         (
-                            "public-pareto-marginal-market-rollout-v2.0.0"
+                            "public-pareto-abstention-market-rollout-v3.0.0"
+                            if advisor_mode == "pareto_reliable_v7"
+                            else "public-pareto-marginal-market-rollout-v2.0.0"
                             if advisor_mode == "pareto_reliable_v6"
                             else "public-pareto-reliable-market-rollout-v1.0.0"
                             if advisor_mode == "pareto_reliable_v5"
@@ -306,6 +313,7 @@ class EpisodeManifest:
                             "pareto_rollout_v4",
                             "pareto_reliable_v5",
                             "pareto_reliable_v6",
+                            "pareto_reliable_v7",
                         }
                         else "none"
                     )

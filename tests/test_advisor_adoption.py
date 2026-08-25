@@ -120,3 +120,43 @@ def test_bayesian_price_adoption_records_candidate_rank():
     assert trace.advisor_rank == 1
     assert trace.chosen_candidate_id == "price_cut"
     assert trace.chosen_rank == 1
+
+
+def test_v7_abstention_records_unavailable_and_keeps_agent_action():
+    requested = {
+        "price_cents": 10_600,
+        "advertising_budget_cents": 500_000,
+        "service_budget_cents": 500_000,
+        "resilience_budget_cents": 500_000,
+    }
+    trace = build_advisor_adoption_trace(
+        advice={
+            "advisor_mode": "pareto_reliable_v7",
+            "execution_disposition": "defer_to_agent",
+            "recommended_candidate_id": None,
+            "recommended_action": None,
+            "candidate_actions": [
+                _public_candidate("maintain", 0, []),
+                _public_candidate("risk_buffer", 1_000_000, ["resilience"]),
+            ],
+            "pareto_decision": {"candidate_assessments": []},
+        },
+        llm_requested_action=requested,
+        final_action=requested,
+        planner_output={"strategy_summary": "保留自主经营计划"},
+    )
+
+    assert trace is not None
+    assert trace.trace_schema_version == "advisor-adoption-trace-v2.0.0"
+    assert trace.execution_disposition == "defer_to_agent"
+    assert trace.adoption_status == "unavailable"
+    assert not trace.accepted
+    assert trace.advisor_candidate_id is None
+    assert trace.advisor_action == {}
+    assert trace.llm_requested_action["price_cents"] == 10_600
+    assert trace.final_action["price_cents"] == 10_600
+
+    forged = deepcopy(trace.model_dump(mode="json"))
+    forged["advisor_action"] = {"price_cents": 9_800}
+    with pytest.raises(ValidationError):
+        AdvisorAdoptionTrace.model_validate(forged)

@@ -44,7 +44,7 @@ from .pareto_planner import (
     PROMOTION_EVIDENCE_SHA256,
     select_pareto_decision,
 )
-from .reliable_planner import build_reliability_gate
+from .reliable_planner import build_abstention_gate, build_reliability_gate
 from .marginal_investment import (
     MarginalInvestmentPlan,
     build_marginal_investment_plan,
@@ -775,6 +775,7 @@ class PublicMarketRolloutAdvisor:
             "pareto_rollout_v4",
             "pareto_reliable_v5",
             "pareto_reliable_v6",
+            "pareto_reliable_v7",
         ] = "public_rollout_v3",
     ) -> PublicStrategicAdvice:
         parsed_belief = (
@@ -822,7 +823,7 @@ class PublicMarketRolloutAdvisor:
                 horizon_rounds=horizon_rounds,
                 scenario_count=scenario_count,
             )
-            if advisor_mode == "pareto_reliable_v6"
+            if advisor_mode in {"pareto_reliable_v6", "pareto_reliable_v7"}
             else None
         )
         candidates = (
@@ -882,6 +883,7 @@ class PublicMarketRolloutAdvisor:
             "pareto_rollout_v4",
             "pareto_reliable_v5",
             "pareto_reliable_v6",
+            "pareto_reliable_v7",
         }:
             values = {
                 str(item["company_id"]): int(item["value_cents"])
@@ -906,7 +908,11 @@ class PublicMarketRolloutAdvisor:
                 rounds_remaining=forecast.rounds_remaining,
             )
             selected_id = pareto_decision.recommended_candidate_id
-            if advisor_mode in {"pareto_reliable_v5", "pareto_reliable_v6"}:
+            if advisor_mode in {
+                "pareto_reliable_v5",
+                "pareto_reliable_v6",
+                "pareto_reliable_v7",
+            }:
                 if parsed_model is None:
                     raise ValueError("reliable Pareto advice requires opponent model")
                 fallback_id = _reliability_fallback_candidate_id(
@@ -914,44 +920,77 @@ class PublicMarketRolloutAdvisor:
                     observation=observation,
                     persona_profile=persona_profile,
                 )
-                reliability_gate = build_reliability_gate(
-                    plan=oracle,
-                    decision=pareto_decision,
-                    fallback_candidate_id=fallback_id,
-                    public_decision_input_hash=record.public_decision_input_hash,
-                    observation=observation,
-                    opponent_model=parsed_model,
-                    marginal_investment_plan_hash=(
-                        marginal_plan.plan_hash
-                        if marginal_plan is not None
-                        else None
-                    ),
+                reliability_gate = (
+                    build_abstention_gate(
+                        plan=oracle,
+                        decision=pareto_decision,
+                        diagnostic_fallback_candidate_id=fallback_id,
+                        public_decision_input_hash=(
+                            record.public_decision_input_hash
+                        ),
+                        observation=observation,
+                        opponent_model=parsed_model,
+                        marginal_investment_plan_hash=marginal_plan.plan_hash,
+                    )
+                    if advisor_mode == "pareto_reliable_v7"
+                    else build_reliability_gate(
+                        plan=oracle,
+                        decision=pareto_decision,
+                        fallback_candidate_id=fallback_id,
+                        public_decision_input_hash=(
+                            record.public_decision_input_hash
+                        ),
+                        observation=observation,
+                        opponent_model=parsed_model,
+                        marginal_investment_plan_hash=(
+                            marginal_plan.plan_hash
+                            if marginal_plan is not None
+                            else None
+                        ),
+                    )
                 )
                 selected_id = reliability_gate.effective_candidate_id
         else:
             selected_id = oracle.recommended_candidate_id
-        selected = next(
-            item
-            for item in summaries
-            if item.candidate.candidate_id == selected_id
+        selected = (
+            next(
+                item
+                for item in summaries
+                if item.candidate.candidate_id == selected_id
+            )
+            if selected_id is not None
+            else None
         )
         baseline = next(
             item for item in summaries if item.candidate.candidate_id == "maintain"
         )
         expected_gain = (
-            selected.certainty_equivalent_value_cents
+            0
+            if selected is None
+            else selected.certainty_equivalent_value_cents
             - baseline.certainty_equivalent_value_cents
         )
         is_pareto = advisor_mode in {
             "pareto_rollout_v4",
             "pareto_reliable_v5",
             "pareto_reliable_v6",
+            "pareto_reliable_v7",
         }
-        is_reliable = advisor_mode in {"pareto_reliable_v5", "pareto_reliable_v6"}
-        is_marginal = advisor_mode == "pareto_reliable_v6"
+        is_reliable = advisor_mode in {
+            "pareto_reliable_v5",
+            "pareto_reliable_v6",
+            "pareto_reliable_v7",
+        }
+        is_marginal = advisor_mode in {
+            "pareto_reliable_v6",
+            "pareto_reliable_v7",
+        }
+        is_abstention = advisor_mode == "pareto_reliable_v7"
         payload: dict[str, Any] = {
             "advice_schema_version": (
-                "public-pareto-marginal-advice-v6.0.0"
+                "public-pareto-abstention-advice-v7.0.0"
+                if is_abstention
+                else "public-pareto-marginal-advice-v6.0.0"
                 if is_marginal
                 else "public-pareto-reliable-advice-v5.0.0"
                 if is_reliable
@@ -961,7 +1000,9 @@ class PublicMarketRolloutAdvisor:
             ),
             "advisor_mode": advisor_mode,
             "advisor_model_version": (
-                "public-pareto-marginal-market-rollout-v2.0.0"
+                "public-pareto-abstention-market-rollout-v3.0.0"
+                if is_abstention
+                else "public-pareto-marginal-market-rollout-v2.0.0"
                 if is_marginal
                 else "public-pareto-reliable-market-rollout-v1.0.0"
                 if is_reliable
@@ -990,12 +1031,22 @@ class PublicMarketRolloutAdvisor:
             "horizon_rounds": oracle.horizon_rounds,
             "scenario_count": oracle.scenario_count,
             "candidate_actions": [item.model_dump(mode="json") for item in summaries],
-            "recommended_candidate_id": selected.candidate.candidate_id,
-            "recommended_action": selected.candidate.action.model_dump(mode="json"),
+            "recommended_candidate_id": (
+                selected.candidate.candidate_id if selected is not None else None
+            ),
+            "recommended_action": (
+                selected.candidate.action.model_dump(mode="json")
+                if selected is not None
+                else None
+            ),
             "expected_gain_over_baseline_cents": expected_gain,
             "baseline_regret_cents": max(0, expected_gain),
             "recommendation_reason": (
-                "公开预测证据不足，可靠性门禁已放弃强建议并回退到可审计的安全经营候选。"
+                "公开预测证据不足，可靠性门禁已弃权；系统没有生成替代动作，Agent 应保留自己的合法经营判断。"
+                if is_abstention
+                and reliability_gate is not None
+                and reliability_gate.should_abstain
+                else "公开预测证据不足，可靠性门禁已放弃强建议并回退到可审计的安全经营候选。"
                 if reliability_gate is not None and reliability_gate.should_abstain
                 else "在合法公开信息重建的预测市场中，该候选通过了价值、竞争、最坏情景与人格效用约束，并位于安全 Pareto 前沿。"
                 if is_pareto
@@ -1049,6 +1100,16 @@ class PublicMarketRolloutAdvisor:
                 if marginal_plan is not None
                 else None
             ),
+            "execution_disposition": (
+                reliability_gate.execution_disposition
+                if is_abstention and reliability_gate is not None
+                else None
+            ),
+            "withheld_candidate_id": (
+                reliability_gate.withheld_candidate_id
+                if is_abstention and reliability_gate is not None
+                else None
+            ),
             "limitations": [
                 *record.assumptions,
                 "finite candidate set and bounded horizon do not establish equilibrium",
@@ -1072,6 +1133,13 @@ class PublicMarketRolloutAdvisor:
                         "Stage 6.7 status_quo retains only investments that pass standalone and portfolio marginal-return floors"
                     ]
                     if is_marginal
+                    else []
+                ),
+                *(
+                    [
+                        "Stage 6.9 fail-closed abstention emits no executable fallback; the Agent retains its independently generated legal action"
+                    ]
+                    if is_abstention
                     else []
                 ),
             ],

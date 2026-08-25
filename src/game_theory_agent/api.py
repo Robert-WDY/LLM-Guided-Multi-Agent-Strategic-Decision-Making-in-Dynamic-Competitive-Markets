@@ -994,6 +994,7 @@ def _agent_observation(session: EpisodeSession, company_id: str) -> dict[str, An
             "pareto_rollout_v4",
             "pareto_reliable_v5",
             "pareto_reliable_v6",
+            "pareto_reliable_v7",
         }
         and belief_state is not None
         and opponent_model_state is not None
@@ -1320,6 +1321,7 @@ def agent_capabilities() -> dict[str, Any]:
             "pareto_rollout_v4",
             "pareto_reliable_v5",
             "pareto_reliable_v6",
+            "pareto_reliable_v7",
         ],
         "repeated_game_modes": ["off", "reciprocity_v1"],
     }
@@ -2075,6 +2077,7 @@ def create_episode(
         "pareto_rollout_v4",
         "pareto_reliable_v5",
         "pareto_reliable_v6",
+        "pareto_reliable_v7",
     } and (
         request.information_mode != "public"
         or request.opponent_model_mode != "public_strategy_v1"

@@ -29,7 +29,7 @@ def _escape_reserved_untrusted_markers(value: str) -> str:
 
 
 class AgentPromptBuilder:
-    prompt_version = "market-planner-prompt-v1.15.0"
+    prompt_version = "market-planner-prompt-v1.16.0"
 
     def build(self, context: DecisionContext) -> str:
         schema = AgentDecision.model_json_schema()
@@ -107,6 +107,7 @@ class AgentPromptBuilder:
                 "pareto_rollout_v4",
                 "pareto_reliable_v5",
                 "pareto_reliable_v6",
+                "pareto_reliable_v7",
             }
         ):
             advisor_semantics = (
@@ -116,6 +117,7 @@ class AgentPromptBuilder:
                 "pareto_rollout_v4 还会先过滤破坏价值、竞争位置、最坏情景或人格效用底线的候选，再从安全 Pareto 前沿选择；selection_situation 说明当前是保护领先还是终局追赶。",
                 "pareto_reliable_v5 会额外给出安全候选、排除理由和可靠性门禁；should_abstain=true 表示证据不足，recommended_action 已回退为安全经营候选，不应再执行 planner_recommended_candidate_id。",
                 "pareto_reliable_v6 会把 status_quo 定义为逐项和组合边际收益筛选后的经营基线；investment_marginal_plan 可解释每项投入为何保留或剔除。",
+                "pareto_reliable_v7 中 execution_disposition=defer_to_agent 表示 Advisor 真正弃权：recommended_action 为空，不得把 withheld_candidate_id 或任何 fallback 当成动作；请依据观察、人格和信念独立生成合法决策。",
             )
         elif context.game_theory_advice is not None:
             advisor_semantics = (

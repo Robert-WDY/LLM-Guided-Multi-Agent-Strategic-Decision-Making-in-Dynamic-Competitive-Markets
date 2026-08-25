@@ -21,10 +21,14 @@ AdoptionStatus = Literal[
 class AdvisorAdoptionTrace(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    trace_schema_version: Literal["advisor-adoption-trace-v1.0.0"] = (
+    trace_schema_version: Literal[
+        "advisor-adoption-trace-v1.0.0",
+        "advisor-adoption-trace-v2.0.0",
+    ] = (
         "advisor-adoption-trace-v1.0.0"
     )
     advisor_mode: str
+    execution_disposition: Literal["recommend", "defer_to_agent"] | None = None
     advisor_candidate_id: str | None = None
     advisor_action: dict[str, Any]
     llm_requested_action: dict[str, Any]
@@ -44,6 +48,18 @@ class AdvisorAdoptionTrace(BaseModel):
 
     @model_validator(mode="after")
     def validate_status_and_hash(self) -> "AdvisorAdoptionTrace":
+        if (self.trace_schema_version == "advisor-adoption-trace-v2.0.0") != (
+            self.execution_disposition is not None
+        ):
+            raise ValueError("advisor adoption disposition/schema mismatch")
+        if self.execution_disposition == "defer_to_agent" and (
+            self.adoption_status != "unavailable"
+            or self.accepted
+            or self.advisor_candidate_id is not None
+            or self.advisor_action
+            or self.advisor_rank is not None
+        ):
+            raise ValueError("abstained advice cannot be adopted")
         if self.accepted != (
             self.adoption_status in {"exact_action", "accepted_target"}
         ):
@@ -62,6 +78,12 @@ def compute_adoption_trace_hash(
         else dict(trace)
     )
     payload.pop("trace_hash", None)
+    if (
+        payload.get("trace_schema_version")
+        == "advisor-adoption-trace-v1.0.0"
+        and payload.get("execution_disposition") is None
+    ):
+        payload.pop("execution_disposition", None)
     return sha256_hash(
         {
             "hash_protocol_version": "advisor-adoption-trace-hash-v1.0.0",
@@ -107,6 +129,7 @@ def _ranked_candidates(advice: Mapping[str, Any]) -> list[tuple[str, dict[str, A
         "pareto_rollout_v4",
         "pareto_reliable_v5",
         "pareto_reliable_v6",
+        "pareto_reliable_v7",
     }:
         rows = [item for item in raw_candidates if isinstance(item, Mapping)]
         decision = advice.get("pareto_decision")
@@ -177,12 +200,18 @@ def build_advisor_adoption_trace(
         "pareto_rollout_v4",
         "pareto_reliable_v5",
         "pareto_reliable_v6",
+        "pareto_reliable_v7",
     }:
         candidate_id = str(advice.get("recommended_candidate_id", "")) or None
-        advisor_action = _economic_action(
-            advice.get("recommended_action", {})
-            if isinstance(advice.get("recommended_action"), Mapping)
-            else {}
+        execution_disposition = advice.get("execution_disposition")
+        advisor_action = (
+            {}
+            if execution_disposition == "defer_to_agent"
+            else _economic_action(
+                advice.get("recommended_action", {})
+                if isinstance(advice.get("recommended_action"), Mapping)
+                else {}
+            )
         )
         baseline_action = next(
             (action for item_id, action in ranked if item_id == "maintain"),
@@ -226,6 +255,38 @@ def build_advisor_adoption_trace(
 
     requested = _economic_action(llm_requested_action)
     final = _economic_action(final_action)
+    execution_disposition = advice.get("execution_disposition")
+    if execution_disposition == "defer_to_agent":
+        reason = ""
+        if isinstance(planner_output, Mapping):
+            reason = "；".join(
+                str(planner_output.get(field, "")).strip()
+                for field in ("strategy_summary", "situation_summary")
+                if str(planner_output.get(field, "")).strip()
+            )
+        payload: dict[str, Any] = {
+            "trace_schema_version": "advisor-adoption-trace-v2.0.0",
+            "advisor_mode": advisor_mode,
+            "execution_disposition": "defer_to_agent",
+            "advisor_candidate_id": None,
+            "advisor_action": {},
+            "llm_requested_action": requested,
+            "final_action": final,
+            "accepted": False,
+            "adoption_status": "unavailable",
+            "action_alignment_ppm": 0,
+            "target_alignment_ppm": 0,
+            "advisor_rank": None,
+            "chosen_candidate_id": None,
+            "chosen_rank": None,
+            "agent_reason": reason,
+            "classification_method": (
+                "exact-economic-fields-and-target-direction-v1"
+            ),
+            "trace_hash": "pending",
+        }
+        payload["trace_hash"] = compute_adoption_trace_hash(payload)
+        return AdvisorAdoptionTrace.model_validate(payload)
     compared_fields = tuple(advisor_action)
     matches = sum(requested.get(field) == value for field, value in advisor_action.items())
     action_alignment = matches * 1_000_000 // max(1, len(compared_fields))
@@ -283,8 +344,13 @@ def build_advisor_adoption_trace(
             if str(planner_output.get(field, "")).strip()
         )
     payload: dict[str, Any] = {
-        "trace_schema_version": "advisor-adoption-trace-v1.0.0",
+        "trace_schema_version": (
+            "advisor-adoption-trace-v2.0.0"
+            if execution_disposition == "recommend"
+            else "advisor-adoption-trace-v1.0.0"
+        ),
         "advisor_mode": advisor_mode,
+        "execution_disposition": execution_disposition,
         "advisor_candidate_id": candidate_id,
         "advisor_action": advisor_action,
         "llm_requested_action": requested,

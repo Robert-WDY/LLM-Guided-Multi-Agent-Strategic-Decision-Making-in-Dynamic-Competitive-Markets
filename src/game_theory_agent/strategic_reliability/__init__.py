@@ -64,8 +64,11 @@ from .pareto_planner import (
 )
 from .reliable_planner import (
     ExcludedCandidate,
+    ParetoAbstentionGate,
     ParetoReliabilityGate,
+    build_abstention_gate,
     build_reliability_gate,
+    compute_abstention_gate_hash,
     compute_reliability_gate_hash,
 )
 
@@ -92,6 +95,7 @@ __all__ = [
     "PROMOTION_EVIDENCE_SHA256",
     "ParetoSituation",
     "ParetoReliabilityGate",
+    "ParetoAbstentionGate",
     "ExcludedCandidate",
     "InvestmentMarginalAssessment",
     "MarginalInvestmentPlan",
@@ -103,9 +107,11 @@ __all__ = [
     "compute_objective_decision_hash",
     "compute_pareto_decision_hash",
     "compute_reliability_gate_hash",
+    "compute_abstention_gate_hash",
     "calibrate_objective_decision",
     "select_pareto_decision",
     "build_reliability_gate",
+    "build_abstention_gate",
     "build_marginal_investment_plan",
     "build_calibrated_strategy_model_v2",
     "build_calibrated_opponent_state_v2",

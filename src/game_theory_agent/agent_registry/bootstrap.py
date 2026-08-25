@@ -176,7 +176,7 @@ class CurrentAgentVersionBuilder:
             media_type="application/json",
         )
         return PromptStackSpec(
-            prompt_schema_version="market-prompt-stack-v1.15.0",
+            prompt_schema_version="market-prompt-stack-v1.16.0",
             system_prompt=system,
             decision_template=prompt_builder,
             communication_template=prompt_builder,
@@ -203,7 +203,9 @@ class CurrentAgentVersionBuilder:
             ),
             advisor_mode=advisor_mode,
             advisor_version=(
-                "public-pareto-marginal-market-rollout-v2.0.0"
+                "public-pareto-abstention-market-rollout-v3.0.0"
+                if advisor_mode == "pareto_reliable_v7"
+                else "public-pareto-marginal-market-rollout-v2.0.0"
                 if advisor_mode == "pareto_reliable_v6"
                 else "public-pareto-reliable-market-rollout-v1.0.0"
                 if advisor_mode == "pareto_reliable_v5"
@@ -225,8 +227,11 @@ class CurrentAgentVersionBuilder:
         family_id: str = "current-pareto-agent",
         human_version: str | None = None,
         advisor_mode: Literal[
-            "off", "pareto_reliable_v5", "pareto_reliable_v6"
-        ] = "pareto_reliable_v6",
+            "off",
+            "pareto_reliable_v5",
+            "pareto_reliable_v6",
+            "pareto_reliable_v7",
+        ] = "pareto_reliable_v7",
         policy_parameters: dict[str, int | str | bool | None] | None = None,
         reproducibility_tier: ReproducibilityTier | None = None,
         max_schema_attempts: int | None = None,
@@ -300,12 +305,19 @@ class CurrentAgentVersionBuilder:
             action_stack=ActionStackSpec(
                 candidate_generator_version=(
                     "public-marginal-candidates-v3.0.0"
-                    if advisor_mode == "pareto_reliable_v6"
+                    if advisor_mode in {
+                        "pareto_reliable_v6",
+                        "pareto_reliable_v7",
+                    }
                     else "public-overlay-candidates-v2.0.0"
                     if advisor_mode == "pareto_reliable_v5"
                     else "none"
                 ),
-                adoption_contract_version="advisor-adoption-trace-v1.0.0",
+                adoption_contract_version=(
+                    "advisor-adoption-trace-v2.0.0"
+                    if advisor_mode == "pareto_reliable_v7"
+                    else "advisor-adoption-trace-v1.0.0"
+                ),
                 action_schema_version="company-action-v4.0.0",
                 parser_version="pydantic-agent-decision-parser-v1.0.0",
                 resolver_version="action-resolution-policy-v1.0.0",
