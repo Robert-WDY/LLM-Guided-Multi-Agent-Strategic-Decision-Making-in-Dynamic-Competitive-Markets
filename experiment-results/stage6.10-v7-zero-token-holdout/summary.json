@@ -1,0 +1,700 @@
+{
+  "by_persona": [
+    {
+      "best_ev_delta_cents": 4284875,
+      "mean_ev_delta_cents": 70846,
+      "mean_profit_delta_cents": 71361,
+      "mean_regret_reduction_cents": 70846,
+      "persona_id": "aggressive_v1_extreme",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 3,
+        "zero": 97
+      },
+      "window_count": 100,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 4284875,
+      "mean_ev_delta_cents": 70846,
+      "mean_profit_delta_cents": 71361,
+      "mean_regret_reduction_cents": 70846,
+      "persona_id": "balanced_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 3,
+        "zero": 97
+      },
+      "window_count": 100,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 4284875,
+      "mean_ev_delta_cents": 72025,
+      "mean_profit_delta_cents": 73673,
+      "mean_regret_reduction_cents": 72025,
+      "persona_id": "risk_guarded_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 4,
+        "zero": 96
+      },
+      "window_count": 100,
+      "worst_ev_delta_cents": 0
+    }
+  ],
+  "by_seed": [
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 30
+      },
+      "seed": "260825001",
+      "window_count": 30,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 1789346,
+      "mean_ev_delta_cents": 178934,
+      "mean_profit_delta_cents": 169115,
+      "mean_regret_reduction_cents": 178934,
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 3,
+        "zero": 27
+      },
+      "seed": "260825002",
+      "window_count": 30,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 30
+      },
+      "seed": "260825003",
+      "window_count": 30,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 117921,
+      "mean_ev_delta_cents": 3930,
+      "mean_profit_delta_cents": 7706,
+      "mean_regret_reduction_cents": 3930,
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 1,
+        "zero": 29
+      },
+      "seed": "260825004",
+      "window_count": 30,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 4284875,
+      "mean_ev_delta_cents": 428487,
+      "mean_profit_delta_cents": 442102,
+      "mean_regret_reduction_cents": 428487,
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 3,
+        "zero": 27
+      },
+      "seed": "260825005",
+      "window_count": 30,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 1010442,
+      "mean_ev_delta_cents": 101044,
+      "mean_profit_delta_cents": 102399,
+      "mean_regret_reduction_cents": 101044,
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 3,
+        "zero": 27
+      },
+      "seed": "260825006",
+      "window_count": 30,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 30
+      },
+      "seed": "260825007",
+      "window_count": 30,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 30
+      },
+      "seed": "260825008",
+      "window_count": 30,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 30
+      },
+      "seed": "260825009",
+      "window_count": 30,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 30
+      },
+      "seed": "260825010",
+      "window_count": 30,
+      "worst_ev_delta_cents": 0
+    }
+  ],
+  "by_seed_persona": [
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "aggressive_v1_extreme",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825001",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "balanced_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825001",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "risk_guarded_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825001",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 1789346,
+      "mean_ev_delta_cents": 178934,
+      "mean_profit_delta_cents": 169115,
+      "mean_regret_reduction_cents": 178934,
+      "persona_id": "aggressive_v1_extreme",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 1,
+        "zero": 9
+      },
+      "seed": "260825002",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 1789346,
+      "mean_ev_delta_cents": 178934,
+      "mean_profit_delta_cents": 169115,
+      "mean_regret_reduction_cents": 178934,
+      "persona_id": "balanced_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 1,
+        "zero": 9
+      },
+      "seed": "260825002",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 1789346,
+      "mean_ev_delta_cents": 178934,
+      "mean_profit_delta_cents": 169115,
+      "mean_regret_reduction_cents": 178934,
+      "persona_id": "risk_guarded_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 1,
+        "zero": 9
+      },
+      "seed": "260825002",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "aggressive_v1_extreme",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825003",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "balanced_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825003",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "risk_guarded_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825003",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "aggressive_v1_extreme",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825004",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "balanced_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825004",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 117921,
+      "mean_ev_delta_cents": 11792,
+      "mean_profit_delta_cents": 23118,
+      "mean_regret_reduction_cents": 11792,
+      "persona_id": "risk_guarded_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 1,
+        "zero": 9
+      },
+      "seed": "260825004",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 4284875,
+      "mean_ev_delta_cents": 428487,
+      "mean_profit_delta_cents": 442102,
+      "mean_regret_reduction_cents": 428487,
+      "persona_id": "aggressive_v1_extreme",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 1,
+        "zero": 9
+      },
+      "seed": "260825005",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 4284875,
+      "mean_ev_delta_cents": 428487,
+      "mean_profit_delta_cents": 442102,
+      "mean_regret_reduction_cents": 428487,
+      "persona_id": "balanced_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 1,
+        "zero": 9
+      },
+      "seed": "260825005",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 4284875,
+      "mean_ev_delta_cents": 428487,
+      "mean_profit_delta_cents": 442102,
+      "mean_regret_reduction_cents": 428487,
+      "persona_id": "risk_guarded_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 1,
+        "zero": 9
+      },
+      "seed": "260825005",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 1010442,
+      "mean_ev_delta_cents": 101044,
+      "mean_profit_delta_cents": 102399,
+      "mean_regret_reduction_cents": 101044,
+      "persona_id": "aggressive_v1_extreme",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 1,
+        "zero": 9
+      },
+      "seed": "260825006",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 1010442,
+      "mean_ev_delta_cents": 101044,
+      "mean_profit_delta_cents": 102399,
+      "mean_regret_reduction_cents": 101044,
+      "persona_id": "balanced_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 1,
+        "zero": 9
+      },
+      "seed": "260825006",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 1010442,
+      "mean_ev_delta_cents": 101044,
+      "mean_profit_delta_cents": 102399,
+      "mean_regret_reduction_cents": 101044,
+      "persona_id": "risk_guarded_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 1,
+        "zero": 9
+      },
+      "seed": "260825006",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "aggressive_v1_extreme",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825007",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "balanced_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825007",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "risk_guarded_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825007",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "aggressive_v1_extreme",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825008",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "balanced_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825008",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "risk_guarded_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825008",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "aggressive_v1_extreme",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825009",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "balanced_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825009",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "risk_guarded_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825009",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "aggressive_v1_extreme",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825010",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "balanced_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825010",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 0,
+      "mean_ev_delta_cents": 0,
+      "mean_profit_delta_cents": 0,
+      "mean_regret_reduction_cents": 0,
+      "persona_id": "risk_guarded_v1",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 0,
+        "zero": 10
+      },
+      "seed": "260825010",
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    }
+  ],
+  "checks": {
+    "engineering": {
+      "abstention_has_no_action": true,
+      "abstention_retains_agent_outcome": true,
+      "all_actions_legal": true,
+      "deterministic_advice_rebuild": true,
+      "deterministic_market_replay": true,
+      "deterministic_observation_hash": true,
+      "no_hidden_state_leak": true,
+      "safe_set_exact": true
+    },
+    "outcome": {
+      "coverage": false,
+      "mean_ev_nonnegative": true,
+      "mean_regret_nonnegative": true,
+      "no_negative_released_recommendation": true,
+      "worst_cluster_nonnegative": true
+    }
+  },
+  "engineering_passed": true,
+  "evidence_type": "SYNTHETIC_RULE_HOLDOUT",
+  "metrics": {
+    "abstention_executable_action_count": 0,
+    "abstention_nonzero_delta_count": 0,
+    "best_ev_delta_cents": 4284875,
+    "deterministic_advice_rebuild_rate_ppm": 1000000,
+    "deterministic_market_replay_rate_ppm": 1000000,
+    "deterministic_observation_hash_rate_ppm": 1000000,
+    "disposition_counts": {
+      "defer_to_agent": 290,
+      "recommend": 10
+    },
+    "hidden_state_leak_count": 0,
+    "illegal_action_count": 0,
+    "mean_ev_delta_cents": 71239,
+    "mean_profit_delta_cents": 72132,
+    "mean_regret_reduction_cents": 71239,
+    "positive_zero_negative_windows": {
+      "negative": 0,
+      "positive": 10,
+      "zero": 290
+    },
+    "recommendation_coverage_ppm": 33333,
+    "released_recommendation_negative_window_count": 0,
+    "safe_set_mismatch_count": 0,
+    "seed_persona_cluster_count": 30,
+    "window_count": 300,
+    "worst_ev_delta_cents": 0,
+    "worst_seed_persona_mean_ev_delta_cents": 0
+  },
+  "new_completion_tokens": 0,
+  "new_estimated_cost_cny": 0,
+  "new_prompt_tokens": 0,
+  "new_real_model_calls": 0,
+  "outcome_passed": false,
+  "preregistration_hash": "sha256:bf2981175079eb9234e1062f97c9e8e4263f1d3617d14180bcf9a9a75068ac5e",
+  "real_llm_smoke_gate_open": false,
+  "report_hash": "sha256:7efb091a727bbf44a4f844a7f472ddaf4c7d76a8be026c7f5a140229dfc3b801",
+  "research_boundary": "This is a deterministic synthetic Rule holdout. Passing can open a small paid Smoke gate but cannot establish real-LLM or real-market effectiveness. Overlapping round windows are not independent; aggregate conclusions use seed-persona clusters.",
+  "result_schema_version": "stage6.10-v7-zero-token-result-v1.0.0"
+}
