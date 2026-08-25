@@ -73,7 +73,7 @@ Agent Gateway 健康检查。`execution_access` 永远为 `false`。
 - `belief_schema_version`、`belief_hash` 与 `belief_state`：`public_action_v1` 只根据已结算公开价格给出对手本轮降价/持平/涨价概率；`public_action_signal_v2` 额外融合本公司合法可见的结构化非绑定价格声明，并按历史言行一致率降权；
 - `opponent_model_state / opponent_model_hash`：仅在 `opponent_model_mode=public_strategy_v1` 时出现，只使用公开价格、销量、份额、声誉与公开韧性贡献；
 - `utility_inference_state / utility_inference_hash`：仅在 `utility_inference_mode=strategy_utility_v1` 时出现，并绑定 Opponent Model Hash；
-- `game_theory_advice`：在 `advisor_mode=bayesian_price_v1` 或 `bayesian_strategy_v2` 时出现，是带 Hash/Replay 的非绑定近似建议，不是 Final Action；v2 明确不是 Nash 求解器；
+- `game_theory_advice`：在 `advisor_mode=bayesian_price_v1`、`bayesian_strategy_v2`、`public_rollout_v3`、`pareto_rollout_v4` 或 `pareto_reliable_v5` 时出现，是带 Hash/Replay 的非绑定近似建议，不是 Final Action；所有模式都明确不是 Nash 求解器。v3/v4/v5 只允许 `public` 信息模式，从公共状态、本公司私有状态、Belief 和公开 Opponent Model 重建预测市场，不读取对手隐藏状态；v4 应用价值、竞争、尾部和人格效用约束，返回安全 Pareto 前沿；v5 保留 Planner 原推荐，同时返回可靠性门控、有效推荐、保守候选、安全/排除集合和独立 Gate Hash，在对手模型置信度不足或候选优势被预测不确定度覆盖时自动退回情境安全动作；
 - `repeated_game_strategy / repeated_game_strategy_hash`：仅在 `repeated_game_mode=reciprocity_v1` 且合作开启时出现，从权威合作记忆派生，不直接执行贡献；
 - `competitors`：`perfect` 模式返回对手完整 CompanyState，`public` 模式仅返回对手公开摘要；
 - `public_history`：已经结算的逐轮公开市场、本公司动作与结果、运营成本拆分、事件影响解释及到期预警结果；

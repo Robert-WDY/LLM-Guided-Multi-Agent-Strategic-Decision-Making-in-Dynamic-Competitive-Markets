@@ -55,7 +55,11 @@ from game_theory_agent.belief import (
     verify_belief_replay,
 )
 from game_theory_agent.game_theory import verify_game_theory_replay
-from game_theory_agent.model_clients import MockModelClient
+from game_theory_agent.model_clients import (
+    FixedEconomicBaselineModelClient,
+    MockModelClient,
+    SelectiveDecisionModelClient,
+)
 from game_theory_agent.orchestration import JsonlRoundEventLogger, RoundCoordinator
 from game_theory_agent.experiments.persona_pilot import _model_client
 from game_theory_agent.experiments.market_metrics import compute_research_metrics
@@ -427,12 +431,21 @@ def _acceptance_model_client(
     if args.provider == "mock" and scenario == "silence" and honor_advice:
         return MockModelClient(honor_game_theory_advice=True)
     if args.provider != "mock" or scenario == "silence":
-        return _model_client(
+        client = _model_client(
             args.provider,
             args.model,
             temperature=args.temperature,
             top_p=args.top_p,
         )
+        paid_rounds = tuple(getattr(args, "paid_decision_rounds", ()))
+        if paid_rounds:
+            return SelectiveDecisionModelClient(
+                client,
+                FixedEconomicBaselineModelClient(),
+                paid_rounds=paid_rounds,
+                cost_guard=args.real_model_cost_guard,
+            )
+        return client
     if communication_mode == "off":
         raise ValueError("a mock communication scenario requires communication on")
     if scenario == "mixed" and communication_mode != "public_private":
@@ -639,6 +652,7 @@ async def run(args: argparse.Namespace) -> int:
                 args, "repeated_game_mode", "off"
             ),
             "cooperation_mode": getattr(args, "cooperation_mode", "off"),
+            "agent_configs": getattr(args, "agent_configs", {}),
         },
     )
     created.raise_for_status()
@@ -1052,7 +1066,14 @@ def _parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--advisor-mode",
-        choices=("off", "bayesian_price_v1", "bayesian_strategy_v2"),
+        choices=(
+            "off",
+            "bayesian_price_v1",
+            "bayesian_strategy_v2",
+            "public_rollout_v3",
+            "pareto_rollout_v4",
+            "pareto_reliable_v5",
+        ),
         default="off",
     )
     parser.add_argument(

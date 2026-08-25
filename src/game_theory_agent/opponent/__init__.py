@@ -1,6 +1,7 @@
 """Public-only opponent strategy modeling."""
 
 from game_theory_agent.opponent.schema import (
+    OPPONENT_MODEL_CANDIDATE_UPDATER_VERSION,
     OPPONENT_MODEL_HASH_PROTOCOL_VERSION,
     OPPONENT_MODEL_SCHEMA_VERSION,
     OPPONENT_MODEL_UPDATER_VERSION,
@@ -23,6 +24,7 @@ from game_theory_agent.opponent.replay import (
 )
 
 __all__ = [
+    "OPPONENT_MODEL_CANDIDATE_UPDATER_VERSION",
     "OPPONENT_MODEL_HASH_PROTOCOL_VERSION",
     "OPPONENT_MODEL_SCHEMA_VERSION",
     "OPPONENT_MODEL_UPDATER_VERSION",

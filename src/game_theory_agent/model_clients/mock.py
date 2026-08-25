@@ -198,6 +198,7 @@ class MockModelClient:
                     "price_cents",
                     bounds,
                 )
+        recommended_strategic_action = None
         if self.honor_game_theory_advice and context.game_theory_advice:
             recommended_price = context.game_theory_advice.get(
                 "recommended_price_cents"
@@ -205,6 +206,16 @@ class MockModelClient:
             if recommended_price is not None:
                 price = _bounded(
                     int(recommended_price), "price_cents", bounds
+                )
+            raw_strategic_action = context.game_theory_advice.get(
+                "recommended_action"
+            )
+            if isinstance(raw_strategic_action, dict):
+                recommended_strategic_action = raw_strategic_action
+                price = _bounded(
+                    int(raw_strategic_action["price_cents"]),
+                    "price_cents",
+                    bounds,
                 )
         message_responses: list[MessageResponse] = []
         communication_view = context.communication_view
@@ -298,6 +309,42 @@ class MockModelClient:
                         ),
                     )
 
+        if recommended_strategic_action is not None:
+            advertising = _bounded(
+                int(recommended_strategic_action["advertising_budget_cents"]),
+                "advertising_budget_cents",
+                bounds,
+            )
+            service = _bounded(
+                int(recommended_strategic_action["service_budget_cents"]),
+                "service_budget_cents",
+                bounds,
+            )
+            capacity = _bounded(
+                int(recommended_strategic_action["capacity_investment_cents"]),
+                "capacity_investment_cents",
+                bounds,
+            )
+            resilience = _bounded(
+                int(recommended_strategic_action["resilience_budget_cents"]),
+                "resilience_budget_cents",
+                bounds,
+            )
+            shared = (
+                _bounded(
+                    int(
+                        recommended_strategic_action.get(
+                            "shared_resilience_contribution_cents", 0
+                        )
+                        or 0
+                    ),
+                    "shared_resilience_contribution_cents",
+                    bounds,
+                )
+                if constraints.get("shared_resilience_contribution_enabled")
+                else 0
+            )
+
         phase = (context.current_plan or {}).get("phase", "growth")
         if phase == "liquidity_crisis":
             advertising = service = capacity = resilience = shared = 0
@@ -322,6 +369,17 @@ class MockModelClient:
                 mode="full_repair",
                 repair_budget_cents=int(
                     constraints["max_useful_repair_budget_cents"]
+                ),
+            )
+        if recommended_strategic_action is not None:
+            incident_response = IncidentIntent(
+                mode=str(
+                    recommended_strategic_action.get(
+                        "incident_response_mode", "wait"
+                    )
+                ),
+                repair_budget_cents=int(
+                    recommended_strategic_action.get("repair_budget_cents", 0)
                 ),
             )
 

@@ -9,7 +9,14 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from game_theory_agent.market.protocols import sha256_hash
 
 
-AdvisorMode = Literal["off", "bayesian_price_v1", "bayesian_strategy_v2"]
+AdvisorMode = Literal[
+    "off",
+    "bayesian_price_v1",
+    "bayesian_strategy_v2",
+    "public_rollout_v3",
+    "pareto_rollout_v4",
+    "pareto_reliable_v5",
+]
 ADVISOR_SCHEMA_VERSION = "bayesian-price-advice-v1.0.0"
 ADVISOR_MODEL_VERSION = "independent-direction-payoff-proxy-v1.0.0"
 ADVISOR_HASH_PROTOCOL_VERSION = "game-theory-advice-hash-v1.0.0"

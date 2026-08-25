@@ -454,7 +454,7 @@ def test_v13_round_event_json_round_trip_preserves_communication_phase():
 
     loaded = RoundEvent.model_validate_json(event.model_dump_json())
 
-    assert loaded.event_schema_version == "agent-round-event-v1.9.0"
+    assert loaded.event_schema_version == "agent-round-event-v1.10.0"
     assert loaded.communication_phase == phase
     assert verify_interaction_replay(
         loaded, require_trace_binding=False

@@ -19,6 +19,7 @@ from game_theory_agent.cooperation import (
     CooperationRoundRecord,
 )
 from game_theory_agent.agents.runtime import AgentRuntime
+from game_theory_agent.advisor.adoption import build_advisor_adoption_trace
 from game_theory_agent.market.models import MarketState
 from game_theory_agent.market.protocols import sha256_hash
 from game_theory_agent.interaction import (
@@ -677,6 +678,13 @@ class RoundCoordinator:
             if result is not None and result.success and result.decision is not None:
                 model_name = result.model_name
                 agent_type = self._agent_type(model_name)
+                planner_output = result.decision.plan.model_dump(mode="json")
+                requested_action = result.decision.requested_action.model_dump(
+                    mode="json"
+                )
+                advisor_output = information_snapshot.observation.get(
+                    "game_theory_advice"
+                )
                 trace = AgentRoundTrace(
                     company_id=company_id,
                     agent_id=result.agent_id,
@@ -708,8 +716,12 @@ class RoundCoordinator:
                     utility_inference=information_snapshot.observation.get(
                         "utility_inference_state"
                     ),
-                    advisor_output=information_snapshot.observation.get(
-                        "game_theory_advice"
+                    advisor_output=advisor_output,
+                    advisor_adoption=build_advisor_adoption_trace(
+                        advice=advisor_output,
+                        llm_requested_action=requested_action,
+                        final_action=final_action,
+                        planner_output=planner_output,
                     ),
                     repeated_game_strategy=information_snapshot.observation.get(
                         "repeated_game_strategy"
@@ -736,15 +748,13 @@ class RoundCoordinator:
                     ),
                     model_name=model_name,
                     prompt_version=result.prompt_version,
-                    planner_output=result.decision.plan.model_dump(mode="json"),
+                    planner_output=planner_output,
                     message_responses=[
                         item.model_dump(mode="json")
                         for item in result.decision.message_responses
                     ],
                     raw_model_output=result.raw_response,
-                    requested_action=result.decision.requested_action.model_dump(
-                        mode="json"
-                    ),
+                    requested_action=requested_action,
                     intent_id=intent_ids[company_id],
                     final_action=final_action,
                     resolution_source=resolution["source"],

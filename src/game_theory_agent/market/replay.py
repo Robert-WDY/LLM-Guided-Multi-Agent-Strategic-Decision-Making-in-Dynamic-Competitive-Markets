@@ -133,11 +133,28 @@ class EpisodeManifest:
                 f"{invalid_observer_modes}"
             )
         if advisor_mode not in {
-            "off", "bayesian_price_v1", "bayesian_strategy_v2"
+            "off",
+            "bayesian_price_v1",
+            "bayesian_strategy_v2",
+            "public_rollout_v3",
+            "pareto_rollout_v4",
+            "pareto_reliable_v5",
         }:
             raise ValueError(f"unsupported advisor mode: {advisor_mode}")
         if advisor_mode != "off" and belief_mode == "off":
             raise ValueError("Bayesian advisor requires an enabled belief mode")
+        if advisor_mode in {
+            "public_rollout_v3",
+            "pareto_rollout_v4",
+            "pareto_reliable_v5",
+        } and (
+            information_mode != "public"
+            or opponent_model_mode != "public_strategy_v1"
+            or any(mode != "public" for mode in observer_modes.values())
+        ):
+            raise ValueError(
+                "public rollout advisors require public information and public opponent modeling"
+            )
         if belief_mode == "public_action_signal_v2" and communication_mode == "off":
             raise ValueError("signal belief requires communication")
         if cooperation_mode != "off" and communication_mode == "public_only":
@@ -206,7 +223,22 @@ class EpisodeManifest:
                 else (
                     "bayesian-strategy-advice-v2.0.0"
                     if advisor_mode == "bayesian_strategy_v2"
-                    else "none"
+                    else (
+                        (
+                            "public-pareto-reliable-advice-v5.0.0"
+                            if advisor_mode == "pareto_reliable_v5"
+                            else "public-pareto-advice-v4.0.0"
+                            if advisor_mode == "pareto_rollout_v4"
+                            else "public-strategic-advice-v3.0.0"
+                        )
+                        if advisor_mode
+                        in {
+                            "public_rollout_v3",
+                            "pareto_rollout_v4",
+                            "pareto_reliable_v5",
+                        }
+                        else "none"
+                    )
                 )
             ),
             advisor_model_version=(
@@ -215,7 +247,22 @@ class EpisodeManifest:
                 else (
                     "expected-strategic-response-v2.0.0"
                     if advisor_mode == "bayesian_strategy_v2"
-                    else "none"
+                    else (
+                        (
+                            "public-pareto-reliable-market-rollout-v1.0.0"
+                            if advisor_mode == "pareto_reliable_v5"
+                            else "public-pareto-market-rollout-v1.0.0"
+                            if advisor_mode == "pareto_rollout_v4"
+                            else "public-observation-market-rollout-v1.0.0"
+                        )
+                        if advisor_mode
+                        in {
+                            "public_rollout_v3",
+                            "pareto_rollout_v4",
+                            "pareto_reliable_v5",
+                        }
+                        else "none"
+                    )
                 )
             ),
             opponent_model_mode=opponent_model_mode,

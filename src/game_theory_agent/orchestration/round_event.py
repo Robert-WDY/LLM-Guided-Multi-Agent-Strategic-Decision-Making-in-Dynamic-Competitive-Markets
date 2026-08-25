@@ -8,6 +8,8 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from game_theory_agent.advisor.adoption import AdvisorAdoptionTrace
+
 from game_theory_agent.agents.contracts import ResultAnalysis
 from game_theory_agent.agents.personas import PersonaUtilityAssessment
 from game_theory_agent.cooperation import CooperationRoundRecord
@@ -136,6 +138,7 @@ class AgentRoundTrace(BaseModel):
     opponent_model: dict[str, Any] | None = None
     utility_inference: dict[str, Any] | None = None
     advisor_output: dict[str, Any] | None = None
+    advisor_adoption: AdvisorAdoptionTrace | None = None
     repeated_game_strategy: dict[str, Any] | None = None
     chosen_action: dict[str, Any] | None = None
     counterfactual_results: dict[str, Any] | None = None
@@ -175,7 +178,8 @@ class RoundEvent(BaseModel):
         "agent-round-event-v1.7.0",
         "agent-round-event-v1.8.0",
         "agent-round-event-v1.9.0",
-    ] = "agent-round-event-v1.9.0"
+        "agent-round-event-v1.10.0",
+    ] = "agent-round-event-v1.10.0"
     event_id: str
     episode_id: str
     settled_round: int

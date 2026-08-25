@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
+from pathlib import Path
 from typing import Any
 
 from game_theory_agent.advisor.advisor import (
@@ -13,6 +14,12 @@ from game_theory_agent.advisor.contracts import (
     GameTheoryAdvice,
     StrategicGameTheoryAdvice,
 )
+from game_theory_agent.agents.personas import PersonaRegistry
+from game_theory_agent.market import load_market_config
+from game_theory_agent.strategic_reliability import (
+    PublicMarketRolloutAdvisor,
+    PublicStrategicAdvice,
+)
 
 
 class AdvisorReplayMismatchError(RuntimeError):
@@ -22,9 +29,13 @@ class AdvisorReplayMismatchError(RuntimeError):
 def verify_advisor_replay(
     events: Sequence[Any],
     manifest: Any | None = None,
-) -> tuple[GameTheoryAdvice | StrategicGameTheoryAdvice, ...]:
+) -> tuple[
+    GameTheoryAdvice | StrategicGameTheoryAdvice | PublicStrategicAdvice, ...
+]:
     expected_mode = getattr(manifest, "advisor_mode", None)
-    verified: list[GameTheoryAdvice | StrategicGameTheoryAdvice] = []
+    verified: list[
+        GameTheoryAdvice | StrategicGameTheoryAdvice | PublicStrategicAdvice
+    ] = []
     for event in events:
         snapshots = []
         phase = getattr(event, "communication_phase", None)
@@ -57,7 +68,32 @@ def verify_advisor_replay(
                 raise AdvisorReplayMismatchError(
                     "advisor payload exists without belief state"
                 )
-            if raw.get("advisor_mode") == "bayesian_strategy_v2":
+            if raw.get("advisor_mode") in {
+                "public_rollout_v3",
+                "pareto_rollout_v4",
+                "pareto_reliable_v5",
+            }:
+                opponent_model = observation.get("opponent_model_state")
+                if not isinstance(opponent_model, dict):
+                    raise AdvisorReplayMismatchError(
+                        "public rollout advisor is missing the public opponent model"
+                    )
+                config = load_market_config(
+                    Path(__file__).resolve().parents[3] / "configs" / "market_v4.yaml"
+                )
+                registry = PersonaRegistry.from_market_config(config)
+                recorded = PublicStrategicAdvice.model_validate(raw)
+                expected = PublicMarketRolloutAdvisor(config).advise(
+                    observation=observation,
+                    company_id=snapshot.company_id,
+                    persona_profile=registry.get(recorded.persona_id),
+                    belief_state=belief,
+                    opponent_model=opponent_model,
+                    horizon_rounds=recorded.horizon_rounds,
+                    scenario_count=recorded.scenario_count,
+                    advisor_mode=recorded.advisor_mode,
+                )
+            elif raw.get("advisor_mode") == "bayesian_strategy_v2":
                 opponent_model = observation.get("opponent_model_state")
                 utility = observation.get("utility_inference_state")
                 if not isinstance(opponent_model, dict) or not isinstance(

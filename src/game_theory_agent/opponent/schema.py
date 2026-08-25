@@ -13,6 +13,9 @@ OpponentModelMode = Literal["off", "public_strategy_v1"]
 StrategyType = Literal["growth", "profit", "defensive", "cooperative"]
 OPPONENT_MODEL_SCHEMA_VERSION = "opponent-model-state-v1.0.0"
 OPPONENT_MODEL_UPDATER_VERSION = "public-strategy-rule-bayes-v1.0.0"
+OPPONENT_MODEL_CANDIDATE_UPDATER_VERSION = (
+    "public-strategy-calibrated-v2.0.0"
+)
 OPPONENT_MODEL_HASH_PROTOCOL_VERSION = "opponent-model-hash-v1.0.0"
 
 
@@ -123,7 +126,8 @@ class OpponentModelState(BaseModel):
     ] = OPPONENT_MODEL_SCHEMA_VERSION
     opponent_model_mode: Literal["public_strategy_v1"] = "public_strategy_v1"
     updater_version: Literal[
-        "public-strategy-rule-bayes-v1.0.0"
+        "public-strategy-rule-bayes-v1.0.0",
+        "public-strategy-calibrated-v2.0.0",
     ] = OPPONENT_MODEL_UPDATER_VERSION
     episode_id: str
     observer_company_id: str

@@ -28,6 +28,14 @@
 - Belief MVP Phase B：可选 `public_action_v1` 仅从已结算公开价格生成对手下一轮降价/持平/涨价概率，带 company-scoped Ledger、Belief Hash、Belief Replay 与 Accuracy/Brier/Log Loss；默认 `off` 保留无信念基线；
 - 不完全信息 P0–P5：严格 `PublicState / PrivateState / ObservationEnvelope`，可选 `public_action_signal_v2` 将实际可见的结构化非绑定声明按历史可靠度加入信念；`bayesian_price_v1` 提供带 Advice Hash/Replay 的非绑定 Approximate Bayesian Price Response，不读取对手隐藏状态；
 - Game Theory Enhancement：`public_strategy_v1` 从公开历史形成 growth/profit/defensive/cooperative 对手模型，`strategy_utility_v1` 推断六项效用权重，`bayesian_strategy_v2` 在有限价格动作上计算 Approximate Bayesian Best Response；重复博弈层从合作记忆生成 Tit-for-Tat/Grim/Generous 建议，全部带 Hash/Replay 且不直接修改市场；
+- Stage 6 Strategic Decision Reliability P0：使用真实 `MarketEnv` 对 7–10 个候选执行多轮、多情景反事实，按企业价值、累计利润、风险损失和 Persona Utility 排序；权威 Rollout 仅作为离线 Oracle，不进入公开信息 Agent 上下文，并提供 Known/Mixed/100 Unknown/30 Holdout 对手基准和默认拒绝真实模型调用的成本门禁；
+- Stage 6.1 Public Rollout v1：`public_rollout_v3` 仅从公共状态、本公司私有状态、Belief 和公开 Opponent Model 重建预测市场，以“Rule 运营基线 + 单一战略增量”执行在线长期规划；支持 Observation/Advice Hash 与 Advisor Replay，5 个共同 Seed 的 10 轮 Rule 对照全部通过企业价值、最坏 Seed 和权威 Regret 晋升门禁；
+- Stage 6.2 Strategic Ablation：以共同市场 Seed 和共同 Advisor 随机场景完成 Rule、Persona Planner、Belief、Opponent v1、Opponent v2 五组 × 三人格 × Known/Mixed/Holdout 的 135 局零模型消融；Persona Planner 在 27/27 配对中提高企业价值但激进人格 Regret 未过门禁，Belief/v1 存在长期价值或尾部退化，v2 为 0 组改善、3 组恶化，全部保持非默认研究 treatment；
+- Stage 6.3 Objective Calibration：Rollout 新增最强对手价值、竞争差距和名次标签，以 243 局零模型实验比较绝对价值、Persona 和四档竞争权重；开发集为三人格选择的固定权重在保留集全部失败，Belief 路径中 33.33% 出现“一步更优、长期更差”，利润人格 v1 门控也未过尾部与竞争门禁，所有候选保持离线；
+- Stage 6.4 Pareto Reliability：新增价值/竞争/尾部/人格四维约束和安全 Pareto 前沿，修复 Rule 与处理组信息权限不一致及 Regret 候选口径错误；10 个共同 Seed、720 局的开发集/保留集验证中，三人格的企业价值、竞争差距、第一名率和两轮 Regret 全部门禁通过，新增可回放的公开信息 `pareto_rollout_v4`，真实模型调用与费用仍为 0；
+- Stage 6.5 Real Advisor Adoption：新增带 Hash 的 Advisor Adoption Trace 和只在预注册轮调用 Provider 的成本门禁；65 次豆包真实调用表明 Pareto 使 13/13 配对改变动作、推荐采纳率 84.62%，但短期逐利与风险防御存在负尾部，阶段研究门禁未通过并按规则停止在自适应 3/5 Seeds，没有继续消耗完整 10-Seed 预算；
+- Stage 6.6 Failure Forensics：零 Token 重放 Stage 6.5 的 65 个 Episode，并对五个负配对执行固定后续动作带反事实；五例均精确采纳且无 Controller 经济调整，主要归因为四例 Forecast/内生反应误差和一例候选集合覆盖不足，因此暂缓 Advice Contract v2 和 30 次真实复测；
+- Stage 6.6 Reliable Repair：保留 v3/v4 语义和回放，新增公开信息 `pareto_reliable_v5`；候选集合加入零可选投入、利润恢复和风险缓冲，低对手置信度或候选差距小于预测不确定度时自动放弃 Planner 动作并退回情境安全动作。五个已知失败状态的冻结动作带 Auto-execute 全部不低于无建议基线，三个正收益、两个持平，新增真实模型调用和 Token 均为 0；
 - 固定 Observe → Plan → Intent 工作流、结构化 AgentDecision、短期 Episode Memory 与确定性 ResultAnalyzer；
 - Agent Context v1.2：隐藏随机 Seed，增加单位经济、现金跑道、PlanTracker、最近3轮详细记录、5轮趋势摘要和关键事件；
 - ResultAnalysis v1.3 分离预测准确率与目标达成情况，并记录同状态、同随机源的现金保护和利润恢复反事实；
@@ -95,6 +103,13 @@ P0–P5 的严格信息契约、通信信号信念、Bayesian Advisor 与五层 
 不完全信息市场中的单一完全信息 Agent、跨人格配对夺冠实验见 [docs/privileged-information-persona-experiment.md](docs/privileged-information-persona-experiment.md)。
 Opponent Modeling、Utility Inference、Advisor v2、Repeated Game Strategy 与完整 GameTheory Replay/基准见 [docs/game-theory-enhancement.md](docs/game-theory-enhancement.md)。
 真实 LLM 的 Persona/Belief/Opponent Model/Utility+Advisor 四组消融、真实市场反事实、Token 与单 Seed Pilot 结果见 [docs/stage51-real-game-theory-evaluation.md](docs/stage51-real-game-theory-evaluation.md)。
+Stage 6 的长期真实市场 Rollout、Persona Planning、Opponent Holdout 和零 Token 成本门禁见 [docs/stage6-strategic-decision-reliability.md](docs/stage6-strategic-decision-reliability.md)。
+Stage 6.1 的公开信息预测市场、在线候选语义、失败修复、五 Seed Rule 对照与零成本验收见 [docs/stage6-public-rollout-v1.md](docs/stage6-public-rollout-v1.md)。
+Stage 6.2 的共同随机数修复、五层下游消融、人格/对手池拆分、晋升结论与零成本验收见 [docs/stage6.2-strategic-ablation.md](docs/stage6.2-strategic-ablation.md)。
+Stage 6.3 的绝对价值/竞争夺冠目标拆分、开发集与保留集校准、Belief 路径归因和零成本验收见 [docs/stage6.3-objective-calibration.md](docs/stage6.3-objective-calibration.md)。
+Stage 6.4 的约束式 Pareto 选择、公平对照修复、长期 Regret、10-Seed 保留集结果和 `pareto_rollout_v4` 在线晋升见 [docs/stage6.4-pareto-reliability.md](docs/stage6.4-pareto-reliability.md)。
+Stage 6.5 的真实模型采纳 Trace、低 Token 渐进实验、Belief/旧 Advisor/Pareto 对照、负尾部和停止规则见 [docs/stage6.5-real-advisor-adoption.md](docs/stage6.5-real-advisor-adoption.md)。
+Stage 6.6 的五个失败状态、Planner/Adoption/Execution/Forecast 归因、65 条历史映射、全层 Replay 与修复优先级见 [docs/stage6.6-failure-forensics.md](docs/stage6.6-failure-forensics.md)。
 多 Agent 研究控制台的信息架构、真实/演示边界、八个工作区与前端验收见 [docs/frontend-research-dashboard.md](docs/frontend-research-dashboard.md)。
 单 Agent 与多 Agent 的运行时、协调器、日志和接入示例见 [docs/agent-runtime-and-orchestration.md](docs/agent-runtime-and-orchestration.md)。
 人格配置、效用公式、实验隔离和非合作阶段边界见 [docs/persona-research.md](docs/persona-research.md)。

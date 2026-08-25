@@ -18,6 +18,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 
 from game_theory_agent.agents.contracts import AgentRequestedAction
+from game_theory_agent.agents.personas import PersonaRegistry
 from game_theory_agent.agents.market_regime import MarketRegimeEvaluator
 from game_theory_agent.agents.observation import (
     InformationMode,
@@ -69,6 +70,7 @@ from game_theory_agent.interaction import (
     CommunicationValidationError,
 )
 from game_theory_agent.information import seal_observation
+from game_theory_agent.strategic_reliability import PublicMarketRolloutAdvisor
 
 from game_theory_agent.gameplay import (
     build_company_analysis,
@@ -93,6 +95,8 @@ CONFIG_PATH = Path(
 )
 CONFIG = load_market_config(CONFIG_PATH)
 MARKET_REGIME_EVALUATOR = MarketRegimeEvaluator(CONFIG)
+PERSONA_REGISTRY = PersonaRegistry.from_market_config(CONFIG)
+PUBLIC_ROLLOUT_ADVISOR = PublicMarketRolloutAdvisor(CONFIG)
 
 
 class CreateEpisodeRequest(BaseModel):
@@ -378,6 +382,24 @@ def _canonical_agent_id(
             )
         return canonical
     return company_id
+
+
+def _configured_persona_profile(
+    session: EpisodeSession, company_id: str
+):
+    configured = dict(session.manifest.agent_configs).get(company_id, {})
+    persona_config = configured.get("persona")
+    persona_id = None
+    expected_hash = None
+    if isinstance(persona_config, dict):
+        persona_id = persona_config.get("persona_id")
+        expected_hash = persona_config.get("profile_hash")
+    if not persona_id:
+        persona_id = session.env.get_state().company(company_id).persona.value
+    profile = PERSONA_REGISTRY.get(str(persona_id))
+    if expected_hash is not None and str(expected_hash) != profile.profile_hash:
+        raise ValueError("configured persona profile hash mismatch")
+    return profile
 
 
 def _communication_key(
@@ -891,6 +913,24 @@ def _agent_observation(session: EpisodeSession, company_id: str) -> dict[str, An
             own_company=company_views["own_company"],
             action_constraints=observation["action_constraints"],
         ).model_dump(mode="json")
+    elif (
+        session.advisor_mode
+        in {"public_rollout_v3", "pareto_rollout_v4", "pareto_reliable_v5"}
+        and belief_state is not None
+        and opponent_model_state is not None
+        and observer_information_mode == "public"
+        and not state.terminal
+    ):
+        observation["game_theory_advice"] = PUBLIC_ROLLOUT_ADVISOR.advise(
+            observation=observation,
+            company_id=company_id,
+            persona_profile=_configured_persona_profile(session, company_id),
+            belief_state=belief_state,
+            opponent_model=opponent_model_state,
+            horizon_rounds=min(3, state.rounds_remaining),
+            scenario_count=5,
+            advisor_mode=session.advisor_mode,
+        ).model_dump(mode="json")
     return seal_observation(observation)
 
 
@@ -1100,7 +1140,12 @@ def agent_capabilities() -> dict[str, Any]:
         "opponent_model_modes": ["off", "public_strategy_v1"],
         "utility_inference_modes": ["off", "strategy_utility_v1"],
         "advisor_modes": [
-            "off", "bayesian_price_v1", "bayesian_strategy_v2"
+            "off",
+            "bayesian_price_v1",
+            "bayesian_strategy_v2",
+            "public_rollout_v3",
+            "pareto_rollout_v4",
+            "pareto_reliable_v5",
         ],
         "repeated_game_modes": ["off", "reciprocity_v1"],
     }
@@ -1562,6 +1607,24 @@ def create_episode(
             status_code=422,
             detail=(
                 "bayesian_strategy_v2 requires opponent model and utility inference"
+            ),
+        )
+    if request.advisor_mode in {
+        "public_rollout_v3",
+        "pareto_rollout_v4",
+        "pareto_reliable_v5",
+    } and (
+        request.information_mode != "public"
+        or request.opponent_model_mode != "public_strategy_v1"
+        or any(
+            mode != "public"
+            for mode in request.observer_information_modes.values()
+        )
+    ):
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                "public rollout advisors require public information and public opponent modeling"
             ),
         )
     if request.repeated_game_mode != "off" and request.cooperation_mode == "off":

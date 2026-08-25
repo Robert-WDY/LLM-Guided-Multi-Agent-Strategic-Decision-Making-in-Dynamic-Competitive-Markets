@@ -29,7 +29,7 @@ def _escape_reserved_untrusted_markers(value: str) -> str:
 
 
 class AgentPromptBuilder:
-    prompt_version = "market-planner-prompt-v1.14.0"
+    prompt_version = "market-planner-prompt-v1.15.0"
 
     def build(self, context: DecisionContext) -> str:
         schema = AgentDecision.model_json_schema()
@@ -99,17 +99,32 @@ class AgentPromptBuilder:
                 "本轮 belief_state 关闭；不要虚构对手动作概率或隐藏状态。",
             )
         )
-        advisor_semantics = (
-            (
+        if (
+            context.game_theory_advice is not None
+            and context.game_theory_advice.get("advisor_mode")
+            in {
+                "public_rollout_v3",
+                "pareto_rollout_v4",
+                "pareto_reliable_v5",
+            }
+        ):
+            advisor_semantics = (
+                "博弈建议来自公开信息预测市场：只使用本公司私有状态、公共状态、公开信念和公开对手模型，绝不读取对手现金、成本、事故、Persona 或真实隐藏效用。",
+                "预测市场会以中性配置估计不可见的对手字段，并在有限候选、有限情景和有限未来轮数中比较长期企业价值、损失和人格效用；预测值不是未来事实。",
+                "recommended_action 是非绑定建议；必须检查现金和硬约束，可以基于可说明的理由拒绝，且它不代表 Nash 均衡。",
+                "pareto_rollout_v4 还会先过滤破坏价值、竞争位置、最坏情景或人格效用底线的候选，再从安全 Pareto 前沿选择；selection_situation 说明当前是保护领先还是终局追赶。",
+                "pareto_reliable_v5 会额外给出安全候选、排除理由和可靠性门禁；should_abstain=true 表示证据不足，recommended_action 已回退为安全经营候选，不应再执行 planner_recommended_candidate_id。",
+            )
+        elif context.game_theory_advice is not None:
+            advisor_semantics = (
                 "game_theory_advice 是确定性 Approximate Bayesian Response；v1 只边际化公开价格方向，v2 还边际化对手策略与推断效用下的预期回应。",
                 "它使用透明 payoff proxy，不是 MarketEnv 的精确利润预测，也不是动作指令；必须结合 Persona、现金和硬约束独立判断。",
                 "Advisor 不读取对手现金、成本、Persona 或真实隐藏效用；recommended_action 和 recommended_price_cents 均可采纳或拒绝，且不代表 Nash Equilibrium。",
             )
-            if context.game_theory_advice is not None
-            else (
+        else:
+            advisor_semantics = (
                 "本轮 Game Theory Advisor 关闭；不要虚构 Bayesian Best Response。",
             )
-        )
         opponent_model_semantics = (
             (
                 "opponent_model_state 只由公开价格、销量、份额、声誉和公开韧性贡献更新，用于推断 growth/profit/defensive/cooperative 策略分布。",

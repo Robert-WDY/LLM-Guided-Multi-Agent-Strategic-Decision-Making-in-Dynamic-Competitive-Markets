@@ -90,6 +90,10 @@ RoundCoordinator 先从 Controller 读取一次权威状态，再并发读取观
 
 Coordinator 不吞掉 Controller 或 MarketEnv 的结算错误。环境失败时不会伪造下一状态。
 
+### 可靠建议模式
+
+`advisor_mode=pareto_reliable_v5` 只允许用于 `public` 信息模式。它保留 `pareto_rollout_v4` 的 Planner 原推荐，同时记录可靠性门控后的有效推荐。当对手模型平均置信度低于门槛、Planner 候选不优于情境退路，或候选差距落在 Rollout 情景不确定度内时，建议器明确 `abstain`，退回零可选投入、利润恢复或风险缓冲动作。Gate 输入、原因、候选集合和输出都有独立 Hash；旧 v3/v4 合同和 Replay 不做静默修改。
+
 ## 5. 接入真实模型
 
 实现 `ModelClient` Protocol 即可：
@@ -212,7 +216,7 @@ Counterfactual Evaluator 不替代市场结算，也不让 Agent 直接执行动
 
 ## 7. RoundEvent 与复现
 
-当前每轮 `agent-round-event-v1.8.0` 日志还包含通信生成与最终决策各自的 `ObservationSnapshot`；启用 Belief 时 Snapshot 同时绑定 Belief State/Hash；旧版字段说明继续兼容。日志包含：
+当前每轮 `agent-round-event-v1.10.0` 日志还包含通信生成与最终决策各自的 `ObservationSnapshot`；启用 Belief 时 Snapshot 同时绑定 Belief State/Hash；旧版字段说明继续兼容。日志包含：
 
 - 冻结前后 State Hash、Joint Action Hash 和随机数摘要；
 - 每个 Agent 的观察 Hash、Persona/Profile Hash、模型名、结构化计划与请求动作；
@@ -221,8 +225,11 @@ Counterfactual Evaluator 不替代市场结算，也不让 Agent 直接执行动
 - 延迟、Token 统计、错误/fallback 和确定性 ResultAnalysis；
 - 完整 StepResult 与协调阶段状态。
 - 完整 Communication Close、公司级可见视图、通信生成轨迹、最近历史输入和消息回应。
+- Stage 6.5 的 `AdvisorAdoptionTrace`：推荐动作、LLM 请求动作、Controller 最终动作、采纳状态、目标/完整动作对齐率、推荐与实际候选排名、模型理由及独立 Trace Hash。
 
 `MarketTransition` 仍是市场 Hash Replay 的权威记录；RoundEvent 是围绕它的 Agent 决策审计记录。Information Replay 从 RoundEvent 的 True State 和 EpisodeManifest 重建每个公司实际视图，并验证 Decision/Communication Context。测试覆盖固定 Seed 下的完整 5 轮闭环，并验证最终 Replay State Hash 与所有公司 Observation Hash 完全一致。
+
+Stage 6.5 还新增 `SelectiveDecisionModelClient`：只有预注册决策轮可以访问真实 Provider，其余轮统一使用不读取 Persona、Belief 或 Advisor 的固定经济基线。恢复中断实验时，会从已落盘行重建保守预算预留和真实 Token 使用量，不能借 `resume` 绕过调用数、Token 或费用上限。
 
 ## 8. 当前部署限制
 
