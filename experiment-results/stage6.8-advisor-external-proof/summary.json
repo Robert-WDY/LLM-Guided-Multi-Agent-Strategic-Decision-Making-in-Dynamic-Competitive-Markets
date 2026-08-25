@@ -1,0 +1,302 @@
+{
+  "by_episode": [
+    {
+      "best_ev_delta_cents": 511673,
+      "episode_id": "belief-real-paired-701",
+      "mean_ev_delta_cents": 334315,
+      "mean_profit_delta_cents": 69551,
+      "mean_regret_reduction_cents": 334315,
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 4,
+        "zero": 1
+      },
+      "window_count": 5,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 117686,
+      "episode_id": "belief-real-paired-702",
+      "mean_ev_delta_cents": 47655,
+      "mean_profit_delta_cents": 3239,
+      "mean_regret_reduction_cents": 47655,
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 4,
+        "zero": 1
+      },
+      "window_count": 5,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 399584,
+      "episode_id": "belief-real-paired-703",
+      "mean_ev_delta_cents": -186162,
+      "mean_profit_delta_cents": -50202,
+      "mean_regret_reduction_cents": -186162,
+      "positive_zero_negative_windows": {
+        "negative": 1,
+        "positive": 3,
+        "zero": 1
+      },
+      "window_count": 5,
+      "worst_ev_delta_cents": -1719605
+    },
+    {
+      "best_ev_delta_cents": 8308150,
+      "episode_id": "privileged-info-aggressive_v1_extreme-6101",
+      "mean_ev_delta_cents": 2287678,
+      "mean_profit_delta_cents": 2723810,
+      "mean_regret_reduction_cents": 2287678,
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 8,
+        "zero": 2
+      },
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 3145553,
+      "episode_id": "privileged-info-balanced_v1-6101",
+      "mean_ev_delta_cents": 558768,
+      "mean_profit_delta_cents": 1090461,
+      "mean_regret_reduction_cents": 558768,
+      "positive_zero_negative_windows": {
+        "negative": 2,
+        "positive": 7,
+        "zero": 1
+      },
+      "window_count": 10,
+      "worst_ev_delta_cents": -196437
+    },
+    {
+      "best_ev_delta_cents": 714859,
+      "episode_id": "privileged-info-conservative_v1_extreme-6101",
+      "mean_ev_delta_cents": 230964,
+      "mean_profit_delta_cents": -151189,
+      "mean_regret_reduction_cents": 230964,
+      "positive_zero_negative_windows": {
+        "negative": 2,
+        "positive": 7,
+        "zero": 1
+      },
+      "window_count": 10,
+      "worst_ev_delta_cents": -229584
+    }
+  ],
+  "by_persona": [
+    {
+      "best_ev_delta_cents": 8308150,
+      "mean_ev_delta_cents": 2287678,
+      "mean_profit_delta_cents": 2723810,
+      "mean_regret_reduction_cents": 2287678,
+      "persona_id": "aggressive_v1_extreme",
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 8,
+        "zero": 2
+      },
+      "window_count": 10,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 3145553,
+      "mean_ev_delta_cents": 262669,
+      "mean_profit_delta_cents": 440702,
+      "mean_regret_reduction_cents": 262669,
+      "persona_id": "balanced_v1",
+      "positive_zero_negative_windows": {
+        "negative": 3,
+        "positive": 18,
+        "zero": 4
+      },
+      "window_count": 25,
+      "worst_ev_delta_cents": -1719605
+    },
+    {
+      "best_ev_delta_cents": 714859,
+      "mean_ev_delta_cents": 230964,
+      "mean_profit_delta_cents": -151189,
+      "mean_regret_reduction_cents": 230964,
+      "persona_id": "conservative_v1_extreme",
+      "positive_zero_negative_windows": {
+        "negative": 2,
+        "positive": 7,
+        "zero": 1
+      },
+      "window_count": 10,
+      "worst_ev_delta_cents": -229584
+    }
+  ],
+  "by_seed": [
+    {
+      "best_ev_delta_cents": 8308150,
+      "mean_ev_delta_cents": 1025803,
+      "mean_profit_delta_cents": 1221027,
+      "mean_regret_reduction_cents": 1025803,
+      "positive_zero_negative_windows": {
+        "negative": 4,
+        "positive": 22,
+        "zero": 4
+      },
+      "seed": "6101",
+      "window_count": 30,
+      "worst_ev_delta_cents": -229584
+    },
+    {
+      "best_ev_delta_cents": 511673,
+      "mean_ev_delta_cents": 334315,
+      "mean_profit_delta_cents": 69551,
+      "mean_regret_reduction_cents": 334315,
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 4,
+        "zero": 1
+      },
+      "seed": "701",
+      "window_count": 5,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 117686,
+      "mean_ev_delta_cents": 47655,
+      "mean_profit_delta_cents": 3239,
+      "mean_regret_reduction_cents": 47655,
+      "positive_zero_negative_windows": {
+        "negative": 0,
+        "positive": 4,
+        "zero": 1
+      },
+      "seed": "702",
+      "window_count": 5,
+      "worst_ev_delta_cents": 0
+    },
+    {
+      "best_ev_delta_cents": 399584,
+      "mean_ev_delta_cents": -186162,
+      "mean_profit_delta_cents": -50202,
+      "mean_regret_reduction_cents": -186162,
+      "positive_zero_negative_windows": {
+        "negative": 1,
+        "positive": 3,
+        "zero": 1
+      },
+      "seed": "703",
+      "window_count": 5,
+      "worst_ev_delta_cents": -1719605
+    }
+  ],
+  "conclusion_limits": [
+    "only four independent seeds are present across six episodes",
+    "round windows overlap within an episode and are not independent samples",
+    "the market is synthetic and not empirically calibrated",
+    "v6 advice is auto-executed here rather than adopted by a new model call",
+    "historical episodes are external to v6 fitting but were created in earlier project stages"
+  ],
+  "dataset_hash": "sha256:6305dc8870f56107eef2e88a8aaae4e63bd77ad38684524ff0927422788e6667",
+  "direction_metrics": {
+    "direction_accuracy_ppm": 904761,
+    "direction_match_count": 152,
+    "mean_absolute_error_cents": 72859,
+    "mean_rank_error_milli": 309,
+    "sample_count": 168
+  },
+  "engineering_checks": {
+    "all_release_decisions_rebuilt_deterministically": true,
+    "all_windows_rebuilt_deterministically": true,
+    "external_episode_overlap_with_profile_zero": true,
+    "hidden_authoritative_state_used_by_advice_count": 0,
+    "new_completion_tokens": 0,
+    "new_estimated_cost_cny": 0,
+    "new_prompt_tokens": 0,
+    "new_real_model_calls": 0,
+    "new_total_tokens": 0,
+    "preregistration_hash_matches": true,
+    "profile_hash_unchanged": true
+  },
+  "engineering_passed": true,
+  "episode_count": 6,
+  "evidence_level": "zero-token-external-historical-real-llm-frozen-tape",
+  "experiment_schema_version": "stage6.8-advisor-external-proof-v1.0.0",
+  "forecast_sample_count": 168,
+  "frozen_profile_hash": "sha256:54d6a5c2dadbba2c74442caad8cef65293d7031876b2b58d33e7d51b1ed47de2",
+  "independent_seed_count": 4,
+  "new_estimated_cost_cny": 0,
+  "new_real_model_calls": 0,
+  "new_total_tokens": 0,
+  "outcome_checks": {
+    "advisor_mean_ev_delta_positive": true,
+    "at_least_five_of_six_episode_means_nonnegative": true,
+    "mean_regret_reduction_positive": true,
+    "worst_episode_mean_ev_delta_nonnegative": false,
+    "worst_window_ev_delta_within_tail_limit": false
+  },
+  "outcome_gate_passed": false,
+  "overall_outcomes": {
+    "best_ev_delta_cents": 8308150,
+    "mean_ev_delta_cents": 705625,
+    "mean_profit_delta_cents": 816528,
+    "mean_regret_reduction_cents": 705625,
+    "positive_zero_negative_windows": {
+      "negative": 5,
+      "positive": 33,
+      "zero": 7
+    },
+    "window_count": 45,
+    "worst_ev_delta_cents": -1719605
+  },
+  "prediction_checks": {
+    "all_candidate_direction_accuracy_at_least_80_percent": true,
+    "released_coverage_at_least_30_percent": true,
+    "released_direction_accuracy_at_least_90_percent": true,
+    "released_negative_actual_count_zero": true
+  },
+  "prediction_gate_passed": true,
+  "preregistration_hash": "sha256:ec7461abed5648dc018d2f4bdccdac708111b415f85e679ab35c78f14e788bd7",
+  "real_llm_gate": "closed_no_real_llm_calls",
+  "release_metrics": {
+    "coverage_ppm": 569230,
+    "eligible_candidate_count": 65,
+    "released_candidate_count": 37,
+    "released_direction_accuracy_ppm": 1000000,
+    "released_direction_match_count": 37,
+    "released_negative_actual_count": 0,
+    "released_negative_sample_ids": [],
+    "sample_count": 168
+  },
+  "report_hash": "sha256:62159d003f4841adca8cbee81091599c8dc936f316804199d7d28716f9d03586",
+  "seed_cluster_exact_sign_test_two_sided_p_ppm": 625000,
+  "special_cells": {
+    "active_event__resilience": {
+      "direction_accuracy_ppm": 750000,
+      "direction_match_count": 9,
+      "mean_absolute_error_cents": 113136,
+      "mean_rank_error_milli": 250,
+      "sample_count": 12
+    },
+    "active_event__service": {
+      "direction_accuracy_ppm": 916666,
+      "direction_match_count": 11,
+      "mean_absolute_error_cents": 95810,
+      "mean_rank_error_milli": 416,
+      "sample_count": 12
+    },
+    "warning__resilience": {
+      "direction_accuracy_ppm": 1000000,
+      "direction_match_count": 7,
+      "mean_absolute_error_cents": 106263,
+      "mean_rank_error_milli": 285,
+      "sample_count": 7
+    },
+    "warning__service": {
+      "direction_accuracy_ppm": 1000000,
+      "direction_match_count": 7,
+      "mean_absolute_error_cents": 98937,
+      "mean_rank_error_milli": 571,
+      "sample_count": 7
+    }
+  },
+  "statistical_conclusion_supported": false,
+  "window_count": 45
+}

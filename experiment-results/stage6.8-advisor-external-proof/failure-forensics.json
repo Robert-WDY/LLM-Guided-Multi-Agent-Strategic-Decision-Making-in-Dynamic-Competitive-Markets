@@ -1,0 +1,2133 @@
+{
+  "diagnosis_boundary": "post-hoc forensic explanation only; it does not reopen the paid gate and must not be used to alter the pre-registered Stage 6.8 result",
+  "evidence_level": "post-gate-zero-token-diagnostic",
+  "forensic_schema_version": "stage6.8-failure-forensics-v1.0.0",
+  "historical_action_absent_from_candidate_set_count": 5,
+  "negative_window_count": 5,
+  "new_estimated_cost_cny": 0,
+  "new_real_model_calls": 0,
+  "new_total_tokens": 0,
+  "report_hash": "sha256:1bc2e85940b0a07e59fbb59ce6a77ea7734a5b344bffe86ab4e4e6f6e85a2ee6",
+  "rows": [
+    {
+      "advisor_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 9800,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 500000,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "advisor_minus_historical_ev_cents": -1719605,
+      "candidate_count": 11,
+      "candidate_rank_rows": [
+        {
+          "action": {
+            "advertising_budget_cents": 0,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 11600,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 500000,
+            "service_budget_cents": 0,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 1,
+          "authoritative_frozen_tape_ev_cents": 40653887,
+          "candidate_id": "profit_recovery",
+          "public_ce_rank": 1,
+          "public_certainty_equivalent_value_cents": 40709534,
+          "public_expected_ev_delta_cents": -172551,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 0,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 9800,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 1000000,
+            "service_budget_cents": 0,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 2,
+          "authoritative_frozen_tape_ev_cents": 37134233,
+          "candidate_id": "risk_buffer",
+          "public_ce_rank": 2,
+          "public_certainty_equivalent_value_cents": 37748393,
+          "public_expected_ev_delta_cents": -3137432,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1039418,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 10300,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 803187,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 3,
+          "authoritative_frozen_tape_ev_cents": 37103165,
+          "candidate_id": "price_increase",
+          "public_ce_rank": 4,
+          "public_certainty_equivalent_value_cents": 37017082,
+          "public_expected_ev_delta_cents": -3458570,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 0,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 9800,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 500000,
+            "service_budget_cents": 0,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 4,
+          "authoritative_frozen_tape_ev_cents": 37073759,
+          "candidate_id": "status_quo",
+          "public_ce_rank": 3,
+          "public_certainty_equivalent_value_cents": 37645954,
+          "public_expected_ev_delta_cents": -3197408,
+          "selected": true
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1039418,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 9567,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 500000,
+            "service_budget_cents": 803187,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 5,
+          "authoritative_frozen_tape_ev_cents": 35354657,
+          "candidate_id": "increase_resilience",
+          "public_ce_rank": 5,
+          "public_certainty_equivalent_value_cents": 35330031,
+          "public_expected_ev_delta_cents": -5069549,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1039418,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 9567,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 803187,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 6,
+          "authoritative_frozen_tape_ev_cents": 34936257,
+          "candidate_id": "maintain",
+          "public_ce_rank": 6,
+          "public_certainty_equivalent_value_cents": 34600936,
+          "public_expected_ev_delta_cents": -5601364,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1039418,
+            "capacity_investment_cents": 750000,
+            "incident_response_mode": "wait",
+            "price_cents": 9567,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 803187,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 7,
+          "authoritative_frozen_tape_ev_cents": 34664056,
+          "candidate_id": "increase_capacity",
+          "public_ce_rank": 7,
+          "public_certainty_equivalent_value_cents": 34403781,
+          "public_expected_ev_delta_cents": -5744976,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1039418,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 9567,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1303187,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 8,
+          "authoritative_frozen_tape_ev_cents": 34589883,
+          "candidate_id": "increase_service",
+          "public_ce_rank": 8,
+          "public_certainty_equivalent_value_cents": 34126808,
+          "public_expected_ev_delta_cents": -5979517,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1539418,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 9567,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 803187,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 9,
+          "authoritative_frozen_tape_ev_cents": 34547710,
+          "candidate_id": "increase_advertising",
+          "public_ce_rank": 9,
+          "public_certainty_equivalent_value_cents": 34085823,
+          "public_expected_ev_delta_cents": -6003243,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1039418,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 9300,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 803187,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 10,
+          "authoritative_frozen_tape_ev_cents": 34161343,
+          "candidate_id": "price_cut_small",
+          "public_ce_rank": 10,
+          "public_certainty_equivalent_value_cents": 33883819,
+          "public_expected_ev_delta_cents": -6232186,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1039418,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 8800,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 803187,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 11,
+          "authoritative_frozen_tape_ev_cents": 32732264,
+          "candidate_id": "price_cut_large",
+          "public_ce_rank": 11,
+          "public_certainty_equivalent_value_cents": 32195077,
+          "public_expected_ev_delta_cents": -7865726,
+          "selected": false
+        }
+      ],
+      "excluded_candidates": [
+        {
+          "candidate_id": "price_cut_small",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "price_cut_large",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "increase_advertising",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "increase_service",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "increase_capacity",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        }
+      ],
+      "historical_action": {
+        "advertising_budget_cents": 500000,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10636,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 500000,
+        "service_budget_cents": 500000,
+        "shared_resilience_contribution_cents": 0
+      },
+      "historical_action_in_candidate_set": false,
+      "marginal_forecast_release_rows": [
+        {
+          "authoritative_delta_ev_cents": -260682,
+          "dimension": "advertising",
+          "forecast_delta_ev_cents": -317632,
+          "release_reason_codes": [
+            "individual_marginal_floors_failed",
+            "forecast_gain_not_positive",
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        },
+        {
+          "authoritative_delta_ev_cents": -272201,
+          "dimension": "capacity",
+          "forecast_delta_ev_cents": -211439,
+          "release_reason_codes": [
+            "individual_marginal_floors_failed",
+            "forecast_gain_not_positive",
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        },
+        {
+          "authoritative_delta_ev_cents": 451334,
+          "dimension": "resilience",
+          "forecast_delta_ev_cents": 426052,
+          "release_reason_codes": [
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        },
+        {
+          "authoritative_delta_ev_cents": -200643,
+          "dimension": "service",
+          "forecast_delta_ev_cents": -269815,
+          "release_reason_codes": [
+            "individual_marginal_floors_failed",
+            "forecast_gain_not_positive",
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        }
+      ],
+      "persona_id": "balanced_v1",
+      "planner_recommended_candidate_id": "profit_recovery",
+      "recommendation_reason": "公开预测证据不足，可靠性门禁已放弃强建议并回退到可审计的安全经营候选。",
+      "reliability_gate": {
+        "abstain_reason_codes": [
+          "opponent_model_confidence_below_gate"
+        ],
+        "advisor_confidence_ppm": 400000,
+        "allowed_in_agent_context": true,
+        "effective_candidate_id": "status_quo",
+        "excluded_candidates": [
+          {
+            "candidate_id": "price_cut_small",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "price_cut_large",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "increase_advertising",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "increase_service",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "increase_capacity",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          }
+        ],
+        "fallback_candidate_id": "status_quo",
+        "forecast_uncertainty_cents": 4452072,
+        "gate_hash": "sha256:0fb3b5d52d807108438dbcf5360c2ed3b70d593acd443a72a379cd5f2ea19346",
+        "gate_schema_version": "pareto-reliability-gate-v2.0.0",
+        "marginal_investment_plan_hash": "sha256:cbc55f02741024116b8dbeca6105ff5b22dc9a98f782826a62a554dae0cb4cfa",
+        "opponent_model_confidence_ppm": 400000,
+        "planner_candidate_id": "profit_recovery",
+        "planner_decision_hash": "sha256:7c87f5a1acc9e6221cc14c023b1a23c75e2acffe721b3bdc058bff182fd0ca90",
+        "reliability_input_hash": "sha256:cf5e6bf258c69892588b300a138cb6ed5c61a0929eddd80b056ff5bc65afcccf",
+        "safe_candidate_ids": [
+          "increase_resilience",
+          "maintain",
+          "price_increase",
+          "profit_recovery",
+          "risk_buffer",
+          "status_quo"
+        ],
+        "selected_passes_fallback_persona_floor": true,
+        "selected_passes_fallback_value_floor": true,
+        "selected_passes_fallback_worst_floor": true,
+        "should_abstain": true,
+        "top_two_value_gap_cents": 2961141,
+        "uses_authoritative_hidden_market_state": false,
+        "uses_only_public_and_own_private_inputs": true
+      },
+      "safe_candidate_ids": [
+        "increase_resilience",
+        "maintain",
+        "price_increase",
+        "profit_recovery",
+        "risk_buffer",
+        "status_quo"
+      ],
+      "seed": 703,
+      "selected_authoritative_ev_rank": 4,
+      "selected_candidate_id": "status_quo",
+      "selected_public_ce_rank": 3,
+      "selection_situation": "protect_lead",
+      "shapley_decomposition": [
+        {
+          "advisor_value": 9800,
+          "dimension": "price_cents",
+          "historical_value": 10636,
+          "shapley_ev_contribution_cents_rounded": -2031616,
+          "shapley_ev_contribution_denominator": 6,
+          "shapley_ev_contribution_numerator": -12189695
+        },
+        {
+          "advisor_value": 0,
+          "dimension": "advertising_budget_cents",
+          "historical_value": 500000,
+          "shapley_ev_contribution_cents_rounded": 186879,
+          "shapley_ev_contribution_denominator": 3,
+          "shapley_ev_contribution_numerator": 560636
+        },
+        {
+          "advisor_value": 0,
+          "dimension": "service_budget_cents",
+          "historical_value": 500000,
+          "shapley_ev_contribution_cents_rounded": 125132,
+          "shapley_ev_contribution_denominator": 6,
+          "shapley_ev_contribution_numerator": 750793
+        }
+      ],
+      "shapley_reconstructed_total_delta_cents": -1719605,
+      "window_id": "belief-real-paired-703:r3"
+    },
+    {
+      "advisor_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10000,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 1000000,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "advisor_minus_historical_ev_cents": -229584,
+      "candidate_count": 10,
+      "candidate_rank_rows": [
+        {
+          "action": {
+            "advertising_budget_cents": 1266090,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 10500,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1071307,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 1,
+          "authoritative_frozen_tape_ev_cents": 47896700,
+          "candidate_id": "price_increase",
+          "public_ce_rank": 3,
+          "public_certainty_equivalent_value_cents": 46177489,
+          "public_expected_ev_delta_cents": 687798,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 0,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 10000,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 500000,
+            "service_budget_cents": 0,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 2,
+          "authoritative_frozen_tape_ev_cents": 47688124,
+          "candidate_id": "status_quo",
+          "public_ce_rank": 1,
+          "public_certainty_equivalent_value_cents": 46566591,
+          "public_expected_ev_delta_cents": 807808,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 0,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 10000,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 1000000,
+            "service_budget_cents": 0,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 3,
+          "authoritative_frozen_tape_ev_cents": 47479192,
+          "candidate_id": "risk_buffer",
+          "public_ce_rank": 2,
+          "public_certainty_equivalent_value_cents": 46371349,
+          "public_expected_ev_delta_cents": 595944,
+          "selected": true
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1266090,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 9699,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1071307,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 4,
+          "authoritative_frozen_tape_ev_cents": 46899837,
+          "candidate_id": "maintain",
+          "public_ce_rank": 5,
+          "public_certainty_equivalent_value_cents": 45648494,
+          "public_expected_ev_delta_cents": 204487,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1266090,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 9699,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 500000,
+            "service_budget_cents": 1071307,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 5,
+          "authoritative_frozen_tape_ev_cents": 46898418,
+          "candidate_id": "increase_resilience",
+          "public_ce_rank": 4,
+          "public_certainty_equivalent_value_cents": 45718874,
+          "public_expected_ev_delta_cents": 314245,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1266090,
+            "capacity_investment_cents": 750000,
+            "incident_response_mode": "wait",
+            "price_cents": 9699,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1071307,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 6,
+          "authoritative_frozen_tape_ev_cents": 46627636,
+          "candidate_id": "increase_capacity",
+          "public_ce_rank": 6,
+          "public_certainty_equivalent_value_cents": 45267534,
+          "public_expected_ev_delta_cents": 34552,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1266090,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 9699,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1571307,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 7,
+          "authoritative_frozen_tape_ev_cents": 46520514,
+          "candidate_id": "increase_service",
+          "public_ce_rank": 7,
+          "public_certainty_equivalent_value_cents": 45184321,
+          "public_expected_ev_delta_cents": -50081,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1766090,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 9699,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1071307,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 8,
+          "authoritative_frozen_tape_ev_cents": 46490209,
+          "candidate_id": "increase_advertising",
+          "public_ce_rank": 8,
+          "public_certainty_equivalent_value_cents": 45154603,
+          "public_expected_ev_delta_cents": -88876,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1266090,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 9500,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1071307,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 9,
+          "authoritative_frozen_tape_ev_cents": 46240904,
+          "candidate_id": "price_cut_small",
+          "public_ce_rank": 9,
+          "public_certainty_equivalent_value_cents": 45012042,
+          "public_expected_ev_delta_cents": -189182,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1266090,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 9000,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1071307,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 10,
+          "authoritative_frozen_tape_ev_cents": 44591942,
+          "candidate_id": "price_cut_large",
+          "public_ce_rank": 10,
+          "public_certainty_equivalent_value_cents": 42988730,
+          "public_expected_ev_delta_cents": -1974469,
+          "selected": false
+        }
+      ],
+      "excluded_candidates": [
+        {
+          "candidate_id": "price_cut_small",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "price_cut_large",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "price_increase",
+          "reason_codes": [
+            "competitive_margin_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "increase_advertising",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "increase_service",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "increase_capacity",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        }
+      ],
+      "historical_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10000,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "historical_action_in_candidate_set": false,
+      "marginal_forecast_release_rows": [
+        {
+          "authoritative_delta_ev_cents": -10548,
+          "dimension": "advertising",
+          "forecast_delta_ev_cents": -43197,
+          "release_reason_codes": [
+            "individual_marginal_floors_failed",
+            "forecast_gain_not_positive",
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        },
+        {
+          "authoritative_delta_ev_cents": -272201,
+          "dimension": "capacity",
+          "forecast_delta_ev_cents": -195573,
+          "release_reason_codes": [
+            "individual_marginal_floors_failed",
+            "forecast_gain_not_positive",
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        },
+        {
+          "authoritative_delta_ev_cents": -20652,
+          "dimension": "resilience",
+          "forecast_delta_ev_cents": 21047,
+          "release_reason_codes": [
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        },
+        {
+          "authoritative_delta_ev_cents": 80988,
+          "dimension": "service",
+          "forecast_delta_ev_cents": 51493,
+          "release_reason_codes": [
+            "individual_marginal_floors_failed",
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        }
+      ],
+      "persona_id": "conservative_v1_extreme",
+      "planner_recommended_candidate_id": "status_quo",
+      "recommendation_reason": "公开预测证据不足，可靠性门禁已放弃强建议并回退到可审计的安全经营候选。",
+      "reliability_gate": {
+        "abstain_reason_codes": [
+          "opponent_model_confidence_below_gate",
+          "top_candidates_overlap_forecast_uncertainty"
+        ],
+        "advisor_confidence_ppm": 39553,
+        "allowed_in_agent_context": true,
+        "effective_candidate_id": "risk_buffer",
+        "excluded_candidates": [
+          {
+            "candidate_id": "price_cut_small",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "price_cut_large",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "price_increase",
+            "reason_codes": [
+              "competitive_margin_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "increase_advertising",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "increase_service",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "increase_capacity",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          }
+        ],
+        "fallback_candidate_id": "risk_buffer",
+        "forecast_uncertainty_cents": 4936161,
+        "gate_hash": "sha256:9903c4c28b1930a80a0042f0d513ab31b0cab7fd294342ba870457cc45f2348e",
+        "gate_schema_version": "pareto-reliability-gate-v2.0.0",
+        "marginal_investment_plan_hash": "sha256:173072ee364e5d5b7a89c490d8016a6bd6d82fd832d9e9f5cc3ce75fae185caa",
+        "opponent_model_confidence_ppm": 500000,
+        "planner_candidate_id": "status_quo",
+        "planner_decision_hash": "sha256:965acd82cb0da21e936d0103e8f6ba2942f6355333fe4d26be3d99c7e4c4ff68",
+        "reliability_input_hash": "sha256:9db2a53a5aae057ac952c6cb7068c984298edfab82e799e555e243a04fa50856",
+        "safe_candidate_ids": [
+          "increase_resilience",
+          "maintain",
+          "risk_buffer",
+          "status_quo"
+        ],
+        "selected_passes_fallback_persona_floor": true,
+        "selected_passes_fallback_value_floor": true,
+        "selected_passes_fallback_worst_floor": true,
+        "should_abstain": true,
+        "top_two_value_gap_cents": 195242,
+        "uses_authoritative_hidden_market_state": false,
+        "uses_only_public_and_own_private_inputs": true
+      },
+      "safe_candidate_ids": [
+        "increase_resilience",
+        "maintain",
+        "risk_buffer",
+        "status_quo"
+      ],
+      "seed": 6101,
+      "selected_authoritative_ev_rank": 3,
+      "selected_candidate_id": "risk_buffer",
+      "selected_public_ce_rank": 2,
+      "selection_situation": "protect_lead",
+      "shapley_decomposition": [
+        {
+          "advisor_value": 1000000,
+          "dimension": "resilience_budget_cents",
+          "historical_value": 0,
+          "shapley_ev_contribution_cents_rounded": -229584,
+          "shapley_ev_contribution_denominator": 1,
+          "shapley_ev_contribution_numerator": -229584
+        }
+      ],
+      "shapley_reconstructed_total_delta_cents": -229584,
+      "window_id": "privileged-info-conservative_v1_extreme-6101:r4"
+    },
+    {
+      "advisor_action": {
+        "advertising_budget_cents": 500000,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 8956,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 500000,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "advisor_minus_historical_ev_cents": -196437,
+      "candidate_count": 10,
+      "candidate_rank_rows": [
+        {
+          "action": {
+            "advertising_budget_cents": 1311290,
+            "capacity_investment_cents": 800000,
+            "incident_response_mode": "wait",
+            "price_cents": 10810,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1193074,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 1,
+          "authoritative_frozen_tape_ev_cents": 42712525,
+          "candidate_id": "increase_advertising",
+          "public_ce_rank": 3,
+          "public_certainty_equivalent_value_cents": 42606404,
+          "public_expected_ev_delta_cents": 4825375,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 811290,
+            "capacity_investment_cents": 800000,
+            "incident_response_mode": "wait",
+            "price_cents": 10810,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1193074,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 2,
+          "authoritative_frozen_tape_ev_cents": 42631366,
+          "candidate_id": "maintain",
+          "public_ce_rank": 2,
+          "public_certainty_equivalent_value_cents": 42683587,
+          "public_expected_ev_delta_cents": 4872160,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 811290,
+            "capacity_investment_cents": 800000,
+            "incident_response_mode": "wait",
+            "price_cents": 10810,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1693074,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 3,
+          "authoritative_frozen_tape_ev_cents": 42478707,
+          "candidate_id": "increase_service",
+          "public_ce_rank": 4,
+          "public_certainty_equivalent_value_cents": 42408678,
+          "public_expected_ev_delta_cents": 4662242,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 811290,
+            "capacity_investment_cents": 800000,
+            "incident_response_mode": "wait",
+            "price_cents": 10810,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 500000,
+            "service_budget_cents": 1193074,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 4,
+          "authoritative_frozen_tape_ev_cents": 42370354,
+          "candidate_id": "increase_resilience",
+          "public_ce_rank": 1,
+          "public_certainty_equivalent_value_cents": 42841318,
+          "public_expected_ev_delta_cents": 4878433,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 811290,
+            "capacity_investment_cents": 1550000,
+            "incident_response_mode": "wait",
+            "price_cents": 10810,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1193074,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 5,
+          "authoritative_frozen_tape_ev_cents": 42359165,
+          "candidate_id": "increase_capacity",
+          "public_ce_rank": 5,
+          "public_certainty_equivalent_value_cents": 42343063,
+          "public_expected_ev_delta_cents": 4599959,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 811290,
+            "capacity_investment_cents": 800000,
+            "incident_response_mode": "wait",
+            "price_cents": 9456,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1193074,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 6,
+          "authoritative_frozen_tape_ev_cents": 41960815,
+          "candidate_id": "price_increase",
+          "public_ce_rank": 6,
+          "public_certainty_equivalent_value_cents": 40177096,
+          "public_expected_ev_delta_cents": 2688827,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 500000,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 8956,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 500000,
+            "service_budget_cents": 0,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 7,
+          "authoritative_frozen_tape_ev_cents": 40928101,
+          "candidate_id": "status_quo",
+          "public_ce_rank": 7,
+          "public_certainty_equivalent_value_cents": 39115438,
+          "public_expected_ev_delta_cents": 1600562,
+          "selected": true
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 500000,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 8956,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 1000000,
+            "service_budget_cents": 0,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 8,
+          "authoritative_frozen_tape_ev_cents": 40567509,
+          "candidate_id": "risk_buffer",
+          "public_ce_rank": 8,
+          "public_certainty_equivalent_value_cents": 38990812,
+          "public_expected_ev_delta_cents": 1401238,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 811290,
+            "capacity_investment_cents": 800000,
+            "incident_response_mode": "wait",
+            "price_cents": 8456,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1193074,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 9,
+          "authoritative_frozen_tape_ev_cents": 37852390,
+          "candidate_id": "price_cut_small",
+          "public_ce_rank": 9,
+          "public_certainty_equivalent_value_cents": 35777980,
+          "public_expected_ev_delta_cents": -1138679,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 811290,
+            "capacity_investment_cents": 800000,
+            "incident_response_mode": "wait",
+            "price_cents": 7956,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1193074,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 10,
+          "authoritative_frozen_tape_ev_cents": 35593468,
+          "candidate_id": "price_cut_large",
+          "public_ce_rank": 10,
+          "public_certainty_equivalent_value_cents": 32959552,
+          "public_expected_ev_delta_cents": -3746840,
+          "selected": false
+        }
+      ],
+      "excluded_candidates": [
+        {
+          "candidate_id": "price_cut_small",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "price_cut_large",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "price_increase",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "increase_advertising",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "increase_service",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "increase_capacity",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "risk_buffer",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        }
+      ],
+      "historical_action": {
+        "advertising_budget_cents": 300000,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 8956,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 300000,
+        "service_budget_cents": 300000,
+        "shared_resilience_contribution_cents": 0
+      },
+      "historical_action_in_candidate_set": false,
+      "marginal_forecast_release_rows": [
+        {
+          "authoritative_delta_ev_cents": 314600,
+          "dimension": "advertising",
+          "forecast_delta_ev_cents": 269760,
+          "release_reason_codes": [
+            "released_by_historical_forecast_profile"
+          ],
+          "released": true
+        },
+        {
+          "authoritative_delta_ev_cents": -272201,
+          "dimension": "capacity",
+          "forecast_delta_ev_cents": -272201,
+          "release_reason_codes": [
+            "individual_marginal_floors_failed",
+            "forecast_gain_not_positive",
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        },
+        {
+          "authoritative_delta_ev_cents": -261012,
+          "dimension": "resilience",
+          "forecast_delta_ev_cents": 14291,
+          "release_reason_codes": [
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        },
+        {
+          "authoritative_delta_ev_cents": 185435,
+          "dimension": "service",
+          "forecast_delta_ev_cents": 47025,
+          "release_reason_codes": [
+            "individual_marginal_floors_failed",
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        }
+      ],
+      "persona_id": "balanced_v1",
+      "planner_recommended_candidate_id": "increase_resilience",
+      "recommendation_reason": "公开预测证据不足，可靠性门禁已放弃强建议并回退到可审计的安全经营候选。",
+      "reliability_gate": {
+        "abstain_reason_codes": [
+          "top_candidates_overlap_forecast_uncertainty"
+        ],
+        "advisor_confidence_ppm": 37392,
+        "allowed_in_agent_context": true,
+        "effective_candidate_id": "status_quo",
+        "excluded_candidates": [
+          {
+            "candidate_id": "price_cut_small",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "price_cut_large",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "price_increase",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "increase_advertising",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "increase_service",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "increase_capacity",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "risk_buffer",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          }
+        ],
+        "fallback_candidate_id": "status_quo",
+        "forecast_uncertainty_cents": 4218288,
+        "gate_hash": "sha256:13e2c16e7e84686d3ed4fab3d90b0d550238ba022fa8d03f97591240a2cc0f41",
+        "gate_schema_version": "pareto-reliability-gate-v2.0.0",
+        "marginal_investment_plan_hash": "sha256:af880b4885b516222d56da87624f5b60093adf44d1c4c1d0964ed10d6818b126",
+        "opponent_model_confidence_ppm": 700000,
+        "planner_candidate_id": "increase_resilience",
+        "planner_decision_hash": "sha256:3a3431c69461b48f5ab16d41d9386921b0631beeb205bdbcca30b525ece92c0b",
+        "reliability_input_hash": "sha256:a92913571c454b94b82d746dfc5ee8fd1db6f552a927e51fb64ceb6e68abca57",
+        "safe_candidate_ids": [
+          "increase_resilience",
+          "maintain",
+          "status_quo"
+        ],
+        "selected_passes_fallback_persona_floor": true,
+        "selected_passes_fallback_value_floor": true,
+        "selected_passes_fallback_worst_floor": true,
+        "should_abstain": true,
+        "top_two_value_gap_cents": 157731,
+        "uses_authoritative_hidden_market_state": false,
+        "uses_only_public_and_own_private_inputs": true
+      },
+      "safe_candidate_ids": [
+        "increase_resilience",
+        "maintain",
+        "status_quo"
+      ],
+      "seed": 6101,
+      "selected_authoritative_ev_rank": 7,
+      "selected_candidate_id": "status_quo",
+      "selected_public_ce_rank": 7,
+      "selection_situation": "protect_lead",
+      "shapley_decomposition": [
+        {
+          "advisor_value": 500000,
+          "dimension": "advertising_budget_cents",
+          "historical_value": 300000,
+          "shapley_ev_contribution_cents_rounded": 82602,
+          "shapley_ev_contribution_denominator": 2,
+          "shapley_ev_contribution_numerator": 165203
+        },
+        {
+          "advisor_value": 0,
+          "dimension": "service_budget_cents",
+          "historical_value": 300000,
+          "shapley_ev_contribution_cents_rounded": -157764,
+          "shapley_ev_contribution_denominator": 2,
+          "shapley_ev_contribution_numerator": -315527
+        },
+        {
+          "advisor_value": 500000,
+          "dimension": "resilience_budget_cents",
+          "historical_value": 300000,
+          "shapley_ev_contribution_cents_rounded": -121275,
+          "shapley_ev_contribution_denominator": 1,
+          "shapley_ev_contribution_numerator": -121275
+        }
+      ],
+      "shapley_reconstructed_total_delta_cents": -196437,
+      "window_id": "privileged-info-balanced_v1-6101:r8"
+    },
+    {
+      "advisor_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10000,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 500000,
+        "service_budget_cents": 500000,
+        "shared_resilience_contribution_cents": 0
+      },
+      "advisor_minus_historical_ev_cents": -55027,
+      "candidate_count": 10,
+      "candidate_rank_rows": [
+        {
+          "action": {
+            "advertising_budget_cents": 0,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 10000,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 500000,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 1,
+          "authoritative_frozen_tape_ev_cents": 50073829,
+          "candidate_id": "status_quo",
+          "public_ce_rank": 3,
+          "public_certainty_equivalent_value_cents": 47311707,
+          "public_expected_ev_delta_cents": 1584461,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 0,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 10000,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 500000,
+            "service_budget_cents": 500000,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 2,
+          "authoritative_frozen_tape_ev_cents": 49848231,
+          "candidate_id": "risk_buffer",
+          "public_ce_rank": 1,
+          "public_certainty_equivalent_value_cents": 47397174,
+          "public_expected_ev_delta_cents": 1410232,
+          "selected": true
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1179326,
+            "capacity_investment_cents": 800000,
+            "incident_response_mode": "wait",
+            "price_cents": 10500,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 700000,
+            "service_budget_cents": 997891,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 3,
+          "authoritative_frozen_tape_ev_cents": 49656604,
+          "candidate_id": "price_increase",
+          "public_ce_rank": 2,
+          "public_certainty_equivalent_value_cents": 47378616,
+          "public_expected_ev_delta_cents": 1370223,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1179326,
+            "capacity_investment_cents": 800000,
+            "incident_response_mode": "wait",
+            "price_cents": 10002,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 700000,
+            "service_budget_cents": 997891,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 4,
+          "authoritative_frozen_tape_ev_cents": 48672070,
+          "candidate_id": "maintain",
+          "public_ce_rank": 4,
+          "public_certainty_equivalent_value_cents": 46280278,
+          "public_expected_ev_delta_cents": 444394,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1179326,
+            "capacity_investment_cents": 1550000,
+            "incident_response_mode": "wait",
+            "price_cents": 10002,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 700000,
+            "service_budget_cents": 997891,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 5,
+          "authoritative_frozen_tape_ev_cents": 48399869,
+          "candidate_id": "increase_capacity",
+          "public_ce_rank": 8,
+          "public_certainty_equivalent_value_cents": 45854570,
+          "public_expected_ev_delta_cents": 172193,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1179326,
+            "capacity_investment_cents": 800000,
+            "incident_response_mode": "wait",
+            "price_cents": 10002,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 1200000,
+            "service_budget_cents": 997891,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 6,
+          "authoritative_frozen_tape_ev_cents": 48306243,
+          "candidate_id": "increase_resilience",
+          "public_ce_rank": 5,
+          "public_certainty_equivalent_value_cents": 46008268,
+          "public_expected_ev_delta_cents": 104320,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1179326,
+            "capacity_investment_cents": 800000,
+            "incident_response_mode": "wait",
+            "price_cents": 10002,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 700000,
+            "service_budget_cents": 1497891,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 7,
+          "authoritative_frozen_tape_ev_cents": 48245819,
+          "candidate_id": "increase_service",
+          "public_ce_rank": 6,
+          "public_certainty_equivalent_value_cents": 45993847,
+          "public_expected_ev_delta_cents": 259876,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1679326,
+            "capacity_investment_cents": 800000,
+            "incident_response_mode": "wait",
+            "price_cents": 10002,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 700000,
+            "service_budget_cents": 997891,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 8,
+          "authoritative_frozen_tape_ev_cents": 48222297,
+          "candidate_id": "increase_advertising",
+          "public_ce_rank": 7,
+          "public_certainty_equivalent_value_cents": 45930708,
+          "public_expected_ev_delta_cents": 202154,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1179326,
+            "capacity_investment_cents": 800000,
+            "incident_response_mode": "wait",
+            "price_cents": 9500,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 700000,
+            "service_budget_cents": 997891,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 9,
+          "authoritative_frozen_tape_ev_cents": 46870584,
+          "candidate_id": "price_cut_small",
+          "public_ce_rank": 9,
+          "public_certainty_equivalent_value_cents": 44555965,
+          "public_expected_ev_delta_cents": -787215,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1179326,
+            "capacity_investment_cents": 800000,
+            "incident_response_mode": "wait",
+            "price_cents": 9000,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 700000,
+            "service_budget_cents": 997891,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 10,
+          "authoritative_frozen_tape_ev_cents": 45185360,
+          "candidate_id": "price_cut_large",
+          "public_ce_rank": 10,
+          "public_certainty_equivalent_value_cents": 42725944,
+          "public_expected_ev_delta_cents": -2487908,
+          "selected": false
+        }
+      ],
+      "excluded_candidates": [
+        {
+          "candidate_id": "price_cut_small",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "price_cut_large",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "increase_advertising",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "increase_service",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "increase_capacity",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "increase_resilience",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        }
+      ],
+      "historical_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 10000,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "historical_action_in_candidate_set": false,
+      "marginal_forecast_release_rows": [
+        {
+          "authoritative_delta_ev_cents": 64572,
+          "dimension": "advertising",
+          "forecast_delta_ev_cents": -9524,
+          "release_reason_codes": [
+            "individual_marginal_floors_failed",
+            "forecast_gain_not_positive",
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        },
+        {
+          "authoritative_delta_ev_cents": -272201,
+          "dimension": "capacity",
+          "forecast_delta_ev_cents": -272201,
+          "release_reason_codes": [
+            "individual_marginal_floors_failed",
+            "forecast_gain_not_positive",
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        },
+        {
+          "authoritative_delta_ev_cents": -226242,
+          "dimension": "resilience",
+          "forecast_delta_ev_cents": -176037,
+          "release_reason_codes": [
+            "individual_marginal_floors_failed",
+            "forecast_gain_not_positive",
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        },
+        {
+          "authoritative_delta_ev_cents": 170571,
+          "dimension": "service",
+          "forecast_delta_ev_cents": 95903,
+          "release_reason_codes": [
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        }
+      ],
+      "persona_id": "conservative_v1_extreme",
+      "planner_recommended_candidate_id": "risk_buffer",
+      "recommendation_reason": "公开预测证据不足，可靠性门禁已放弃强建议并回退到可审计的安全经营候选。",
+      "reliability_gate": {
+        "abstain_reason_codes": [
+          "opponent_model_confidence_below_gate",
+          "top_candidates_overlap_forecast_uncertainty"
+        ],
+        "advisor_confidence_ppm": 4771,
+        "allowed_in_agent_context": true,
+        "effective_candidate_id": "risk_buffer",
+        "excluded_candidates": [
+          {
+            "candidate_id": "price_cut_small",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "price_cut_large",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "increase_advertising",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "increase_service",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "increase_capacity",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "increase_resilience",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          }
+        ],
+        "fallback_candidate_id": "risk_buffer",
+        "forecast_uncertainty_cents": 3888965,
+        "gate_hash": "sha256:e3c078345a065bb0271d49aadff53d92436957780d54b0aaa8697ae8e70440c1",
+        "gate_schema_version": "pareto-reliability-gate-v2.0.0",
+        "marginal_investment_plan_hash": "sha256:218abe9c2810344922370d3d59ede18d27402557f30f8f62d0f02e19708da32a",
+        "opponent_model_confidence_ppm": 571428,
+        "planner_candidate_id": "risk_buffer",
+        "planner_decision_hash": "sha256:7538bd949d8feb0d4f3955db46a8261f98148a304b891e3ca5feb50ba2e76a25",
+        "reliability_input_hash": "sha256:02344cbd443d1c04a81358929e451e8b286f91c279d66843436d8d6e854f5eaa",
+        "safe_candidate_ids": [
+          "maintain",
+          "price_increase",
+          "risk_buffer",
+          "status_quo"
+        ],
+        "selected_passes_fallback_persona_floor": true,
+        "selected_passes_fallback_value_floor": true,
+        "selected_passes_fallback_worst_floor": true,
+        "should_abstain": true,
+        "top_two_value_gap_cents": 18558,
+        "uses_authoritative_hidden_market_state": false,
+        "uses_only_public_and_own_private_inputs": true
+      },
+      "safe_candidate_ids": [
+        "maintain",
+        "price_increase",
+        "risk_buffer",
+        "status_quo"
+      ],
+      "seed": 6101,
+      "selected_authoritative_ev_rank": 2,
+      "selected_candidate_id": "risk_buffer",
+      "selected_public_ce_rank": 1,
+      "selection_situation": "protect_lead",
+      "shapley_decomposition": [
+        {
+          "advisor_value": 500000,
+          "dimension": "service_budget_cents",
+          "historical_value": 0,
+          "shapley_ev_contribution_cents_rounded": 170893,
+          "shapley_ev_contribution_denominator": 1,
+          "shapley_ev_contribution_numerator": 170893
+        },
+        {
+          "advisor_value": 500000,
+          "dimension": "resilience_budget_cents",
+          "historical_value": 0,
+          "shapley_ev_contribution_cents_rounded": -225920,
+          "shapley_ev_contribution_denominator": 1,
+          "shapley_ev_contribution_numerator": -225920
+        }
+      ],
+      "shapley_reconstructed_total_delta_cents": -55027,
+      "window_id": "privileged-info-conservative_v1_extreme-6101:r5"
+    },
+    {
+      "advisor_action": {
+        "advertising_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 8956,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 0,
+        "shared_resilience_contribution_cents": 0
+      },
+      "advisor_minus_historical_ev_cents": -29480,
+      "candidate_count": 7,
+      "candidate_rank_rows": [
+        {
+          "action": {
+            "advertising_budget_cents": 742463,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 10097,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1091858,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 1,
+          "authoritative_frozen_tape_ev_cents": 41498865,
+          "candidate_id": "maintain",
+          "public_ce_rank": 3,
+          "public_certainty_equivalent_value_cents": 42836099,
+          "public_expected_ev_delta_cents": 756000,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 1242463,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 10097,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1091858,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 2,
+          "authoritative_frozen_tape_ev_cents": 41336223,
+          "candidate_id": "increase_advertising",
+          "public_ce_rank": 4,
+          "public_certainty_equivalent_value_cents": 42605856,
+          "public_expected_ev_delta_cents": 564636,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 742463,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 9456,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1091858,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 3,
+          "authoritative_frozen_tape_ev_cents": 41253260,
+          "candidate_id": "price_increase",
+          "public_ce_rank": 2,
+          "public_certainty_equivalent_value_cents": 42869374,
+          "public_expected_ev_delta_cents": 433508,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 742463,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 10097,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1591858,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 4,
+          "authoritative_frozen_tape_ev_cents": 41235644,
+          "candidate_id": "increase_service",
+          "public_ce_rank": 5,
+          "public_certainty_equivalent_value_cents": 42468940,
+          "public_expected_ev_delta_cents": 473488,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 0,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 8956,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 0,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 5,
+          "authoritative_frozen_tape_ev_cents": 41095058,
+          "candidate_id": "status_quo",
+          "public_ce_rank": 1,
+          "public_certainty_equivalent_value_cents": 42954424,
+          "public_expected_ev_delta_cents": 366307,
+          "selected": true
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 742463,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 8456,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1091858,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 6,
+          "authoritative_frozen_tape_ev_cents": 39897784,
+          "candidate_id": "price_cut_small",
+          "public_ce_rank": 6,
+          "public_certainty_equivalent_value_cents": 41564580,
+          "public_expected_ev_delta_cents": -1008095,
+          "selected": false
+        },
+        {
+          "action": {
+            "advertising_budget_cents": 742463,
+            "capacity_investment_cents": 0,
+            "incident_response_mode": "wait",
+            "price_cents": 7956,
+            "repair_budget_cents": 0,
+            "resilience_budget_cents": 0,
+            "service_budget_cents": 1091858,
+            "shared_resilience_contribution_cents": 0
+          },
+          "authoritative_ev_rank": 7,
+          "authoritative_frozen_tape_ev_cents": 38570189,
+          "candidate_id": "price_cut_large",
+          "public_ce_rank": 7,
+          "public_certainty_equivalent_value_cents": 40423890,
+          "public_expected_ev_delta_cents": -2333687,
+          "selected": false
+        }
+      ],
+      "excluded_candidates": [
+        {
+          "candidate_id": "price_cut_small",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "price_cut_large",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "price_increase",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "worst_case_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "increase_advertising",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        },
+        {
+          "candidate_id": "increase_service",
+          "reason_codes": [
+            "expected_value_below_floor",
+            "competitive_margin_below_floor",
+            "worst_case_below_floor",
+            "persona_value_below_floor"
+          ]
+        }
+      ],
+      "historical_action": {
+        "advertising_budget_cents": 300000,
+        "capacity_investment_cents": 0,
+        "incident_response_mode": "wait",
+        "price_cents": 8956,
+        "repair_budget_cents": 0,
+        "resilience_budget_cents": 0,
+        "service_budget_cents": 300000,
+        "shared_resilience_contribution_cents": 0
+      },
+      "historical_action_in_candidate_set": false,
+      "marginal_forecast_release_rows": [
+        {
+          "authoritative_delta_ev_cents": -11888,
+          "dimension": "advertising",
+          "forecast_delta_ev_cents": -56803,
+          "release_reason_codes": [
+            "individual_marginal_floors_failed",
+            "forecast_gain_not_positive",
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        },
+        {
+          "authoritative_delta_ev_cents": -32392,
+          "dimension": "service",
+          "forecast_delta_ev_cents": -74082,
+          "release_reason_codes": [
+            "individual_marginal_floors_failed",
+            "forecast_gain_not_positive",
+            "forecast_gain_within_historical_error_band"
+          ],
+          "released": false
+        }
+      ],
+      "persona_id": "balanced_v1",
+      "planner_recommended_candidate_id": "maintain",
+      "recommendation_reason": "公开预测证据不足，可靠性门禁已放弃强建议并回退到可审计的安全经营候选。",
+      "reliability_gate": {
+        "abstain_reason_codes": [
+          "planner_below_fallback_persona_value",
+          "top_candidates_overlap_forecast_uncertainty"
+        ],
+        "advisor_confidence_ppm": 145871,
+        "allowed_in_agent_context": true,
+        "effective_candidate_id": "status_quo",
+        "excluded_candidates": [
+          {
+            "candidate_id": "price_cut_small",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "price_cut_large",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "price_increase",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "worst_case_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "increase_advertising",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          },
+          {
+            "candidate_id": "increase_service",
+            "reason_codes": [
+              "expected_value_below_floor",
+              "competitive_margin_below_floor",
+              "worst_case_below_floor",
+              "persona_value_below_floor"
+            ]
+          }
+        ],
+        "fallback_candidate_id": "status_quo",
+        "forecast_uncertainty_cents": 811160,
+        "gate_hash": "sha256:ef6f432f972faa68fdd888930994abaa8e6c5c3566845b9073db8fa256aa5058",
+        "gate_schema_version": "pareto-reliability-gate-v2.0.0",
+        "marginal_investment_plan_hash": "sha256:285fd0283d79c02b3464308e831070f514e682b7e1e50afafd637c089c62dea7",
+        "opponent_model_confidence_ppm": 750000,
+        "planner_candidate_id": "maintain",
+        "planner_decision_hash": "sha256:46b744a900da91575d1a1ec1ed60cb0392b4ef777203e8d00d545786cc6da6b8",
+        "reliability_input_hash": "sha256:47655d0abbf7365e4a8bfde0dfed69d4804adfa990a26fb4a3b7a9bde066fa23",
+        "safe_candidate_ids": [
+          "maintain",
+          "status_quo"
+        ],
+        "selected_passes_fallback_persona_floor": false,
+        "selected_passes_fallback_value_floor": true,
+        "selected_passes_fallback_worst_floor": true,
+        "should_abstain": true,
+        "top_two_value_gap_cents": 118325,
+        "uses_authoritative_hidden_market_state": false,
+        "uses_only_public_and_own_private_inputs": true
+      },
+      "safe_candidate_ids": [
+        "maintain",
+        "status_quo"
+      ],
+      "seed": 6101,
+      "selected_authoritative_ev_rank": 5,
+      "selected_candidate_id": "status_quo",
+      "selected_public_ce_rank": 1,
+      "selection_situation": "protect_lead",
+      "shapley_decomposition": [
+        {
+          "advisor_value": 0,
+          "dimension": "advertising_budget_cents",
+          "historical_value": 300000,
+          "shapley_ev_contribution_cents_rounded": -19071,
+          "shapley_ev_contribution_denominator": 1,
+          "shapley_ev_contribution_numerator": -19071
+        },
+        {
+          "advisor_value": 0,
+          "dimension": "service_budget_cents",
+          "historical_value": 300000,
+          "shapley_ev_contribution_cents_rounded": -10409,
+          "shapley_ev_contribution_denominator": 1,
+          "shapley_ev_contribution_numerator": -10409
+        }
+      ],
+      "shapley_reconstructed_total_delta_cents": -29480,
+      "window_id": "privileged-info-balanced_v1-6101:r10"
+    }
+  ],
+  "selected_candidate_authoritative_rank_worse_than_one_count": 5,
+  "selected_candidate_counts": {
+    "risk_buffer": 2,
+    "status_quo": 3
+  },
+  "shapley_dimension_occurrences": {
+    "advertising_budget_cents": 3,
+    "price_cents": 1,
+    "resilience_budget_cents": 3,
+    "service_budget_cents": 4
+  },
+  "shapley_dimension_totals_cents": {
+    "advertising_budget_cents": 250410,
+    "price_cents": -2031616,
+    "resilience_budget_cents": -576779,
+    "service_budget_cents": 127852
+  },
+  "source_audit_report_hash": "sha256:62159d003f4841adca8cbee81091599c8dc936f316804199d7d28716f9d03586"
+}
