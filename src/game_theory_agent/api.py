@@ -78,6 +78,10 @@ from game_theory_agent.interaction import (
 from game_theory_agent.information import seal_observation
 from game_theory_agent.strategic_reliability import PublicMarketRolloutAdvisor
 from game_theory_agent.orchestration import JsonlRoundEventLogger
+from game_theory_agent.orchestration.episode_runtimes import (
+    run_hosted_coordinator,
+)
+from game_theory_agent.orchestration.local import CONTROLLER_DRIVEN
 
 from game_theory_agent.gameplay import (
     build_company_analysis,
@@ -185,6 +189,19 @@ class AutoRunRequest(BaseModel):
     expected_state_hash: str = Field(min_length=1)
 
 
+class CoordinatorRunRequest(BaseModel):
+    """Idempotent authorization to advance rounds through RoundCoordinator."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    run_id: str = Field(min_length=1, max_length=200)
+    expected_round: int = Field(ge=1)
+    expected_state_version: int = Field(ge=0)
+    expected_state_hash: str = Field(min_length=1)
+    max_rounds: int | None = Field(default=None, ge=1, le=20)
+    player_action: dict[str, Any] | None = None
+
+
 class SubmitAgentIntentRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -283,6 +300,10 @@ class EpisodeSession:
     rule_auto_runs: dict[
         str, tuple[dict[str, Any], dict[str, Any]]
     ] = field(default_factory=dict)
+    coordinator_runs: dict[
+        str, tuple[dict[str, Any], dict[str, Any]]
+    ] = field(default_factory=dict)
+    agent_runtimes: dict[str, Any] = field(default_factory=dict)
     communication_mode: CommunicationMode = "off"
     cooperation_mode: CooperationMode = "off"
     cooperation_ledger: CooperationLedger | None = None
@@ -384,6 +405,8 @@ def _require_agent_token(
 ) -> None:
     """Authenticate the company without retaining or logging the raw token."""
 
+    if CONTROLLER_DRIVEN.get():
+        return
     if (
         not always
         and session.communication_mode == "off"
@@ -2784,6 +2807,104 @@ def auto_run_episode(
         session.rule_auto_runs[request.run_id] = (request_key, payload)
         return payload
 
+
+@app.post("/api/v1/controller/episodes/{episode_id}/coordinator-run")
+def coordinator_run_episode(
+    episode_id: str,
+    request: CoordinatorRunRequest,
+    controller_token: str | None = Header(
+        default=None, alias="X-Controller-Token"
+    ),
+) -> dict[str, Any]:
+    """Protected Coordinator continuation for interaction or model seats."""
+
+    _require_controller_token(controller_token)
+    assert controller_token is not None
+    session = _session(episode_id)
+    with session.lock:
+        request_key = request.model_dump(mode="json")
+        cached = session.coordinator_runs.get(request.run_id)
+        if cached is not None:
+            cached_key, cached_payload = cached
+            if cached_key != request_key:
+                raise HTTPException(
+                    status_code=409,
+                    detail={
+                        "code": "COORDINATOR_RUN_ID_REUSED",
+                        "message": "run_id was already used with different inputs",
+                    },
+                )
+            return cached_payload
+        state_before = session.env.get_state()
+        if state_before.terminal:
+            raise HTTPException(status_code=409, detail="episode is terminal")
+        if (
+            request.expected_round != state_before.round
+            or request.expected_state_version != state_before.state_version
+            or request.expected_state_hash != state_before.state_hash
+        ):
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    "code": "STALE_COORDINATOR_RUN",
+                    "message": (
+                        "coordinator-run was bound to an older market state; "
+                        "refresh the Episode before retrying"
+                    ),
+                    "current_round": state_before.round,
+                    "current_state_version": state_before.state_version,
+                    "current_state_hash": state_before.state_hash,
+                },
+            )
+
+    include_human = request.max_rounds == 1 and request.player_action is not None
+    try:
+        coordinated = run_hosted_coordinator(
+            session,
+            episode_id,
+            controller_token,
+            max_rounds=request.max_rounds,
+            human_action=request.player_action,
+            include_human=include_human,
+        )
+    except RuntimeError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+
+    rounds = [
+        {
+            "execution_mode": "coordinator_run",
+            "run_id": request.run_id,
+            "settled_round": item.event.settled_round,
+            "state": item.settlement["state"],
+            "settled_market": item.settlement.get("settled_market"),
+            "decision_resolutions": item.settlement.get("decision_resolutions"),
+        }
+        for item in coordinated
+    ]
+    with session.lock:
+        payload = _episode_payload(session)
+        payload["rounds"] = rounds
+        payload["coordinated"] = True
+        state = session.env.get_state()
+        payload["execution"] = {
+            "mode": "coordinator_run",
+            "run_id": request.run_id,
+            "started_round": state_before.round,
+            "started_state_hash": state_before.state_hash,
+            "settled_round_count": len(rounds),
+            "decision_source": "coordinator",
+            "agent_decision_traces_generated": True,
+            "market_transitions_recorded": True,
+        }
+        if session.player_company_id and state.terminal:
+            payload["retrospective"] = build_retrospective(
+                session.manifest,
+                session.transitions,
+                session.player_company_id,
+                CONFIG,
+            )
+        session.coordinator_runs[request.run_id] = (request_key, payload)
+        return payload
 
 @app.get("/api/episodes/{episode_id}/events")
 def get_events(episode_id: str) -> dict[str, Any]:

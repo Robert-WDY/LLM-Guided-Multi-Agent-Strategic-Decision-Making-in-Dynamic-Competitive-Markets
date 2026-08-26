@@ -27,10 +27,10 @@ from game_theory_agent.orchestration import (
     HttpControllerClient,
     JsonlRoundEventLogger,
     RoundCoordinator,
+    parse_company_list,
+    require_subset,
+    validate_company_roster,
 )
-
-
-DEFAULT_COMPANIES = ("company_A", "company_B", "company_C", "company_D")
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -64,6 +64,11 @@ def _parser() -> argparse.ArgumentParser:
         "--communication-mode",
         choices=("off", "public_only", "public_private"),
         default="off",
+    )
+    parser.add_argument(
+        "--companies",
+        default="company_A,company_B,company_C,company_D",
+        help="Comma-separated roster of 2 to 10 companies in this episode.",
     )
     parser.add_argument(
         "--agent-companies",
@@ -138,13 +143,15 @@ async def _run(args: argparse.Namespace) -> int:
     token = os.getenv("MARKET_CONTROLLER_TOKEN")
     if not token:
         raise SystemExit("MARKET_CONTROLLER_TOKEN is not set")
-    selected = tuple(
-        item.strip() for item in args.agent_companies.split(",") if item.strip()
-    )
-    if not selected or set(selected) - set(DEFAULT_COMPANIES):
-        raise SystemExit(
-            "--agent-companies must contain company_A through company_D"
+    try:
+        roster = validate_company_roster(parse_company_list(args.companies))
+        selected = require_subset(
+            parse_company_list(args.agent_companies),
+            roster,
+            flag="--agent-companies",
         )
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
     if args.provider == "doubao" and not os.getenv("ARK_API_KEY"):
         raise SystemExit("ARK_API_KEY is not set")
     if args.provider == "deepseek" and not os.getenv("DEEPSEEK_API_KEY"):
@@ -182,7 +189,7 @@ async def _run(args: argparse.Namespace) -> int:
         )
     if args.opponent_policy == "uniform-random":
         opponent_seed = args.seed if args.opponent_seed is None else args.opponent_seed
-        for company_id in DEFAULT_COMPANIES:
+        for company_id in roster:
             if company_id not in runtimes:
                 runtimes[company_id] = AgentRuntime(
                     agent_id=f"uniform-random-{company_id}",
@@ -208,7 +215,7 @@ async def _run(args: argparse.Namespace) -> int:
         {
             "episode_id": episode_id,
             "episode_seed": args.seed,
-            "company_ids": list(DEFAULT_COMPANIES),
+            "company_ids": list(roster),
             "market_model": args.market_model,
             "max_rounds": args.rounds,
             "information_mode": args.information_mode,

@@ -434,6 +434,28 @@ def _auto_run_body(run_id: str, state: dict[str, object]) -> dict[str, object]:
     }
 
 
+def _coordinator_run_body(
+    run_id: str,
+    state: dict[str, object],
+    *,
+    max_rounds: int | None = None,
+    player_action: dict[str, object] | None = None,
+) -> dict[str, object]:
+    body: dict[str, object] = {
+        "run_id": run_id,
+        "expected_round": state["round"],
+        "expected_state_version": state["state_version"],
+        "expected_state_hash": state["state_hash"],
+    }
+    if max_rounds is not None:
+        body["max_rounds"] = max_rounds
+    if player_action is not None:
+        body["player_action"] = player_action
+    return body
+
+
+
+
 def test_auto_run_requires_controller_authentication(monkeypatch):
     SESSIONS.clear()
     monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", CONTROLLER_TOKEN)
@@ -646,6 +668,148 @@ def test_api_creates_ten_company_episode(monkeypatch):
     assert finished.status_code == 200, finished.text
     assert finished.json()["state"]["terminal"] is True
     assert len(finished.json()["rounds"]) == 5
+
+
+
+
+def test_coordinator_run_requires_controller_authentication(monkeypatch):
+    SESSIONS.clear()
+    monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", CONTROLLER_TOKEN)
+    created = client.post(
+        "/api/episodes",
+        json={
+            "episode_id": "coordinator-auth-test",
+            "episode_seed": 18,
+            "company_ids": ["company_A", "company_B"],
+            "communication_mode": "public_private",
+            "max_rounds": 5,
+        },
+        headers=_controller_headers(),
+    )
+    assert created.status_code == 201, created.text
+    denied = client.post(
+        "/api/v1/controller/episodes/coordinator-auth-test/coordinator-run",
+        json=_coordinator_run_body("auth-attempt", created.json()["state"]),
+    )
+    assert denied.status_code == 401
+    assert SESSIONS["coordinator-auth-test"].env.get_state().round == 1
+
+
+def test_coordinator_run_finishes_remaining_rounds_when_communication_enabled(
+    monkeypatch,
+):
+    SESSIONS.clear()
+    monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", CONTROLLER_TOKEN)
+    created = client.post(
+        "/api/episodes",
+        json={
+            "episode_id": "coordinator-run-test",
+            "episode_seed": 17,
+            "company_ids": ["company_A", "company_B"],
+            "communication_mode": "public_private",
+            "max_rounds": 5,
+        },
+        headers=_controller_headers(),
+    )
+    assert created.status_code == 201, created.text
+    finished = client.post(
+        "/api/v1/controller/episodes/coordinator-run-test/coordinator-run",
+        headers=_controller_headers(),
+        json=_coordinator_run_body(
+            "coordinator-run-test:1", created.json()["state"]
+        ),
+    )
+    assert finished.status_code == 200, finished.text
+    body = finished.json()
+    assert body["coordinated"] is True
+    assert body["execution"]["mode"] == "coordinator_run"
+    assert body["state"]["terminal"] is True
+    assert len(body["rounds"]) == 5
+
+
+def test_coordinator_run_max_rounds_advances_one_human_round(monkeypatch):
+    SESSIONS.clear()
+    monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", CONTROLLER_TOKEN)
+    created = client.post(
+        "/api/episodes",
+        json={
+            "episode_id": "coordinator-one-round",
+            "episode_seed": 19,
+            "company_ids": ["company_A", "company_B"],
+            "communication_mode": "public_private",
+            "max_rounds": 5,
+            "player_company_id": "company_A",
+            "agent_configs": {
+                "company_A": {
+                    "agent_id": "human-company_A",
+                    "agent_type": "human",
+                    "model": "Human",
+                }
+            },
+        },
+        headers=_controller_headers(),
+    )
+    assert created.status_code == 201, created.text
+    stepped = client.post(
+        "/api/v1/controller/episodes/coordinator-one-round/coordinator-run",
+        headers=_controller_headers(),
+        json=_coordinator_run_body(
+            "coordinator-one-round:1",
+            created.json()["state"],
+            max_rounds=1,
+            player_action={
+                "agent_id": "company_A",
+                "price_cents": 9300,
+                "advertising_budget_cents": 400000,
+                "resilience_budget_cents": 100000,
+                "strategy_summary": "human one round",
+            },
+        ),
+    )
+    assert stepped.status_code == 200, stepped.text
+    body = stepped.json()
+    assert body["coordinated"] is True
+    assert body["state"]["terminal"] is False
+    assert body["state"]["round"] == 2
+    assert len(body["rounds"]) == 1
+    human_resolution = body["rounds"][0]["decision_resolutions"]["company_A"]
+    assert human_resolution["source"].startswith("agent-intent")
+    human_price = human_resolution["action"]["price_cents"]
+    assert 8000 <= human_price <= 12000
+
+
+def test_coordinator_run_is_idempotent_for_the_same_run_id(monkeypatch):
+    SESSIONS.clear()
+    monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", CONTROLLER_TOKEN)
+    created = client.post(
+        "/api/episodes",
+        json={
+            "episode_id": "coordinator-idempotent",
+            "episode_seed": 20,
+            "company_ids": ["company_A", "company_B"],
+            "communication_mode": "public_private",
+            "max_rounds": 5,
+        },
+        headers=_controller_headers(),
+    )
+    assert created.status_code == 201, created.text
+    body = _coordinator_run_body(
+        "coordinator-idempotent:1", created.json()["state"]
+    )
+    first = client.post(
+        "/api/v1/controller/episodes/coordinator-idempotent/coordinator-run",
+        headers=_controller_headers(),
+        json=body,
+    )
+    second = client.post(
+        "/api/v1/controller/episodes/coordinator-idempotent/coordinator-run",
+        headers=_controller_headers(),
+        json=body,
+    )
+    assert first.status_code == 200, first.text
+    assert second.status_code == 200, second.text
+    assert second.json()["state"]["round"] == first.json()["state"]["round"]
+    assert len(SESSIONS["coordinator-idempotent"].transitions) == 5
 
 
 def test_controller_token_is_allowed_by_local_frontend_cors():

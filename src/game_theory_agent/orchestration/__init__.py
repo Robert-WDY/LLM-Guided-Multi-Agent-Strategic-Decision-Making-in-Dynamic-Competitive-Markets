@@ -6,6 +6,13 @@ from game_theory_agent.orchestration.clients import (
     HttpAgentGatewayClient,
     HttpControllerClient,
 )
+from game_theory_agent.orchestration.roster import (
+    COMPANY_IDS,
+    DEFAULT_COMPANIES,
+    parse_company_list,
+    require_subset,
+    validate_company_roster,
+)
 from game_theory_agent.orchestration.coordinator import (
     CoordinatedRound,
     RoundCoordinator,
@@ -31,7 +38,9 @@ __all__ = [
     "CommunicationGenerationTrace",
     "CommunicationPhaseRecord",
     "CommunicationViewRecord",
+    "COMPANY_IDS",
     "ControllerClient",
+    "DEFAULT_COMPANIES",
     "CoordinatedRound",
     "HttpAgentGatewayClient",
     "HttpControllerClient",
@@ -40,6 +49,9 @@ __all__ = [
     "RoundCoordinator",
     "RoundEvent",
     "StaleRoundError",
+    "parse_company_list",
+    "require_subset",
+    "validate_company_roster",
     "rebuild_communication_closure",
     "verify_interaction_replay",
 ]
