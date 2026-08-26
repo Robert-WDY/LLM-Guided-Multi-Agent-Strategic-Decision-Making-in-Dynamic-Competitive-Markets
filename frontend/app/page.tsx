@@ -362,7 +362,6 @@ export default function Home() {
   const [round, setRound] = useState(1);
   const [demoCompleted, setDemoCompleted] = useState(false);
   const [ruleAutoRunUsed, setRuleAutoRunUsed] = useState(false);
-  const [backendStateIdentity, setBackendStateIdentity] = useState({ round: 1, stateVersion: 0, stateHash: "" });
   const [personaOptions, setPersonaOptions] = useState<PersonaKey[]>(Object.keys(PERSONAS) as PersonaKey[]);
   const [personaLabels, setPersonaLabels] = useState<Record<string, string>>({});
   const [personaCatalogVerified, setPersonaCatalogVerified] = useState(false);
@@ -432,7 +431,6 @@ export default function Home() {
     }));
     const terminal = Boolean(payload.state.terminal);
     setRound(terminal ? config.rounds : Math.max(1, payload.state.round));
-    setBackendStateIdentity({ round: payload.state.round, stateVersion: payload.state.state_version ?? 0, stateHash: payload.state.state_hash });
     setDemoCompleted(terminal);
     return terminal;
   }
@@ -448,7 +446,7 @@ export default function Home() {
       const response = await fetch(`${API_URL}/episodes`, { method: "POST", headers: { "Content-Type": "application/json", ...(config.controllerToken ? { "X-Controller-Token": config.controllerToken } : {}) }, body: JSON.stringify({ episode_seed: config.seed, company_ids: agents.map((agent) => agent.companyId), personas: Object.fromEntries(agents.map((agent) => [agent.companyId, agent.persona.startsWith("aggressive") ? "aggressive" : agent.persona.startsWith("risk") ? "conservative" : "balanced"])), agent_configs: Object.fromEntries(agents.map((agent) => [agent.companyId, { agent_id: `${agent.driver}-${agent.companyId}`, agent_type: agent.driver === "rule" ? "rule" : agent.driver === "human" ? "human" : "model", model: agent.model, persona_name: agent.persona }])), game_mode: agents.some((agent) => agent.driver === "human") && !needsCoordinator ? "single_company" : "market", player_company_id: agents.find((agent) => agent.driver === "human")?.companyId ?? null, market_model: marketModel, max_rounds: config.rounds, information_mode: config.informationMode === "perfect" ? "perfect" : "public", communication_mode: config.communication ? "public_private" : "off", cooperation_mode: config.cooperation ? "shared_resilience_v1" : "off", belief_mode: config.gameTheory ? "public_action_v1" : "off", opponent_model_mode: config.gameTheory ? "public_strategy_v1" : "off", utility_inference_mode: config.gameTheory ? "strategy_utility_v1" : "off", advisor_mode: config.gameTheory ? "bayesian_strategy_v2" : "off", repeated_game_mode: "off" }) });
       const payload = await response.json() as BackendEpisode & { detail?: string };
       if (!response.ok) throw new Error(typeof payload.detail === "string" ? payload.detail : `HTTP ${response.status}`);
-      setRuntimeMode("backend"); setEpisodeId(payload.state.episode_id); setRound(Math.max(1, payload.state.round)); setDemoCompleted(false); setRuleAutoRunUsed(false); setBackendStateIdentity({ round: payload.state.round, stateVersion: payload.state.state_version, stateHash: payload.state.state_hash }); setRuntimeAgents(hydrateAgents(payload, agents)); setNotice("真实 Episode 已创建。可提交本回合，或让协调器/规则代理推进剩余轮次。"); setActive("live");
+      setRuntimeMode("backend"); setEpisodeId(payload.state.episode_id); setRound(Math.max(1, payload.state.round)); setDemoCompleted(false); setRuleAutoRunUsed(false); setRuntimeAgents(hydrateAgents(payload, agents)); setNotice("真实 Episode 已创建。可提交本回合，或让协调器/规则代理推进剩余轮次。"); setActive("live");
     } catch (error) { setNotice(error instanceof Error ? `创建失败：${error.message}` : "创建失败；状态未改变。"); } finally { setBusy(false); }
   }
 
@@ -554,7 +552,6 @@ export default function Home() {
     setRound(1);
     setDemoCompleted(false);
     setRuleAutoRunUsed(false);
-    setBackendStateIdentity({ round: 1, stateVersion: 0, stateHash: "" });
     setRuntimeAgents(DEMO_AGENTS);
     setAgents(DEFAULT_AGENTS.map((agent, index) => mode === "observer" ? { ...agent, driver: index === 3 ? "rule" : index === 1 ? "doubao" : "deepseek", model: index === 3 ? DRIVER_MODELS.rule : index === 1 ? DRIVER_MODELS.doubao : DRIVER_MODELS.deepseek } : { ...agent }));
     setNotice(`${ENTRY_META[mode].label}：请先确认环境，然后进入独立界面。`);

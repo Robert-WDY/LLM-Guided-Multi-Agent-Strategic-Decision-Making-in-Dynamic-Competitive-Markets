@@ -9,7 +9,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from statistics import mean, median
 from types import SimpleNamespace
 from typing import Any, Iterable
@@ -96,7 +96,11 @@ def parse_artifacts(values: Iterable[str]) -> dict[tuple[int, str], Path]:
         key = (seed, condition)
         if key in artifacts:
             raise ValueError(f"duplicate artifact selector: {selector}")
-        artifacts[key] = Path(raw_path).resolve()
+        windows_path = PureWindowsPath(raw_path)
+        if windows_path.drive:
+            artifacts[key] = Path(windows_path.as_posix())
+        else:
+            artifacts[key] = Path(raw_path).expanduser().resolve()
     return artifacts
 
 

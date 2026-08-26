@@ -1,10 +1,17 @@
 from __future__ import annotations
 
+import pytest
+
+from game_theory_agent.experiments.stage68_advisor_external_proof import (
+    DEFAULT_OUTPUT as STAGE68_OUTPUT,
+)
 from game_theory_agent.experiments.stage69_abstention_repair import run
 from game_theory_agent.market.protocols import sha256_hash
 
 
 def test_stage69_five_known_negative_windows_fail_closed(tmp_path):
+    if not (STAGE68_OUTPUT / "summary.json").is_file():
+        pytest.skip("stage6.8 recorded artifacts are not present")
     summary = run(output=tmp_path)
 
     assert summary["negative_window_count"] == 5
