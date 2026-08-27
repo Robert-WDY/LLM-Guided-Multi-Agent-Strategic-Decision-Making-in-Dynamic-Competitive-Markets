@@ -1,10 +1,17 @@
+import pytest
+
 from game_theory_agent.experiments.stage68_advisor_external_proof import (
+    EXTERNAL_SOURCES,
+    PROJECT_ROOT,
     build_preregistration,
     exact_two_sided_sign_test_ppm,
 )
 
 
 def test_stage68_preregistration_freezes_external_real_episode_pool():
+    source_dir = PROJECT_ROOT / str(EXTERNAL_SOURCES[0]["directory"])
+    if not (source_dir / "summary.json").is_file():
+        pytest.skip("recorded external audit sources are not present")
     result = build_preregistration()
 
     assert result["source_episode_count"] == 6

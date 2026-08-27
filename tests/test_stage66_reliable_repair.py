@@ -1,3 +1,5 @@
+import pytest
+
 from game_theory_agent.experiments.stage66_failure_forensics import (
     DEFAULT_STAGE65_SUMMARY,
 )
@@ -7,6 +9,8 @@ from game_theory_agent.experiments.stage66_reliable_repair import run
 def test_reliable_repair_covers_all_known_negative_pairs_without_new_llm_calls(
     tmp_path,
 ):
+    if not DEFAULT_STAGE65_SUMMARY.is_file():
+        pytest.skip("stage6.5 recorded artifacts are not present")
     result = run(DEFAULT_STAGE65_SUMMARY, tmp_path)
 
     assert result["acceptance_passed"]

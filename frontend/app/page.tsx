@@ -362,7 +362,6 @@ export default function Home() {
   const [round, setRound] = useState(1);
   const [demoCompleted, setDemoCompleted] = useState(false);
   const [ruleAutoRunUsed, setRuleAutoRunUsed] = useState(false);
-  const [backendStateIdentity, setBackendStateIdentity] = useState({ round: 1, stateVersion: 0, stateHash: "" });
   const [personaOptions, setPersonaOptions] = useState<PersonaKey[]>(Object.keys(PERSONAS) as PersonaKey[]);
   const [personaLabels, setPersonaLabels] = useState<Record<string, string>>({});
   const [personaCatalogVerified, setPersonaCatalogVerified] = useState(false);
@@ -396,23 +395,63 @@ export default function Home() {
   }, [active]);
 
   const marketModel = useMemo(() => ({ balanced: "balanced", high_demand: "quality_oriented", supply_crisis: "value_oriented", disaster: "service_oriented", public_goods: "balanced" } as const)[config.marketType], [config.marketType]);
+  const needsCoordinator = config.communication || config.cooperation || config.gameTheory || config.informationMode !== "perfect" || agents.some((agent) => agent.driver === "doubao" || agent.driver === "deepseek");
+
+  function apiHeaders() {
+    return { "Content-Type": "application/json", ...(config.controllerToken ? { "X-Controller-Token": config.controllerToken } : {}) };
+  }
+
+  function playerActionPayload(state: BackendEpisode["state"], humanAction: { price: number; advertising: number; contribution: number }) {
+    const companyId = agents.find((agent) => agent.driver === "human")?.companyId ?? agents[0]?.companyId;
+    return {
+      action_id: `${state.episode_id}:${state.round}:${companyId}`,
+      episode_id: state.episode_id,
+      agent_id: companyId,
+      round: state.round,
+      state_version: state.state_version ?? 0,
+      price_cents: humanAction.price,
+      advertising_budget_cents: humanAction.advertising,
+      service_budget_cents: 0,
+      capacity_investment_cents: 0,
+      resilience_budget_cents: config.cooperation ? 0 : humanAction.contribution,
+      ...(config.cooperation ? { shared_resilience_contribution_cents: humanAction.contribution } : {}),
+      incident_response: { mode: "wait", repair_budget_cents: 0 },
+      strategy_summary: "human player",
+    };
+  }
+
+  function applyBackendPayload(payload: BackendEpisode, humanAction?: { price: number; advertising: number; contribution: number }) {
+    setRuntimeAgents((current) => hydrateAgents(payload, agents).map((agent) => {
+      const previous = current.find((item) => item.companyId === agent.companyId);
+      const shareDelta = previous ? Math.round((agent.share - previous.share) * 10) / 10 : 0;
+      if (humanAction && agent.companyId === (agents.find((item) => item.driver === "human")?.companyId ?? agents[0]?.companyId)) {
+        return { ...agent, shareDelta, action: { ...agent.action, price: humanAction.price, advertising: humanAction.advertising, contribution: humanAction.contribution } };
+      }
+      return { ...agent, shareDelta };
+    }));
+    const terminal = Boolean(payload.state.terminal);
+    setRound(terminal ? config.rounds : Math.max(1, payload.state.round));
+    setDemoCompleted(terminal);
+    return terminal;
+  }
+
 
   async function startExperiment(forceDemo: boolean) {
     if (forceDemo || !backendOnline) { setRuntimeMode("demo"); setEpisodeId(`demo-${config.seed}`); setRound(1); setDemoCompleted(false); setRuleAutoRunUsed(false); setRuntimeAgents(hydrateDemoAgents(agents)); setNotice("研究演示从第 1 回合开始；所有示例字段均标记为 DEMO，不代表一次真实模型调用。"); setActive("live"); return; }
     if (!personaCatalogVerified || agents.some((agent) => !personaOptions.includes(agent.persona))) { setNotice("真实实验已阻止：必须先从后端已验收人格目录选择全部人格。"); return; }
     const protectedMode = config.communication || config.cooperation || config.gameTheory || config.informationMode !== "perfect";
-    if (protectedMode && !config.controllerToken) { setNotice("高级实验需要本地 Controller Token。可填写 Token，或先载入研究演示。"); return; }
+    if ((protectedMode || needsCoordinator) && !config.controllerToken) { setNotice("高级实验或模型智能体需要本地 Controller Token。可填写 Token，或先载入研究演示。"); return; }
     setBusy(true);
     try {
-      const response = await fetch(`${API_URL}/episodes`, { method: "POST", headers: { "Content-Type": "application/json", ...(config.controllerToken ? { "X-Controller-Token": config.controllerToken } : {}) }, body: JSON.stringify({ episode_seed: config.seed, company_ids: agents.map((agent) => agent.companyId), personas: Object.fromEntries(agents.map((agent) => [agent.companyId, agent.persona.startsWith("aggressive") ? "aggressive" : agent.persona.startsWith("risk") ? "conservative" : "balanced"])), agent_configs: Object.fromEntries(agents.map((agent) => [agent.companyId, { agent_id: `${agent.driver}-${agent.companyId}`, agent_type: agent.driver === "rule" ? "rule" : agent.driver === "human" ? "human" : "model", model: agent.model, persona_name: agent.persona }])), game_mode: agents.some((agent) => agent.driver === "human") && !protectedMode ? "single_company" : "market", player_company_id: agents.find((agent) => agent.driver === "human")?.companyId ?? null, market_model: marketModel, max_rounds: config.rounds, information_mode: config.informationMode === "perfect" ? "perfect" : "public", communication_mode: config.communication ? "public_private" : "off", cooperation_mode: config.cooperation ? "shared_resilience_v1" : "off", belief_mode: config.gameTheory ? "public_action_v1" : "off", opponent_model_mode: config.gameTheory ? "public_strategy_v1" : "off", utility_inference_mode: config.gameTheory ? "strategy_utility_v1" : "off", advisor_mode: config.gameTheory ? "bayesian_strategy_v2" : "off", repeated_game_mode: "off" }) });
+      const response = await fetch(`${API_URL}/episodes`, { method: "POST", headers: { "Content-Type": "application/json", ...(config.controllerToken ? { "X-Controller-Token": config.controllerToken } : {}) }, body: JSON.stringify({ episode_seed: config.seed, company_ids: agents.map((agent) => agent.companyId), personas: Object.fromEntries(agents.map((agent) => [agent.companyId, agent.persona.startsWith("aggressive") ? "aggressive" : agent.persona.startsWith("risk") ? "conservative" : "balanced"])), agent_configs: Object.fromEntries(agents.map((agent) => [agent.companyId, { agent_id: `${agent.driver}-${agent.companyId}`, agent_type: agent.driver === "rule" ? "rule" : agent.driver === "human" ? "human" : "model", model: agent.model, persona_name: agent.persona }])), game_mode: agents.some((agent) => agent.driver === "human") && !needsCoordinator ? "single_company" : "market", player_company_id: agents.find((agent) => agent.driver === "human")?.companyId ?? null, market_model: marketModel, max_rounds: config.rounds, information_mode: config.informationMode === "perfect" ? "perfect" : "public", communication_mode: config.communication ? "public_private" : "off", cooperation_mode: config.cooperation ? "shared_resilience_v1" : "off", belief_mode: config.gameTheory ? "public_action_v1" : "off", opponent_model_mode: config.gameTheory ? "public_strategy_v1" : "off", utility_inference_mode: config.gameTheory ? "strategy_utility_v1" : "off", advisor_mode: config.gameTheory ? "bayesian_strategy_v2" : "off", repeated_game_mode: "off" }) });
       const payload = await response.json() as BackendEpisode & { detail?: string };
       if (!response.ok) throw new Error(typeof payload.detail === "string" ? payload.detail : `HTTP ${response.status}`);
-      setRuntimeMode("backend"); setEpisodeId(payload.state.episode_id); setRound(Math.max(1, payload.state.round)); setDemoCompleted(false); setRuleAutoRunUsed(false); setBackendStateIdentity({ round: payload.state.round, stateVersion: payload.state.state_version, stateHash: payload.state.state_hash }); setRuntimeAgents(hydrateAgents(payload, agents)); setNotice("真实 Episode 已创建；高级回合推进等待 Coordinator intents/communication barrier。仅创建不等于模型已运行。"); setActive("live");
+      setRuntimeMode("backend"); setEpisodeId(payload.state.episode_id); setRound(Math.max(1, payload.state.round)); setDemoCompleted(false); setRuleAutoRunUsed(false); setRuntimeAgents(hydrateAgents(payload, agents)); setNotice("真实 Episode 已创建。可提交本回合，或让协调器/规则代理推进剩余轮次。"); setActive("live");
     } catch (error) { setNotice(error instanceof Error ? `创建失败：${error.message}` : "创建失败；状态未改变。"); } finally { setBusy(false); }
   }
 
   function nextRound(humanAction: { price: number; advertising: number; contribution: number }) {
-    if (runtimeMode === "backend") { setNotice("高级真实 Episode 必须由 Coordinator 完成通信、Intent 与 Settlement；前端不会绕过屏障直接 Step。"); return; }
+    if (runtimeMode === "backend") { void advanceBackendRound(humanAction, false); return; }
     if (demoCompleted) return;
     const settledRound = round;
     setRuntimeAgents((current) => advanceDemoRound(current, settledRound, humanAction));
@@ -442,33 +481,65 @@ export default function Home() {
       setActive("report");
       return;
     }
-    const protectedMode = config.communication || config.cooperation || config.gameTheory || config.informationMode !== "perfect";
-    if (protectedMode) {
-      setNotice("启用通信、合作或博弈分析的真实 Episode 必须由 Coordinator 完成；前端不会绕过屏障直接 auto-run。");
-      return;
-    }
-    if (!config.controllerToken) {
-      setNotice("规则代理续跑是受保护的 Controller 操作，请先返回配置页填写 Controller Token。");
+    await advanceBackendRound(humanAction, true);
+  }
+
+  async function advanceBackendRound(humanAction: { price: number; advertising: number; contribution: number }, remaining: boolean) {
+    if (!episodeId) { setNotice("尚未创建真实 Episode。"); return; }
+    if (!config.controllerToken && (needsCoordinator || remaining)) {
+      setNotice("真实回合推进需要 Controller Token。可填写 Token，或先载入研究演示。");
       return;
     }
     setBusy(true);
     try {
-      const runId = `${episodeId}:rule-auto-run:${round}`;
-      const response = await fetch(`${API_URL}/v1/controller/episodes/${episodeId}/auto-run`, { method: "POST", headers: { "Content-Type": "application/json", "X-Controller-Token": config.controllerToken }, body: JSON.stringify({ run_id: runId, confirm_rule_override: true, expected_round: backendStateIdentity.round, expected_state_version: backendStateIdentity.stateVersion, expected_state_hash: backendStateIdentity.stateHash }) });
+      const stateResponse = await fetch(`${API_URL}/episodes/${episodeId}/state`, { headers: apiHeaders() });
+      const current = await stateResponse.json() as BackendEpisode & { detail?: string };
+      if (!stateResponse.ok) throw new Error(typeof current.detail === "string" ? current.detail : `HTTP ${stateResponse.status}`);
+      const hasHuman = entryMode === "participant" && agents.some((agent) => agent.driver === "human");
+      const playerAction = hasHuman ? playerActionPayload(current.state, humanAction) : null;
+      if (!remaining && !needsCoordinator && hasHuman) {
+        const response = await fetch(`${API_URL}/episodes/${episodeId}/player-steps`, { method: "POST", headers: apiHeaders(), body: JSON.stringify({ step_id: `${current.state.episode_id}:${current.state.round}:${current.state.state_version ?? 0}`, player_action: playerAction }) });
+        const payload = await response.json() as BackendEpisode & { detail?: string | { message?: string } };
+        if (!response.ok) {
+          const detail = typeof payload.detail === "string" ? payload.detail : payload.detail?.message ?? `HTTP ${response.status}`;
+          throw new Error(detail);
+        }
+        const terminal = applyBackendPayload(payload, humanAction);
+        setRuleAutoRunUsed(false);
+        setNotice(terminal ? `第 ${config.rounds} 回合已结算，Episode 完成。` : "后端已结算当前回合。");
+        return;
+      }
+      if (remaining && !needsCoordinator) {
+        const runId = `${episodeId}:rule-auto-run:${current.state.round}`;
+        const response = await fetch(`${API_URL}/v1/controller/episodes/${episodeId}/auto-run`, { method: "POST", headers: apiHeaders(), body: JSON.stringify({ run_id: runId, confirm_rule_override: true, expected_round: current.state.round, expected_state_version: current.state.state_version, expected_state_hash: current.state.state_hash }) });
+        const payload = await response.json() as BackendEpisode & { detail?: string | { message?: string } };
+        if (!response.ok) {
+          const detail = typeof payload.detail === "string" ? payload.detail : payload.detail?.message ?? `HTTP ${response.status}`;
+          throw new Error(detail);
+        }
+        applyBackendPayload(payload);
+        setRuleAutoRunUsed(true);
+        setNotice(payload.state.terminal ? "确定性规则代理已跑完剩余回合；该部分不计为大模型行为。" : "确定性规则代理已推进剩余回合。");
+        if (payload.state.terminal) setActive("report");
+        return;
+      }
+      const runId = `${episodeId}:coordinator-run:${current.state.round}:${remaining ? "rest" : "one"}`;
+      const response = await fetch(`${API_URL}/v1/controller/episodes/${episodeId}/coordinator-run`, { method: "POST", headers: apiHeaders(), body: JSON.stringify({ run_id: runId, expected_round: current.state.round, expected_state_version: current.state.state_version, expected_state_hash: current.state.state_hash, ...(remaining ? {} : { max_rounds: 1 }), player_action: playerAction }) });
       const payload = await response.json() as BackendEpisode & { detail?: string | { message?: string } };
       if (!response.ok) {
         const detail = typeof payload.detail === "string" ? payload.detail : payload.detail?.message ?? `HTTP ${response.status}`;
         throw new Error(detail);
       }
-      setRuntimeAgents(hydrateAgents(payload, agents));
-      setRound(Math.max(1, payload.state.round));
-      setBackendStateIdentity({ round: payload.state.round, stateVersion: payload.state.state_version, stateHash: payload.state.state_hash });
-      setDemoCompleted(Boolean(payload.state.terminal));
-      setRuleAutoRunUsed(true);
-      setNotice(payload.state.terminal ? "确定性规则代理已跑完剩余回合；该部分不计为大模型行为。" : "确定性规则代理已推进剩余回合。");
-      if (payload.state.terminal) setActive("report");
+      const terminal = applyBackendPayload(payload, hasHuman ? humanAction : undefined);
+      setRuleAutoRunUsed(false);
+      if (remaining) {
+        setNotice(terminal ? "协调器已跑完剩余回合，实验完成。" : "协调器已推进剩余回合。");
+        if (terminal) setActive("report");
+      } else {
+        setNotice(terminal ? `第 ${config.rounds} 回合已结算，Episode 完成。` : "后端已结算当前回合。");
+      }
     } catch (error) {
-      setNotice(error instanceof Error ? `自动跑完失败：${error.message}` : "自动跑完失败；状态未改变。");
+      setNotice(error instanceof Error ? `${remaining ? "自动跑完" : "推进回合"}失败：${error.message}` : "推进失败；状态未改变。");
     } finally {
       setBusy(false);
     }
@@ -481,7 +552,6 @@ export default function Home() {
     setRound(1);
     setDemoCompleted(false);
     setRuleAutoRunUsed(false);
-    setBackendStateIdentity({ round: 1, stateVersion: 0, stateHash: "" });
     setRuntimeAgents(DEMO_AGENTS);
     setAgents(DEFAULT_AGENTS.map((agent, index) => mode === "observer" ? { ...agent, driver: index === 3 ? "rule" : index === 1 ? "doubao" : "deepseek", model: index === 3 ? DRIVER_MODELS.rule : index === 1 ? DRIVER_MODELS.doubao : DRIVER_MODELS.deepseek } : { ...agent }));
     setNotice(`${ENTRY_META[mode].label}：请先确认环境，然后进入独立界面。`);
