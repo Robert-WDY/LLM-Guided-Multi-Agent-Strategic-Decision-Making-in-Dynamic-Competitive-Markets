@@ -6,6 +6,7 @@ from game_theory_agent.model_clients.fixed_action import FixedActionModelClient
 from game_theory_agent.model_clients.doubao import DoubaoModelClient
 from game_theory_agent.model_clients.mock import MockModelClient
 from game_theory_agent.model_clients.selective import (
+    BudgetedModelClient,
     FixedEconomicBaselineModelClient,
     SelectiveDecisionModelClient,
 )
@@ -15,6 +16,7 @@ from game_theory_agent.model_clients.uniform_random import (
 )
 
 __all__ = [
+    "BudgetedModelClient",
     "DeepSeekModelClient",
     "DoubaoModelClient",
     "FixedActionModelClient",

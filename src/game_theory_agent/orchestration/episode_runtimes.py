@@ -8,10 +8,12 @@ from typing import Any
 from game_theory_agent.agents import AgentRuntime, load_persona_registry
 from game_theory_agent.agents.contracts import AgentRequestedAction, IncidentIntent
 from game_theory_agent.model_clients import (
+    BudgetedModelClient,
     DeepSeekModelClient,
     DoubaoModelClient,
     MockModelClient,
 )
+from game_theory_agent.strategic_reliability import RealModelCostGuard
 from game_theory_agent.model_clients.fixed_action import FixedActionModelClient
 from game_theory_agent.orchestration.coordinator import RoundCoordinator, StaleRoundError
 from game_theory_agent.orchestration.local import (
@@ -98,12 +100,40 @@ def _persona_profile(registry: Any, raw_name: object) -> Any:
             return registry.get("none")
 
 
-def _model_client(kind: str) -> Any:
-    if kind == "doubao" and os.getenv("ARK_API_KEY"):
-        return DoubaoModelClient()
-    if kind == "deepseek" and os.getenv("DEEPSEEK_API_KEY"):
-        return DeepSeekModelClient()
-    return MockModelClient()
+def real_model_seats(session: Any) -> dict[str, dict[str, Any]]:
+    configs = dict(session.manifest.agent_configs)
+    return {
+        company_id: dict(configs.get(company_id) or {})
+        for company_id in session.env.get_state().company_ids
+        if client_kind(dict(configs.get(company_id) or {})) in {"doubao", "deepseek"}
+    }
+
+
+def _model_client(
+    kind: str,
+    config: dict[str, Any],
+    cost_guard: RealModelCostGuard | None,
+) -> Any:
+    if kind == "mock":
+        return MockModelClient()
+    if kind not in {"doubao", "deepseek"}:
+        raise ValueError(f"unsupported model provider: {kind}")
+    if cost_guard is None:
+        raise ValueError("real-model runtime requires an authorized cost guard")
+    model = str(config.get("model") or "").strip()
+    if not model:
+        raise ValueError(f"{kind} model id is required")
+    if kind == "doubao":
+        if not os.getenv("ARK_API_KEY"):
+            raise ValueError("ARK_API_KEY is required; refusing silent Mock fallback")
+        paid = DoubaoModelClient(model=model, max_schema_attempts=1)
+    else:
+        if not os.getenv("DEEPSEEK_API_KEY"):
+            raise ValueError("DEEPSEEK_API_KEY is required; refusing silent Mock fallback")
+        paid = DeepSeekModelClient(
+            model=model, max_schema_attempts=1, max_transport_retries=0
+        )
+    return BudgetedModelClient(paid, cost_guard=cost_guard)
 
 
 def sync_episode_runtimes(
@@ -111,6 +141,7 @@ def sync_episode_runtimes(
     *,
     human_action: dict[str, Any] | None = None,
     include_human: bool = False,
+    real_model_cost_guard: RealModelCostGuard | None = None,
 ) -> dict[str, AgentRuntime]:
     registry = load_persona_registry()
     configs = dict(session.manifest.agent_configs)
@@ -148,7 +179,7 @@ def sync_episode_runtimes(
             )
             runtimes[company_id] = runtime
             continue
-        if (
+        if kind == "mock" and (
             prior is not None
             and not isinstance(prior.model_client, FixedActionModelClient)
         ):
@@ -157,7 +188,8 @@ def sync_episode_runtimes(
         runtimes[company_id] = AgentRuntime(
             str(config.get("agent_id") or f"{kind}-{company_id}"),
             company_id,
-            _model_client(kind),
+            _model_client(kind, config, real_model_cost_guard),
+            memory=(prior.memory if prior is not None else None),
             persona_profile=_persona_profile(
                 registry, config.get("persona_name") or config.get("persona")
             ),
@@ -176,11 +208,13 @@ def run_hosted_coordinator(
     max_rounds: int | None = None,
     human_action: dict[str, Any] | None = None,
     include_human: bool = False,
+    real_model_cost_guard: RealModelCostGuard | None = None,
 ) -> tuple[Any, ...]:
     runtimes = sync_episode_runtimes(
         session,
         human_action=human_action,
         include_human=include_human,
+        real_model_cost_guard=real_model_cost_guard,
     )
     coordinator = RoundCoordinator(
         LocalControllerClient(controller_token),

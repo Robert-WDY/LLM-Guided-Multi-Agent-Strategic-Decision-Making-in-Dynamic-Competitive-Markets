@@ -121,3 +121,63 @@ class SelectiveDecisionModelClient:
             estimated_cost_microunits=actual_cost,
         )
         return result
+
+
+class BudgetedModelClient:
+    """Apply one shared fail-closed budget to communication and decisions."""
+
+    def __init__(
+        self,
+        paid_client: ModelClient,
+        *,
+        cost_guard: RealModelCostGuard,
+        reserved_prompt_tokens_per_call: int = 32_000,
+        reserved_completion_tokens_per_call: int = 4_000,
+        input_price_microunits_per_token: int = 2,
+        output_price_microunits_per_token: int = 4,
+    ) -> None:
+        self.paid_client = paid_client
+        self.cost_guard = cost_guard
+        self.reserved_prompt_tokens_per_call = reserved_prompt_tokens_per_call
+        self.reserved_completion_tokens_per_call = reserved_completion_tokens_per_call
+        self.input_price_microunits_per_token = input_price_microunits_per_token
+        self.output_price_microunits_per_token = output_price_microunits_per_token
+
+    @property
+    def model(self) -> str | None:
+        return getattr(self.paid_client, "model", None)
+
+    def _reserve(self) -> None:
+        self.cost_guard.reserve(
+            prompt_tokens=self.reserved_prompt_tokens_per_call,
+            completion_tokens=self.reserved_completion_tokens_per_call,
+            estimated_cost_microunits=(
+                self.reserved_prompt_tokens_per_call
+                * self.input_price_microunits_per_token
+                + self.reserved_completion_tokens_per_call
+                * self.output_price_microunits_per_token
+            ),
+        )
+
+    def _record(self, result: ModelGeneration) -> ModelGeneration:
+        prompt_tokens = int(result.input_tokens or 0)
+        completion_tokens = int(result.output_tokens or 0)
+        self.cost_guard.record_actual(
+            prompt_tokens=prompt_tokens,
+            completion_tokens=completion_tokens,
+            estimated_cost_microunits=(
+                prompt_tokens * self.input_price_microunits_per_token
+                + completion_tokens * self.output_price_microunits_per_token
+            ),
+        )
+        return result
+
+    async def generate_communication(
+        self, context: CommunicationContext
+    ) -> ModelGeneration:
+        self._reserve()
+        return self._record(await self.paid_client.generate_communication(context))
+
+    async def generate_decision(self, context: DecisionContext) -> ModelGeneration:
+        self._reserve()
+        return self._record(await self.paid_client.generate_decision(context))

@@ -440,6 +440,8 @@ def _coordinator_run_body(
     *,
     max_rounds: int | None = None,
     player_action: dict[str, object] | None = None,
+    authorize_real_model: bool = False,
+    maximum_model_calls: int | None = None,
 ) -> dict[str, object]:
     body: dict[str, object] = {
         "run_id": run_id,
@@ -451,6 +453,10 @@ def _coordinator_run_body(
         body["max_rounds"] = max_rounds
     if player_action is not None:
         body["player_action"] = player_action
+    if authorize_real_model:
+        body["authorize_real_model"] = True
+    if maximum_model_calls is not None:
+        body["maximum_model_calls"] = maximum_model_calls
     return body
 
 
@@ -810,6 +816,74 @@ def test_coordinator_run_is_idempotent_for_the_same_run_id(monkeypatch):
     assert second.status_code == 200, second.text
     assert second.json()["state"]["round"] == first.json()["state"]["round"]
     assert len(SESSIONS["coordinator-idempotent"].transitions) == 5
+
+
+def test_coordinator_real_model_requires_authorization_and_key(monkeypatch):
+    SESSIONS.clear()
+    monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", CONTROLLER_TOKEN)
+    monkeypatch.delenv("ARK_API_KEY", raising=False)
+    created = client.post(
+        "/api/episodes",
+        headers=_controller_headers(),
+        json={
+            "episode_id": "coordinator-real-guard",
+            "episode_seed": 31,
+            "company_ids": ["company_A", "company_B"],
+            "max_rounds": 5,
+            "agent_configs": {
+                "company_A": {
+                    "agent_id": "doubao-company_A",
+                    "agent_type": "model",
+                    "provider": "doubao",
+                    "model": "doubao-seed-2-0-lite-260215",
+                }
+            },
+        },
+    )
+    state = created.json()["state"]
+    unauthorized = client.post(
+        "/api/v1/controller/episodes/coordinator-real-guard/coordinator-run",
+        headers=_controller_headers(),
+        json=_coordinator_run_body("guard:1", state, max_rounds=1),
+    )
+    assert unauthorized.status_code == 422
+    missing_key = client.post(
+        "/api/v1/controller/episodes/coordinator-real-guard/coordinator-run",
+        headers=_controller_headers(),
+        json=_coordinator_run_body(
+            "guard:2",
+            state,
+            max_rounds=1,
+            authorize_real_model=True,
+            maximum_model_calls=1,
+        ),
+    )
+    assert missing_key.status_code == 422
+    assert "refusing silent Mock fallback" in missing_key.text
+    assert SESSIONS["coordinator-real-guard"].env.get_state().round == 1
+
+
+def test_coordinator_rejects_an_inflight_episode_run(monkeypatch):
+    SESSIONS.clear()
+    monkeypatch.setenv("MARKET_CONTROLLER_TOKEN", CONTROLLER_TOKEN)
+    created = client.post(
+        "/api/episodes",
+        headers=_controller_headers(),
+        json={
+            "episode_id": "coordinator-inflight",
+            "episode_seed": 32,
+            "company_ids": ["company_A", "company_B"],
+            "max_rounds": 5,
+        },
+    )
+    SESSIONS["coordinator-inflight"].coordinator_active_run_id = "active-run"
+    blocked = client.post(
+        "/api/v1/controller/episodes/coordinator-inflight/coordinator-run",
+        headers=_controller_headers(),
+        json=_coordinator_run_body("second-run", created.json()["state"]),
+    )
+    assert blocked.status_code == 409
+    assert blocked.json()["detail"]["code"] == "COORDINATOR_RUN_IN_PROGRESS"
 
 
 def test_controller_token_is_allowed_by_local_frontend_cors():

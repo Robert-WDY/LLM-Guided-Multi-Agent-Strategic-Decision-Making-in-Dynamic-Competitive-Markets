@@ -8,7 +8,7 @@ import os
 import secrets
 import threading
 import uuid
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Literal
@@ -76,9 +76,15 @@ from game_theory_agent.interaction import (
     CommunicationValidationError,
 )
 from game_theory_agent.information import seal_observation
-from game_theory_agent.strategic_reliability import PublicMarketRolloutAdvisor
+from game_theory_agent.strategic_reliability import (
+    PublicMarketRolloutAdvisor,
+    RealModelBudget,
+    RealModelBudgetExceeded,
+    RealModelCostGuard,
+)
 from game_theory_agent.orchestration import JsonlRoundEventLogger
 from game_theory_agent.orchestration.episode_runtimes import (
+    real_model_seats,
     run_hosted_coordinator,
 )
 from game_theory_agent.orchestration.local import CONTROLLER_DRIVEN
@@ -200,6 +206,14 @@ class CoordinatorRunRequest(BaseModel):
     expected_state_hash: str = Field(min_length=1)
     max_rounds: int | None = Field(default=None, ge=1, le=20)
     player_action: dict[str, Any] | None = None
+    authorize_real_model: bool = False
+    maximum_model_calls: int | None = Field(default=None, ge=1, le=400)
+
+
+COORDINATOR_RESERVED_PROMPT_TOKENS = 32_000
+COORDINATOR_RESERVED_COMPLETION_TOKENS = 4_000
+COORDINATOR_INPUT_PRICE_MICROUNITS = 2
+COORDINATOR_OUTPUT_PRICE_MICROUNITS = 4
 
 
 class SubmitAgentIntentRequest(BaseModel):
@@ -304,6 +318,7 @@ class EpisodeSession:
         str, tuple[dict[str, Any], dict[str, Any]]
     ] = field(default_factory=dict)
     agent_runtimes: dict[str, Any] = field(default_factory=dict)
+    coordinator_active_run_id: str | None = None
     communication_mode: CommunicationMode = "off"
     cooperation_mode: CooperationMode = "off"
     cooperation_ledger: CooperationLedger | None = None
@@ -2835,6 +2850,15 @@ def coordinator_run_episode(
                     },
                 )
             return cached_payload
+        if session.coordinator_active_run_id is not None:
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    "code": "COORDINATOR_RUN_IN_PROGRESS",
+                    "message": "another coordinator run is already active",
+                    "active_run_id": session.coordinator_active_run_id,
+                },
+            )
         state_before = session.env.get_state()
         if state_before.terminal:
             raise HTTPException(status_code=409, detail="episode is terminal")
@@ -2856,8 +2880,59 @@ def coordinator_run_episode(
                     "current_state_hash": state_before.state_hash,
                 },
             )
+        model_seats = real_model_seats(session)
+        rounds_to_run = min(
+            request.max_rounds or state_before.rounds_remaining,
+            state_before.rounds_remaining,
+        )
+        calls_per_round = len(model_seats) * (
+            2 if session.communication_mode != "off" else 1
+        )
+        required_model_calls = rounds_to_run * calls_per_round
+        if model_seats and not request.authorize_real_model:
+            raise HTTPException(
+                status_code=422,
+                detail="real-model seats require authorize_real_model=true",
+            )
+        if model_seats and (
+            request.maximum_model_calls is None
+            or request.maximum_model_calls < required_model_calls
+        ):
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "code": "REAL_MODEL_BUDGET_TOO_SMALL",
+                    "required_model_calls": required_model_calls,
+                    "maximum_model_calls": request.maximum_model_calls,
+                },
+            )
+        session.coordinator_active_run_id = request.run_id
 
     include_human = request.max_rounds == 1 and request.player_action is not None
+    maximum_model_calls = request.maximum_model_calls or 0
+    guard = (
+        RealModelCostGuard(
+            RealModelBudget(
+                max_calls=maximum_model_calls,
+                max_prompt_tokens=(
+                    maximum_model_calls * COORDINATOR_RESERVED_PROMPT_TOKENS
+                ),
+                max_completion_tokens=(
+                    maximum_model_calls * COORDINATOR_RESERVED_COMPLETION_TOKENS
+                ),
+                max_estimated_cost_microunits=maximum_model_calls
+                * (
+                    COORDINATOR_RESERVED_PROMPT_TOKENS
+                    * COORDINATOR_INPUT_PRICE_MICROUNITS
+                    + COORDINATOR_RESERVED_COMPLETION_TOKENS
+                    * COORDINATOR_OUTPUT_PRICE_MICROUNITS
+                ),
+            ),
+            explicitly_authorized=request.authorize_real_model,
+        )
+        if model_seats
+        else None
+    )
     try:
         coordinated = run_hosted_coordinator(
             session,
@@ -2866,9 +2941,23 @@ def coordinator_run_episode(
             max_rounds=request.max_rounds,
             human_action=request.player_action,
             include_human=include_human,
+            real_model_cost_guard=guard,
         )
-    except RuntimeError as exc:
+    except ValueError as exc:
+        with session.lock:
+            if session.coordinator_active_run_id == request.run_id:
+                session.coordinator_active_run_id = None
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except (RuntimeError, RealModelBudgetExceeded) as exc:
+        with session.lock:
+            if session.coordinator_active_run_id == request.run_id:
+                session.coordinator_active_run_id = None
         raise HTTPException(status_code=409, detail=str(exc)) from exc
+    except Exception:
+        with session.lock:
+            if session.coordinator_active_run_id == request.run_id:
+                session.coordinator_active_run_id = None
+        raise
 
     rounds = [
         {
@@ -2895,6 +2984,24 @@ def coordinator_run_episode(
             "decision_source": "coordinator",
             "agent_decision_traces_generated": True,
             "market_transitions_recorded": True,
+            "real_model": {
+                "authorized": request.authorize_real_model,
+                "company_models": {
+                    company_id: str(config.get("model") or "")
+                    for company_id, config in model_seats.items()
+                },
+                "required_calls": required_model_calls,
+                "maximum_calls": maximum_model_calls,
+                "reserved_usage": (
+                    asdict(guard.reserved) if guard is not None else None
+                ),
+                "actual_usage": asdict(guard.actual) if guard is not None else None,
+                "price_snapshot_microunits_per_token": {
+                    "input": COORDINATOR_INPUT_PRICE_MICROUNITS,
+                    "output": COORDINATOR_OUTPUT_PRICE_MICROUNITS,
+                    "currency": "CNY",
+                },
+            },
         }
         if session.player_company_id and state.terminal:
             payload["retrospective"] = build_retrospective(
@@ -2904,6 +3011,7 @@ def coordinator_run_episode(
                 CONFIG,
             )
         session.coordinator_runs[request.run_id] = (request_key, payload)
+        session.coordinator_active_run_id = None
         return payload
 
 @app.get("/api/episodes/{episode_id}/events")
