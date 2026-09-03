@@ -38,6 +38,7 @@ class DecisionContextBuilder:
         persona_semantics_version: str = "economic_v2",
         diagnostic_mode: str = "off",
         cooperation_history_mode: str = "full",
+        cooperation_prompt_variant: str = "explicit_options_v1",
     ) -> None:
         if context_mode not in {"full", "state_only"}:
             raise ValueError("context_mode must be full or state_only")
@@ -49,6 +50,11 @@ class DecisionContextBuilder:
             raise ValueError("diagnostic_mode must be off or observe")
         if cooperation_history_mode not in {"full", "none"}:
             raise ValueError("cooperation_history_mode must be full or none")
+        if cooperation_prompt_variant not in {
+            "explicit_options_v1",
+            "neutral_numeric_v1",
+        }:
+            raise ValueError("unsupported cooperation prompt variant")
         self.objective = objective
         self.plan_tracker = plan_tracker or PlanTracker()
         self.persona_profile = persona_profile
@@ -58,6 +64,7 @@ class DecisionContextBuilder:
         self.persona_semantics_version = persona_semantics_version
         self.diagnostic_mode = diagnostic_mode
         self.cooperation_history_mode = cooperation_history_mode
+        self.cooperation_prompt_variant = cooperation_prompt_variant
 
     def _cooperation_for_context(
         self, observation: dict[str, Any]
@@ -307,6 +314,7 @@ class DecisionContextBuilder:
         return DecisionContext(
             context_mode=self.context_mode,
             cooperation_history_mode=self.cooperation_history_mode,
+            cooperation_prompt_variant=self.cooperation_prompt_variant,
             decision_support_version=self.decision_support_version,
             persona_semantics_version=self.persona_semantics_version,
             diagnostic_mode=self.diagnostic_mode,

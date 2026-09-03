@@ -1204,15 +1204,23 @@ def _public_transition(
     }
 
 
-def _require_controller_token(token: str | None) -> None:
+def _require_controller_token(token: str | None) -> str:
     expected = os.environ.get("MARKET_CONTROLLER_TOKEN")
     if not expected:
         raise HTTPException(
             status_code=503,
             detail="controller is disabled until MARKET_CONTROLLER_TOKEN is set",
         )
+    local_dev_bypass = (
+        os.environ.get("MARKET_LOCAL_DEV_UNAUTHENTICATED_CONTROLLER") == "1"
+        and os.environ.get("MARKET_API_HOST", "127.0.0.1")
+        in {"127.0.0.1", "localhost", "::1"}
+    )
+    if local_dev_bypass and token is None:
+        return expected
     if token is None or not secrets.compare_digest(token, expected):
         raise HTTPException(status_code=401, detail="invalid controller token")
+    return expected
 
 
 def _research_catalog() -> dict[str, Any]:
@@ -2833,8 +2841,7 @@ def coordinator_run_episode(
 ) -> dict[str, Any]:
     """Protected Coordinator continuation for interaction or model seats."""
 
-    _require_controller_token(controller_token)
-    assert controller_token is not None
+    controller_token = _require_controller_token(controller_token)
     session = _session(episode_id)
     with session.lock:
         request_key = request.model_dump(mode="json")

@@ -81,7 +81,7 @@ def test_context_support_and_semantics_are_ablatable():
         persona_semantics_version="economic_v2",
     ).build(observation, "company_A", EpisodeMemory())
 
-    assert legacy.context_schema_version == "decision-context-v1.14.0"
+    assert legacy.context_schema_version == "decision-context-v1.15.0"
     assert legacy.decision_support["metrics_schema_version"] == (
         "decision-support-v1.0.0"
     )

@@ -23,6 +23,8 @@ import {
 
 const API_URL =
   process.env.NEXT_PUBLIC_MARKET_API_URL ?? "http://localhost:8010/api";
+const LOCAL_CONTROLLER_BYPASS =
+  process.env.NEXT_PUBLIC_LOCAL_CONTROLLER_BYPASS === "1";
 
 type EntryMode = "participant" | "observer" | "research";
 
@@ -509,8 +511,18 @@ function SetupView({
           <ul>
             <li className="done">共同随机种子已固定</li>
             <li className="done">{agents.length} 个智能体已分配</li>
-            <li className={config.controllerToken ? "done" : "warn"}>
-              {config.controllerToken ? "控制器已授权" : "当前将使用演示环境"}
+            <li
+              className={
+                config.controllerToken || LOCAL_CONTROLLER_BYPASS
+                  ? "done"
+                  : "warn"
+              }
+            >
+              {config.controllerToken
+                ? "控制器已授权"
+                : LOCAL_CONTROLLER_BYPASS
+                  ? "本机临时免令牌模式"
+                  : "当前将使用演示环境"}
             </li>
           </ul>
         </div>
@@ -906,6 +918,7 @@ function LiveView({
   completed,
   interactive,
   busy,
+  needsCoordinator,
 }: {
   agents: AgentRuntimeView[];
   round: number;
@@ -925,6 +938,7 @@ function LiveView({
   completed: boolean;
   interactive: boolean;
   busy: boolean;
+  needsCoordinator: boolean;
 }) {
   const [humanAction, setHumanAction] = useState({
     price: 9800,
@@ -2980,7 +2994,11 @@ export default function Home() {
       config.cooperation ||
       config.gameTheory ||
       config.informationMode !== "perfect";
-    if ((protectedMode || needsCoordinator) && !config.controllerToken) {
+    if (
+      (protectedMode || needsCoordinator) &&
+      !config.controllerToken &&
+      !LOCAL_CONTROLLER_BYPASS
+    ) {
       setNotice(
         "高级实验或模型智能体需要本地 Controller Token。可填写 Token，或先载入研究演示。",
       );
@@ -3137,7 +3155,11 @@ export default function Home() {
       setNotice("尚未创建真实 Episode。");
       return;
     }
-    if (!config.controllerToken && (needsCoordinator || remaining)) {
+    if (
+      !config.controllerToken &&
+      !LOCAL_CONTROLLER_BYPASS &&
+      (needsCoordinator || remaining)
+    ) {
       setNotice(
         "真实回合推进需要 Controller Token。可填写 Token，或先载入研究演示。",
       );
@@ -3375,6 +3397,7 @@ export default function Home() {
         completed={demoCompleted}
         interactive={entryMode === "participant"}
         busy={busy}
+        needsCoordinator={needsCoordinator}
       />
     ) : active === "observatory" ? (
       <ObservatoryView agents={runtimeAgents} />

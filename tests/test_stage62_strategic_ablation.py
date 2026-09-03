@@ -1,11 +1,17 @@
 from __future__ import annotations
 
+from dataclasses import replace
+
+from game_theory_agent.agents.personas import PersonaRegistry
 from game_theory_agent.experiments.stage62_strategic_ablation import (
     CONDITIONS,
     HOLDOUT_IDS,
+    _true_one_step_regret,
     opponent_pools,
     run,
 )
+from game_theory_agent.gameplay import build_rule_action
+from game_theory_agent.market import MarketEnv
 from game_theory_agent.opponent import (
     OPPONENT_MODEL_CANDIDATE_UPDATER_VERSION,
     OpponentModelLedger,
@@ -117,3 +123,37 @@ def test_stage62_small_ablation_is_matched_legal_and_zero_llm():
     ]
     assert len({row["final_state_hash"] for row in baselines}) == 1
     assert len({row["enterprise_value_cents"] for row in baselines}) == 1
+
+
+def test_true_regret_scores_the_actual_action_not_a_candidate_label(config):
+    env = MarketEnv(config)
+    state = env.reset(
+        ("company_A", "company_B", "company_C", "company_D"),
+        episode_id="stage62-actual-action-regret",
+        episode_seed=991,
+        market_model="balanced",
+        max_rounds=5,
+        cooperation_mode="shared_resilience_v1",
+    )
+    baseline = build_rule_action(config, state, "company_A")
+    chosen = replace(
+        baseline,
+        action_id="stage62-arbitrary-legal-action",
+        price_cents=10_123,
+    )
+    opponents = {
+        company_id: build_rule_action(config, state, company_id)
+        for company_id in state.company_ids[1:]
+    }
+
+    regret = _true_one_step_regret(
+        config,
+        state,
+        persona_profile=PersonaRegistry.from_market_config(config).get(
+            "balanced_v1"
+        ),
+        opponent_actions=opponents,
+        chosen_action=chosen,
+    )
+
+    assert regret >= 0

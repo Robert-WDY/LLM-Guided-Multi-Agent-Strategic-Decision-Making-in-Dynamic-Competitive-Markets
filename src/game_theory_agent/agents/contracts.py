@@ -210,11 +210,15 @@ class DecisionContext(BaseModel):
         "decision-context-v1.12.0",
         "decision-context-v1.13.0",
         "decision-context-v1.14.0",
+        "decision-context-v1.15.0",
     ] = (
-        "decision-context-v1.14.0"
+        "decision-context-v1.15.0"
     )
     context_mode: Literal["full", "state_only"] = "full"
     cooperation_history_mode: Literal["full", "none"] = "full"
+    cooperation_prompt_variant: Literal[
+        "explicit_options_v1", "neutral_numeric_v1"
+    ] = "explicit_options_v1"
     decision_support_version: Literal["legacy_v1", "economic_v2"] = "economic_v2"
     persona_semantics_version: Literal["legacy_v1", "economic_v2"] = "economic_v2"
     diagnostic_mode: Literal["off", "observe"] = "off"

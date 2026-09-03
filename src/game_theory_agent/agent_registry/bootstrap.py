@@ -300,6 +300,7 @@ class CurrentAgentVersionBuilder:
                 persona_semantics_version="economic_v2",
                 diagnostic_mode="off",
                 cooperation_history_mode="full",
+                cooperation_prompt_variant="explicit_options_v1",
             ),
             strategic_stack=self._strategic_stack(advisor_mode),
             action_stack=ActionStackSpec(

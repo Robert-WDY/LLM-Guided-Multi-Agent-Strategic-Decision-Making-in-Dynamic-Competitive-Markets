@@ -167,6 +167,7 @@ class RegisteredAgentRuntimeFactory:
             persona_semantics_version=context.persona_semantics_version,
             diagnostic_mode=context.diagnostic_mode,
             cooperation_history_mode=context.cooperation_history_mode,
+            cooperation_prompt_variant=context.cooperation_prompt_variant,
         )
         binding = AgentInstanceBinding.create(
             episode_id=episode_id,

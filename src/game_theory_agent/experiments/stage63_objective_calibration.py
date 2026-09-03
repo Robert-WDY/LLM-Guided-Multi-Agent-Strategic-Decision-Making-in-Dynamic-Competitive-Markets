@@ -250,11 +250,11 @@ def run_episode(
 
         regret = _true_one_step_regret(
             config,
-            state,
-            persona_profile=profile,
-            opponent_actions=opponent_actions,
-            chosen_candidate_id=chosen_id,
-        )
+                state,
+                persona_profile=profile,
+                opponent_actions=opponent_actions,
+                chosen_action=focal_action,
+            )
         recommendations.append(chosen_id)
         regrets.append(regret)
         validation = env.validate_action(focal_action, "company_A")
