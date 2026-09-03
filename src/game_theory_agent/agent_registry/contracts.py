@@ -97,6 +97,9 @@ class ContextStackSpec(ImmutableModel):
     persona_semantics_version: Literal["legacy_v1", "economic_v2"] = "economic_v2"
     diagnostic_mode: Literal["off", "observe"] = "off"
     cooperation_history_mode: Literal["full", "none"] = "full"
+    cooperation_prompt_variant: Literal[
+        "explicit_options_v1", "neutral_numeric_v1"
+    ] = "explicit_options_v1"
 
 
 class StrategicStackSpec(ImmutableModel):

@@ -278,7 +278,7 @@ def _true_one_step_regret(
     *,
     persona_profile,
     opponent_actions: Mapping[str, CompanyAction],
-    chosen_candidate_id: str,
+    chosen_action: CompanyAction,
 ) -> int:
     registry = PersonaRegistry.from_market_config(config)
     evaluator = registry.evaluator(persona_profile)
@@ -302,9 +302,37 @@ def _true_one_step_regret(
         values[candidate.candidate_id] = (
             _enterprise_value(result.state_after, config) + persona_bonus - loss
         )
-    if chosen_candidate_id not in values:
-        raise ValueError(f"chosen candidate is missing: {chosen_candidate_id}")
-    return max(values.values()) - values[chosen_candidate_id]
+    # Advice is generated from a public forecast state.  Near a price or cash
+    # boundary, its candidate id can legitimately be deduplicated out of the
+    # candidate set regenerated from the hidden true state.  Regret must score
+    # the action that was actually chosen, rather than looking it up by a label
+    # in a different candidate set.
+    chosen_env = MarketEnv(config)
+    chosen_env.load_state(state)
+    chosen_actions = dict(opponent_actions)
+    chosen_actions["company_A"] = chosen_action
+    chosen_result = chosen_env.step(
+        f"{state.episode_id}:{state.round}:{state.state_version}",
+        chosen_actions,
+    )
+    chosen_assessment = evaluator.evaluate(
+        state, chosen_result.state_after, "company_A"
+    )
+    chosen_loss = (
+        chosen_assessment.realized_incident_loss_cents
+        + chosen_assessment.realized_unserved_contribution_loss_cents
+    )
+    chosen_bonus = (
+        chosen_assessment.round_utility_ppm
+        * registry.profit_scale_cents
+        // 1_000_000
+    )
+    chosen_value = (
+        _enterprise_value(chosen_result.state_after, config)
+        + chosen_bonus
+        - chosen_loss
+    )
+    return max(0, max((*values.values(), chosen_value)) - chosen_value)
 
 
 def _v2_state(
@@ -431,7 +459,7 @@ def run_episode(
                 state,
                 persona_profile=profile,
                 opponent_actions=opponent_actions,
-                chosen_candidate_id=chosen_id,
+                chosen_action=focal_action,
             )
         )
         actions = {"company_A": focal_action, **opponent_actions}

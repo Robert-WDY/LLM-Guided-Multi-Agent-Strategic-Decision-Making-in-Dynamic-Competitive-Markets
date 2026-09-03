@@ -160,14 +160,19 @@ def _terminal_value(state: MarketState, config: Any) -> int:
     )
 
 
-def _build_rule_episode(config: Any, seed: int) -> tuple[MarketState, tuple[MarketTransition, ...], bool]:
+def _build_rule_episode(
+    config: Any,
+    seed: int,
+    *,
+    rounds: int = ROUNDS,
+) -> tuple[MarketState, tuple[MarketTransition, ...], bool]:
     env = MarketEnv(config)
     initial = env.reset(
         COMPANIES,
         episode_id=f"stage610-rule-{seed}",
         episode_seed=seed,
         market_model="balanced",
-        max_rounds=ROUNDS,
+        max_rounds=rounds,
     )
     state = initial
     transitions: list[MarketTransition] = []
