@@ -1,0 +1,853 @@
+{
+  "version": "reliable-strategic-advisor-v1",
+  "source_state_hash": "sha256:93351fcd5214a78e0e93ad7cd78a4d9a44e6d54ea3b44930300ecb22e03276cf",
+  "source_round": 1,
+  "company_count": 2,
+  "actor_count": 6,
+  "mode": "interactive",
+  "response_model": "conditional",
+  "model_sha256": "b6ac35aa0713f38e543556603ddeaec06be5f90d12421ceb9918c8e1d79a1381",
+  "objective": {
+    "version": "objective-v16.0.0",
+    "goal": "company",
+    "phase": "expansion",
+    "phase_reason": "处于前3轮且没有现金危机",
+    "weights": {
+      "profit": 0.35,
+      "welfare": 0.0,
+      "cash": 0.1,
+      "share": 0.25,
+      "capacity": 0.2,
+      "resilience": 0.1
+    },
+    "scales": {
+      "profit": 10000000,
+      "welfare": 10000000,
+      "cash": 10000000,
+      "share": 100000,
+      "capacity": 1000,
+      "resilience": 100000
+    },
+    "discount": 0.95,
+    "risk_aversion": 0.25,
+    "cash_floor_cents": 0,
+    "scope": "公司单边行动；福利目标不授权控制其他主体。现金、产能和韧性为独立效用维度，不与利润相加解释成经济福利。终端资产为公开指标代理，未声称精确长期企业价值。"
+  },
+  "draft_action": {
+    "action_id": "draft:1:company_A",
+    "episode_id": "advisor-340101",
+    "agent_id": "company_A",
+    "round": 1,
+    "state_version": 0,
+    "price_cents": 12000,
+    "advertising_budget_cents": 0,
+    "service_budget_cents": 0,
+    "capacity_investment_cents": 0,
+    "resilience_budget_cents": 0,
+    "incident_response": {
+      "mode": "wait",
+      "repair_budget_cents": 0
+    },
+    "strategy_summary": "agent-draft",
+    "shared_resilience_contribution_cents": 0,
+    "threshold_project_contribution_cents": 0,
+    "mutual_aid_capacity_offer_orders": 0,
+    "mutual_aid_capacity_request_orders": 0,
+    "primary_supplier_id": "economy_supplier",
+    "primary_supplier_share_ppm": 1000000
+  },
+  "action": {
+    "action_id": "local:1:company_A:resilience_budget_cents_adjust",
+    "episode_id": "advisor-340101",
+    "agent_id": "company_A",
+    "round": 1,
+    "state_version": 0,
+    "price_cents": 12000,
+    "advertising_budget_cents": 0,
+    "service_budget_cents": 0,
+    "capacity_investment_cents": 0,
+    "resilience_budget_cents": 30000,
+    "incident_response": {
+      "mode": "wait",
+      "repair_budget_cents": 0
+    },
+    "strategy_summary": "agent-draft",
+    "shared_resilience_contribution_cents": 0,
+    "threshold_project_contribution_cents": 0,
+    "mutual_aid_capacity_offer_orders": 0,
+    "mutual_aid_capacity_request_orders": 0,
+    "primary_supplier_id": "economy_supplier",
+    "primary_supplier_share_ppm": 1000000
+  },
+  "recommended_id": "resilience_budget_cents_adjust",
+  "recommended_label": "resilience_budget_cents_adjust",
+  "disposition": "recommend",
+  "rationale": "所选候选相对原计划在独立模拟验证中，各期限下界为正且满足样本约束。",
+  "candidates": [
+    {
+      "id": "agent_draft",
+      "label": "Agent原计划",
+      "action": {
+        "action_id": "draft:1:company_A",
+        "episode_id": "advisor-340101",
+        "agent_id": "company_A",
+        "round": 1,
+        "state_version": 0,
+        "price_cents": 12000,
+        "advertising_budget_cents": 0,
+        "service_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "resilience_budget_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "strategy_summary": "agent-draft",
+        "shared_resilience_contribution_cents": 0,
+        "threshold_project_contribution_cents": 0,
+        "mutual_aid_capacity_offer_orders": 0,
+        "mutual_aid_capacity_request_orders": 0,
+        "primary_supplier_id": "economy_supplier",
+        "primary_supplier_share_ppm": 1000000
+      },
+      "change": {}
+    },
+    {
+      "id": "price_down",
+      "label": "price_down",
+      "action": {
+        "action_id": "local:1:company_A:price_down",
+        "episode_id": "advisor-340101",
+        "agent_id": "company_A",
+        "round": 1,
+        "state_version": 0,
+        "price_cents": 11400,
+        "advertising_budget_cents": 0,
+        "service_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "resilience_budget_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "strategy_summary": "agent-draft",
+        "shared_resilience_contribution_cents": 0,
+        "threshold_project_contribution_cents": 0,
+        "mutual_aid_capacity_offer_orders": 0,
+        "mutual_aid_capacity_request_orders": 0,
+        "primary_supplier_id": "economy_supplier",
+        "primary_supplier_share_ppm": 1000000
+      },
+      "change": {
+        "price_cents": 11400
+      }
+    },
+    {
+      "id": "price_up",
+      "label": "price_up",
+      "action": {
+        "action_id": "local:1:company_A:price_up",
+        "episode_id": "advisor-340101",
+        "agent_id": "company_A",
+        "round": 1,
+        "state_version": 0,
+        "price_cents": 12600,
+        "advertising_budget_cents": 0,
+        "service_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "resilience_budget_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "strategy_summary": "agent-draft",
+        "shared_resilience_contribution_cents": 0,
+        "threshold_project_contribution_cents": 0,
+        "mutual_aid_capacity_offer_orders": 0,
+        "mutual_aid_capacity_request_orders": 0,
+        "primary_supplier_id": "economy_supplier",
+        "primary_supplier_share_ppm": 1000000
+      },
+      "change": {
+        "price_cents": 12600
+      }
+    },
+    {
+      "id": "service_budget_cents_adjust",
+      "label": "service_budget_cents_adjust",
+      "action": {
+        "action_id": "local:1:company_A:service_budget_cents_adjust",
+        "episode_id": "advisor-340101",
+        "agent_id": "company_A",
+        "round": 1,
+        "state_version": 0,
+        "price_cents": 12000,
+        "advertising_budget_cents": 0,
+        "service_budget_cents": 30000,
+        "capacity_investment_cents": 0,
+        "resilience_budget_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "strategy_summary": "agent-draft",
+        "shared_resilience_contribution_cents": 0,
+        "threshold_project_contribution_cents": 0,
+        "mutual_aid_capacity_offer_orders": 0,
+        "mutual_aid_capacity_request_orders": 0,
+        "primary_supplier_id": "economy_supplier",
+        "primary_supplier_share_ppm": 1000000
+      },
+      "change": {
+        "service_budget_cents": 30000
+      }
+    },
+    {
+      "id": "advertising_budget_cents_adjust",
+      "label": "advertising_budget_cents_adjust",
+      "action": {
+        "action_id": "local:1:company_A:advertising_budget_cents_adjust",
+        "episode_id": "advisor-340101",
+        "agent_id": "company_A",
+        "round": 1,
+        "state_version": 0,
+        "price_cents": 12000,
+        "advertising_budget_cents": 30000,
+        "service_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "resilience_budget_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "strategy_summary": "agent-draft",
+        "shared_resilience_contribution_cents": 0,
+        "threshold_project_contribution_cents": 0,
+        "mutual_aid_capacity_offer_orders": 0,
+        "mutual_aid_capacity_request_orders": 0,
+        "primary_supplier_id": "economy_supplier",
+        "primary_supplier_share_ppm": 1000000
+      },
+      "change": {
+        "advertising_budget_cents": 30000
+      }
+    },
+    {
+      "id": "resilience_budget_cents_adjust",
+      "label": "resilience_budget_cents_adjust",
+      "action": {
+        "action_id": "local:1:company_A:resilience_budget_cents_adjust",
+        "episode_id": "advisor-340101",
+        "agent_id": "company_A",
+        "round": 1,
+        "state_version": 0,
+        "price_cents": 12000,
+        "advertising_budget_cents": 0,
+        "service_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "resilience_budget_cents": 30000,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "strategy_summary": "agent-draft",
+        "shared_resilience_contribution_cents": 0,
+        "threshold_project_contribution_cents": 0,
+        "mutual_aid_capacity_offer_orders": 0,
+        "mutual_aid_capacity_request_orders": 0,
+        "primary_supplier_id": "economy_supplier",
+        "primary_supplier_share_ppm": 1000000
+      },
+      "change": {
+        "resilience_budget_cents": 30000
+      }
+    },
+    {
+      "id": "contract_adjust",
+      "label": "contract_adjust",
+      "action": {
+        "action_id": "local:1:company_A:contract_adjust",
+        "episode_id": "advisor-340101",
+        "agent_id": "company_A",
+        "round": 1,
+        "state_version": 0,
+        "price_cents": 12000,
+        "advertising_budget_cents": 0,
+        "service_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "resilience_budget_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "strategy_summary": "agent-draft",
+        "shared_resilience_contribution_cents": 0,
+        "threshold_project_contribution_cents": 0,
+        "mutual_aid_capacity_offer_orders": 0,
+        "mutual_aid_capacity_request_orders": 0,
+        "primary_supplier_id": "economy_supplier",
+        "primary_supplier_share_ppm": 1000000,
+        "contract_duration_rounds": 3
+      },
+      "change": {
+        "contract_duration_rounds": 3
+      }
+    },
+    {
+      "id": "cooperation_adjust",
+      "label": "cooperation_adjust",
+      "action": {
+        "action_id": "local:1:company_A:cooperation_adjust",
+        "episode_id": "advisor-340101",
+        "agent_id": "company_A",
+        "round": 1,
+        "state_version": 0,
+        "price_cents": 12000,
+        "advertising_budget_cents": 0,
+        "service_budget_cents": 0,
+        "capacity_investment_cents": 0,
+        "resilience_budget_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "strategy_summary": "agent-draft",
+        "shared_resilience_contribution_cents": 30000,
+        "threshold_project_contribution_cents": 0,
+        "mutual_aid_capacity_offer_orders": 0,
+        "mutual_aid_capacity_request_orders": 0,
+        "primary_supplier_id": "economy_supplier",
+        "primary_supplier_share_ppm": 1000000
+      },
+      "change": {
+        "shared_resilience_contribution_cents": 30000
+      }
+    }
+  ],
+  "rankings": [
+    {
+      "candidate": {
+        "id": "agent_draft",
+        "label": "Agent原计划",
+        "action": {
+          "action_id": "draft:1:company_A",
+          "episode_id": "advisor-340101",
+          "agent_id": "company_A",
+          "round": 1,
+          "state_version": 0,
+          "price_cents": 12000,
+          "advertising_budget_cents": 0,
+          "service_budget_cents": 0,
+          "capacity_investment_cents": 0,
+          "resilience_budget_cents": 0,
+          "incident_response": {
+            "mode": "wait",
+            "repair_budget_cents": 0
+          },
+          "strategy_summary": "agent-draft",
+          "shared_resilience_contribution_cents": 0,
+          "threshold_project_contribution_cents": 0,
+          "mutual_aid_capacity_offer_orders": 0,
+          "mutual_aid_capacity_request_orders": 0,
+          "primary_supplier_id": "economy_supplier",
+          "primary_supplier_share_ppm": 1000000
+        },
+        "change": {}
+      },
+      "score": 0.631857375,
+      "expected": 0.6389498333333333,
+      "tail_mean": 0.61058,
+      "standard_deviation": 0.02906869668083212,
+      "safe": true,
+      "metrics": {
+        "profit": 14831200.0,
+        "welfare": 41027630.333333336,
+        "cash": 14831200,
+        "share": -5741.666666666667,
+        "capacity": -18,
+        "resilience": -10500
+      },
+      "contributions": {
+        "profit": 0.519092,
+        "welfare": 0.0,
+        "cash": 0.14831200000000003,
+        "share": -0.014354166666666666,
+        "capacity": -0.0036,
+        "resilience": -0.0105
+      },
+      "sample_scores": [
+        0.61058,
+        0.6273695,
+        0.6789
+      ]
+    },
+    {
+      "candidate": {
+        "id": "price_down",
+        "label": "price_down",
+        "action": {
+          "action_id": "local:1:company_A:price_down",
+          "episode_id": "advisor-340101",
+          "agent_id": "company_A",
+          "round": 1,
+          "state_version": 0,
+          "price_cents": 11400,
+          "advertising_budget_cents": 0,
+          "service_budget_cents": 0,
+          "capacity_investment_cents": 0,
+          "resilience_budget_cents": 0,
+          "incident_response": {
+            "mode": "wait",
+            "repair_budget_cents": 0
+          },
+          "strategy_summary": "agent-draft",
+          "shared_resilience_contribution_cents": 0,
+          "threshold_project_contribution_cents": 0,
+          "mutual_aid_capacity_offer_orders": 0,
+          "mutual_aid_capacity_request_orders": 0,
+          "primary_supplier_id": "economy_supplier",
+          "primary_supplier_share_ppm": 1000000
+        },
+        "change": {
+          "price_cents": 11400
+        }
+      },
+      "score": 0.556797,
+      "expected": 0.5638548333333333,
+      "tail_mean": 0.5356235,
+      "standard_deviation": 0.02064129528531471,
+      "safe": true,
+      "metrics": {
+        "profit": 13016200.0,
+        "welfare": 40667530.333333336,
+        "cash": 13016200,
+        "share": -3109.6666666666665,
+        "capacity": -18,
+        "resilience": -10500
+      },
+      "contributions": {
+        "profit": 0.45556699999999994,
+        "welfare": 0.0,
+        "cash": 0.130162,
+        "share": -0.007774166666666666,
+        "capacity": -0.0036,
+        "resilience": -0.0105
+      },
+      "sample_scores": [
+        0.571541,
+        0.5356235,
+        0.5844
+      ]
+    },
+    {
+      "candidate": {
+        "id": "price_up",
+        "label": "price_up",
+        "action": {
+          "action_id": "local:1:company_A:price_up",
+          "episode_id": "advisor-340101",
+          "agent_id": "company_A",
+          "round": 1,
+          "state_version": 0,
+          "price_cents": 12600,
+          "advertising_budget_cents": 0,
+          "service_budget_cents": 0,
+          "capacity_investment_cents": 0,
+          "resilience_budget_cents": 0,
+          "incident_response": {
+            "mode": "wait",
+            "repair_budget_cents": 0
+          },
+          "strategy_summary": "agent-draft",
+          "shared_resilience_contribution_cents": 0,
+          "threshold_project_contribution_cents": 0,
+          "mutual_aid_capacity_offer_orders": 0,
+          "mutual_aid_capacity_request_orders": 0,
+          "primary_supplier_id": "economy_supplier",
+          "primary_supplier_share_ppm": 1000000
+        },
+        "change": {
+          "price_cents": 12600
+        }
+      },
+      "score": 0.21798987499999997,
+      "expected": 0.22704116666666666,
+      "tail_mean": 0.19083599999999995,
+      "standard_deviation": 0.025737595433960474,
+      "safe": true,
+      "metrics": {
+        "profit": 9871600.0,
+        "welfare": 31417830.333333332,
+        "cash": 9871600,
+        "share": -81232.33333333333,
+        "capacity": -18,
+        "resilience": -10500
+      },
+      "contributions": {
+        "profit": 0.345506,
+        "welfare": 0.0,
+        "cash": 0.09871600000000001,
+        "share": -0.20308083333333332,
+        "capacity": -0.0036,
+        "resilience": -0.0105
+      },
+      "sample_scores": [
+        0.19083599999999995,
+        0.24189950000000005,
+        0.24838799999999994
+      ]
+    },
+    {
+      "candidate": {
+        "id": "service_budget_cents_adjust",
+        "label": "service_budget_cents_adjust",
+        "action": {
+          "action_id": "local:1:company_A:service_budget_cents_adjust",
+          "episode_id": "advisor-340101",
+          "agent_id": "company_A",
+          "round": 1,
+          "state_version": 0,
+          "price_cents": 12000,
+          "advertising_budget_cents": 0,
+          "service_budget_cents": 30000,
+          "capacity_investment_cents": 0,
+          "resilience_budget_cents": 0,
+          "incident_response": {
+            "mode": "wait",
+            "repair_budget_cents": 0
+          },
+          "strategy_summary": "agent-draft",
+          "shared_resilience_contribution_cents": 0,
+          "threshold_project_contribution_cents": 0,
+          "mutual_aid_capacity_offer_orders": 0,
+          "mutual_aid_capacity_request_orders": 0,
+          "primary_supplier_id": "economy_supplier",
+          "primary_supplier_share_ppm": 1000000
+        },
+        "change": {
+          "service_budget_cents": 30000
+        }
+      },
+      "score": 0.6315253749999999,
+      "expected": 0.6382785,
+      "tail_mean": 0.611266,
+      "standard_deviation": 0.028414837377093452,
+      "safe": true,
+      "metrics": {
+        "profit": 14810800.0,
+        "welfare": 41019830.333333336,
+        "cash": 14810800,
+        "share": -5643,
+        "capacity": -18,
+        "resilience": -10500
+      },
+      "contributions": {
+        "profit": 0.518378,
+        "welfare": 0.0,
+        "cash": 0.14810800000000002,
+        "share": -0.0141075,
+        "capacity": -0.0036,
+        "resilience": -0.0105
+      },
+      "sample_scores": [
+        0.611266,
+        0.6260195,
+        0.67755
+      ]
+    },
+    {
+      "candidate": {
+        "id": "advertising_budget_cents_adjust",
+        "label": "advertising_budget_cents_adjust",
+        "action": {
+          "action_id": "local:1:company_A:advertising_budget_cents_adjust",
+          "episode_id": "advisor-340101",
+          "agent_id": "company_A",
+          "round": 1,
+          "state_version": 0,
+          "price_cents": 12000,
+          "advertising_budget_cents": 30000,
+          "service_budget_cents": 0,
+          "capacity_investment_cents": 0,
+          "resilience_budget_cents": 0,
+          "incident_response": {
+            "mode": "wait",
+            "repair_budget_cents": 0
+          },
+          "strategy_summary": "agent-draft",
+          "shared_resilience_contribution_cents": 0,
+          "threshold_project_contribution_cents": 0,
+          "mutual_aid_capacity_offer_orders": 0,
+          "mutual_aid_capacity_request_orders": 0,
+          "primary_supplier_id": "economy_supplier",
+          "primary_supplier_share_ppm": 1000000
+        },
+        "change": {
+          "advertising_budget_cents": 30000
+        }
+      },
+      "score": 0.6317811249999999,
+      "expected": 0.6384489999999999,
+      "tail_mean": 0.6117775,
+      "standard_deviation": 0.0282533159322347,
+      "safe": true,
+      "metrics": {
+        "profit": 14813200.0,
+        "welfare": 41017663.666666664,
+        "cash": 14813200,
+        "share": -5618,
+        "capacity": -18,
+        "resilience": -10500
+      },
+      "contributions": {
+        "profit": 0.518462,
+        "welfare": 0.0,
+        "cash": 0.148132,
+        "share": -0.014045,
+        "capacity": -0.0036,
+        "resilience": -0.0105
+      },
+      "sample_scores": [
+        0.6117775,
+        0.6260195,
+        0.67755
+      ]
+    },
+    {
+      "candidate": {
+        "id": "resilience_budget_cents_adjust",
+        "label": "resilience_budget_cents_adjust",
+        "action": {
+          "action_id": "local:1:company_A:resilience_budget_cents_adjust",
+          "episode_id": "advisor-340101",
+          "agent_id": "company_A",
+          "round": 1,
+          "state_version": 0,
+          "price_cents": 12000,
+          "advertising_budget_cents": 0,
+          "service_budget_cents": 0,
+          "capacity_investment_cents": 0,
+          "resilience_budget_cents": 30000,
+          "incident_response": {
+            "mode": "wait",
+            "repair_budget_cents": 0
+          },
+          "strategy_summary": "agent-draft",
+          "shared_resilience_contribution_cents": 0,
+          "threshold_project_contribution_cents": 0,
+          "mutual_aid_capacity_offer_orders": 0,
+          "mutual_aid_capacity_request_orders": 0,
+          "primary_supplier_id": "economy_supplier",
+          "primary_supplier_share_ppm": 1000000
+        },
+        "change": {
+          "resilience_budget_cents": 30000
+        }
+      },
+      "score": 0.639318375,
+      "expected": 0.6464108333333333,
+      "tail_mean": 0.618041,
+      "standard_deviation": 0.02906869668083212,
+      "safe": true,
+      "metrics": {
+        "profit": 14801200.0,
+        "welfare": 40997630.333333336,
+        "cash": 14801200,
+        "share": -5741.666666666667,
+        "capacity": -18,
+        "resilience": -1689
+      },
+      "contributions": {
+        "profit": 0.518042,
+        "welfare": 0.0,
+        "cash": 0.148012,
+        "share": -0.014354166666666666,
+        "capacity": -0.0036,
+        "resilience": -0.001689
+      },
+      "sample_scores": [
+        0.618041,
+        0.6348305,
+        0.6863609999999999
+      ]
+    },
+    {
+      "candidate": {
+        "id": "contract_adjust",
+        "label": "contract_adjust",
+        "action": {
+          "action_id": "local:1:company_A:contract_adjust",
+          "episode_id": "advisor-340101",
+          "agent_id": "company_A",
+          "round": 1,
+          "state_version": 0,
+          "price_cents": 12000,
+          "advertising_budget_cents": 0,
+          "service_budget_cents": 0,
+          "capacity_investment_cents": 0,
+          "resilience_budget_cents": 0,
+          "incident_response": {
+            "mode": "wait",
+            "repair_budget_cents": 0
+          },
+          "strategy_summary": "agent-draft",
+          "shared_resilience_contribution_cents": 0,
+          "threshold_project_contribution_cents": 0,
+          "mutual_aid_capacity_offer_orders": 0,
+          "mutual_aid_capacity_request_orders": 0,
+          "primary_supplier_id": "economy_supplier",
+          "primary_supplier_share_ppm": 1000000,
+          "contract_duration_rounds": 3
+        },
+        "change": {
+          "contract_duration_rounds": 3
+        }
+      },
+      "score": 0.631857375,
+      "expected": 0.6389498333333333,
+      "tail_mean": 0.61058,
+      "standard_deviation": 0.02906869668083212,
+      "safe": true,
+      "metrics": {
+        "profit": 14831200.0,
+        "welfare": 41027630.333333336,
+        "cash": 14831200,
+        "share": -5741.666666666667,
+        "capacity": -18,
+        "resilience": -10500
+      },
+      "contributions": {
+        "profit": 0.519092,
+        "welfare": 0.0,
+        "cash": 0.14831200000000003,
+        "share": -0.014354166666666666,
+        "capacity": -0.0036,
+        "resilience": -0.0105
+      },
+      "sample_scores": [
+        0.61058,
+        0.6273695,
+        0.6789
+      ]
+    },
+    {
+      "candidate": {
+        "id": "cooperation_adjust",
+        "label": "cooperation_adjust",
+        "action": {
+          "action_id": "local:1:company_A:cooperation_adjust",
+          "episode_id": "advisor-340101",
+          "agent_id": "company_A",
+          "round": 1,
+          "state_version": 0,
+          "price_cents": 12000,
+          "advertising_budget_cents": 0,
+          "service_budget_cents": 0,
+          "capacity_investment_cents": 0,
+          "resilience_budget_cents": 0,
+          "incident_response": {
+            "mode": "wait",
+            "repair_budget_cents": 0
+          },
+          "strategy_summary": "agent-draft",
+          "shared_resilience_contribution_cents": 30000,
+          "threshold_project_contribution_cents": 0,
+          "mutual_aid_capacity_offer_orders": 0,
+          "mutual_aid_capacity_request_orders": 0,
+          "primary_supplier_id": "economy_supplier",
+          "primary_supplier_share_ppm": 1000000
+        },
+        "change": {
+          "shared_resilience_contribution_cents": 30000
+        }
+      },
+      "score": 0.6305073749999999,
+      "expected": 0.6375998333333333,
+      "tail_mean": 0.6092299999999999,
+      "standard_deviation": 0.029068696680832173,
+      "safe": true,
+      "metrics": {
+        "profit": 14801200.0,
+        "welfare": 40997630.333333336,
+        "cash": 14801200,
+        "share": -5741.666666666667,
+        "capacity": -18,
+        "resilience": -10500
+      },
+      "contributions": {
+        "profit": 0.518042,
+        "welfare": 0.0,
+        "cash": 0.148012,
+        "share": -0.014354166666666666,
+        "capacity": -0.0036,
+        "resilience": -0.0105
+      },
+      "sample_scores": [
+        0.6092299999999999,
+        0.6260195,
+        0.67755
+      ]
+    }
+  ],
+  "validation": [
+    {
+      "horizon": 1,
+      "paired_gains": [
+        0.00746099999999994,
+        0.007461000000000051,
+        0.00746099999999994,
+        0.00746099999999994,
+        0.00746099999999994,
+        0.007461000000000051,
+        0.00746099999999994,
+        0.007461000000000051
+      ],
+      "mean_gain": 0.0074609999999999815,
+      "lower_bound": 0.007460999999999943,
+      "negative_samples": 0,
+      "safe": true,
+      "pass_gate": true
+    }
+  ],
+  "forecast": {
+    "forecast_schema_version": "public-forecast-state-v1.0.0",
+    "episode_id": "advisor-340101",
+    "round": 1,
+    "state_version": 0,
+    "company_id": "company_A",
+    "public_decision_input_hash": "sha256:155290477a4195f365e68e7d8051779f1e1f9624f0bb4d7568ad1fc155a0bfe5",
+    "forecast_state_hash": "sha256:190423e4cd1cbd65ddd6ce293f4cac315386d4dc769401e414975b73f8a57e59",
+    "forecast_seed": 3032305289493238074,
+    "uses_public_state": true,
+    "uses_own_private_state": true,
+    "uses_belief_state": false,
+    "uses_public_opponent_model": false,
+    "uses_authoritative_hidden_market_state": false,
+    "hidden_opponent_fields_are_estimated": true,
+    "assumptions": [
+      "opponent cash, cost, capacity, brand assets, resilience and incidents use neutral config estimates",
+      "public event type and severity map to versioned config effects",
+      "forecast randomness is derived from legal decision inputs, not TrueState hash",
+      "belief, opponent model and Persona treatments share common random forecast scenarios on the same observation",
+      "the observing company's complete private state is used only for its own planning",
+      "supplier costs and initial cash use declared config priors; invoices use public deliveries/quotes; hidden historical buyer budgets equal invoices; processing costs use config priors; aggregate refunds minus own known refunds are allocated by opponent sales",
+      "private supplier requested quantities use the minimum excess consistent with realized investment, not the true hidden order book",
+      "v14 disclosed settled contracts, inventory and creditor reports are public; supplier cash/cost use declared initial/unit-cost priors; rejected bids and private order book are not reconstructed as facts"
+    ]
+  },
+  "search": {
+    "elapsed_seconds": 0.26413399999728426,
+    "used_steps": 40,
+    "step_budget": 1800,
+    "evaluated_candidates": 8,
+    "complete": true
+  },
+  "continuation": "候选仅改变当前一步，随后回到同一原计划并按新状态约束修正；不是后续每轮重新调用LLM。",
+  "limitations": [
+    "主基线为已规范化Agent原计划；弃权不保证原计划安全。",
+    "下界只针对声明模型的配对模拟，未知对手/分布变化不受保证。",
+    "本轮对手不观察候选；条件响应从下一轮开始。",
+    "供应商/消费者/政府继续原生规则；尚未学习其条件响应。",
+    "有限候选与3/5轮代理值，不是全球最优、完整企业估值或动态纳什证明。"
+  ]
+}

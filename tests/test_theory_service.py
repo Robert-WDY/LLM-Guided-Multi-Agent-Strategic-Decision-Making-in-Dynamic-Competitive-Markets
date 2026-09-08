@@ -43,3 +43,14 @@ def test_all_history_pages_survive_isolated_corrupt_records(tmp_path):
     assert client.get('/api/v1/controller/theory-lab/experiments',params={'limit':1000}).status_code==422
     assert client.post('/api/v1/controller/theory-lab/experiments',json={'request_id':'bool','kind':'repeated','parameters':{'rounds':True}}).status_code==422
     assert len(list(tmp_path.glob('*.json')))==105
+
+
+def test_reliable_draft_modes_persist_and_reject_missing_plan(tmp_path):
+    app=FastAPI();app.include_router(router(tmp_path,CONFIG,lambda token:None));client=TestClient(app)
+    base='/api/v1/controller/theory-lab/experiments'
+    payload=dict(request_id='reliable-api',kind='advisor',parameters=dict(advisor_version='reliable',company_count=2,mode='interactive',draft_action={'price_cents':12000},step_budget=1))
+    response=client.post(base,json=payload);assert response.status_code==200,response.text
+    row=response.json();assert row['result']['disposition']=='abstain' and row['result']['draft_action']==row['result']['action']
+    assert client.get(base+'/'+row['id']).json()==row and client.post(base,json=payload).json()==row
+    payload['request_id']='missing';payload['parameters']['draft_action']={}
+    assert client.post(base,json=payload).status_code==422

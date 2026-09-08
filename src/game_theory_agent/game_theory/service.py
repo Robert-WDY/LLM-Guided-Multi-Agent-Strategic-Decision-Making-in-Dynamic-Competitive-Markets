@@ -45,6 +45,9 @@ class TheoryService:
                 if version=='v17':
                     from .advisor_beliefs import RobustRequest as AdviceRequest
                     from .advisor_robust import advise
+                elif version=='reliable':
+                    from .reliable_advisor import ReliableRequest as AdviceRequest
+                    from .reliable_advisor import advise
                 elif version!='v16':raise ValueError('unknown advisor version')
                 episode=p.pop('episode_id',None);count=p.pop('company_count',4);rounds=p.pop('market_rounds',10)
                 if type(count)!=int or not 2<=count<=10:raise ValueError('company_count must be between 2 and 10')
@@ -54,6 +57,7 @@ class TheoryService:
                     if not self.state_provider:raise ValueError('no current market session')
                     state=self.state_provider(episode)
                     if version=='v17' and self.history_provider:spec=AdviceRequest.model_validate({**spec.model_dump(),'history':self.history_provider(episode,state.round)})
+                    if version=='reliable' and self.history_provider:spec=AdviceRequest.model_validate({**spec.model_dump(),'public_history':self.history_provider(episode,state.round)})
                 else:state=MarketEnv(self.config).reset(company_ids=[f'company_{chr(65+i)}' for i in range(count)],episode_id=f'advisor-{spec.seed}',episode_seed=spec.seed,max_rounds=rounds,cooperation_mode='combined_v1')
                 result=advise(self.config,state,spec)
             elif request.kind=='matrix':
@@ -128,5 +132,7 @@ def router(root,config,require_token,state_provider=None,history_provider=None):
         for stage in range(1,7):
             p=base/'advisor-v17'/f'stage{stage}.json'
             if p.exists():reports[f'v17-{stage}']={k:v for k,v in read_json(p).items() if k not in ('results','traces')}
+        p=base/'reliable-advisor-v19'/'acceptance.json'
+        if p.exists():reports['reliable']=read_json(p)
         return reports
     return routes

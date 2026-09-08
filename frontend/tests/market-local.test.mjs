@@ -17,6 +17,22 @@ await writeFile(advisorPath,ts.transpileModule(advisorSource,{compilerOptions:{j
 const {AdvisorResult}=await import(advisorPath.href);await unlink(advisorPath);
 const advisorFixture=JSON.parse(await readFile(new URL('./fixtures/advisor-v16.json',import.meta.url),'utf8'));
 const robustFixture=JSON.parse(await readFile(new URL('./fixtures/advisor-v17.json',import.meta.url),'utf8'));
+const reliableSource=await readFile(new URL('../app/reliable-advisor.tsx',import.meta.url),'utf8');
+const reliablePath=new URL(`./.reliable-render-${process.pid}.mjs`,import.meta.url);
+await writeFile(reliablePath,ts.transpileModule(reliableSource,{compilerOptions:{jsx:ts.JsxEmit.ReactJSX,target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext}}).outputText);
+const {ReliableAdvisorResult}=await import(reliablePath.href);await unlink(reliablePath);
+const reliableFixture=JSON.parse(await readFile(new URL('./fixtures/advisor-reliable.json',import.meta.url),'utf8'));
+
+test('reliable actual API response explains draft change and model limits',()=>{
+ const html=renderToStaticMarkup(React.createElement(ReliableAdvisorResult,{value:reliableFixture}));
+ for(const text of ['建议局部修改原计划','resilience_budget_cents','独立模拟验证','不是现实盈利保证','条件响应从后续回合开始','不是后续每轮重新调用LLM'])assert.ok(html.includes(text),text);
+});
+test('reliable abstention does not present the draft as safe or completed',()=>{
+ const value=structuredClone(reliableFixture);value.disposition='abstain';value.action=value.draft_action;value.validation=[];value.search.complete=false;
+ const html=renderToStaticMarkup(React.createElement(ReliableAdvisorResult,{value}));
+ for(const text of ['保留原计划','弃权不表示原计划没有风险','检查未完成'])assert.ok(html.includes(text),text);
+ assert.ok(!html.includes('建议局部修改原计划'));
+});
 test("legacy state does not invent four-actor accounts", () => assert.equal(render({}), ""));
 test("four-actor ledger renders actual signed budgets, materials and voluntary choice", () => {
   const html = render({

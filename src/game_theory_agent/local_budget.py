@@ -1,4 +1,4 @@
-"""Durable, conservative cash reservations for this owner's 10 CNY budget.
+"""Durable, conservative cash reservations against the owner's authorized budget.
 
 Reservations are never refunded automatically, including failed/unknown calls.
 Session backups intentionally never roll this ledger back.
@@ -47,7 +47,10 @@ def _connect(path):
 
 def _totals(db):
     row = db.execute('SELECT total, historical FROM budget WHERE id=1').fetchone()
-    if row != (TOTAL, HISTORICAL): raise LocalBudgetError('费用账本额度或历史保留额不匹配，已阻止调用。')
+    approved = TOTAL
+    if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='budget_authorizations'").fetchone():
+        approved = db.execute('SELECT coalesce(max(total),?) FROM budget_authorizations', (TOTAL,)).fetchone()[0]
+    if row != (approved, HISTORICAL): raise LocalBudgetError('费用账本额度或历史保留额不匹配，已阻止调用。')
     if db.execute('SELECT count(*) FROM calls WHERE reserved <= 0 OR reserved > ?', (RESERVATION,)).fetchone()[0]: raise LocalBudgetError('费用账本损坏。')
     if db.execute('SELECT count(*) FROM calls WHERE actual > reserved').fetchone()[0]: raise LocalBudgetError('已有调用超出预留；必须核对账单后才能继续。')
     added, count = db.execute('SELECT coalesce(sum(reserved),0), count(*) FROM calls').fetchone()
@@ -55,10 +58,12 @@ def _totals(db):
 
 def status(path=LEDGER):
     try:
-        with _connect(path) as db: added, count = _totals(db)
-        remaining = max(0, TOTAL-HISTORICAL-added)
+        with _connect(path) as db:
+            added, count = _totals(db)
+            total = db.execute('SELECT total FROM budget WHERE id=1').fetchone()[0]
+        remaining = max(0, total-HISTORICAL-added)
         valid = date.today().isoformat() <= PRICE_VALID_THROUGH
-        return dict(ready=valid and remaining >= RESERVATION, total_cny=10, reserved_cny=(HISTORICAL+added)/1e6, remaining_cny=remaining/1e6, historical_estimate_cny=HISTORICAL_ESTIMATE/1e6, maximum_call_cny=RESERVATION/1e6, new_calls=count, model='deepseek-v4-flash', price_valid_through=PRICE_VALID_THROUGH, message='已保留失败及未知调用的额度。' if valid else '价格快照已过期；请重新核对价格后更新保护配置。')
+        return dict(ready=valid and remaining >= RESERVATION, total_cny=total/1e6, reserved_cny=(HISTORICAL+added)/1e6, remaining_cny=remaining/1e6, historical_estimate_cny=HISTORICAL_ESTIMATE/1e6, maximum_call_cny=RESERVATION/1e6, new_calls=count, model='deepseek-v4-flash', price_valid_through=PRICE_VALID_THROUGH, message='已保留失败及未知调用的额度。' if valid else '价格快照已过期；请重新核对价格后更新保护配置。')
     except (sqlite3.Error, OSError, LocalBudgetError) as exc:
         return dict(ready=False, message=str(exc), total_cny=10)
 
@@ -70,11 +75,26 @@ def reserve(path=LEDGER, amount=RESERVATION):
         with _connect(path) as db:
             db.execute('BEGIN IMMEDIATE')
             added, _ = _totals(db)
-            if HISTORICAL+added+amount > TOTAL: raise LocalBudgetError('10 元总预算剩余额度不足；不会继续调用真实模型。')
+            total = db.execute('SELECT total FROM budget WHERE id=1').fetchone()[0]
+            if HISTORICAL+added+amount > total: raise LocalBudgetError('已授权累计预算剩余额度不足；不会继续调用真实模型。')
             call_id = str(uuid.uuid4())
             db.execute('INSERT INTO calls (id,reserved,status) VALUES (?,?,?)', (call_id, amount, 'reserved_unknown'))
         return call_id
     except (sqlite3.Error, OSError) as exc: raise LocalBudgetError('无法持久化费用预留，未发起模型调用。') from exc
+
+def authorize_increase(total_cny, authorization, path=LEDGER):
+    """Explicit owner authorization only; preserve every old reservation and call."""
+    if type(total_cny) is not int or not 10 < total_cny <= 30 or not isinstance(authorization,str) or not authorization.strip():
+        raise LocalBudgetError('需要明确授权且累计上限不超过30元。')
+    with _connect(path) as db:
+        db.execute('BEGIN IMMEDIATE');_totals(db)
+        old = db.execute('SELECT total FROM budget WHERE id=1').fetchone()[0]
+        if total_cny*1_000_000 < old:raise LocalBudgetError('禁止通过授权操作回退额度。')
+        db.execute('CREATE TABLE IF NOT EXISTS budget_authorizations (total INTEGER PRIMARY KEY, previous_total INTEGER NOT NULL, authorization TEXT NOT NULL, created TEXT DEFAULT CURRENT_TIMESTAMP)')
+        db.execute('INSERT OR IGNORE INTO budget_authorizations(total,previous_total,authorization) VALUES (?,?,?)',(total_cny*1_000_000,old,authorization))
+        db.execute('UPDATE budget SET total=? WHERE id=1',(total_cny*1_000_000,))
+    return status(path)
+
 
 class GuardedCompletions:
     def __init__(self, delegate, path=LEDGER, *, compact=False, model_name="deepseek-v4-flash"):
