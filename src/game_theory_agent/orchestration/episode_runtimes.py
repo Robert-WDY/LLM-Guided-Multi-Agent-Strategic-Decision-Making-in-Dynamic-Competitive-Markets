@@ -1,11 +1,13 @@
 """Build and reuse AgentRuntime seats for a hosted RoundCoordinator."""
 
 from __future__ import annotations
+from game_theory_agent.local_budget import protected as local_budget_protected
 
 import os
 from typing import Any
 
 from game_theory_agent.agents import AgentRuntime, load_persona_registry
+from game_theory_agent.agents.personas import PersonaRegistry, PersonaUtilityTracker
 from game_theory_agent.agents.contracts import AgentRequestedAction, IncidentIntent
 from game_theory_agent.model_clients import (
     BudgetedModelClient,
@@ -16,6 +18,7 @@ from game_theory_agent.model_clients import (
 from game_theory_agent.strategic_reliability import RealModelCostGuard
 from game_theory_agent.model_clients.fixed_action import FixedActionModelClient
 from game_theory_agent.orchestration.coordinator import RoundCoordinator, StaleRoundError
+from game_theory_agent.agents.counterfactual import CounterfactualEvaluator
 from game_theory_agent.orchestration.local import (
     LocalControllerClient,
     LocalGatewayClient,
@@ -69,25 +72,16 @@ def requested_action_from_payload(
 ) -> AgentRequestedAction | None:
     if not payload:
         return None
-    incident = payload.get("incident_response") or {}
-    return AgentRequestedAction(
-        price_cents=int(payload.get("price_cents", 10_000)),
-        advertising_budget_cents=int(payload.get("advertising_budget_cents", 0)),
-        service_budget_cents=int(payload.get("service_budget_cents", 0)),
-        capacity_investment_cents=int(payload.get("capacity_investment_cents", 0)),
-        resilience_budget_cents=int(payload.get("resilience_budget_cents", 0)),
-        shared_resilience_contribution_cents=payload.get(
-            "shared_resilience_contribution_cents"
-        ),
-        incident_response=IncidentIntent(
-            mode=incident.get("mode", "wait"),
-            repair_budget_cents=int(incident.get("repair_budget_cents", 0)),
-        ),
-        strategy_summary=str(payload.get("strategy_summary") or "human-submitted action"),
-    )
+    values = {name:payload[name] for name in AgentRequestedAction.model_fields if name in payload}
+    values.setdefault("price_cents", 10_000)
+    values["incident_response"] = IncidentIntent.model_validate(payload.get("incident_response") or {})
+    values.setdefault("strategy_summary", "human-submitted action")
+    return AgentRequestedAction.model_validate(values)
 
 
 def _persona_profile(registry: Any, raw_name: object) -> Any:
+    if isinstance(raw_name, dict):
+        raw_name = raw_name.get("persona_id")
     name = str(raw_name or "").strip()
     if not name:
         return registry.get("none")
@@ -113,6 +107,7 @@ def _model_client(
     kind: str,
     config: dict[str, Any],
     cost_guard: RealModelCostGuard | None,
+    *, local_budget: bool = False,
 ) -> Any:
     if kind == "mock":
         return MockModelClient()
@@ -121,18 +116,32 @@ def _model_client(
     if cost_guard is None:
         raise ValueError("real-model runtime requires an authorized cost guard")
     model = str(config.get("model") or "").strip()
+    if local_budget:
+        from game_theory_agent.local_budget import LocalBudgetError, status
+        valid_deepseek=kind=="deepseek" and model=="deepseek-v4-flash" and os.getenv("DEEPSEEK_BASE_URL","https://api.deepseek.com").rstrip("/") in {"https://api.deepseek.com","https://api.deepseek.com/v1"}
+        valid_doubao=kind=="doubao" and model=="doubao-seed-2-0-lite-260215" and os.getenv("ARK_BASE_URL","https://ark.cn-beijing.volces.com/api/v3").rstrip("/")=="https://ark.cn-beijing.volces.com/api/v3"
+        if not (valid_deepseek or valid_doubao):raise LocalBudgetError("本机仅开放已核价的官方 DeepSeek Flash 和豆包 Seed 2.0 Lite。")
+        budget_status = status()
+        if not budget_status['ready']:
+            raise LocalBudgetError(budget_status['message'])
     if not model:
         raise ValueError(f"{kind} model id is required")
     if kind == "doubao":
         if not os.getenv("ARK_API_KEY"):
             raise ValueError("ARK_API_KEY is required; refusing silent Mock fallback")
-        paid = DoubaoModelClient(model=model, max_schema_attempts=1)
+        paid = DoubaoModelClient(model=model, max_schema_attempts=1,max_transport_retries=0)
     else:
         if not os.getenv("DEEPSEEK_API_KEY"):
             raise ValueError("DEEPSEEK_API_KEY is required; refusing silent Mock fallback")
         paid = DeepSeekModelClient(
             model=model, max_schema_attempts=1, max_transport_retries=0
         )
+    if local_budget:
+        from types import SimpleNamespace
+        from game_theory_agent.local_budget import GuardedCompletions,GuardedResponses
+        if kind=="doubao":paid._client=SimpleNamespace(responses=GuardedResponses(paid._client.responses))
+        else:paid._client = SimpleNamespace(chat=SimpleNamespace(completions=GuardedCompletions(paid._client.chat.completions)))
+        return BudgetedModelClient(paid, cost_guard=cost_guard, reserved_prompt_tokens_per_call=128_000, input_price_microunits_per_token=2 if kind=="doubao" else 3, output_price_microunits_per_token=11 if kind=="doubao" else 9)
     return BudgetedModelClient(paid, cost_guard=cost_guard)
 
 
@@ -140,10 +149,11 @@ def sync_episode_runtimes(
     session: Any,
     *,
     human_action: dict[str, Any] | None = None,
+    human_communication: dict[str, Any] | None = None,
     include_human: bool = False,
     real_model_cost_guard: RealModelCostGuard | None = None,
 ) -> dict[str, AgentRuntime]:
-    registry = load_persona_registry()
+    registry = PersonaRegistry.from_market_config(session.env.config)
     configs = dict(session.manifest.agent_configs)
     existing: dict[str, AgentRuntime] = dict(getattr(session, "agent_runtimes", {}) or {})
     runtimes: dict[str, AgentRuntime] = {}
@@ -168,6 +178,7 @@ def sync_episode_runtimes(
                 client = FixedActionModelClient()
             if requested is not None:
                 client.set_requested(requested)
+            client.set_communication(human_communication)
             runtime = prior if prior is not None and prior.model_client is client else AgentRuntime(
                 str(config.get("agent_id") or f"human-{company_id}"),
                 company_id,
@@ -188,14 +199,28 @@ def sync_episode_runtimes(
         runtimes[company_id] = AgentRuntime(
             str(config.get("agent_id") or f"{kind}-{company_id}"),
             company_id,
-            _model_client(kind, config, real_model_cost_guard),
+            _model_client(kind, config, real_model_cost_guard, local_budget=local_budget_protected(session.env.config)),
             memory=(prior.memory if prior is not None else None),
             persona_profile=_persona_profile(
                 registry, config.get("persona_name") or config.get("persona")
             ),
             persona_registry=registry,
         )
+        if prior is not None:
+            runtimes[company_id]._utility_episode_id = prior._utility_episode_id
+            runtimes[company_id]._utility_tracker = prior._utility_tracker
 
+    saved_states = getattr(session, "restored_runtime_states", {})
+    for company_id, runtime in runtimes.items():
+        saved = saved_states.pop(company_id, None)
+        if saved is not None:
+            runtime.memory = saved["memory"]
+            runtime._utility_episode_id = saved["utility_episode_id"]
+            if saved["utility"] is not None:
+                utility = saved["utility"]
+                runtime._utility_tracker = PersonaUtilityTracker(registry.evaluator(registry.get(utility["profile_id"])))
+                runtime._utility_tracker.discount_multiplier_ppm = utility["discount_multiplier_ppm"]
+                runtime._utility_tracker.cumulative_discounted_utility_ppm = utility["cumulative_discounted_utility_ppm"]
     session.agent_runtimes = runtimes
     return runtimes
 
@@ -206,20 +231,24 @@ def run_hosted_coordinator(
     controller_token: str,
     *,
     max_rounds: int | None = None,
+    actor_choices: dict[str,str] | None = None,
     human_action: dict[str, Any] | None = None,
+    human_communication: dict[str, Any] | None = None,
     include_human: bool = False,
     real_model_cost_guard: RealModelCostGuard | None = None,
 ) -> tuple[Any, ...]:
     runtimes = sync_episode_runtimes(
         session,
         human_action=human_action,
+        human_communication=human_communication,
         include_human=include_human,
         real_model_cost_guard=real_model_cost_guard,
     )
     coordinator = RoundCoordinator(
-        LocalControllerClient(controller_token),
+        LocalControllerClient(controller_token,actor_choices),
         LocalGatewayClient(),
         runtimes,
+        counterfactual_evaluator=CounterfactualEvaluator(session.env.config),
     )
     try:
         return run_coroutine_sync(

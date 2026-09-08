@@ -2,7 +2,16 @@
 
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions, react/no-unescaped-entities */
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { LocalMarketLedger } from "./market-local";
+import { ResearchLive } from "./research-live";
+import { AdvancedActions, advancedEconomicFields, type ActionLimits } from "./advanced-actions";
+import { SupplierStrategies, type StrategicSupply } from "./supplier-strategies";
+import { GovernmentStrategies } from "./government-strategies";
+import { ResearchWorkbench } from "./research-workbench";
+import { TheoryLab } from "./theory-lab";
+import './theory-lab.css';
+import { BackendEvidence, ProcurementControls, SavedExperiments, V10Results, type CheckpointMeta, type HumanAction, type SavedUi, type V10State } from "./market-v10";
 import {
   AGENT_TEMPLATES,
   AgentConfig,
@@ -88,20 +97,24 @@ const DRIVER_MODELS: Record<AgentConfig["driver"], string> = {
 
 const MARKET_LABELS: Record<LabConfig["marketType"], string> = {
   balanced: "均衡市场",
-  high_demand: "高需求市场",
-  supply_crisis: "供应紧张市场",
-  disaster: "高灾害风险场景",
-  public_goods: "公共品合作场景",
+  high_demand: "质量偏好市场",
+  supply_crisis: "价格偏好市场",
+  disaster: "服务偏好市场",
+  public_goods: "均衡市场（兼容旧存档）",
 };
 
 type BackendCompany = {
+  history?:{last_action?:Record<string,unknown>|null};
   financial: { cash_balance_cents: number; round_profit_cents: number };
   commercial: { price_cents: number; market_share_ppm: number };
   risk: { resilience_ppm: number };
 };
 
 type BackendEpisode = {
-  state: {
+  action_constraints?:Record<string,ActionLimits>;
+  checkpoint?: { enabled: boolean; recovery_required: boolean; ui_state: SavedUi };
+  manifest?: { agent_configs: Record<string, { provider?: AgentConfig["driver"]; model?: string; persona_name?: PersonaKey }>; information_mode?: string; communication_mode?: string; cooperation_mode?: string; advisor_mode?: string; repeated_game_mode?:string };
+  state: V10State & {
     episode_id: string;
     episode_seed: number;
     round: number;
@@ -110,9 +123,127 @@ type BackendEpisode = {
     state_hash: string;
     terminal?: boolean;
     companies: Record<string, BackendCompany>;
+    strategic_market?: {
+      active_company_count: number;
+      hhi_ppm: number;
+      concentration_regime: string;
+      dominant_company_id: string | null;
+      dominant_share_ppm: number;
+      price_war_intensity_ppm: number;
+      regulatory_pressure_ppm: number;
+      social_welfare_proxy_cents: number;
+      threshold_project?: {
+        status: string;
+        required_total_contribution_cents: number;
+        accumulated_total_contribution_cents: number;
+        deadline_round: number;
+      };
+      mutual_aid?: {
+        enabled: boolean;
+        last_transfers: Array<{
+          donor_company_id: string;
+          recipient_company_id: string;
+          fulfilled_orders: number;
+        }>;
+      };
+      price_coordination?: {
+        enabled: boolean;
+        last_outcomes: Array<{
+          status: string;
+          detected: boolean;
+        }>;
+      };
+      company_lifecycle: Array<{
+        company_id: string;
+        status: string;
+      }>;
+    };
   };
   agent_tokens?: Record<string, string>;
 };
+
+type BackendHealth = {
+  status: string;
+  environment_version: string;
+  config_id: string;
+  config_version: string;
+  local_model_budget?: { ready: boolean; total_cny: number; reserved_cny?: number; remaining_cny?: number; maximum_call_cny?: number; price_valid_through?: string; message: string };
+};
+
+type StrategicMarketView = {
+  enabled: boolean;
+  activeCompanies: number;
+  concentration: string;
+  hhi: number;
+  dominantCompany: string | null;
+  priceWar: number;
+  regulatoryPressure: number;
+  projectStatus: string;
+  projectProgress: number;
+  mutualAidTransfers: number;
+  coordinationOutcomes: number;
+  detectedCoordination: number;
+  socialWelfare: number;
+};
+
+const EMPTY_STRATEGIC_MARKET: StrategicMarketView = {
+  enabled: false,
+  activeCompanies: 0,
+  concentration: "基础市场",
+  hhi: 0,
+  dominantCompany: null,
+  priceWar: 0,
+  regulatoryPressure: 0,
+  projectStatus: "未启用",
+  projectProgress: 0,
+  mutualAidTransfers: 0,
+  coordinationOutcomes: 0,
+  detectedCoordination: 0,
+  socialWelfare: 0,
+};
+
+function strategicMarketFromEpisode(
+  payload: BackendEpisode,
+): StrategicMarketView {
+  const market = payload.state.strategic_market;
+  if (!market) return EMPTY_STRATEGIC_MARKET;
+  const project = market.threshold_project;
+  const outcomes = market.price_coordination?.last_outcomes ?? [];
+  return {
+    enabled: true,
+    activeCompanies: market.active_company_count,
+    concentration:
+      market.concentration_regime === "concentrated"
+        ? "高度集中"
+        : market.concentration_regime === "moderate"
+          ? "中度集中"
+          : "竞争分散",
+    hhi: market.hhi_ppm / 1_000_000,
+    dominantCompany: market.dominant_company_id,
+    priceWar: market.price_war_intensity_ppm / 10_000,
+    regulatoryPressure: market.regulatory_pressure_ppm / 10_000,
+    projectStatus:
+      project?.status === "succeeded"
+        ? "已成功"
+        : project?.status === "failed"
+          ? "已失败"
+          : project
+            ? `募集中，截止第 ${project.deadline_round} 轮`
+            : "未启用",
+    projectProgress: project
+      ? Math.min(
+          100,
+          (project.accumulated_total_contribution_cents /
+            Math.max(1, project.required_total_contribution_cents)) *
+            100,
+        )
+      : 0,
+    mutualAidTransfers: market.mutual_aid?.last_transfers.length ?? 0,
+    coordinationOutcomes: outcomes.length,
+    detectedCoordination: outcomes.filter((item) => item.detected).length,
+    socialWelfare: market.social_welfare_proxy_cents,
+  };
+}
 
 type RuntimeMode = "draft" | "demo" | "backend";
 type BackendPersonaCatalog = {
@@ -172,6 +303,7 @@ function StatusDot({ tone = "ok" }: { tone?: "ok" | "warn" | "off" }) {
 }
 
 function AppShell({
+  workbench=false,
   active,
   setActive,
   children,
@@ -182,6 +314,7 @@ function AppShell({
   completed,
   onHome,
 }: {
+  workbench?:boolean;
   active: ViewId;
   setActive: (view: ViewId) => void;
   children: React.ReactNode;
@@ -192,6 +325,7 @@ function AppShell({
   completed: boolean;
   onHome: () => void;
 }) {
+  if(workbench)return <main className="configuration-shell">{children}</main>;
   if (active === "home")
     return <main className="landing-shell">{children}</main>;
   const nav = NAV_ITEMS.find((item) => item.id === active);
@@ -251,6 +385,7 @@ function AppShell({
             <button
               key={item.id}
               type="button"
+              aria-label={item.label}
               className={active === item.id ? "active" : ""}
               onClick={() => setActive(item.id)}
             >
@@ -454,6 +589,7 @@ function SetupView({
   busy,
   notice,
   backendOnline,
+  backendConfig,
   entryMode,
   personaOptions,
   personaLabels,
@@ -469,6 +605,7 @@ function SetupView({
   busy: boolean;
   notice: string;
   backendOnline: boolean | null;
+  backendConfig: BackendHealth | null;
   entryMode: EntryMode;
   personaOptions: PersonaKey[];
   personaLabels: Record<string, string>;
@@ -495,6 +632,12 @@ function SetupView({
         { ...AGENT_TEMPLATES[current.length] },
       ]);
   }
+  const finalMarketReady =
+    (backendConfig?.config_id.startsWith("market-v13") || backendConfig?.config_id.startsWith("market-v14")) ||
+    backendConfig?.config_id === "market-v11-supplier-pricing" ||
+    backendConfig?.config_id === "market-v10-1-paired-advisor" ||
+    backendConfig?.config_id === "market-v10-multi-objective" ||
+    backendConfig?.config_id === "market-v6-final";
   return (
     <div className="view-pad setup-view">
       <section className="setup-hero">
@@ -511,6 +654,13 @@ function SetupView({
           <ul>
             <li className="done">共同随机种子已固定</li>
             <li className="done">{agents.length} 个智能体已分配</li>
+            <li className={finalMarketReady ? "done" : "warn"}>
+              {finalMarketReady
+                ? "战略市场后端已连接"
+                : backendOnline
+                  ? "当前后端不是最终战略市场"
+                  : "等待最终战略市场后端"}
+            </li>
             <li
               className={
                 config.controllerToken || LOCAL_CONTROLLER_BYPASS
@@ -595,7 +745,7 @@ function SetupView({
                   }))
                 }
               >
-                {[5, 10, 15, 20].map((rounds) => (
+                {((backendConfig?.config_id.startsWith("market-v13") || backendConfig?.config_id.startsWith("market-v14")) ? [5, 10, 15, 20, 60] : [5, 10, 15, 20]).map((rounds) => (
                   <option value={rounds} key={rounds}>
                     {rounds} 回合
                   </option>
@@ -618,6 +768,17 @@ function SetupView({
             </label>
           </div>
           <div className="capability-list">
+            <div className="final-market-capability">
+              <span>
+                <b>最终战略市场</b>
+                <small>
+                  破产退出、竞争集中、门槛公共项目、应急互助、价格背叛与监管
+                </small>
+              </span>
+              <strong className={finalMarketReady ? "ready" : "waiting"}>
+                {finalMarketReady ? "已连接" : "需启动市场后端"}
+              </strong>
+            </div>
             <div>
               <span>
                 <b>智能体通信</b>
@@ -633,8 +794,10 @@ function SetupView({
             </div>
             <div>
               <span>
-                <b>共享抗冲击投入</b>
-                <small>当前唯一合作机制</small>
+                <b>合作与战略互动</b>
+                <small>
+                  最终市场同时启用共享抗冲击、门槛项目和双边应急互助
+                </small>
               </span>
               <Toggle
                 checked={config.cooperation}
@@ -643,6 +806,7 @@ function SetupView({
                   setConfig((current) => ({
                     ...current,
                     cooperation: value,
+                    repeatedGame: value && current.repeatedGame,
                     communication: value || current.communication,
                   }))
                 }
@@ -650,8 +814,8 @@ function SetupView({
             </div>
             <div>
               <span>
-                <b>博弈分析辅助</b>
-                <small>对手判断 → 效用推断 → 策略建议</small>
+                <b>长期博弈分析辅助</b>
+                <small>信念 → 对手判断 → 多轮反事实 → 安全建议</small>
               </span>
               <Toggle
                 checked={config.gameTheory}
@@ -661,6 +825,7 @@ function SetupView({
                 }
               />
             </div>
+            <div><span><b>重复博弈与互惠</b><small>把历史履约、背叛和信誉纳入策略输入</small></span><Toggle checked={Boolean(config.repeatedGame)} label="启用重复博弈" onChange={value=>setConfig(current=>({...current,repeatedGame:value,cooperation:value||current.cooperation,communication:value||current.communication}))}/></div>
           </div>
         </section>
         <section className="card agent-config-card">
@@ -669,7 +834,7 @@ function SetupView({
             title="智能体构成"
             description={
               personaCatalogVerified
-                ? "人格选项来自后端已验收目录；合作人格尚未实现。"
+                ? "人格选项来自后端已验收目录；人格偏好进入效用排序，合作结果由真实市场机制结算。"
                 : "正在读取后端人格目录；离线演示仅使用本地快照。"
             }
             action={
@@ -848,7 +1013,7 @@ function SetupView({
                       value={value}
                       min={0}
                       max={100}
-                      readOnly
+                      disabled
                     />
                   </div>
                 ),
@@ -868,7 +1033,7 @@ function SetupView({
                       value={value}
                       min={0}
                       max={100}
-                      readOnly
+                      disabled
                     />
                   </div>
                 ),
@@ -877,7 +1042,8 @@ function SetupView({
             <div className="drawer-note">
               <b>研究边界</b>
               <p>
-                合作、承诺、部分背叛和搭便车是市场机制；合作型、搭便车型和报复型数学人格尚未实现或验收。
+                共享抗冲击、门槛项目、应急互助、背叛和搭便车由市场结算；价格协调只用于研究其风险，v9
+                建议器不会把它作为可执行建议发布。
               </p>
             </div>
           </aside>
@@ -907,6 +1073,52 @@ function MetricCard({
   );
 }
 
+function StrategicMarketStrip({
+  market,
+  runtimeMode,
+}: {
+  market: StrategicMarketView;
+  runtimeMode: RuntimeMode;
+}) {
+  if (!market.enabled) return null;
+  return (
+    <section className="strategic-market-strip" aria-label="最终战略市场状态">
+      <div>
+        <span>存续公司</span>
+        <strong>{market.activeCompanies} 家</strong>
+        <small>现金困境可能导致退出，退出后不再参与竞争</small>
+      </div>
+      <div>
+        <span>市场集中程度</span>
+        <strong>{market.concentration}</strong>
+        <small>
+          赫芬达尔指数 {market.hhi.toFixed(3)}
+          {market.dominantCompany ? `；主导者 ${market.dominantCompany}` : ""}
+        </small>
+      </div>
+      <div>
+        <span>门槛公共项目</span>
+        <strong>{market.projectStatus}</strong>
+        <small>筹资进度 {market.projectProgress.toFixed(1)}%</small>
+      </div>
+      <div>
+        <span>本轮战略事件</span>
+        <strong>
+          互助 {market.mutualAidTransfers} · 协调 {market.coordinationOutcomes}
+        </strong>
+        <small>
+          监管发现 {market.detectedCoordination}；价格战强度 {market.priceWar.toFixed(1)}%
+        </small>
+      </div>
+      <p>
+        {runtimeMode === "backend"
+          ? `监管压力 ${market.regulatoryPressure.toFixed(1)}%；社会福利代理值 ${formatMoney(market.socialWelfare, true)}。这些数值来自权威市场结算。`
+          : "当前仅展示机制布局示例；演示数据不能作为实验结论。"}
+      </p>
+    </section>
+  );
+}
+
 function LiveView({
   agents,
   round,
@@ -919,28 +1131,26 @@ function LiveView({
   interactive,
   busy,
   needsCoordinator,
+  strategicMarket,
+  marketState,
+  actionLimits,
 }: {
   agents: AgentRuntimeView[];
   round: number;
   maxRounds: number;
-  nextRound: (action: {
-    price: number;
-    advertising: number;
-    contribution: number;
-  }) => void;
-  autoRun: (action: {
-    price: number;
-    advertising: number;
-    contribution: number;
-  }) => void;
+  marketState: V10State | null;
+  actionLimits:Record<string,ActionLimits>;
+  nextRound: (action: HumanAction) => void;
+  autoRun: (action: HumanAction) => void;
   runtimeMode: RuntimeMode;
   notice: string;
   completed: boolean;
   interactive: boolean;
   busy: boolean;
   needsCoordinator: boolean;
+  strategicMarket: StrategicMarketView;
 }) {
-  const [humanAction, setHumanAction] = useState({
+  const [humanAction, setHumanAction] = useState<HumanAction>({
     price: 9800,
     advertising: 200000,
     contribution: 200000,
@@ -963,7 +1173,7 @@ function LiveView({
     agents.reduce((sum, agent) => sum + agent.price * agent.share, 0) /
     Math.max(1, shareTotal);
   const publicState = human.observation.public;
-  const visibleMessages = [
+  const visibleMessages = runtimeMode === "backend" ? [] : [
     {
       route: "B → PUBLIC",
       text:
@@ -1056,6 +1266,7 @@ function LiveView({
         </div>
         <strong>市场份额合计 {shareTotal.toFixed(1)}%</strong>
       </div>
+      <StrategicMarketStrip market={strategicMarket} runtimeMode={runtimeMode} />
       <div className="metrics-row">
         <MetricCard
           label="市场需求"
@@ -1104,7 +1315,7 @@ function LiveView({
               <strong>{formatPercent(agent.share)}</strong>
               <em className={agent.shareDelta >= 0 ? "up" : "down"}>
                 {agent.shareDelta === 0
-                  ? "本轮尚未结算"
+                  ? "当前记录份额"
                   : `${agent.shareDelta > 0 ? "+" : ""}${agent.shareDelta.toFixed(1)} 个百分点`}
               </em>
             </div>
@@ -1434,6 +1645,8 @@ function LiveView({
                 />
               </label>
             </div>
+            {marketState && <ProcurementControls action={humanAction} change={setHumanAction} state={marketState} companyId={human.companyId} disabled={completed || busy} />}
+            {runtimeMode === "backend" && <AdvancedActions action={humanAction} change={setHumanAction} limits={actionLimits[human.companyId]} disabled={completed || busy}/>}
             <button
               className="settle-round-button"
               type="button"
@@ -2127,7 +2340,15 @@ function LineChart() {
   );
 }
 
-function MarketView({ agents }: { agents: AgentRuntimeView[] }) {
+function MarketView({
+  agents,
+  strategicMarket,
+  runtimeMode,
+}: {
+  agents: AgentRuntimeView[];
+  strategicMarket: StrategicMarketView;
+  runtimeMode: RuntimeMode;
+}) {
   const gradients = agents
     .map(
       (agent, index) =>
@@ -2141,6 +2362,7 @@ function MarketView({ agents }: { agents: AgentRuntimeView[] }) {
         title="市场面板"
         description="这里只展示后端市场状态和结算派生指标，不在前端复制权威市场公式。"
       />
+      <StrategicMarketStrip market={strategicMarket} runtimeMode={runtimeMode} />
       <div className="metrics-row">
         <MetricCard label="市场需求" value="12,480" note="实际产生的订单数" />
         <MetricCard
@@ -2411,8 +2633,8 @@ function ResearchArchiveView({ controllerToken }: { controllerToken: string }) {
       ).then((response) => response.json()),
     ])
       .then(([manifestPayload, integrityPayload]) => {
-        setManifest(manifestPayload);
-        setIntegrity(integrityPayload);
+        setManifest(manifestPayload as Record<string, unknown>);
+        setIntegrity(integrityPayload as Record<string, unknown>);
       })
       .catch(() => setError("档案清单或完整性校验加载失败。"));
   }, [experimentId]);
@@ -2617,10 +2839,12 @@ function ReportView({
   agents,
   runtimeMode,
   ruleAutoRunUsed,
+  strategicMarket,
 }: {
   agents: AgentRuntimeView[];
   runtimeMode: RuntimeMode;
   ruleAutoRunUsed: boolean;
+  strategicMarket: StrategicMarketView;
 }) {
   const profitWinner = [...agents].sort((a, b) => b.profit - a.profit)[0];
   const shareWinner = [...agents].sort((a, b) => b.share - a.share)[0];
@@ -2645,6 +2869,7 @@ function ReportView({
           导出当前结果 <i>↗</i>
         </button>
       </section>
+      <StrategicMarketStrip market={strategicMarket} runtimeMode={runtimeMode} />
       <div className="report-scorecard">
         <article>
           <span>利润最高</span>
@@ -2749,10 +2974,23 @@ function hydrateAgents(payload: BackendEpisode, configs: AgentConfig[]) {
       ...agent,
       persona: PERSONAS[config.persona].label,
       driver: config.model,
+      observationHash: "请在真实记录中查看",
+      observation: { public: [], private: [], hidden: [] },
+      beliefs: [],
+      plan: { goal: "请在真实记录中查看", horizon: 0, subgoals: [], triggers: [] },
+      decision: { situation: "尚未载入决策记录", factors: [], summary: "请刷新真实记录查看已记录决策", expected: "未提供" },
+      advisor: { recommendedPrice: 0, adopted: false, candidates: [] },
+      utility: { profit: 0, growth: 0, risk: 0 },
       cash: state.financial.cash_balance_cents,
       profit: state.financial.round_profit_cents,
       share: state.commercial.market_share_ppm / 10_000,
       price: state.commercial.price_cents,
+      action:{price:state.commercial.price_cents,
+        advertising:Number(state.history?.last_action?.advertising_budget_cents??0),
+        service:Number(state.history?.last_action?.service_budget_cents??0),
+        capacity:Number(state.history?.last_action?.capacity_investment_cents??0),
+        resilience:Number(state.history?.last_action?.resilience_budget_cents??0),
+        contribution:Number(state.history?.last_action?.shared_resilience_contribution_cents??0)},
       resilience: state.risk.resilience_ppm / 10_000,
     };
   });
@@ -2777,6 +3015,8 @@ function hydrateDemoAgents(configs: AgentConfig[]) {
 }
 
 export default function Home() {
+  const [workbench,setWorkbench]=useState(false);
+  const [theoryLab,setTheoryLab]=useState(false);
   const [active, setActive] = useState<ViewId>("home");
   const [entryMode, setEntryMode] = useState<EntryMode>("participant");
   const [config, setConfig] = useState<LabConfig>({
@@ -2785,23 +3025,35 @@ export default function Home() {
     rounds: 20,
     seed: 20260821,
     communication: true,
-    cooperation: false,
-    gameTheory: true,
+    cooperation: true,
+    gameTheory: false,
     controllerToken: "",
   });
   const [agents, setAgents] = useState<AgentConfig[]>(
-    DEFAULT_AGENTS.map((agent) => ({ ...agent })),
+    DEFAULT_AGENTS.map((agent, index) => ({ ...agent, driver: index === 0 ? "human" : "rule", model: index === 0 ? "Human" : DRIVER_MODELS.rule })),
   );
   const [runtimeAgents, setRuntimeAgents] =
     useState<AgentRuntimeView[]>(DEMO_AGENTS);
   const [editingAgent, setEditingAgent] = useState<string | null>(null);
   const [runtimeMode, setRuntimeMode] = useState<RuntimeMode>("draft");
   const [backendOnline, setBackendOnline] = useState<boolean | null>(null);
+  const [backendConfig, setBackendConfig] = useState<BackendHealth | null>(null);
+  const [strategicMarket, setStrategicMarket] =
+    useState<StrategicMarketView>(EMPTY_STRATEGIC_MARKET);
   const [busy, setBusy] = useState(false);
+  const [autoRunning, setAutoRunning] = useState(false);
+  const pauseRequested = useRef(false);
   const [notice, setNotice] = useState(
     "正在检查 Market API；研究演示始终可用。",
   );
   const [episodeId, setEpisodeId] = useState("");
+  const [marketState, setMarketState] = useState<BackendEpisode["state"] | null>(null);
+  const [actionLimits,setActionLimits]=useState<Record<string,ActionLimits>>({});
+  const [savedEpisodes, setSavedEpisodes] = useState<CheckpointMeta[]>([]);
+  const [savedConfigHash, setSavedConfigHash] = useState("");
+  const [checkpointMessage, setCheckpointMessage] = useState("");
+  const [recoveryRequired, setRecoveryRequired] = useState(false);
+  const [backendEvidence, setBackendEvidence] = useState<Record<string, unknown> | null>(null);
   const [round, setRound] = useState(1);
   const [demoCompleted, setDemoCompleted] = useState(false);
   const [ruleAutoRunUsed, setRuleAutoRunUsed] = useState(false);
@@ -2812,22 +3064,39 @@ export default function Home() {
     {},
   );
   const [personaCatalogVerified, setPersonaCatalogVerified] = useState(false);
+  useEffect(()=>{
+    const controller=new AbortController();
+    const timer=setInterval(()=>{fetch(`${API_URL}/health`,{signal:controller.signal}).then(async r=>{
+      if(r.ok){setBackendConfig(await r.json() as BackendHealth);setBackendOnline(true);}
+    }).catch(()=>{});},5000);
+    return()=>{clearInterval(timer);controller.abort();};
+  },[]);
 
   useEffect(() => {
     const controller = new AbortController();
     fetch(`${API_URL}/health`, { signal: controller.signal })
-      .then((response) => {
+      .then(async (response) => {
+        const health = response.ok
+          ? ((await response.json()) as BackendHealth)
+          : null;
         setBackendOnline(response.ok);
+        setBackendConfig(health);
         setNotice((current) =>
           current.startsWith("研究演示")
             ? current
             : response.ok
-              ? "Market API 在线，可创建真实 Episode。"
+              ? (health?.config_id.startsWith("market-v13") || health?.config_id.startsWith("market-v14")) || health?.config_id === "market-v11-supplier-pricing" ||
+    health?.config_id === "market-v10-1-paired-advisor" ||
+    health?.config_id === "market-v10-multi-objective" ||
+                  health?.config_id === "market-v6-final"
+                ? "最终战略市场后端在线，可创建真实实验。"
+                : `后端在线，但当前配置为 ${health?.config_id ?? "未知版本"}；最终市场机制不会完整启用。`
               : "Market API 不可用，可载入演示。",
         );
       })
       .catch(() => {
         setBackendOnline(false);
+        setBackendConfig(null);
         setNotice((current) =>
           current.startsWith("研究演示")
             ? current
@@ -2892,6 +3161,12 @@ export default function Home() {
     agents.some(
       (agent) => agent.driver === "doubao" || agent.driver === "deepseek",
     );
+  const finalMarketReady =
+    (backendConfig?.config_id.startsWith("market-v13") || backendConfig?.config_id.startsWith("market-v14")) ||
+    backendConfig?.config_id === "market-v11-supplier-pricing" ||
+    backendConfig?.config_id === "market-v10-1-paired-advisor" ||
+    backendConfig?.config_id === "market-v10-multi-objective" ||
+    backendConfig?.config_id === "market-v6-final";
 
   function apiHeaders() {
     return {
@@ -2904,7 +3179,7 @@ export default function Home() {
 
   function playerActionPayload(
     state: BackendEpisode["state"],
-    humanAction: { price: number; advertising: number; contribution: number },
+    humanAction: HumanAction,
   ) {
     const companyId =
       agents.find((agent) => agent.driver === "human")?.companyId ??
@@ -2915,25 +3190,35 @@ export default function Home() {
       agent_id: companyId,
       round: state.round,
       state_version: state.state_version ?? 0,
+      ...(state.supply_chain ? {
+        primary_supplier_id: humanAction.primarySupplier ?? "economy_supplier",
+        backup_supplier_id: humanAction.backupSupplier || null,
+        primary_supplier_share_ppm: humanAction.backupSupplier ? (humanAction.primaryShare ?? 50) * 10000 : 1000000,
+        ...(state.government && humanAction.procurementQuantity != null ? { procurement_quantity_orders: humanAction.procurementQuantity } : {}),
+      } : {}),
       price_cents: humanAction.price,
       advertising_budget_cents: humanAction.advertising,
-      service_budget_cents: 0,
-      capacity_investment_cents: 0,
-      resilience_budget_cents: config.cooperation
-        ? 0
-        : humanAction.contribution,
+      service_budget_cents: Number(humanAction.advanced?.service_budget_cents??0),
+      capacity_investment_cents: Number(humanAction.advanced?.capacity_investment_cents??0),
+      resilience_budget_cents: Number(humanAction.advanced?.resilience_budget_cents??(config.cooperation?0:humanAction.contribution)),
       ...(config.cooperation
         ? { shared_resilience_contribution_cents: humanAction.contribution }
         : {}),
-      incident_response: { mode: "wait", repair_budget_cents: 0 },
+      ...advancedEconomicFields(humanAction),
+      incident_response: { mode: humanAction.advanced?.incident_mode??"wait", repair_budget_cents: Number(humanAction.advanced?.repair_budget_cents??0) },
       strategy_summary: "human player",
     };
   }
 
   function applyBackendPayload(
     payload: BackendEpisode,
-    humanAction?: { price: number; advertising: number; contribution: number },
+    humanAction?: HumanAction,
   ) {
+    setMarketState(payload.state);
+    setActionLimits(payload.action_constraints??{});
+    setBackendEvidence(null);
+    if (payload.checkpoint) setRecoveryRequired(payload.checkpoint.recovery_required);
+    setStrategicMarket(strategicMarketFromEpisode(payload));
     setRuntimeAgents((current) =>
       hydrateAgents(payload, agents).map((agent) => {
         const previous = current.find(
@@ -2963,19 +3248,96 @@ export default function Home() {
       }),
     );
     const terminal = Boolean(payload.state.terminal);
-    setRound(terminal ? config.rounds : Math.max(1, payload.state.round));
+    setRound(terminal ? payload.state.max_rounds : Math.max(1, payload.state.round));
     setDemoCompleted(terminal);
     return terminal;
   }
 
+  async function checkpointRequest<T = Record<string, unknown>>(path: string, body?: unknown): Promise<T> {
+    const response = await fetch(`${API_URL}/v1/controller/${path}`, { method: body === undefined ? "GET" : "POST", headers: apiHeaders(), ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
+    const payload = await response.json() as T & { detail?: unknown };
+    if (!response.ok) throw new Error(typeof payload.detail === "string" ? payload.detail : `HTTP ${response.status}`);
+    return payload;
+  }
+
+  async function refreshSaved() {
+    const payload = await checkpointRequest<{ episodes: CheckpointMeta[]; config_sha256: string }>("saved-episodes");
+    setSavedEpisodes(payload.episodes);
+    setSavedConfigHash(payload.config_sha256);
+    setCheckpointMessage(`已读取 ${payload.episodes.length} 个本地存档。`);
+  }
+
+  async function checkpointTask(task: () => Promise<void>) {
+    setBusy(true);
+    try { await task(); } catch (error) { setCheckpointMessage(error instanceof Error ? error.message : "存档操作失败"); }
+    finally { setBusy(false); }
+  }
+
+  async function saveCurrent(id = episodeId) {
+    const safeConfig: Partial<LabConfig> = { ...config };
+    delete safeConfig.controllerToken;
+    await checkpointRequest(`episodes/${id}/save`, { ui_state: { entryMode, config: safeConfig, agents } });
+    await refreshSaved();
+    setCheckpointMessage("实验已保存。未提交的滑块调整不属于已接受动作；恢复后请重新确认。Token 不写入界面配置。");
+  }
+
+  async function restoreSaved(id: string, recover = false) {
+    const payload = await checkpointRequest<BackendEpisode>(`episodes/${id}/${recover ? "recover" : "restore"}`, {});
+    const ui = payload.checkpoint?.ui_state;
+    const manifest = payload.manifest;
+    const restoredAgents = ui?.agents?.length ? ui.agents : Object.keys(payload.state.companies).map((companyId, index) => {
+      const a = manifest?.agent_configs?.[companyId];
+      return { ...AGENT_TEMPLATES[index % AGENT_TEMPLATES.length], companyId, shortName: companyId.replace("company_", ""), driver: a?.provider ?? "rule", model: a?.model ?? "Deterministic Rule", persona: a?.persona_name && a.persona_name in PERSONAS ? a.persona_name : "balanced_v1" } as AgentConfig;
+    });
+    setAgents(restoredAgents);
+    setConfig(current => ({ ...current, ...(ui?.config ?? {}), controllerToken: current.controllerToken, seed: payload.state.episode_seed, rounds: payload.state.max_rounds as LabConfig["rounds"], informationMode: manifest?.information_mode === "perfect" ? "perfect" : "public", communication: manifest?.communication_mode !== "off", cooperation: manifest?.cooperation_mode !== "off", gameTheory: manifest?.advisor_mode !== "off", repeatedGame:manifest?.repeated_game_mode==="reciprocity_v1" }));
+    setEntryMode(ui?.entryMode ?? (restoredAgents.some(a => a.driver === "human") ? "participant" : "research"));
+    setEpisodeId(id);
+    setRuntimeMode("backend");
+    setMarketState(payload.state);
+    setActionLimits(payload.action_constraints??{});
+    setRuntimeAgents(hydrateAgents(payload, restoredAgents));
+    setStrategicMarket(strategicMarketFromEpisode(payload));
+    setRound(payload.state.terminal ? payload.state.max_rounds : payload.state.round);
+    setDemoCompleted(Boolean(payload.state.terminal));
+    setRecoveryRequired(Boolean(payload.checkpoint?.recovery_required));
+    setBackendEvidence(null);
+    setActive("live");
+    setNotice("已恢复后端最新状态，可检查采购和动作后继续。");
+    setCheckpointMessage(recover ? "中断轮已结算，模型调用 0 次。" : "恢复完成，模型调用 0 次。");
+  }
+
+  async function readEvidence(download = false) {
+    const response = await fetch(`${API_URL}/v1/controller/episodes/${episodeId}/export`, { headers: apiHeaders() });
+    const originalJson = await response.text();
+    if (!response.ok) throw new Error(originalJson);
+    const payload = JSON.parse(originalJson) as Record<string, unknown>;
+    setBackendEvidence(payload);
+    if (download) {
+      const url = URL.createObjectURL(new Blob([originalJson], { type: "application/json" }));
+      const anchor = document.createElement("a"); anchor.href = url; anchor.download = `${episodeId}.json`; anchor.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setCheckpointMessage("已导出实验状态与记录。此文件用于分析；继续实验请使用本地存档。");
+    }
+  }
+
   async function startExperiment(forceDemo: boolean) {
     if (forceDemo || !backendOnline) {
+      setMarketState(null);
+      setRecoveryRequired(false);
       setRuntimeMode("demo");
       setEpisodeId(`demo-${config.seed}`);
       setRound(1);
       setDemoCompleted(false);
       setRuleAutoRunUsed(false);
       setRuntimeAgents(hydrateDemoAgents(agents));
+      setStrategicMarket({
+        ...EMPTY_STRATEGIC_MARKET,
+        enabled: true,
+        activeCompanies: agents.length,
+        concentration: "演示数据",
+        hhi: 1 / Math.max(1, agents.length),
+        projectStatus: config.cooperation ? "演示中" : "未启用",
+      });
       setNotice(
         "研究演示从第 1 回合开始；所有示例字段均标记为 DEMO，不代表一次真实模型调用。",
       );
@@ -3056,14 +3418,24 @@ export default function Home() {
           information_mode:
             config.informationMode === "perfect" ? "perfect" : "public",
           communication_mode: config.communication ? "public_private" : "off",
-          cooperation_mode: config.cooperation ? "shared_resilience_v1" : "off",
+          cooperation_mode: config.cooperation
+            ? finalMarketReady
+              ? "combined_v1"
+              : "shared_resilience_v1"
+            : "off",
           belief_mode: config.gameTheory ? "public_action_v1" : "off",
           opponent_model_mode: config.gameTheory ? "public_strategy_v1" : "off",
           utility_inference_mode: config.gameTheory
             ? "strategy_utility_v1"
             : "off",
-          advisor_mode: config.gameTheory ? "bayesian_strategy_v2" : "off",
-          repeated_game_mode: "off",
+          advisor_mode: config.gameTheory
+            ? config.informationMode === "perfect"
+              ? "bayesian_strategy_v2"
+              : finalMarketReady
+                ? "strategic_market_v9"
+                : "pareto_reliable_v7"
+            : "off",
+          repeated_game_mode: config.repeatedGame ? "reciprocity_v1" : "off",
         }),
       });
       const payload = (await response.json()) as BackendEpisode & {
@@ -3075,16 +3447,23 @@ export default function Home() {
             ? payload.detail
             : `HTTP ${response.status}`,
         );
+      setMarketState(payload.state);
+      setActionLimits(payload.action_constraints??{});
+      setRecoveryRequired(false);
       setRuntimeMode("backend");
       setEpisodeId(payload.state.episode_id);
       setRound(Math.max(1, payload.state.round));
       setDemoCompleted(false);
       setRuleAutoRunUsed(false);
       setRuntimeAgents(hydrateAgents(payload, agents));
+      setStrategicMarket(strategicMarketFromEpisode(payload));
       setNotice(
-        "真实 Episode 已创建。可提交本回合，或让协调器/规则代理推进剩余轮次。",
+        finalMarketReady
+          ? `市场实验已创建。${(backendConfig?.config_id.startsWith("market-v13") || backendConfig?.config_id.startsWith("market-v14")) ? "企业、消费者、供应商和政府分别决策并核对收付。" : "战略市场机制已启用。"}${config.gameTheory ? "建议器已启用。" : "当前使用经营规则，可在配置中另启用多步建议。"}`
+          : "基础市场实验已创建；如需最终机制，请使用最终市场启动脚本重启后端。",
       );
       setActive("live");
+      try { await saveCurrent(payload.state.episode_id); } catch { setCheckpointMessage("实验已创建，但界面配置保存失败，请点击保存重试。"); }
     } catch (error) {
       setNotice(
         error instanceof Error
@@ -3096,11 +3475,7 @@ export default function Home() {
     }
   }
 
-  function nextRound(humanAction: {
-    price: number;
-    advertising: number;
-    contribution: number;
-  }) {
+  function nextRound(humanAction: HumanAction) {
     if (runtimeMode === "backend") {
       void advanceBackendRound(humanAction, false);
       return;
@@ -3123,11 +3498,8 @@ export default function Home() {
     );
   }
 
-  async function autoRunRemaining(humanAction: {
-    price: number;
-    advertising: number;
-    contribution: number;
-  }) {
+  async function autoRunRemaining(humanAction: HumanAction) {
+    if (autoRunning || busy) return;
     if (demoCompleted) return;
     if (runtimeMode === "demo") {
       let current = runtimeAgents;
@@ -3144,12 +3516,24 @@ export default function Home() {
       setActive("report");
       return;
     }
-    await advanceBackendRound(humanAction, true);
+    const modelSeats = agents.filter(a => a.driver === "deepseek" || a.driver === "doubao").length;
+    if (modelSeats > 0 && !window.confirm(`连续运行可能调用真实模型，仍受本机费用上限约束。人工席位将由规则代行，是否继续？`)) return;
+    pauseRequested.current = false;
+    setAutoRunning(true);
+    try {
+      while (!pauseRequested.current) {
+        const more = await advanceBackendRound(humanAction, true, true);
+        if (!more) break;
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+      if (pauseRequested.current) setNotice("已在回合边界暂停，最新结算已保存，可继续运行或恢复存档。");
+    } finally { setAutoRunning(false); }
   }
 
   async function advanceBackendRound(
-    humanAction: { price: number; advertising: number; contribution: number },
+    humanAction: HumanAction,
     remaining: boolean,
+    oneRoundOfAuto = false,
   ) {
     if (!episodeId) {
       setNotice("尚未创建真实 Episode。");
@@ -3181,6 +3565,7 @@ export default function Home() {
             : `HTTP ${stateResponse.status}`,
         );
       const hasHuman =
+        !oneRoundOfAuto &&
         entryMode === "participant" &&
         agents.some((agent) => agent.driver === "human");
       const playerAction = hasHuman
@@ -3217,7 +3602,7 @@ export default function Home() {
         );
         return;
       }
-      if (remaining && !needsCoordinator) {
+      if (remaining && !needsCoordinator && !oneRoundOfAuto) {
         const runId = `${episodeId}:rule-auto-run:${current.state.round}`;
         const response = await fetch(
           `${API_URL}/v1/controller/episodes/${episodeId}/auto-run`,
@@ -3257,13 +3642,14 @@ export default function Home() {
       const realModelSeats = agents.filter(
         (agent) => agent.driver === "doubao" || agent.driver === "deepseek",
       ).length;
-      const plannedRounds = remaining
+      const plannedRounds = remaining && !oneRoundOfAuto
         ? current.state.max_rounds - current.state.round + 1
         : 1;
       const maximumModelCalls =
         realModelSeats * plannedRounds * (config.communication ? 2 : 1);
       if (
         maximumModelCalls > 0 &&
+        !oneRoundOfAuto &&
         !window.confirm(
           `即将调用真实模型，最多 ${maximumModelCalls} 次生成请求。系统将记录实际模型、Token 和估算费用；是否继续？`,
         )
@@ -3281,8 +3667,9 @@ export default function Home() {
             expected_round: current.state.round,
             expected_state_version: current.state.state_version,
             expected_state_hash: current.state.state_hash,
-            ...(remaining ? {} : { max_rounds: 1 }),
+            ...(remaining && !oneRoundOfAuto ? {} : { max_rounds: 1 }),
             player_action: playerAction,
+            ...(playerAction && config.communication ? {player_communication:{messages:[...(humanAction.publicMessage?.trim()?[{channel:"public",recipients:[],speech_act:"statement",content:humanAction.publicMessage.trim()}]:[]),...(humanAction.privateMessage?.trim()&&humanAction.messageRecipient?[{channel:"private",recipients:[humanAction.messageRecipient],speech_act:"statement",content:humanAction.privateMessage.trim()}]:[])]}}:{}),
             authorize_real_model: maximumModelCalls > 0,
             ...(maximumModelCalls > 0
               ? { maximum_model_calls: maximumModelCalls }
@@ -3293,6 +3680,10 @@ export default function Home() {
       const payload = (await response.json()) as BackendEpisode & {
         detail?: string | { message?: string };
       };
+      if (realModelSeats > 0) {
+        const healthResponse = await fetch(`${API_URL}/health`);
+        if (healthResponse.ok) setBackendConfig(await healthResponse.json() as BackendHealth);
+      }
       if (!response.ok) {
         const detail =
           typeof payload.detail === "string"
@@ -3319,6 +3710,7 @@ export default function Home() {
             : "后端已结算当前回合。",
         );
       }
+      return !terminal;
     } catch (error) {
       setNotice(
         error instanceof Error
@@ -3331,6 +3723,7 @@ export default function Home() {
   }
 
   function chooseEntry(mode: EntryMode) {
+    if (autoRunning || busy) { pauseRequested.current = true; setNotice("请等待当前操作完成，再创建另一局实验。"); return; }
     setEntryMode(mode);
     setRuntimeMode("draft");
     setEpisodeId("");
@@ -3338,28 +3731,17 @@ export default function Home() {
     setDemoCompleted(false);
     setRuleAutoRunUsed(false);
     setRuntimeAgents(DEMO_AGENTS);
+    setStrategicMarket(EMPTY_STRATEGIC_MARKET);
     setAgents(
       DEFAULT_AGENTS.map((agent, index) =>
-        mode === "observer"
-          ? {
-              ...agent,
-              driver:
-                index === 3 ? "rule" : index === 1 ? "doubao" : "deepseek",
-              model:
-                index === 3
-                  ? DRIVER_MODELS.rule
-                  : index === 1
-                    ? DRIVER_MODELS.doubao
-                    : DRIVER_MODELS.deepseek,
-            }
-          : { ...agent },
+        ({ ...agent, driver: mode === "participant" && index === 0 ? "human" : "rule", model: mode === "participant" && index === 0 ? "Human" : DRIVER_MODELS.rule }),
       ),
     );
     setNotice(`${ENTRY_META[mode].label}：请先确认环境，然后进入独立界面。`);
     setActive("setup");
   }
 
-  const view =
+  const view = theoryLab ? <TheoryLab apiUrl={API_URL} token={config.controllerToken} episodeId={runtimeMode==='backend'?episodeId:''} onWorkbench={()=>{setTheoryLab(false);setWorkbench(true);}}/> : workbench ? <ResearchWorkbench apiUrl={API_URL} token={config.controllerToken}/> :
     active === "home" ? (
       <LandingView
         choose={chooseEntry}
@@ -3375,9 +3757,10 @@ export default function Home() {
         editingAgent={editingAgent}
         setEditingAgent={setEditingAgent}
         start={(forceDemo) => void startExperiment(forceDemo)}
-        busy={busy}
+        busy={busy || autoRunning}
         notice={notice}
         backendOnline={backendOnline}
+        backendConfig={backendConfig}
         entryMode={entryMode}
         personaOptions={personaOptions}
         personaLabels={personaLabels}
@@ -3396,9 +3779,14 @@ export default function Home() {
         notice={notice}
         completed={demoCompleted}
         interactive={entryMode === "participant"}
-        busy={busy}
+        busy={busy || autoRunning || recoveryRequired}
+        marketState={marketState}
+        actionLimits={actionLimits}
         needsCoordinator={needsCoordinator}
+        strategicMarket={strategicMarket}
       />
+    ) : runtimeMode === "backend" && ["observatory", "communication", "strategy", "replay"].includes(active) ? (
+      <><ResearchLive key={episodeId} episodeId={episodeId} apiUrl={API_URL} token={config.controllerToken} view={active}/><details><summary>原始导出证据</summary><BackendEvidence evidence={backendEvidence} onRefresh={() => void checkpointTask(() => readEvidence())} busy={busy}/></details></>
     ) : active === "observatory" ? (
       <ObservatoryView agents={runtimeAgents} />
     ) : active === "communication" ? (
@@ -3406,7 +3794,11 @@ export default function Home() {
     ) : active === "strategy" ? (
       <StrategyView agents={runtimeAgents} />
     ) : active === "market" ? (
-      <MarketView agents={runtimeAgents} />
+      <MarketView
+        agents={runtimeAgents}
+        strategicMarket={strategicMarket}
+        runtimeMode={runtimeMode}
+      />
     ) : active === "replay" ? (
       <ReplayView />
     ) : (
@@ -3414,10 +3806,12 @@ export default function Home() {
         agents={runtimeAgents}
         runtimeMode={runtimeMode}
         ruleAutoRunUsed={ruleAutoRunUsed}
+        strategicMarket={strategicMarket}
       />
     );
   return (
     <AppShell
+      workbench={workbench||theoryLab}
       active={active}
       setActive={setActive}
       runtimeMode={runtimeMode}
@@ -3427,7 +3821,16 @@ export default function Home() {
       completed={demoCompleted}
       onHome={() => setActive("home")}
     >
+      <section className="card local-run-control"><button onClick={()=>{setTheoryLab(false);setWorkbench(!workbench);}}>{workbench?"返回当前市场":"打开四方批量实验工作台"}</button><button onClick={()=>{setWorkbench(false);setTheoryLab(!theoryLab);}}>{theoryLab?"返回当前市场":"打开博弈策略实验室"}</button></section>
+      {backendConfig?.local_model_budget && <section className="card local-run-control" aria-label="真实模型费用"><p>真实模型总上限 ¥10 · 已保留 ¥{backendConfig.local_model_budget.reserved_cny?.toFixed(3) ?? "待核对"} · 可用 ¥{backendConfig.local_model_budget.remaining_cny?.toFixed(3) ?? "0"}。规则模拟免费；已接入 DeepSeek Flash 与豆包 Lite。完整上下文每次最多保留 ¥0.42，工作台紧凑决策按请求上界保留，失败不自动退还额度。{backendConfig.local_model_budget.message}</p></section>}
+      {!workbench && !theoryLab && runtimeMode === "backend" && <section className="card local-run-control"><button disabled={busy || autoRunning} onClick={() => { setEntryMode(entryMode === "research" && agents.some(a => a.driver === "human") ? "participant" : "research"); setActive("live"); }}>{entryMode === "research" && agents.some(a => a.driver === "human") ? "返回真人决策" : "打开本局研究视图"}</button><span> 本机所有者可切换视图；研究回放包含全量账目。</span></section>}
+      {autoRunning && <section className="card local-run-control" aria-label="连续运行控制"><p role="status">正在逐轮运行并保存。暂停会等待当前回合结算，不丢弃已接受的动作。</p><button type="button" onClick={() => { pauseRequested.current = true; setNotice("已请求暂停，等待当前回合完成。"); }}>完成当前回合后暂停</button></section>}
+      {!workbench && !theoryLab && active !== "archive" && <SavedExperiments episodes={savedEpisodes} busy={busy || autoRunning} currentId={runtimeMode === "backend" ? episodeId : ""} recovery={recoveryRequired} message={checkpointMessage} configHash={savedConfigHash} onRefresh={() => void checkpointTask(refreshSaved)} onSave={() => void checkpointTask(() => saveCurrent())} onRestore={id => void checkpointTask(() => restoreSaved(id))} onExport={() => void checkpointTask(() => readEvidence(true))} onRecover={() => void checkpointTask(() => restoreSaved(episodeId, true))} />}
       {view}
+      {!workbench && !theoryLab && marketState && runtimeMode === "backend" && ["live", "market", "report"].includes(active) && <V10Results state={marketState} />}
+      {!workbench && !theoryLab && marketState && runtimeMode === "backend" && ["live", "market", "report"].includes(active) && <LocalMarketLedger state={marketState} />}
+      {!workbench && !theoryLab && marketState && runtimeMode === "backend" && ["live", "market", "report"].includes(active) && <SupplierStrategies state={marketState as unknown as StrategicSupply} />}
+      {!workbench && !theoryLab && marketState && runtimeMode === "backend" && ["live", "market", "report"].includes(active) && <GovernmentStrategies state={marketState as unknown as Parameters<typeof GovernmentStrategies>[0]["state"]} />}
     </AppShell>
   );
 }

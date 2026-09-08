@@ -1,0 +1,29 @@
+extends: market_v8_supply_chain.yaml
+
+config_id: market-v9-welfare
+config_version: market-v9.0.0
+environment_version: market-env-v9.0.0
+
+schema_versions:
+  state: market-state-v9.0.0
+  action: company-action-v8.0.0
+
+welfare_accounting:
+  enabled: true
+  protocol_version: welfare-accounting-v2.0.0
+  valuation_source: explicit_synthetic_wtp_cohorts_v1
+  government_enforcement_cost_per_case_cents: 200000
+  stockout_externality_per_order_cents: 2500
+  business_exit_externality_per_company_cents: 2000000
+  # A fine is a transfer from a downstream firm to government.  Adding fine
+  # revenue back to the government ledger prevents double-counting it as a
+  # destroyed social resource; only enforcement administration is a real cost.
+  fines_are_social_transfers: true
+  voluntary_no_purchase_is_externality: false
+
+calibration_metadata:
+  status: synthetic_prior_pending_external_data
+  welfare_claim_boundary: >-
+    Consumer WTP cohorts and externality values are explicit synthetic priors.
+    Outputs are internally consistent welfare accounting, not an externally
+    validated estimate of any real economy.

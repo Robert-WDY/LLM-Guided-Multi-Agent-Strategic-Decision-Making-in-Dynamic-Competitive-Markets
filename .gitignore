@@ -38,6 +38,13 @@ logs/
 runs/
 .tmp/
 .agent-registry/
+.local-state/
+.local-state-*/
+
+# Local generated evidence archives and inspection artifacts
+/artifacts/
+/releases/**/*.zip
+*.tsbuildinfo
 
 # IDE / operating system files
 .DS_Store

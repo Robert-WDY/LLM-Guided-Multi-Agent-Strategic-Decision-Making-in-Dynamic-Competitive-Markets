@@ -9,7 +9,8 @@
     "dev": "vinext dev --port 3210",
     "build": "vinext build",
     "start": "vinext start",
-    "test": "npm run build && node --experimental-strip-types --test --test-force-exit tests/rendered-html.test.mjs tests/demo-market.test.mjs",
+    "test": "npm run build && node --experimental-strip-types --test --test-force-exit tests/rendered-html.test.mjs tests/demo-market.test.mjs tests/market-v10.test.mjs tests/market-local.test.mjs",
+    "typecheck": "tsc --noEmit --incremental false",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate"
   },

@@ -29,6 +29,14 @@ CandidateLabel = Literal[
     "increase_capacity",
     "increase_resilience",
     "shared_resilience_contribution",
+    "threshold_project_contribution",
+    "mutual_aid_request",
+    "mutual_aid_offer",
+    "price_coordination_honor",
+    "price_coordination_undercut",
+    "sourcing_cheap",
+    "sourcing_stable",
+    "sourcing_diverse",
     "repair_incident",
 ]
 
@@ -44,6 +52,18 @@ class CandidateEconomicAction(StrictModel):
     capacity_investment_cents: int = Field(default=0, ge=0)
     resilience_budget_cents: int = Field(default=0, ge=0)
     shared_resilience_contribution_cents: int | None = Field(default=None, ge=0)
+    threshold_project_contribution_cents: int | None = Field(default=None, ge=0)
+    mutual_aid_partner_company_id: str | None = None
+    mutual_aid_capacity_offer_orders: int | None = Field(default=None, ge=0)
+    mutual_aid_capacity_request_orders: int | None = Field(default=None, ge=0)
+    price_coordination_partner_company_id: str | None = None
+    price_coordination_target_cents: int | None = Field(default=None, gt=0)
+    primary_supplier_id: str | None = None
+    backup_supplier_id: str | None = None
+    procurement_quantity_orders: int | None = Field(default=None, ge=0, exclude_if=lambda v:v is None)
+    primary_supplier_share_ppm: int | None = Field(
+        default=None, ge=0, le=1_000_000
+    )
     incident_response_mode: Literal[
         "wait", "partial_repair", "full_repair"
     ] = "wait"
@@ -175,10 +195,41 @@ class StrategicReliabilityPlan(StrictModel):
         return self
 
 
+FINAL_MARKET_OPTIONAL_ACTION_FIELDS = (
+    "threshold_project_contribution_cents",
+    "mutual_aid_partner_company_id",
+    "mutual_aid_capacity_offer_orders",
+    "mutual_aid_capacity_request_orders",
+    "price_coordination_partner_company_id",
+    "price_coordination_target_cents",
+    "primary_supplier_id",
+    "backup_supplier_id",
+    "primary_supplier_share_ppm",
+    "procurement_quantity_orders",
+)
+
+
+def strip_final_market_null_action_fields(value: Any) -> Any:
+    """Preserve hashes written before final-market action fields existed."""
+
+    payload = deepcopy(value)
+    if isinstance(payload, dict):
+        for key in FINAL_MARKET_OPTIONAL_ACTION_FIELDS:
+            if payload.get(key) is None:
+                payload.pop(key, None)
+        return {
+            key: strip_final_market_null_action_fields(item)
+            for key, item in payload.items()
+        }
+    if isinstance(payload, list):
+        return [strip_final_market_null_action_fields(item) for item in payload]
+    return payload
+
+
 def compute_reliability_plan_hash(
     plan: StrategicReliabilityPlan | Mapping[str, Any],
 ) -> str:
-    payload = deepcopy(
+    payload = strip_final_market_null_action_fields(
         plan.model_dump(mode="json")
         if isinstance(plan, StrategicReliabilityPlan)
         else dict(plan)

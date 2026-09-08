@@ -1,0 +1,8 @@
+# Research-only opt-in. Stage14 holdout rejected default promotion.
+extends: market_v11_supplier.yaml
+config_id: market-v11-procurement-research
+config_version: market-v11.1.0-research
+rule_procurement:
+  enabled: true
+  policy_version: public-capacity-procurement-v1.0.0
+  mode: capacity

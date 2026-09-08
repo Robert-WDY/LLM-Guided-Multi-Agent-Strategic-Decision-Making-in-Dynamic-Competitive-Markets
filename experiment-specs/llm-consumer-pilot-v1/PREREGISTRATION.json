@@ -1,0 +1,184 @@
+{
+  "cells": [
+    {
+      "repeat": 1,
+      "segment": "price_sensitive",
+      "task": "normal_tradeoff"
+    },
+    {
+      "repeat": 2,
+      "segment": "price_sensitive",
+      "task": "normal_tradeoff"
+    },
+    {
+      "repeat": 1,
+      "segment": "price_sensitive",
+      "task": "high_price_outside"
+    },
+    {
+      "repeat": 2,
+      "segment": "price_sensitive",
+      "task": "high_price_outside"
+    },
+    {
+      "repeat": 1,
+      "segment": "price_sensitive",
+      "task": "moderate_competition"
+    },
+    {
+      "repeat": 2,
+      "segment": "price_sensitive",
+      "task": "moderate_competition"
+    },
+    {
+      "repeat": 1,
+      "segment": "brand_sensitive",
+      "task": "normal_tradeoff"
+    },
+    {
+      "repeat": 2,
+      "segment": "brand_sensitive",
+      "task": "normal_tradeoff"
+    },
+    {
+      "repeat": 1,
+      "segment": "brand_sensitive",
+      "task": "high_price_outside"
+    },
+    {
+      "repeat": 2,
+      "segment": "brand_sensitive",
+      "task": "high_price_outside"
+    },
+    {
+      "repeat": 1,
+      "segment": "brand_sensitive",
+      "task": "moderate_competition"
+    },
+    {
+      "repeat": 2,
+      "segment": "brand_sensitive",
+      "task": "moderate_competition"
+    },
+    {
+      "repeat": 1,
+      "segment": "service_sensitive",
+      "task": "normal_tradeoff"
+    },
+    {
+      "repeat": 2,
+      "segment": "service_sensitive",
+      "task": "normal_tradeoff"
+    },
+    {
+      "repeat": 1,
+      "segment": "service_sensitive",
+      "task": "high_price_outside"
+    },
+    {
+      "repeat": 2,
+      "segment": "service_sensitive",
+      "task": "high_price_outside"
+    },
+    {
+      "repeat": 1,
+      "segment": "service_sensitive",
+      "task": "moderate_competition"
+    },
+    {
+      "repeat": 2,
+      "segment": "service_sensitive",
+      "task": "moderate_competition"
+    }
+  ],
+  "claim_boundary": "LLM answers are synthetic preference probes, not people, survey data, revealed preference, or external market calibration",
+  "evidence_level": "EXPLORATORY_SYNTHETIC_LLM_RESPONDENT_EVIDENCE",
+  "experiment_schema_version": "llm-consumer-pilot-prereg-v1.0.0",
+  "maximum_completion_tokens": 14400,
+  "maximum_estimated_cost_microunits": 237600,
+  "maximum_prompt_tokens": 36000,
+  "maximum_provider_calls": 18,
+  "model": "deepseek-v4-flash",
+  "parameter_use_rule": "use only direction and broad ranges; retain explicit synthetic status and deterministic economic-shape gates",
+  "preregistration_hash": "sha256:f9769a503cfe6526e346b58d2df895414ebdb1f89d4a08090b335e2a7c3ed24f",
+  "provider": "deepseek",
+  "repeats": 2,
+  "segments": {
+    "brand_sensitive": "你重视品牌信誉与品质确定性，愿为可靠品牌支付合理溢价。",
+    "price_sensitive": "你的预算较紧，价格通常是第一考虑，但明显差的服务也会让你放弃。",
+    "service_sensitive": "你重视服务体验和履约稳定，愿为明显更好的服务支付合理溢价。"
+  },
+  "tasks": {
+    "high_price_outside": [
+      {
+        "brand": 48,
+        "id": "A",
+        "price_cents": 14000,
+        "reliability": 84,
+        "service": 55
+      },
+      {
+        "brand": 88,
+        "id": "B",
+        "price_cents": 15500,
+        "reliability": 91,
+        "service": 68
+      },
+      {
+        "brand": 65,
+        "id": "C",
+        "price_cents": 17000,
+        "reliability": 95,
+        "service": 91
+      }
+    ],
+    "moderate_competition": [
+      {
+        "brand": 58,
+        "id": "A",
+        "price_cents": 10000,
+        "reliability": 88,
+        "service": 60
+      },
+      {
+        "brand": 90,
+        "id": "B",
+        "price_cents": 11200,
+        "reliability": 93,
+        "service": 66
+      },
+      {
+        "brand": 64,
+        "id": "C",
+        "price_cents": 10800,
+        "reliability": 96,
+        "service": 89
+      }
+    ],
+    "normal_tradeoff": [
+      {
+        "brand": 42,
+        "id": "A",
+        "price_cents": 9200,
+        "reliability": 82,
+        "service": 48
+      },
+      {
+        "brand": 86,
+        "id": "B",
+        "price_cents": 10500,
+        "reliability": 90,
+        "service": 62
+      },
+      {
+        "brand": 58,
+        "id": "C",
+        "price_cents": 10300,
+        "reliability": 94,
+        "service": 88
+      }
+    ]
+  },
+  "temperature_ppm": 400000,
+  "top_p_ppm": 800000
+}

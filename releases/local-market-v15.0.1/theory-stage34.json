@@ -1,0 +1,63 @@
+{
+  "passed": true,
+  "attempts": 6,
+  "valid_choices": 6,
+  "optimal_in_stated_options": 6,
+  "decisions": [
+    {
+      "case": "dominance",
+      "model": "doubao-seed-2-0-lite-260215",
+      "status": "complete",
+      "option": "defect",
+      "deviation_loss": 0
+    },
+    {
+      "case": "mixed_security",
+      "model": "deepseek-v4-flash",
+      "status": "complete",
+      "option": "half",
+      "deviation_loss": 0
+    },
+    {
+      "case": "belief_response",
+      "model": "doubao-seed-2-0-lite-260215",
+      "status": "complete",
+      "option": "hare",
+      "deviation_loss": 0
+    },
+    {
+      "case": "terminal_reciprocity",
+      "model": "doubao-seed-2-0-lite-260215",
+      "status": "complete",
+      "option": "defect",
+      "deviation_loss": 0
+    },
+    {
+      "case": "bayesian_signal",
+      "model": "deepseek-v4-flash",
+      "status": "complete",
+      "option": "enter",
+      "deviation_loss": 0.0
+    },
+    {
+      "case": "market_response",
+      "model": "doubao-seed-2-0-lite-260215",
+      "status": "complete",
+      "option": "value",
+      "deviation_loss": 0.0
+    }
+  ],
+  "budget_after": {
+    "ready": false,
+    "total_cny": 10,
+    "reserved_cny": 9.993565,
+    "remaining_cny": 0.006435,
+    "historical_estimate_cny": 1.093593,
+    "maximum_call_cny": 0.42,
+    "new_calls": 186,
+    "model": "deepseek-v4-flash",
+    "price_valid_through": "2026-09-08",
+    "message": "已保留失败及未知调用的额度。"
+  },
+  "scope": "Six diagnostic choices, not a model ranking or multi-round strategy superiority claim. Market score is a public forecast; actual execution is recorded separately."
+}

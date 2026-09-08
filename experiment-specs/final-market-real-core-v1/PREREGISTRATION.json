@@ -1,0 +1,536 @@
+{
+  "authorization": "user_explicitly_authorized_real_llm_experiments",
+  "cells": [
+    {
+      "advice_hash": "sha256:c05e6ef941d6571b589a6debff13369b0fddccaf0311517e3363f2aa9327c1cf",
+      "call_order": [
+        "treatment_with_v9_advice",
+        "baseline_without_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "balanced_v1",
+      "seed": 95101,
+      "state_hash": "sha256:96d4d36ceda91104ace46b129ad348ba78e3e6c7ce2a90235f525a7281483890",
+      "window": "pivotal_project"
+    },
+    {
+      "advice_hash": "sha256:e33795e66d7d7fc541b7864d7c47f75fcd65c509da1fc6d09727b280befec617",
+      "call_order": [
+        "treatment_with_v9_advice",
+        "baseline_without_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "aggressive_v1_extreme",
+      "seed": 95101,
+      "state_hash": "sha256:96d4d36ceda91104ace46b129ad348ba78e3e6c7ce2a90235f525a7281483890",
+      "window": "pivotal_project"
+    },
+    {
+      "advice_hash": "sha256:1198a28f02a5593cf3332836555bfeb153f3846da2c052a5371c3983e9c3f93f",
+      "call_order": [
+        "treatment_with_v9_advice",
+        "baseline_without_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "risk_guarded_v1",
+      "seed": 95101,
+      "state_hash": "sha256:96d4d36ceda91104ace46b129ad348ba78e3e6c7ce2a90235f525a7281483890",
+      "window": "pivotal_project"
+    },
+    {
+      "advice_hash": "sha256:da71c059955610e4b2a242a30ff72b6bb0ae781e051b1de7732de6085dc25b69",
+      "call_order": [
+        "treatment_with_v9_advice",
+        "baseline_without_advice"
+      ],
+      "expected_disposition": "recommend",
+      "expected_recommended_candidate_id": "mutual_aid_request",
+      "persona_id": "balanced_v1",
+      "seed": 95101,
+      "state_hash": "sha256:cf297ba1de2f53ce7016ccdea4bcde165432b06476aea346bc70c5e6c514698f",
+      "window": "mature_shortage"
+    },
+    {
+      "advice_hash": "sha256:a5032935b5c92fc758facd6d543180e75aabbdb8e25462a9d039701a8831ecb1",
+      "call_order": [
+        "treatment_with_v9_advice",
+        "baseline_without_advice"
+      ],
+      "expected_disposition": "recommend",
+      "expected_recommended_candidate_id": "mutual_aid_request",
+      "persona_id": "aggressive_v1_extreme",
+      "seed": 95101,
+      "state_hash": "sha256:cf297ba1de2f53ce7016ccdea4bcde165432b06476aea346bc70c5e6c514698f",
+      "window": "mature_shortage"
+    },
+    {
+      "advice_hash": "sha256:2fbd2db9dc031661472c49193a994cc9a1e9ffee4fc75adacd24d3360e0fe700",
+      "call_order": [
+        "treatment_with_v9_advice",
+        "baseline_without_advice"
+      ],
+      "expected_disposition": "recommend",
+      "expected_recommended_candidate_id": "mutual_aid_request",
+      "persona_id": "risk_guarded_v1",
+      "seed": 95101,
+      "state_hash": "sha256:cf297ba1de2f53ce7016ccdea4bcde165432b06476aea346bc70c5e6c514698f",
+      "window": "mature_shortage"
+    },
+    {
+      "advice_hash": "sha256:f3da53fbecda4f72f5f5306b64a1c6d8e01f42232aa6f977da0627c97b3b5c60",
+      "call_order": [
+        "treatment_with_v9_advice",
+        "baseline_without_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "balanced_v1",
+      "seed": 95101,
+      "state_hash": "sha256:e4a2e08244c1bbc77a758cf76972536831c6858e8adff1b3044ec43e517d1386",
+      "window": "price_war"
+    },
+    {
+      "advice_hash": "sha256:6d1c4f461b630c989da4f872903fac18798e86b16f56ebac9f4197a25db19b32",
+      "call_order": [
+        "treatment_with_v9_advice",
+        "baseline_without_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "aggressive_v1_extreme",
+      "seed": 95101,
+      "state_hash": "sha256:e4a2e08244c1bbc77a758cf76972536831c6858e8adff1b3044ec43e517d1386",
+      "window": "price_war"
+    },
+    {
+      "advice_hash": "sha256:30a5c3ed84d4c3857b6df8a0f1503e77a5deacedcaf3b632f1257e73074f6a95",
+      "call_order": [
+        "treatment_with_v9_advice",
+        "baseline_without_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "risk_guarded_v1",
+      "seed": 95101,
+      "state_hash": "sha256:e4a2e08244c1bbc77a758cf76972536831c6858e8adff1b3044ec43e517d1386",
+      "window": "price_war"
+    },
+    {
+      "advice_hash": "sha256:9e04966cc8803c503b6c4b4c657f3f9dc9b458aa03b78e4ca1f9a7a671991f19",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "balanced_v1",
+      "seed": 95101,
+      "state_hash": "sha256:25946802b76bda0f5f5f8c062beda170612dbb59d033344612baff48cc69a8f5",
+      "window": "distress"
+    },
+    {
+      "advice_hash": "sha256:0cbbef14f0106545b0a32834145e48306a8a6c3f06316ee4f0c968199418f68b",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "aggressive_v1_extreme",
+      "seed": 95101,
+      "state_hash": "sha256:25946802b76bda0f5f5f8c062beda170612dbb59d033344612baff48cc69a8f5",
+      "window": "distress"
+    },
+    {
+      "advice_hash": "sha256:b85f1add9380b56c97a8cf09e69f7305186a6162df219cf61a80f48d990fd781",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "risk_guarded_v1",
+      "seed": 95101,
+      "state_hash": "sha256:25946802b76bda0f5f5f8c062beda170612dbb59d033344612baff48cc69a8f5",
+      "window": "distress"
+    },
+    {
+      "advice_hash": "sha256:f2bf2abfdf393b67f28b1edea4a6fe663d8d2e881292d2083496e589cd485c45",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "balanced_v1",
+      "seed": 95102,
+      "state_hash": "sha256:a3e04f57d33b3a1e5c17ea3ec889b6cfdcef4c45e5992fced4ac07920d2794ea",
+      "window": "pivotal_project"
+    },
+    {
+      "advice_hash": "sha256:9dedc5acdfe23d61f5bf15e0015a6568c11e95db93e8a73d1c38f2db5fd42f5b",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "aggressive_v1_extreme",
+      "seed": 95102,
+      "state_hash": "sha256:a3e04f57d33b3a1e5c17ea3ec889b6cfdcef4c45e5992fced4ac07920d2794ea",
+      "window": "pivotal_project"
+    },
+    {
+      "advice_hash": "sha256:0a2cc9cbafd0d10eed8267f33ecb15cc94e008c22a79a16d64583d2095487dd2",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "risk_guarded_v1",
+      "seed": 95102,
+      "state_hash": "sha256:a3e04f57d33b3a1e5c17ea3ec889b6cfdcef4c45e5992fced4ac07920d2794ea",
+      "window": "pivotal_project"
+    },
+    {
+      "advice_hash": "sha256:585d4effc2b66df8700fc2e3eca6fac560acac05a3b03d5d34212a066dd3a8fb",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "recommend",
+      "expected_recommended_candidate_id": "mutual_aid_request",
+      "persona_id": "balanced_v1",
+      "seed": 95102,
+      "state_hash": "sha256:5cd744e08e936bb417e99d92b054684429e493e51341bdb9166fd854c4c00216",
+      "window": "mature_shortage"
+    },
+    {
+      "advice_hash": "sha256:3df2ec0734db0c3c36593e1f88c049fc9428e06bb30a5ba185d2c08aff56fab7",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "recommend",
+      "expected_recommended_candidate_id": "mutual_aid_request",
+      "persona_id": "aggressive_v1_extreme",
+      "seed": 95102,
+      "state_hash": "sha256:5cd744e08e936bb417e99d92b054684429e493e51341bdb9166fd854c4c00216",
+      "window": "mature_shortage"
+    },
+    {
+      "advice_hash": "sha256:23752bff5599f859e9366a3ce0c8644f006dc727d466fd5d1291ee2e127ec940",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "recommend",
+      "expected_recommended_candidate_id": "mutual_aid_request",
+      "persona_id": "risk_guarded_v1",
+      "seed": 95102,
+      "state_hash": "sha256:5cd744e08e936bb417e99d92b054684429e493e51341bdb9166fd854c4c00216",
+      "window": "mature_shortage"
+    },
+    {
+      "advice_hash": "sha256:5963bf47431782bf7d9b19e9f8cb4146d60bcd2e399380ccfe78518fb4a5fc86",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "balanced_v1",
+      "seed": 95102,
+      "state_hash": "sha256:b65fafc8ed727575ff60bfec5e39312d3287093b5668620a02e166c9e2d467a8",
+      "window": "price_war"
+    },
+    {
+      "advice_hash": "sha256:50420a739d696e3d71bbcda57de36e29356a216910388c29a82de99606f85e77",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "aggressive_v1_extreme",
+      "seed": 95102,
+      "state_hash": "sha256:b65fafc8ed727575ff60bfec5e39312d3287093b5668620a02e166c9e2d467a8",
+      "window": "price_war"
+    },
+    {
+      "advice_hash": "sha256:761863ac14cc163d1e1bcf7a422936ae4cdad802aa19ea5c465e7899e3053478",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "risk_guarded_v1",
+      "seed": 95102,
+      "state_hash": "sha256:b65fafc8ed727575ff60bfec5e39312d3287093b5668620a02e166c9e2d467a8",
+      "window": "price_war"
+    },
+    {
+      "advice_hash": "sha256:ed9ced3e51cfcb3199fac34f75741fa96959b178edd7777b1889864886d8e502",
+      "call_order": [
+        "treatment_with_v9_advice",
+        "baseline_without_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "balanced_v1",
+      "seed": 95102,
+      "state_hash": "sha256:6792128442529c649f4acffbf113296ddcbfda805b11d59cfa90d83cc1347bec",
+      "window": "distress"
+    },
+    {
+      "advice_hash": "sha256:b744dfa1466fb1db3fe089d82bf4c725ec2c213cfa9cbcc219dbca981b9a33df",
+      "call_order": [
+        "treatment_with_v9_advice",
+        "baseline_without_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "aggressive_v1_extreme",
+      "seed": 95102,
+      "state_hash": "sha256:6792128442529c649f4acffbf113296ddcbfda805b11d59cfa90d83cc1347bec",
+      "window": "distress"
+    },
+    {
+      "advice_hash": "sha256:680899a5870ca80cb203cfdf5e22fd686f09fb172bb33c0b767f2fadc7d4e746",
+      "call_order": [
+        "treatment_with_v9_advice",
+        "baseline_without_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "risk_guarded_v1",
+      "seed": 95102,
+      "state_hash": "sha256:6792128442529c649f4acffbf113296ddcbfda805b11d59cfa90d83cc1347bec",
+      "window": "distress"
+    },
+    {
+      "advice_hash": "sha256:a6c1de8146065dd62484694cd71cf67cd56c317c886c1729839d38369f4e4f8a",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "balanced_v1",
+      "seed": 95104,
+      "state_hash": "sha256:83bbfbf8b88ea06ec9198b4efb4a88d7887be8c96e2bb0932b41ef98aee0e87f",
+      "window": "pivotal_project"
+    },
+    {
+      "advice_hash": "sha256:0b32a531402a2f7ca469e56fd5dbcdbba2db8de4b60b3e2833ffe288109bb63b",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "aggressive_v1_extreme",
+      "seed": 95104,
+      "state_hash": "sha256:83bbfbf8b88ea06ec9198b4efb4a88d7887be8c96e2bb0932b41ef98aee0e87f",
+      "window": "pivotal_project"
+    },
+    {
+      "advice_hash": "sha256:7d4c92422b26d7a3d67c1d34d999218beb532429ddf61516578893c0115c461e",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "risk_guarded_v1",
+      "seed": 95104,
+      "state_hash": "sha256:83bbfbf8b88ea06ec9198b4efb4a88d7887be8c96e2bb0932b41ef98aee0e87f",
+      "window": "pivotal_project"
+    },
+    {
+      "advice_hash": "sha256:186905a332b55b62ab352a1049f0f67f350ee9d2cecb1473206c3cee7839dcea",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "balanced_v1",
+      "seed": 95104,
+      "state_hash": "sha256:e0cbb7e4d888ec985f6da4b4793cd1ccd76ae6422991b3b3a1034b0390ddf274",
+      "window": "mature_shortage"
+    },
+    {
+      "advice_hash": "sha256:6bffac75f72e4362999655a0e0a8996a9f3dbc22504c42005653c001d76d65bd",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "aggressive_v1_extreme",
+      "seed": 95104,
+      "state_hash": "sha256:e0cbb7e4d888ec985f6da4b4793cd1ccd76ae6422991b3b3a1034b0390ddf274",
+      "window": "mature_shortage"
+    },
+    {
+      "advice_hash": "sha256:35777db0f62f7acca1375b9f7691ab6b256d87f604e42176b6dff740d1101382",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "risk_guarded_v1",
+      "seed": 95104,
+      "state_hash": "sha256:e0cbb7e4d888ec985f6da4b4793cd1ccd76ae6422991b3b3a1034b0390ddf274",
+      "window": "mature_shortage"
+    },
+    {
+      "advice_hash": "sha256:2b6508bbb7769523aa07d6e36a02e69eaab360956df8898254712e768acfbbad",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "balanced_v1",
+      "seed": 95104,
+      "state_hash": "sha256:bac9d30f9d8aa64ac294a0898c36401ed513f665edb4883a6f72ad8953f8580d",
+      "window": "price_war"
+    },
+    {
+      "advice_hash": "sha256:aeb59ffdce205f916a2b9d54c60fbdae910c3efa9088fd7c52307cab86e98d9d",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "aggressive_v1_extreme",
+      "seed": 95104,
+      "state_hash": "sha256:bac9d30f9d8aa64ac294a0898c36401ed513f665edb4883a6f72ad8953f8580d",
+      "window": "price_war"
+    },
+    {
+      "advice_hash": "sha256:2ac9bd83662438107f6da72b0ac9631193783061613d566bd64be9948024484b",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "risk_guarded_v1",
+      "seed": 95104,
+      "state_hash": "sha256:bac9d30f9d8aa64ac294a0898c36401ed513f665edb4883a6f72ad8953f8580d",
+      "window": "price_war"
+    },
+    {
+      "advice_hash": "sha256:95a9dadbf6b840f47dc8a643724c92492f6fa09c95185ee4f4efb92705f46a4f",
+      "call_order": [
+        "treatment_with_v9_advice",
+        "baseline_without_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "balanced_v1",
+      "seed": 95104,
+      "state_hash": "sha256:b4cebc52a43c9a7c73b89a673a2043e433f614dd0c80034caa45c9a7d2975a6b",
+      "window": "distress"
+    },
+    {
+      "advice_hash": "sha256:eb8490f3afc510d77f77c10171601840c21b0a8c35eb7857413f3c2723983079",
+      "call_order": [
+        "treatment_with_v9_advice",
+        "baseline_without_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "aggressive_v1_extreme",
+      "seed": 95104,
+      "state_hash": "sha256:b4cebc52a43c9a7c73b89a673a2043e433f614dd0c80034caa45c9a7d2975a6b",
+      "window": "distress"
+    },
+    {
+      "advice_hash": "sha256:ed78c93f53f0775af820787630d38cfdb3f5bfc0552d53a419a80093d5dbfa56",
+      "call_order": [
+        "treatment_with_v9_advice",
+        "baseline_without_advice"
+      ],
+      "expected_disposition": "defer_to_agent",
+      "expected_recommended_candidate_id": null,
+      "persona_id": "risk_guarded_v1",
+      "seed": 95104,
+      "state_hash": "sha256:b4cebc52a43c9a7c73b89a673a2043e433f614dd0c80034caa45c9a7d2975a6b",
+      "window": "distress"
+    }
+  ],
+  "conditions": [
+    "baseline_without_advice",
+    "treatment_with_v9_advice"
+  ],
+  "evidence_level": "DIRECTIONAL_REAL_LLM_PAIRED_EVIDENCE",
+  "experiment_schema_version": "final-market-real-core-preregistration-v1.0.0",
+  "frozen_controls": [
+    "market_state",
+    "market_seed",
+    "persona",
+    "belief",
+    "opponent_model",
+    "provider",
+    "model",
+    "three_round_rule_continuation"
+  ],
+  "maximum_completion_tokens": 288000,
+  "maximum_estimated_cost_microunits": 9504000,
+  "maximum_logical_provider_calls": 72,
+  "maximum_prompt_tokens": 2304000,
+  "model": "deepseek-v4-flash",
+  "personas": [
+    "balanced_v1",
+    "aggressive_v1_extreme",
+    "risk_guarded_v1"
+  ],
+  "preregistration_hash": "sha256:7c433b5e9b35996a226061c05e915652f567cdfa13f85575c511b5669185e4f7",
+  "price_snapshot": {
+    "currency": "CNY",
+    "input_price_microunits_per_token": 3,
+    "output_price_microunits_per_token": 9,
+    "status": "conservative_project_estimate_not_provider_invoice"
+  },
+  "primary_metrics": [
+    "paired_enterprise_value_delta_cents",
+    "paired_candidate_regret_reduction_cents",
+    "action_change_rate",
+    "advice_adoption_rate",
+    "worst_paired_enterprise_value_delta_cents"
+  ],
+  "provider": "deepseek",
+  "reserved_completion_tokens_per_call": 4000,
+  "reserved_prompt_tokens_per_call": 32000,
+  "safety_metrics": [
+    "research_only_price_coordination_action_count",
+    "failed_call_count",
+    "token_usage",
+    "estimated_cost"
+  ],
+  "seed_eligibility_rule": "first three seeds from 95101 upward for which the focal company is active in all four frozen windows; 95103 was mechanically ineligible because it exited before mature_shortage",
+  "seeds": [
+    95101,
+    95102,
+    95104
+  ],
+  "temperature_ppm": 0,
+  "top_p_ppm": 100000,
+  "windows": [
+    "pivotal_project",
+    "mature_shortage",
+    "price_war",
+    "distress"
+  ]
+}

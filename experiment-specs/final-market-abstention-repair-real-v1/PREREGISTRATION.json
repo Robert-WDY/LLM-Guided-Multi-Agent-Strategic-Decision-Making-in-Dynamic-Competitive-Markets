@@ -1,0 +1,83 @@
+{
+  "cells": [
+    {
+      "full_advice_hash": "sha256:761863ac14cc163d1e1bcf7a422936ae4cdad802aa19ea5c465e7899e3053478",
+      "original_baseline_enterprise_value_cents": 38821795,
+      "original_treatment_enterprise_value_cents": 38622655,
+      "persona_id": "risk_guarded_v1",
+      "sanitized_observation_hash": "sha256:abd68868b3e0e4d4109ace255f67560f1e7e9c4fedcc64a70d302ceaafb5f92b",
+      "seed": 95102,
+      "state_hash": "sha256:b65fafc8ed727575ff60bfec5e39312d3287093b5668620a02e166c9e2d467a8",
+      "window": "price_war"
+    },
+    {
+      "full_advice_hash": "sha256:a6c1de8146065dd62484694cd71cf67cd56c317c886c1729839d38369f4e4f8a",
+      "original_baseline_enterprise_value_cents": 23899158,
+      "original_treatment_enterprise_value_cents": 21578381,
+      "persona_id": "balanced_v1",
+      "sanitized_observation_hash": "sha256:f99a24cfafb4927197bccd975c694bac18775f401c18c645a146034040ad8605",
+      "seed": 95104,
+      "state_hash": "sha256:83bbfbf8b88ea06ec9198b4efb4a88d7887be8c96e2bb0932b41ef98aee0e87f",
+      "window": "pivotal_project"
+    },
+    {
+      "full_advice_hash": "sha256:186905a332b55b62ab352a1049f0f67f350ee9d2cecb1473206c3cee7839dcea",
+      "original_baseline_enterprise_value_cents": 13207076,
+      "original_treatment_enterprise_value_cents": 10083720,
+      "persona_id": "balanced_v1",
+      "sanitized_observation_hash": "sha256:98d5bdc174886ff4f93d4a07deff22a716cc1b097b8f209c01139d49f26325d1",
+      "seed": 95104,
+      "state_hash": "sha256:e0cbb7e4d888ec985f6da4b4793cd1ccd76ae6422991b3b3a1034b0390ddf274",
+      "window": "mature_shortage"
+    },
+    {
+      "full_advice_hash": "sha256:6bffac75f72e4362999655a0e0a8996a9f3dbc22504c42005653c001d76d65bd",
+      "original_baseline_enterprise_value_cents": 13207076,
+      "original_treatment_enterprise_value_cents": 10083720,
+      "persona_id": "aggressive_v1_extreme",
+      "sanitized_observation_hash": "sha256:894b7021da388abdb1fa7b1d8b1839486fc938916f6ebfb79ea6c1cb55cf190c",
+      "seed": 95104,
+      "state_hash": "sha256:e0cbb7e4d888ec985f6da4b4793cd1ccd76ae6422991b3b3a1034b0390ddf274",
+      "window": "mature_shortage"
+    },
+    {
+      "full_advice_hash": "sha256:35777db0f62f7acca1375b9f7691ab6b256d87f604e42176b6dff740d1101382",
+      "original_baseline_enterprise_value_cents": 13207076,
+      "original_treatment_enterprise_value_cents": 10083720,
+      "persona_id": "risk_guarded_v1",
+      "sanitized_observation_hash": "sha256:3957c0ded36c68cf41e8c59b6fe064ad573d127269558d3d7f56823d7b82ef4b",
+      "seed": 95104,
+      "state_hash": "sha256:e0cbb7e4d888ec985f6da4b4793cd1ccd76ae6422991b3b3a1034b0390ddf274",
+      "window": "mature_shortage"
+    }
+  ],
+  "evidence_level": "POST_HOC_DIRECTIONAL_REAL_LLM_REPAIR_EVIDENCE",
+  "experiment_schema_version": "final-market-abstention-repair-prereg-v1.0.0",
+  "intervention": "withhold all candidate identities, actions and scores from the Agent when Advisor execution_disposition is defer_to_agent",
+  "maximum_completion_tokens": 20000,
+  "maximum_estimated_cost_microunits": 600000,
+  "maximum_logical_provider_calls": 5,
+  "maximum_prompt_tokens": 140000,
+  "model": "deepseek-v4-flash",
+  "preregistration_hash": "sha256:cf585238a40340dcd04f5272783230a34eefee76dcaa8dc4a8035bab613750f6",
+  "price_snapshot": {
+    "currency": "CNY",
+    "input_price_microunits_per_token": 3,
+    "output_price_microunits_per_token": 9,
+    "status": "conservative_project_estimate_not_provider_invoice"
+  },
+  "primary_metrics": [
+    "delta_vs_original_baseline_cents",
+    "recovery_vs_unsanitized_treatment_cents",
+    "negative_pair_count_after_repair"
+  ],
+  "provider": "deepseek",
+  "reserved_completion_tokens_per_call": 4000,
+  "reserved_prompt_tokens_per_call": 28000,
+  "selection_rule": "all five negative complete pairs in the frozen source summary",
+  "source_experiment": "final-market-real-core-v1",
+  "source_rows_sha256": "sha256:34d96961beb6492273cafa64839d758cb7bade69c6ce5491a89c107f1d2f6c08",
+  "success_criterion": "candidate anchors absent in every prompt and negative-pair count lower than five",
+  "temperature_ppm": 0,
+  "top_p_ppm": 100000
+}

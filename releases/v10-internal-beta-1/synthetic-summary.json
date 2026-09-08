@@ -1,0 +1,490 @@
+{
+  "claim_boundary": "Deterministic engineering proof and synthetic directional sensitivity; no real economy calibration or population significance.",
+  "combination_sha256": "sha256:efcdb60cc3b647e5c7af8f41959b6baef5142dd401bc0a32f30d0b6631364721",
+  "engineering_gate_passed": true,
+  "episodes": 372,
+  "gates": {
+    "cash_nonnegative": true,
+    "demand_closure": true,
+    "public_privacy": true,
+    "replay": true,
+    "upstream_accounted": true,
+    "welfare_closure": true
+  },
+  "holdout_sourcing_pairs": [
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": 93922057.83333333,
+      "policy": "combined_diverse",
+      "positive_count": 6,
+      "variant": "base",
+      "worst_welfare_delta_cents": 38998556
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": 8996941.5,
+      "policy": "combined_resilient",
+      "positive_count": 3,
+      "variant": "base",
+      "worst_welfare_delta_cents": -105534191
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": 122368705.5,
+      "policy": "combined_diverse",
+      "positive_count": 6,
+      "variant": "weak_reliability",
+      "worst_welfare_delta_cents": 31698134
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": -84896445.5,
+      "policy": "combined_resilient",
+      "positive_count": 2,
+      "variant": "weak_reliability",
+      "worst_welfare_delta_cents": -255271279
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": 26493962.333333332,
+      "policy": "combined_diverse",
+      "positive_count": 6,
+      "variant": "strong_reliability",
+      "worst_welfare_delta_cents": 11743300
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": -32862125.333333332,
+      "policy": "combined_resilient",
+      "positive_count": 0,
+      "variant": "strong_reliability",
+      "worst_welfare_delta_cents": -37587102
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": 97762443.83333333,
+      "policy": "combined_diverse",
+      "positive_count": 6,
+      "variant": "expensive_resilient",
+      "worst_welfare_delta_cents": 46245146
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": 2305726.3333333335,
+      "policy": "combined_resilient",
+      "positive_count": 3,
+      "variant": "expensive_resilient",
+      "worst_welfare_delta_cents": -117095933
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": 354831353.3333333,
+      "policy": "combined_diverse",
+      "positive_count": 6,
+      "variant": "capacity_squeeze",
+      "worst_welfare_delta_cents": 300323638
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": 12332231.333333334,
+      "policy": "combined_resilient",
+      "positive_count": 4,
+      "variant": "capacity_squeeze",
+      "worst_welfare_delta_cents": -47754674
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": 71927474.5,
+      "policy": "combined_diverse",
+      "positive_count": 6,
+      "variant": "no_externality",
+      "worst_welfare_delta_cents": 30996056
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": -1682641.8333333333,
+      "policy": "combined_resilient",
+      "positive_count": 3,
+      "variant": "no_externality",
+      "worst_welfare_delta_cents": -89581691
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": 159905807.83333334,
+      "policy": "combined_diverse",
+      "positive_count": 6,
+      "variant": "high_externality",
+      "worst_welfare_delta_cents": 63006056
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": 41035691.5,
+      "policy": "combined_resilient",
+      "positive_count": 4,
+      "variant": "high_externality",
+      "worst_welfare_delta_cents": -153391691
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": 93922057.83333333,
+      "policy": "combined_diverse",
+      "positive_count": 6,
+      "variant": "low_welfare_weight",
+      "worst_welfare_delta_cents": 38998556
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": 8996941.5,
+      "policy": "combined_resilient",
+      "positive_count": 3,
+      "variant": "low_welfare_weight",
+      "worst_welfare_delta_cents": -105534191
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": 93922057.83333333,
+      "policy": "combined_diverse",
+      "positive_count": 6,
+      "variant": "high_welfare_weight",
+      "worst_welfare_delta_cents": 38998556
+    },
+    {
+      "holdout_n": 6,
+      "mean_welfare_delta_cents": 8996941.5,
+      "policy": "combined_resilient",
+      "positive_count": 3,
+      "variant": "high_welfare_weight",
+      "worst_welfare_delta_cents": -105534191
+    }
+  ],
+  "model_calls": 0,
+  "objective_selections": [
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 3,
+        "combined_diverse": 3,
+        "combined_resilient": 0
+      },
+      "profile": "none",
+      "variant": "base"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "stakeholder_balanced",
+      "variant": "base"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "public_service",
+      "variant": "base"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "resilience_steward",
+      "variant": "base"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 1,
+        "combined_diverse": 5,
+        "combined_resilient": 0
+      },
+      "profile": "none",
+      "variant": "weak_reliability"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "stakeholder_balanced",
+      "variant": "weak_reliability"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "public_service",
+      "variant": "weak_reliability"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "resilience_steward",
+      "variant": "weak_reliability"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 6,
+        "combined_diverse": 0,
+        "combined_resilient": 0
+      },
+      "profile": "none",
+      "variant": "strong_reliability"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 4,
+        "combined_diverse": 2,
+        "combined_resilient": 0
+      },
+      "profile": "stakeholder_balanced",
+      "variant": "strong_reliability"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "public_service",
+      "variant": "strong_reliability"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 4,
+        "combined_diverse": 2,
+        "combined_resilient": 0
+      },
+      "profile": "resilience_steward",
+      "variant": "strong_reliability"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 6,
+        "combined_diverse": 0,
+        "combined_resilient": 0
+      },
+      "profile": "none",
+      "variant": "expensive_resilient"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 2,
+        "combined_diverse": 4,
+        "combined_resilient": 0
+      },
+      "profile": "stakeholder_balanced",
+      "variant": "expensive_resilient"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "public_service",
+      "variant": "expensive_resilient"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 2,
+        "combined_diverse": 4,
+        "combined_resilient": 0
+      },
+      "profile": "resilience_steward",
+      "variant": "expensive_resilient"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "none",
+      "variant": "capacity_squeeze"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "stakeholder_balanced",
+      "variant": "capacity_squeeze"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "public_service",
+      "variant": "capacity_squeeze"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "resilience_steward",
+      "variant": "capacity_squeeze"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 3,
+        "combined_diverse": 3,
+        "combined_resilient": 0
+      },
+      "profile": "none",
+      "variant": "no_externality"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "stakeholder_balanced",
+      "variant": "no_externality"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "public_service",
+      "variant": "no_externality"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "resilience_steward",
+      "variant": "no_externality"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 3,
+        "combined_diverse": 3,
+        "combined_resilient": 0
+      },
+      "profile": "none",
+      "variant": "high_externality"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "stakeholder_balanced",
+      "variant": "high_externality"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "public_service",
+      "variant": "high_externality"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "resilience_steward",
+      "variant": "high_externality"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 3,
+        "combined_diverse": 3,
+        "combined_resilient": 0
+      },
+      "profile": "none",
+      "variant": "low_welfare_weight"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 1,
+        "combined_diverse": 5,
+        "combined_resilient": 0
+      },
+      "profile": "stakeholder_balanced",
+      "variant": "low_welfare_weight"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "public_service",
+      "variant": "low_welfare_weight"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "resilience_steward",
+      "variant": "low_welfare_weight"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 3,
+        "combined_diverse": 3,
+        "combined_resilient": 0
+      },
+      "profile": "none",
+      "variant": "high_welfare_weight"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "stakeholder_balanced",
+      "variant": "high_welfare_weight"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "public_service",
+      "variant": "high_welfare_weight"
+    },
+    {
+      "holdout_policy_choices": {
+        "combined_cheap": 0,
+        "combined_diverse": 6,
+        "combined_resilient": 0
+      },
+      "profile": "resilience_steward",
+      "variant": "high_welfare_weight"
+    }
+  ],
+  "preregistration_hash": "sha256:443dbd2cca0de2feebf33c25725a58b8951b6cfc6d9c1fc8f844658ce827869b",
+  "sensitivity_sha256": "sha256:bd76d0a53b62f312f96a256358826d0590a9a8be4942621b5c869cb670604b0a",
+  "settled_rounds": 3552
+}

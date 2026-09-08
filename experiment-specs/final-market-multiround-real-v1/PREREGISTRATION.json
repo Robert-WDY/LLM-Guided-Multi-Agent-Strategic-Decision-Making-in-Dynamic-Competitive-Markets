@@ -1,0 +1,89 @@
+{
+  "cells": [
+    {
+      "condition_order": [
+        "advisor_off",
+        "advisor_v9"
+      ],
+      "episode_id": "final-market-multiround-real-95301",
+      "seed": 95301
+    },
+    {
+      "condition_order": [
+        "advisor_v9",
+        "advisor_off"
+      ],
+      "episode_id": "final-market-multiround-real-95302",
+      "seed": 95302
+    },
+    {
+      "condition_order": [
+        "advisor_off",
+        "advisor_v9"
+      ],
+      "episode_id": "final-market-multiround-real-95303",
+      "seed": 95303
+    }
+  ],
+  "composition": "1 LLM + 3 Rule",
+  "conditions": {
+    "advisor_off": {
+      "advisor_mode": "off",
+      "belief_mode": "public_action_v1",
+      "opponent_model_mode": "public_strategy_v1",
+      "utility_inference_mode": "strategy_utility_v1"
+    },
+    "advisor_v9": {
+      "advisor_mode": "strategic_market_v9",
+      "belief_mode": "public_action_v1",
+      "opponent_model_mode": "public_strategy_v1",
+      "utility_inference_mode": "strategy_utility_v1"
+    }
+  },
+  "config_path": "C:\\Users\\12204\\Desktop\\game-theory-agent\\configs\\market_v6_final.yaml",
+  "config_sha256": "sha256:795ead906d3a172c8c9c8b12bad354380641c1474669a527e88859589f8d7bb0",
+  "evidence_level": "DIRECTIONAL_REAL_LLM_MULTIROUND_PAIRED_EVIDENCE",
+  "experiment_schema_version": "final-market-multiround-real-prereg-v1.0.0",
+  "frozen_controls": [
+    "seed",
+    "episode_id",
+    "market_model",
+    "information_mode",
+    "communication_mode",
+    "cooperation_mode",
+    "persona",
+    "model",
+    "rule_opponents"
+  ],
+  "maximum_completion_tokens": 240000,
+  "maximum_estimated_cost_microunits": 7920000,
+  "maximum_logical_provider_calls": 60,
+  "maximum_prompt_tokens": 1920000,
+  "model": "deepseek-v4-flash",
+  "persona": "balanced_v1",
+  "preregistration_hash": "sha256:fb8ff21bc80f273f3f17c27577c6896688c5fdf387178cd83a00a23804c8a615",
+  "price_snapshot": {
+    "currency": "CNY",
+    "input_price_microunits_per_token": 3,
+    "output_price_microunits_per_token": 9,
+    "status": "conservative_project_estimate_not_provider_invoice"
+  },
+  "primary_metrics": [
+    "terminal_enterprise_value",
+    "cumulative_profit",
+    "survival",
+    "worst_paired_enterprise_value_delta",
+    "released_advice_adoption"
+  ],
+  "provider": "deepseek",
+  "reserved_completion_tokens_per_call": 4000,
+  "reserved_prompt_tokens_per_call": 32000,
+  "rounds": 10,
+  "seeds": [
+    95301,
+    95302,
+    95303
+  ],
+  "temperature_ppm": 0,
+  "top_p_ppm": 100000
+}

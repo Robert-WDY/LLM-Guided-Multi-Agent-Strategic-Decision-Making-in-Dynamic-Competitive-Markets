@@ -1,0 +1,4 @@
+extends: market_v10_multi_objective.yaml
+config_id: market-v10-1-paired-advisor
+config_version: market-v10.1.0
+public_advisor_gate: paired-baseline-dominance-v1.0.0

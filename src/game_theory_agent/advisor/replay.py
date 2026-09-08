@@ -10,6 +10,7 @@ from game_theory_agent.advisor.advisor import (
     BayesianGameAdvisor,
     BayesianStrategyAdvisor,
 )
+from game_theory_agent.advisor.context_view import build_agent_advice_view
 from game_theory_agent.advisor.contracts import (
     GameTheoryAdvice,
     StrategicGameTheoryAdvice,
@@ -37,23 +38,59 @@ def verify_advisor_replay(
         GameTheoryAdvice | StrategicGameTheoryAdvice | PublicStrategicAdvice
     ] = []
     for event in events:
-        snapshots = []
+        snapshots: list[tuple[Any, str | None]] = []
         phase = getattr(event, "communication_phase", None)
         if phase is not None:
             snapshots.extend(
-                trace.information_snapshot
+                (trace.information_snapshot, getattr(trace, "persona", None))
                 for trace in phase.generation_traces
                 if trace.information_snapshot is not None
             )
         snapshots.extend(
-            trace.information_snapshot
+            (trace.information_snapshot, getattr(trace, "persona", None))
             for trace in event.traces
             if trace.information_snapshot is not None
         )
-        for snapshot in snapshots:
+        for snapshot, trace_persona_id in snapshots:
             observation = snapshot.observation
             raw = observation.get("game_theory_advice")
             if raw is None:
+                if expected_mode == "strategic_market_v9":
+                    belief = observation.get("belief_state")
+                    opponent_model = observation.get("opponent_model_state")
+                    if not isinstance(belief, dict) or not isinstance(
+                        opponent_model, dict
+                    ):
+                        raise AdvisorReplayMismatchError(
+                            "v9 abstention is missing public strategic inputs"
+                        )
+                    if not trace_persona_id:
+                        raise AdvisorReplayMismatchError(
+                            "v9 abstention is missing persona binding"
+                        )
+                    config = load_market_config(
+                        Path(__file__).resolve().parents[3]
+                        / "configs"
+                        / "market_v6_final.yaml"
+                    )
+                    registry = PersonaRegistry.from_market_config(config)
+                    recomputed = PublicMarketRolloutAdvisor(config).advise(
+                        observation=observation,
+                        company_id=snapshot.company_id,
+                        persona_profile=registry.get(str(trace_persona_id)),
+                        belief_state=belief,
+                        opponent_model=opponent_model,
+                        horizon_rounds=min(
+                            3, int(observation.get("rounds_remaining", 1))
+                        ),
+                        scenario_count=5,
+                        advisor_mode="strategic_market_v9",
+                    ).model_dump(mode="json")
+                    if build_agent_advice_view(recomputed) is not None:
+                        raise AdvisorReplayMismatchError(
+                            "released v9 recommendation is missing from observation"
+                        )
+                    continue
                 if expected_mode not in {None, "off"}:
                     raise AdvisorReplayMismatchError(
                         "enabled treatment is missing advisor output"
@@ -74,14 +111,20 @@ def verify_advisor_replay(
                 "pareto_reliable_v5",
                 "pareto_reliable_v6",
                 "pareto_reliable_v7",
+                "strategic_market_v9",
             }:
                 opponent_model = observation.get("opponent_model_state")
                 if not isinstance(opponent_model, dict):
                     raise AdvisorReplayMismatchError(
                         "public rollout advisor is missing the public opponent model"
                     )
+                config_name = (
+                    "market_v6_final.yaml"
+                    if raw.get("advisor_mode") == "strategic_market_v9"
+                    else "market_v4.yaml"
+                )
                 config = load_market_config(
-                    Path(__file__).resolve().parents[3] / "configs" / "market_v4.yaml"
+                    Path(__file__).resolve().parents[3] / "configs" / config_name
                 )
                 registry = PersonaRegistry.from_market_config(config)
                 recorded = PublicStrategicAdvice.model_validate(raw)

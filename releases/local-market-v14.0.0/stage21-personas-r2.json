@@ -1,0 +1,71 @@
+{
+  "passed": true,
+  "episodes": 72,
+  "rounds": 1440,
+  "groups": [
+    {
+      "resident": "cooperator",
+      "focal": "cooperator",
+      "n": 8,
+      "mean_profit_cents": 36337930.375,
+      "mean_welfare_cents": 1114840890.625
+    },
+    {
+      "resident": "cooperator",
+      "focal": "free_rider",
+      "n": 8,
+      "mean_profit_cents": 39946422.625,
+      "mean_welfare_cents": 1116828647.375
+    },
+    {
+      "resident": "cooperator",
+      "focal": "retaliator",
+      "n": 8,
+      "mean_profit_cents": 36337930.375,
+      "mean_welfare_cents": 1114840890.625
+    },
+    {
+      "resident": "free_rider",
+      "focal": "cooperator",
+      "n": 8,
+      "mean_profit_cents": 36350101,
+      "mean_welfare_cents": 1120792576.875
+    },
+    {
+      "resident": "free_rider",
+      "focal": "free_rider",
+      "n": 8,
+      "mean_profit_cents": 39923526.125,
+      "mean_welfare_cents": 1122961468.625
+    },
+    {
+      "resident": "free_rider",
+      "focal": "retaliator",
+      "n": 8,
+      "mean_profit_cents": 39755853.625,
+      "mean_welfare_cents": 1122888922.625
+    },
+    {
+      "resident": "retaliator",
+      "focal": "cooperator",
+      "n": 8,
+      "mean_profit_cents": 36337930.375,
+      "mean_welfare_cents": 1114840890.625
+    },
+    {
+      "resident": "retaliator",
+      "focal": "free_rider",
+      "n": 8,
+      "mean_profit_cents": 39946422.625,
+      "mean_welfare_cents": 1116828647.375
+    },
+    {
+      "resident": "retaliator",
+      "focal": "retaliator",
+      "n": 8,
+      "mean_profit_cents": 36337930.375,
+      "mean_welfare_cents": 1114840890.625
+    }
+  ],
+  "conclusion": "Profiles have distinct public-contribution behavior. Payoffs depend on resident mix; contribution is not guaranteed individually optimal. Synthetic engineering and directional evidence only."
+}

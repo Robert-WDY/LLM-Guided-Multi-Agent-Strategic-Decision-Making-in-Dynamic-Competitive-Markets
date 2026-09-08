@@ -35,6 +35,25 @@ class AgentRequestedAction(BaseModel):
     capacity_investment_cents: int = Field(default=0, ge=0)
     resilience_budget_cents: int = Field(default=0, ge=0)
     shared_resilience_contribution_cents: int | None = Field(default=None, ge=0)
+    threshold_project_contribution_cents: int | None = Field(default=None, ge=0)
+    mutual_aid_partner_company_id: str | None = Field(
+        default=None, min_length=1
+    )
+    mutual_aid_capacity_offer_orders: int | None = Field(default=None, ge=0)
+    mutual_aid_capacity_request_orders: int | None = Field(default=None, ge=0)
+    price_coordination_partner_company_id: str | None = Field(
+        default=None, min_length=1
+    )
+    price_coordination_target_cents: int | None = Field(default=None, ge=0)
+    primary_supplier_id: str | None = Field(default=None, min_length=1)
+    backup_supplier_id: str | None = Field(default=None, min_length=1)
+    contract_quantity_orders: int | None = Field(default=None, ge=0, exclude_if=lambda v:v is None)
+    contract_duration_rounds: int | None = Field(default=None, ge=0, le=5, exclude_if=lambda v:v is None)
+    contract_bid_cents: int | None = Field(default=None, ge=0, exclude_if=lambda v:v is None)
+    procurement_quantity_orders: int | None = Field(default=None, ge=0, exclude_if=lambda v:v is None)
+    primary_supplier_share_ppm: int | None = Field(
+        default=None, ge=0, le=1_000_000
+    )
     incident_response: IncidentIntent = Field(default_factory=IncidentIntent)
     strategy_summary: str = Field(default="", max_length=500)
 

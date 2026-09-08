@@ -1,0 +1,16 @@
+{
+  "stage": 5,
+  "passed": true,
+  "cases": 1,
+  "new_real_calls": 0,
+  "elapsed_seconds": 2.915496899993741,
+  "results": [
+    {
+      "id": "b9620c174e7d25865966d484e6fcf90ec7923963ed341173d19a1e20245220f7",
+      "idempotent": true,
+      "saved_restore": true,
+      "invalid_rejected": true,
+      "full_evidence": true
+    }
+  ]
+}

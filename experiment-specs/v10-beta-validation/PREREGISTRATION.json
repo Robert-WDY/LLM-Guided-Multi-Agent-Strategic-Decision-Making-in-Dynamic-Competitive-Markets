@@ -1,0 +1,73 @@
+{
+  "base_config_hash": "sha256:ecdcf0ac553ca868e628ea50a0be309f3a018379e25654080106957c7549ac97",
+  "combination_rounds": 20,
+  "config_hashes": {
+    "base": "sha256:ecdcf0ac553ca868e628ea50a0be309f3a018379e25654080106957c7549ac97",
+    "capacity_squeeze": "sha256:cd94b1e0199935c7b966811554619845809831675c61311f4937d59f2b4bfe4d",
+    "expensive_resilient": "sha256:43d1581e627481afbe89018bbb9803cd86ab952c3c8125c1d0e2ef607ce17a0c",
+    "high_externality": "sha256:8f5dbd1e3b92adf0d64ef92e3affa9ab901f54e800ba68dfe58889e50e6720f9",
+    "high_welfare_weight": "sha256:0cba9998c0d6ed0c33ad08925ecc6f35571454b4fc3a76b0e04a871ac7a19a54",
+    "low_welfare_weight": "sha256:793c653c8b354315135194a0a5b91277f0dbfcddf704866716529aab7c8ead25",
+    "no_externality": "sha256:44259ffcd017d91935e844d8663831e6ccc84f65a934702a684e3a531ddf5232",
+    "strong_reliability": "sha256:9820d4427b4015d4e8a733e60960ae910e803d41a87658b56c4e0a4368019bc8",
+    "weak_reliability": "sha256:b7e385b54edd0ea49e8fcca0f5d87cc4e69e04f07cf1a98be062d58dd25403ce"
+  },
+  "design": "12 seeds; 4 integrated policies; 9 OAT variants x 3 sourcing policies; full deterministic replay. Synthetic oracle ranks predeclared policies by each objective, not an LLM/advisor result.",
+  "experiment": "v10-beta-validation",
+  "gates": [
+    "demand_closure",
+    "cash_nonnegative",
+    "welfare_closure",
+    "upstream_accounted",
+    "public_privacy",
+    "replay"
+  ],
+  "hash": "sha256:443dbd2cca0de2feebf33c25725a58b8951b6cfc6d9c1fc8f844658ce827869b",
+  "holdout_seeds": [
+    120707,
+    120708,
+    120709,
+    120710,
+    120711,
+    120712
+  ],
+  "policies": [
+    "inactive_cheap",
+    "combined_cheap",
+    "combined_diverse",
+    "combined_resilient"
+  ],
+  "profiles": [
+    "none",
+    "stakeholder_balanced",
+    "public_service",
+    "resilience_steward"
+  ],
+  "seeds": [
+    120701,
+    120702,
+    120703,
+    120704,
+    120705,
+    120706,
+    120707,
+    120708,
+    120709,
+    120710,
+    120711,
+    120712
+  ],
+  "sensitivity_rounds": 8,
+  "variants": [
+    "base",
+    "weak_reliability",
+    "strong_reliability",
+    "expensive_resilient",
+    "capacity_squeeze",
+    "no_externality",
+    "high_externality",
+    "low_welfare_weight",
+    "high_welfare_weight"
+  ],
+  "zero_model_calls": true
+}

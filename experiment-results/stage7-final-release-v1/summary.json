@@ -1,0 +1,129 @@
+{
+  "boundaries": {
+    "price_coordination_is_executable_advice": false,
+    "real_llm_statistical_generalization": false,
+    "real_market_calibration": false,
+    "self_play_is_full_psro": false,
+    "small_model_fine_tuning_allowed": false
+  },
+  "config_id": "market-v6-final",
+  "config_sha256": "sha256:795ead906d3a172c8c9c8b12bad354380641c1474669a527e88859589f8d7bb0",
+  "engineering_release_allowed": true,
+  "evidence": [
+    {
+      "artifact_id": "market_lifecycle",
+      "hash_matches": true,
+      "hash_mode": "result",
+      "recomputed_hash": "sha256:aeea9749c99905c3862c5bce5d4ba9f7f6267e229ebae5b86274c96affb64a02",
+      "schema_version": "strategic-market-v6-stage71-result-v1.0.0",
+      "source_path": "runs/strategic-market-v6-stage71/summary.json",
+      "stored_hash": "sha256:aeea9749c99905c3862c5bce5d4ba9f7f6267e229ebae5b86274c96affb64a02"
+    },
+    {
+      "artifact_id": "threshold_project",
+      "hash_matches": true,
+      "hash_mode": "result",
+      "recomputed_hash": "sha256:4d00de1f3a8f05338e09e3ec8aee5e8a35d7237558f7c2a062a1cf3a7a728f12",
+      "schema_version": "strategic-market-v6-stage72-result-v1.0.0",
+      "source_path": "runs/strategic-market-v6-stage72/summary.json",
+      "stored_hash": "sha256:4d00de1f3a8f05338e09e3ec8aee5e8a35d7237558f7c2a062a1cf3a7a728f12"
+    },
+    {
+      "artifact_id": "mutual_aid",
+      "hash_matches": true,
+      "hash_mode": "result",
+      "recomputed_hash": "sha256:b6f7f9263593375c01a75ac395acd32e7dd20e109d3b63440ee3518e73067d85",
+      "schema_version": "strategic-market-v6-stage73-result-v1.0.0",
+      "source_path": "runs/strategic-market-v6-stage73/summary.json",
+      "stored_hash": "sha256:b6f7f9263593375c01a75ac395acd32e7dd20e109d3b63440ee3518e73067d85"
+    },
+    {
+      "artifact_id": "price_coordination",
+      "hash_matches": true,
+      "hash_mode": "result",
+      "recomputed_hash": "sha256:7f5f398952bb63bd8990c7341b6d3dfa694666b07a201df5494aa9e2ba29cf55",
+      "schema_version": "strategic-market-v6-stage74-result-v1.0.0",
+      "source_path": "runs/strategic-market-v6-stage74/summary.json",
+      "stored_hash": "sha256:7f5f398952bb63bd8990c7341b6d3dfa694666b07a201df5494aa9e2ba29cf55"
+    },
+    {
+      "artifact_id": "combined_market",
+      "hash_matches": true,
+      "hash_mode": "result",
+      "recomputed_hash": "sha256:de8e0cef575f097e7b7bd8ad3380372a1f8baa5d10557e19367a265d23b2c7f1",
+      "schema_version": "strategic-market-v6-stage75-result-v1.0.0",
+      "source_path": "runs/strategic-market-v6-stage75/summary.json",
+      "stored_hash": "sha256:de8e0cef575f097e7b7bd8ad3380372a1f8baa5d10557e19367a265d23b2c7f1"
+    },
+    {
+      "artifact_id": "advisor_v9",
+      "hash_matches": true,
+      "hash_mode": "result",
+      "recomputed_hash": "sha256:e8b2aa26669324de551c9542696f6c85b4c77f16603f7b24a8e0a278fa659540",
+      "schema_version": "final-market-advisor-v9-validation-v1.0.0",
+      "source_path": "runs/final-market-advisor-v9/summary.json",
+      "stored_hash": "sha256:e8b2aa26669324de551c9542696f6c85b4c77f16603f7b24a8e0a278fa659540"
+    },
+    {
+      "artifact_id": "real_llm_smoke",
+      "hash_matches": true,
+      "hash_mode": "legacy_pending_result",
+      "recomputed_hash": "sha256:1569f1ab5b23f67bea7c286437ed3cdc5a267b8465aa4c9fab41548b19a815a0",
+      "schema_version": "final-market-v9-real-llm-smoke-v1.0.0",
+      "source_path": "runs/final-market-v9-real-llm-smoke/summary.json",
+      "stored_hash": "sha256:1569f1ab5b23f67bea7c286437ed3cdc5a267b8465aa4c9fab41548b19a815a0"
+    },
+    {
+      "artifact_id": "self_play_holdout",
+      "hash_matches": true,
+      "hash_mode": "result",
+      "recomputed_hash": "sha256:069e8804cbbb59acc6aaf37996c525dc308a4c600d39c25c5c46fca52768c94c",
+      "schema_version": "final-market-self-play-holdout-v1.0.0",
+      "source_path": "runs/final-market-self-play-v1/holdout-summary.json",
+      "stored_hash": "sha256:069e8804cbbb59acc6aaf37996c525dc308a4c600d39c25c5c46fca52768c94c"
+    },
+    {
+      "artifact_id": "agent_iteration_holdout",
+      "hash_matches": true,
+      "hash_mode": "result",
+      "recomputed_hash": "sha256:633947a03f58c119789e6724481af9f718e55bb6c38d34b7b0fe090a474fb64f",
+      "schema_version": "final-market-agent-iteration-holdout-v1.0.0",
+      "source_path": "runs/final-market-agent-iteration-v1/holdout-summary.json",
+      "stored_hash": "sha256:633947a03f58c119789e6724481af9f718e55bb6c38d34b7b0fe090a474fb64f"
+    },
+    {
+      "artifact_id": "training_export",
+      "hash_matches": true,
+      "hash_mode": "manifest",
+      "recomputed_hash": "sha256:62b80433381f1d2444983a2ee5e29bc9d9cb3c8e35a8f079b0d95838d49cec14",
+      "schema_version": "final-market-training-dataset-v1.0.0",
+      "source_path": "runs/final-market-training-data-v1/manifest.json",
+      "stored_hash": "sha256:62b80433381f1d2444983a2ee5e29bc9d9cb3c8e35a8f079b0d95838d49cec14"
+    }
+  ],
+  "gates": {
+    "advisor_v9_zero_token_holdout_passes": true,
+    "all_artifact_hashes_match_declared_protocol": true,
+    "all_five_market_mechanism_suites_pass": true,
+    "contextual_policy_passes_disjoint_holdout": true,
+    "fine_tuning_is_correctly_blocked": true,
+    "real_llm_integration_is_directionally_positive": true,
+    "self_play_mechanisms_and_replay_pass": true,
+    "unsafe_pure_self_play_candidate_is_rejected": true
+  },
+  "headline_metrics": {
+    "agent_iteration_holdout_pair_count": 72,
+    "agent_iteration_mean_ev_gain_cents": 25992411,
+    "agent_iteration_worst_ev_gain_cents": 0,
+    "combined_market_episode_count": 40,
+    "real_llm_attempted_calls": 6,
+    "real_llm_estimated_cost_microunits": 198452,
+    "real_llm_known_completion_tokens": 3268,
+    "real_llm_known_prompt_tokens": 92690,
+    "self_play_holdout_episode_count": 648
+  },
+  "release_hash": "sha256:2927fba0e14a7d58d4b020f44bfa0af5f5f47acfd441cee97f615aae37853f7f",
+  "release_name": "最终战略市场研究版 v1",
+  "release_schema_version": "final-strategic-market-release-v1.0.0",
+  "research_claim_level": "合成市场的确定性与多随机种子证据，外加方向性真实模型证据"
+}

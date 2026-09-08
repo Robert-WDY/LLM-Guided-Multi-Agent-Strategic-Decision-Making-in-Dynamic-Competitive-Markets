@@ -1,7 +1,31 @@
-# Game Theory Agent — Engineering MVP v4
+# Game Theory Agent — 本机四方市场与博弈策略 v17.0.0
 
-后端市场模型以 `LLM多智能体生鲜配送市场博弈系统_Engineering_MVP技术规格_v4.0.md`
-为算法规范，以 `configs/market_v4.yaml` 为唯一参数来源。
+2026-09-08 合作竞争全面评测已完成，见 [v18评测报告](docs/market-evaluation-v18-results.md)。11类市场、2/5/10公司、9类策略，共2376局47520轮；另有864次单轮建议及54局1200次闭环建议。1881674次独立算术核对和474项后端回归通过。v17收益门槛通过29/36分组，仍有反例；完整界面默认计算在10家公司下实测约132秒。默认合作门槛、多人互惠和现实校准仍有缺口，本轮没有新增付费模型调用。v18是评测与边界修补证据包，应用版本和既有存档保持v17身份。
+
+v17补齐公开历史学习、反击参与筛选、组合搜索、2—10企业共同建议、权重敏感性与独立审计。实验室可切换v17实验性建议和v16对照；工作台可选择全部企业使用v17，逐轮依据自动保存。
+
+六阶段验收完成：96条预测序列、68个穷举/网格案例、24局300轮多人实验（540次建议）、10组阶段期限、232个留出/强预算/消融案例；471后端、16前端、构建/类型/lint与实际备份恢复通过。v17留出96个条件案例92正/4零/0负，但相对v16六组收益区间均包含零，尚未证明新版显著更优；7个利润目标案例福利下降。历史学习消融8例动作相同，尚未证明其经营收益。
+
+完整方法、区间、反例与边界见仓库 docs/advisor-v17-results.md。原10元预算未增加，本轮新增付费调用0次。保留旧版和所有原始实验，不宣称现实校准、全局最优或一般多人均衡。
+
+以下为v16及更早版本的历史实现记录：
+
+# Game Theory Agent — 本机四方市场与博弈策略 v16.0.0
+
+v16已完成目标驱动博弈建议六阶段：公司阶段/利润/福利/自定义目标，完整市场多轮预测，候选扩展与独立验证，多人偏离与局部博弈诊断，解释/保存/执行，以及独立留出验收。实验室默认打开新建议；工作台企业控制可选择三种逐轮目标策略。
+
+18个留出案例中17个提高所选效用、1个保留基线；另外8局40轮滚动执行通过。平均绝对利润预测误差约24,925.45元（合成金额），未证明现实校准或全局最优。461后端、14前端、构建/类型/lint与实际备份恢复通过。本次新增收费调用0次。完整结论见仓库 docs/advisor-v16-results.md。
+
+v15新增八个博弈概念实验主题和五种可运行市场策略，完成六阶段实验及6次真实模型诊断。页面顶部打开「博弈策略实验室」。详见[设计](docs/game-theory-v15-design.md)与[实验验收结论](docs/game-theory-v15-results.md)。软件升级保留v14经济配置与数据身份，确保历史预测随机场景和存档兼容。
+
+历史九项扩展已实现并逐阶段实验：高级界面、完整真人动作、合作人格、供应商战略、政府策略、四方模型/共同学习、训练策略模型、批量工作台及两家模型费用保护。双击外层 START_MARKET.cmd，访问 http://localhost:3210/。
+
+配置 configs/market_v14_local.yaml；数据 .local-state-v14-release。详见[完整实现与验收结论](docs/local-market-v14-release.md)及[使用说明](../../LOCAL_MARKET_GUIDE.md)。主实验254局5020轮；连续真实长局为两家模型×两个共同种子×10轮，160次有效选择（另有1次格式失败后审阅恢复）。神经策略和在线学习未普遍优于规则，默认保留确定性经营基线。
+
+累计费用保守预留9.993565元，未超过原10元；余0.006435元。合成实验结果不等同现实校准，旧v10/v13.1与历史失败产物保留。
+
+v10 冻结内测入口使用 `configs/market_v10_multi_objective.yaml`；已经形成历史证据的
+v4/v5/v6.0 配置继续冻结保留，不被最终市场参数原地覆盖。
 
 当前已经实现：
 
@@ -37,6 +61,13 @@
 - Stage 6.5 Real Advisor Adoption：新增带 Hash 的 Advisor Adoption Trace 和只在预注册轮调用 Provider 的成本门禁；65 次豆包真实调用表明 Pareto 使 13/13 配对改变动作、推荐采纳率 84.62%，但短期逐利与风险防御存在负尾部，阶段研究门禁未通过并按规则停止在自适应 3/5 Seeds，没有继续消耗完整 10-Seed 预算；
 - Stage 6.6 Failure Forensics：零 Token 重放 Stage 6.5 的 65 个 Episode，并对五个负配对执行固定后续动作带反事实；五例均精确采纳且无 Controller 经济调整，主要归因为四例 Forecast/内生反应误差和一例候选集合覆盖不足，因此暂缓 Advice Contract v2 和 30 次真实复测；
 - Stage 6.6 Reliable Repair：保留 v3/v4 语义和回放，新增公开信息 `pareto_reliable_v5`；候选集合加入零可选投入、利润恢复和风险缓冲，低对手置信度或候选差距小于预测不确定度时自动放弃 Planner 动作并退回情境安全动作。五个已知失败状态的冻结动作带 Auto-execute 全部不低于无建议基线，三个正收益、两个持平，新增真实模型调用和 Token 均为 0；
+- 最终战略市场 v6：公司可经历经营、财务困境与破产退出；市场公开计算集中度、主导企业、价格战、市场势力、监管压力、消费者剩余代理和社会福利代理；
+- 最终市场 v7–v10：显式合成愿付价分布约束消费者购买；企业可在低价波动供应、稳健供应和双源分散之间选择；福利账本分别核算消费者剩余、上下游生产者剩余、政府罚款转移、执法成本、缺货与退出外部损失；新增利益相关者、公共服务和韧性治理多目标企业，并把福利目标接入长期市场 Rollout。
+- 多类战略互动：连续共享抗冲击投入、门槛型冷链公共项目、受真实闲置产能与缺货约束的双边应急互助，以及只用于危害研究的价格协调、低价背叛、信誉和随机监管罚款；
+- Strategic Advisor v9：在最终市场上用公开信息进行多轮真实 `MarketEnv` 反事实；价格协调候选硬隔离为仅研究，只有通过置信度、价值与最坏风险门禁的互助建议可以覆盖安全弃权；
+- Self-play 与策略迭代：9类基础策略和3类研究压力策略完成位置轮换经验博弈；纯高价防守因留出尾部损失拒绝晋级，开发集生成的 `contextual_defender_v1` 在独立留出72配对中相对均衡54正18平0负、最差差值0并通过晋级；
+- 微调准备边界：可导出严格排除留出集的108条开发偏好样本，但因数据仍为合成规则反事实且上下文存在冲突，当前明确禁止把它发布为微调模型；
+- 最终发布门禁：10份市场、建议器、真实模型、自博弈、策略迭代与训练数据证据全部通过声明协议校验；工程研究版发布Hash为 `sha256:2927fba0e14a7d58d4b020f44bfa0af5f5f47acfd441cee97f615aae37853f7f`；
 - 固定 Observe → Plan → Intent 工作流、结构化 AgentDecision、短期 Episode Memory 与确定性 ResultAnalyzer；
 - Agent Context v1.2：隐藏随机 Seed，增加单位经济、现金跑道、PlanTracker、最近3轮详细记录、5轮趋势摘要和关键事件；
 - ResultAnalysis v1.3 分离预测准确率与目标达成情况，并记录同状态、同随机源的现金保护和利润恢复反事实；
@@ -77,10 +108,21 @@ python -m pip install -e ".[test]"
 Copy-Item .env.example .env
 ```
 
-分别启动 API 和前端：
+最终战略市场建议分别在两个 PowerShell 窗口启动：
+
+```powershell
+.\scripts\start_final_backend.ps1
+.\scripts\start_final_frontend.ps1
+```
+
+脚本只在本机回环地址启用无令牌浏览器入口，并明确加载
+`market_v10_multi_objective.yaml`。普通部署仍必须设置 Controller Token。
+
+也可以手动分别启动 API 和前端：
 
 ```powershell
 $env:PYTHONPATH="src"
+$env:MARKET_CONFIG_PATH="configs/market_v10_multi_objective.yaml"
 python -m game_theory_agent.api
 
 cd frontend
@@ -111,6 +153,7 @@ Stage 6.3 的绝对价值/竞争夺冠目标拆分、开发集与保留集校准
 Stage 6.4 的约束式 Pareto 选择、公平对照修复、长期 Regret、10-Seed 保留集结果和 `pareto_rollout_v4` 在线晋升见 [docs/stage6.4-pareto-reliability.md](docs/stage6.4-pareto-reliability.md)。
 Stage 6.5 的真实模型采纳 Trace、低 Token 渐进实验、Belief/旧 Advisor/Pareto 对照、负尾部和停止规则见 [docs/stage6.5-real-advisor-adoption.md](docs/stage6.5-real-advisor-adoption.md)。
 Stage 6.6 的五个失败状态、Planner/Adoption/Execution/Forecast 归因、65 条历史映射、全层 Replay 与修复优先级见 [docs/stage6.6-failure-forensics.md](docs/stage6.6-failure-forensics.md)。
+最终市场、Advisor v9、Self-play、策略迭代、训练数据门禁和集成验收见 [docs/stage7-final-strategic-market-v6.md](docs/stage7-final-strategic-market-v6.md)，最终发布门禁摘要见 [experiment-results/stage7-final-release-v1/RESULT.md](experiment-results/stage7-final-release-v1/RESULT.md)。
 多 Agent 研究控制台的信息架构、真实/演示边界、八个工作区与前端验收见 [docs/frontend-research-dashboard.md](docs/frontend-research-dashboard.md)。
 单 Agent 与多 Agent 的运行时、协调器、日志和接入示例见 [docs/agent-runtime-and-orchestration.md](docs/agent-runtime-and-orchestration.md)。
 人格配置、效用公式、实验隔离和非合作阶段边界见 [docs/persona-research.md](docs/persona-research.md)。
@@ -163,3 +206,5 @@ state = result.state_after
 
 相同配置、初始状态、联合动作、Seed 和环境版本会得到相同的 State Hash；
 相同动作在不同轮次会受到历史状态和独立轮次随机组件影响，不再机械地产生相同结果。
+
+2026-09-07 v15.0.1核验补丁：修复学习末轮轨迹、历史分页/损坏隔离、严格参数和省略参数的历史恢复。补充48组学习实验与6局市场重放，原真实响应重新核验，无新增费用。详见仓库 docs/game-theory-v15-audit.md。

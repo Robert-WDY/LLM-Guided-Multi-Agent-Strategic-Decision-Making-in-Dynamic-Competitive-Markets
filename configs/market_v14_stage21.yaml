@@ -1,0 +1,69 @@
+extends: market_v13_1_local.yaml
+config_id: market-v14-complete-local
+config_version: market-v14.0.0-candidate
+environment_version: market-env-v14.0.0
+schema_versions:
+  state: market-state-v14.0.0
+local_budget_protected: true
+formal_cooperation_personas: true
+persona_utilities:
+  capabilities:
+    cooperation: true
+  weights_ppm:
+    cooperator:
+      profit: 150000
+      share: 50000
+      growth: 50000
+      stability: 100000
+      cash: 100000
+      reputation: 100000
+      resilience: 200000
+      social_welfare: 250000
+      cooperation_reputation: 0
+    free_rider:
+      profit: 550000
+      share: 100000
+      growth: 50000
+      stability: 50000
+      cash: 200000
+      reputation: 0
+      resilience: 50000
+      social_welfare: 0
+      cooperation_reputation: 0
+    retaliator:
+      profit: 250000
+      share: 50000
+      growth: 50000
+      stability: 100000
+      cash: 150000
+      reputation: 200000
+      resilience: 150000
+      social_welfare: 50000
+      cooperation_reputation: 0
+  traits_ppm:
+    cooperator:
+      time_discount: 980000
+      risk_aversion: 500000
+      reciprocity: 600000
+      commitment_honesty: 1000000
+      opportunism: 0
+    free_rider:
+      time_discount: 900000
+      risk_aversion: 300000
+      reciprocity: 0
+      commitment_honesty: 500000
+      opportunism: 1000000
+    retaliator:
+      time_discount: 980000
+      risk_aversion: 500000
+      reciprocity: 1000000
+      commitment_honesty: 1000000
+      opportunism: 100000
+  labels:
+    cooperator: 合作贡献者
+    free_rider: 搭便车者
+    retaliator: 有限惩罚互惠者
+  objectives:
+    cooperator: 在保留经营现金且非终局时持续贡献公共韧性与阈值项目；合作不代表接受亏损或价格协调。
+    free_rider: 保留自己的公共投入、享受非排他公共保护，按自身利润和现金作决策；不伪造履约。
+    retaliator: 首轮合作，此后依据上一轮已核实的公共贡献互惠；无贡献时暂停一轮，恢复贡献时宽恕，禁止基于私信猜测惩罚。

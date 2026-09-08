@@ -96,7 +96,8 @@ class MockModelClient:
             messages = list(self.communication_submission.messages)
             cooperation = context.cooperation or {}
             if (
-                cooperation.get("mode") == "shared_resilience_v1"
+                cooperation.get("mode")
+                in {"shared_resilience_v1", "combined_v1"}
                 and self.cooperation_proposal_receiver is not None
                 and self.cooperation_proposal_round == context.round
             ):
@@ -120,7 +121,8 @@ class MockModelClient:
                 )
             pending = list(cooperation.get("pending_proposals_received", []))
             if (
-                cooperation.get("mode") == "shared_resilience_v1"
+                cooperation.get("mode")
+                in {"shared_resilience_v1", "combined_v1"}
                 and self.cooperation_response is not None
                 and pending
             ):

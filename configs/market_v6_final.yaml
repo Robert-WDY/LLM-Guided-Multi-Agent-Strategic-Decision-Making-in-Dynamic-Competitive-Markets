@@ -1,0 +1,39 @@
+extends: market_v6_strategic.yaml
+
+config_id: market-v6-final
+config_version: market-v6.3.0
+environment_version: market-env-v6.3.0
+
+schema_versions:
+  state: market-state-v6.3.0
+  action: company-action-v6.3.0
+
+action:
+  bounds:
+    mutual_aid_capacity_offer_orders: {min: 0, max: 2000}
+    mutual_aid_capacity_request_orders: {min: 0, max: 2000}
+
+strategic_market:
+  # Bilateral emergency fulfilment occurs only when donor and recipient name
+  # one another and real spare capacity meets a real shortfall.
+  mutual_aid:
+    enabled: true
+    protocol_version: mutual-aid-v1.0.0
+    fee_per_order_cents: 9000
+    max_orders_per_company: 2000
+
+  # Explicit, non-binding target-price declarations. Actual prices remain
+  # independent, so either side can undercut. The market records consumer harm,
+  # credibility and auditable enforcement risk.
+  price_coordination:
+    enabled: true
+    protocol_version: price-coordination-v1.0.0
+    adherence_tolerance_cents: 100
+    initial_credibility_ppm: 500000
+    credibility_update_weight_ppm: 350000
+    base_detection_probability_ppm: 180000
+    markup_detection_weight_ppm: 900000
+    regulatory_pressure_detection_weight_ppm: 250000
+    coordination_pressure_weight_ppm: 300000
+    base_fine_cents: 500000
+    fine_revenue_share_ppm: 120000

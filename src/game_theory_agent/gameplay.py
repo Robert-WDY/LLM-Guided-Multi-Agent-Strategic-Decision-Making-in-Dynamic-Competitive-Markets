@@ -12,6 +12,7 @@ from game_theory_agent.market import (
     MarketConfig,
     MarketState,
 )
+from game_theory_agent.market.models import CompanyOperatingStatus
 from game_theory_agent.market.replay import EpisodeManifest, MarketTransition
 from game_theory_agent.market.protocols import ComponentRng
 
@@ -290,6 +291,24 @@ def build_rule_action(
     """A seeded, varied rule policy; it is deliberately not an Agent."""
 
     company = state.company(company_id)
+    if (
+        state.strategic_market is not None
+        and state.strategic_market.lifecycle(company_id).status
+        is CompanyOperatingStatus.EXITED
+    ):
+        return CompanyAction(
+            action_id=f"rule:{state.episode_id}:{state.round}:{company_id}",
+            episode_id=state.episode_id,
+            agent_id=company_id,
+            round=state.round,
+            state_version=state.state_version,
+            price_cents=company.commercial.price_cents,
+            shared_resilience_contribution_cents=(
+                0 if state.shared_resilience is not None else None
+            ),
+            incident_response=IncidentResponse(),
+            strategy_summary="rule-opponent:exited: no market participation",
+        )
     bounds = config.mapping("action", "bounds")
     cash = company.financial.cash_balance_cents
     last_round = state.rounds_remaining <= 1
@@ -338,6 +357,10 @@ def build_rule_action(
     cost_reference = (
         company.operations.actual_unit_cost_cents + fulfillment_cost + 1_800
     )
+    if config.data.get("autonomous_market"):
+        processing = company.operations.actual_unit_cost_cents if state.state_version else company.operations.base_unit_cost_cents*(PPM-config.integer("supply_chain","downstream_input_cost_share_ppm"))//PPM
+        input_price = max(s.unit_price_cents for s in state.supply_chain.suppliers)
+        cost_reference = processing + input_price + fulfillment_cost + 1800
     paid_reference = (
         state.market.average_paid_price_cents
         if state.market.average_paid_price_cents > 0
@@ -411,7 +434,7 @@ def build_rule_action(
     if high_utilization and not last_round:
         capacity = min(remaining, 800_000)
 
-    return CompanyAction(
+    action = CompanyAction(
         action_id=f"rule:{state.episode_id}:{state.round}:{company_id}",
         episode_id=state.episode_id,
         agent_id=company_id,
@@ -428,6 +451,18 @@ def build_rule_action(
             "capacity and warning aware"
         ),
     )
+    if config.data.get("autonomous_market", {}).get("company_procurement"):
+        from game_theory_agent.market.autonomous_market import company_procurement
+        return company_procurement(config, state, company_id, action)
+    procurement = config.data.get("rule_procurement")
+    if procurement is not None and procurement.get("enabled") is True:
+        from game_theory_agent.market.procurement_policy import apply_procurement, procurement_view, select_procurement
+        if procurement["mode"] == "financial_guarded":
+            from game_theory_agent.market.financial_procurement import finance_view, guarded_procurement
+            plan, _audit = guarded_procurement(procurement_view(state, company_id), finance_view(config, state, company_id, action))
+            return apply_procurement(action, plan)
+        return apply_procurement(action, select_procurement(procurement_view(state, company_id), procurement["mode"]))
+    return action
 
 
 def _ppm_scale(value: int, *factors: int) -> int:

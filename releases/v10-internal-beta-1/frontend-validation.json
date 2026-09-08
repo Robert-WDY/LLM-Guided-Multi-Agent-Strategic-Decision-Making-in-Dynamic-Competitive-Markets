@@ -1,0 +1,8 @@
+{
+  "build": true,
+  "lint": true,
+  "typecheck": true,
+  "tests": 8,
+  "date": "2026-09-07",
+  "browser_interaction_tested": false
+}

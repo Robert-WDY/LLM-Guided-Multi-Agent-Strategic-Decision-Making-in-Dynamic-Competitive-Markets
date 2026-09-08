@@ -1,0 +1,1095 @@
+{
+  "passed": true,
+  "variants": {
+    "v16": {
+      "cases": 96,
+      "negative_gain_cases": 0,
+      "zero_gain_cases": 2,
+      "positive_gain_cases": 94,
+      "negative_profit_gain_cases": 0,
+      "negative_welfare_gain_cases": 0,
+      "minimum_cash": 21332667,
+      "median_runtime": 0.5551068999993731,
+      "max_runtime": 0.8571769000118366,
+      "complete_responses": 0,
+      "mean_profit_relative_error": 0.7889457768195735,
+      "mean_choice_stability": null
+    },
+    "v17": {
+      "cases": 96,
+      "negative_gain_cases": 0,
+      "zero_gain_cases": 4,
+      "positive_gain_cases": 92,
+      "negative_profit_gain_cases": 0,
+      "negative_welfare_gain_cases": 7,
+      "minimum_cash": 21332667,
+      "median_runtime": 2.2921466999978293,
+      "max_runtime": 3.165119400000549,
+      "complete_responses": 96,
+      "mean_profit_relative_error": 0.5216273542055229,
+      "mean_choice_stability": 0.9895833333333334
+    },
+    "strong": {
+      "cases": 24,
+      "negative_gain_cases": 0,
+      "zero_gain_cases": 1,
+      "positive_gain_cases": 23,
+      "negative_profit_gain_cases": 0,
+      "negative_welfare_gain_cases": 2,
+      "minimum_cash": 29839944,
+      "median_runtime": 5.903556400000525,
+      "max_runtime": 6.611083399999188,
+      "complete_responses": 24,
+      "mean_profit_relative_error": 0.45472113596819913,
+      "mean_choice_stability": 0.9861111111111112
+    },
+    "no_response": {
+      "cases": 8,
+      "negative_gain_cases": 0,
+      "zero_gain_cases": 0,
+      "positive_gain_cases": 8,
+      "negative_profit_gain_cases": 0,
+      "negative_welfare_gain_cases": 1,
+      "minimum_cash": 29839944,
+      "median_runtime": 0.7203929500028607,
+      "max_runtime": 0.7810189000010723,
+      "complete_responses": 8,
+      "mean_profit_relative_error": 0.4090214020943289,
+      "mean_choice_stability": 1
+    },
+    "no_learning": {
+      "cases": 8,
+      "negative_gain_cases": 0,
+      "zero_gain_cases": 0,
+      "positive_gain_cases": 8,
+      "negative_profit_gain_cases": 0,
+      "negative_welfare_gain_cases": 1,
+      "minimum_cash": 29839944,
+      "median_runtime": 2.664706000003207,
+      "max_runtime": 2.770328200000222,
+      "complete_responses": 8,
+      "mean_profit_relative_error": 0.3898016936685123,
+      "mean_choice_stability": 1
+    }
+  },
+  "paired_contrasts": {
+    "profit-normal-minus-v16": {
+      "utility": {
+        "n": 16,
+        "mean": 0.0007778250000000063,
+        "interval": [
+          -0.041520621875,
+          0.04077837187500002
+        ],
+        "negative": 5,
+        "zero": 0,
+        "positive": 11,
+        "worst": -0.16072385,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "profit_cents": {
+        "n": 16,
+        "mean": 7778.25,
+        "interval": [
+          -415206.21875,
+          407783.71875
+        ],
+        "negative": 5,
+        "zero": 0,
+        "positive": 11,
+        "worst": -1607238.5,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "welfare_cents": {
+        "n": 16,
+        "mean": -954853.09375,
+        "interval": [
+          -1742170.75,
+          -237721.1875
+        ],
+        "negative": 12,
+        "zero": 0,
+        "positive": 4,
+        "worst": -5069287.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "same_executed_action": 0,
+      "median_runtime_ratio": 0.23929711626139466
+    },
+    "profit-normal-minus-strong": {
+      "utility": {
+        "n": 4,
+        "mean": 0.006427550000000018,
+        "interval": [
+          0.0,
+          0.019282650000000054
+        ],
+        "negative": 0,
+        "zero": 3,
+        "positive": 1,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "profit_cents": {
+        "n": 4,
+        "mean": 64275.5,
+        "interval": [
+          0.0,
+          192826.5
+        ],
+        "negative": 0,
+        "zero": 3,
+        "positive": 1,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "welfare_cents": {
+        "n": 4,
+        "mean": -34616.375,
+        "interval": [
+          -103849.125,
+          0.0
+        ],
+        "negative": 1,
+        "zero": 3,
+        "positive": 0,
+        "worst": -138465.5,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "same_executed_action": 3,
+      "median_runtime_ratio": 2.308994701674494
+    },
+    "profit-normal-minus-no_response": {
+      "utility": {
+        "n": 4,
+        "mean": 0.021789937500000023,
+        "interval": [
+          0.0,
+          0.06536981250000007
+        ],
+        "negative": 0,
+        "zero": 3,
+        "positive": 1,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "profit_cents": {
+        "n": 4,
+        "mean": 217899.375,
+        "interval": [
+          0.0,
+          653698.125
+        ],
+        "negative": 0,
+        "zero": 3,
+        "positive": 1,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "welfare_cents": {
+        "n": 4,
+        "mean": -89252.5,
+        "interval": [
+          -267757.5,
+          0.0
+        ],
+        "negative": 1,
+        "zero": 3,
+        "positive": 0,
+        "worst": -357010.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "same_executed_action": 3,
+      "median_runtime_ratio": 0.2737701722245452
+    },
+    "profit-normal-minus-no_learning": {
+      "utility": {
+        "n": 4,
+        "mean": 0.0,
+        "interval": [
+          0.0,
+          0.0
+        ],
+        "negative": 0,
+        "zero": 4,
+        "positive": 0,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "profit_cents": {
+        "n": 4,
+        "mean": 0.0,
+        "interval": [
+          0.0,
+          0.0
+        ],
+        "negative": 0,
+        "zero": 4,
+        "positive": 0,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "welfare_cents": {
+        "n": 4,
+        "mean": 0.0,
+        "interval": [
+          0.0,
+          0.0
+        ],
+        "negative": 0,
+        "zero": 4,
+        "positive": 0,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "same_executed_action": 4,
+      "median_runtime_ratio": 1.0332516875922382
+    },
+    "profit-supplier-minus-v16": {
+      "utility": {
+        "n": 16,
+        "mean": -0.0009964000000000002,
+        "interval": [
+          -0.04057066875000001,
+          0.03494697187500001
+        ],
+        "negative": 5,
+        "zero": 0,
+        "positive": 11,
+        "worst": -0.14496320000000001,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "profit_cents": {
+        "n": 16,
+        "mean": -9964.0,
+        "interval": [
+          -405706.6875,
+          349469.71875
+        ],
+        "negative": 5,
+        "zero": 0,
+        "positive": 11,
+        "worst": -1449632.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "welfare_cents": {
+        "n": 16,
+        "mean": -584025.59375,
+        "interval": [
+          -1076634.5,
+          -16961.3125
+        ],
+        "negative": 12,
+        "zero": 0,
+        "positive": 4,
+        "worst": -2158285.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "same_executed_action": 0,
+      "median_runtime_ratio": 0.2401190544975647
+    },
+    "profit-supplier-minus-strong": {
+      "utility": {
+        "n": 4,
+        "mean": -0.005090774999999985,
+        "interval": [
+          -0.03455497500000001,
+          0.019282650000000054
+        ],
+        "negative": 1,
+        "zero": 2,
+        "positive": 1,
+        "worst": -0.04607330000000001,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "profit_cents": {
+        "n": 4,
+        "mean": -50907.75,
+        "interval": [
+          -345549.75,
+          192826.5
+        ],
+        "negative": 1,
+        "zero": 2,
+        "positive": 1,
+        "worst": -460733.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "welfare_cents": {
+        "n": 4,
+        "mean": 343834.875,
+        "interval": [
+          -103849.125,
+          1135353.75
+        ],
+        "negative": 1,
+        "zero": 2,
+        "positive": 1,
+        "worst": -138465.5,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "same_executed_action": 2,
+      "median_runtime_ratio": 2.0711526060131185
+    },
+    "profit-government-minus-v16": {
+      "utility": {
+        "n": 16,
+        "mean": 0.029365981249999992,
+        "interval": [
+          -0.0003862687500000121,
+          0.06171507500000001
+        ],
+        "negative": 4,
+        "zero": 0,
+        "positive": 12,
+        "worst": -0.06699010000000001,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "profit_cents": {
+        "n": 16,
+        "mean": 293659.8125,
+        "interval": [
+          -3862.6875,
+          617150.75
+        ],
+        "negative": 4,
+        "zero": 0,
+        "positive": 12,
+        "worst": -669901.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "welfare_cents": {
+        "n": 16,
+        "mean": -793299.84375,
+        "interval": [
+          -1380224.65625,
+          -298818.40625
+        ],
+        "negative": 13,
+        "zero": 0,
+        "positive": 3,
+        "worst": -3965581.5,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "same_executed_action": 0,
+      "median_runtime_ratio": 0.246019056511456
+    },
+    "profit-government-minus-strong": {
+      "utility": {
+        "n": 4,
+        "mean": 0.0,
+        "interval": [
+          0.0,
+          0.0
+        ],
+        "negative": 0,
+        "zero": 4,
+        "positive": 0,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "profit_cents": {
+        "n": 4,
+        "mean": 0.0,
+        "interval": [
+          0.0,
+          0.0
+        ],
+        "negative": 0,
+        "zero": 4,
+        "positive": 0,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "welfare_cents": {
+        "n": 4,
+        "mean": 0.0,
+        "interval": [
+          0.0,
+          0.0
+        ],
+        "negative": 0,
+        "zero": 4,
+        "positive": 0,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "same_executed_action": 4,
+      "median_runtime_ratio": 2.0206320301458427
+    },
+    "welfare-normal-minus-v16": {
+      "utility": {
+        "n": 16,
+        "mean": 0.012784087500000096,
+        "interval": [
+          -0.0128069499999999,
+          0.038763112500000085
+        ],
+        "negative": 6,
+        "zero": 0,
+        "positive": 10,
+        "worst": -0.08641299999999985,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "profit_cents": {
+        "n": 16,
+        "mean": 152817.1875,
+        "interval": [
+          -158261.75,
+          566917.0625
+        ],
+        "negative": 6,
+        "zero": 0,
+        "positive": 10,
+        "worst": -683189.5,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "welfare_cents": {
+        "n": 16,
+        "mean": 127840.875,
+        "interval": [
+          -128069.5,
+          387631.125
+        ],
+        "negative": 6,
+        "zero": 0,
+        "positive": 10,
+        "worst": -864130.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "same_executed_action": 0,
+      "median_runtime_ratio": 0.24503518795572804
+    },
+    "welfare-normal-minus-strong": {
+      "utility": {
+        "n": 4,
+        "mean": -0.0015162499999999968,
+        "interval": [
+          -0.00454874999999999,
+          0.0
+        ],
+        "negative": 1,
+        "zero": 3,
+        "positive": 0,
+        "worst": -0.006064999999999987,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "profit_cents": {
+        "n": 4,
+        "mean": -242309.375,
+        "interval": [
+          -726928.125,
+          0.0
+        ],
+        "negative": 1,
+        "zero": 3,
+        "positive": 0,
+        "worst": -969237.5,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "welfare_cents": {
+        "n": 4,
+        "mean": -15162.5,
+        "interval": [
+          -45487.5,
+          0.0
+        ],
+        "negative": 1,
+        "zero": 3,
+        "positive": 0,
+        "worst": -60650.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "same_executed_action": 3,
+      "median_runtime_ratio": 2.3843491041935976
+    },
+    "welfare-normal-minus-no_response": {
+      "utility": {
+        "n": 4,
+        "mean": -0.030419300000000038,
+        "interval": [
+          -0.09125790000000011,
+          0.0
+        ],
+        "negative": 1,
+        "zero": 3,
+        "positive": 0,
+        "worst": -0.12167720000000015,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "profit_cents": {
+        "n": 4,
+        "mean": -22741.5,
+        "interval": [
+          -68224.5,
+          0.0
+        ],
+        "negative": 1,
+        "zero": 3,
+        "positive": 0,
+        "worst": -90966.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "welfare_cents": {
+        "n": 4,
+        "mean": -304193.0,
+        "interval": [
+          -912579.0,
+          0.0
+        ],
+        "negative": 1,
+        "zero": 3,
+        "positive": 0,
+        "worst": -1216772.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "same_executed_action": 3,
+      "median_runtime_ratio": 0.304524174292291
+    },
+    "welfare-normal-minus-no_learning": {
+      "utility": {
+        "n": 4,
+        "mean": 0.0,
+        "interval": [
+          0.0,
+          0.0
+        ],
+        "negative": 0,
+        "zero": 4,
+        "positive": 0,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "profit_cents": {
+        "n": 4,
+        "mean": 0.0,
+        "interval": [
+          0.0,
+          0.0
+        ],
+        "negative": 0,
+        "zero": 4,
+        "positive": 0,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "welfare_cents": {
+        "n": 4,
+        "mean": 0.0,
+        "interval": [
+          0.0,
+          0.0
+        ],
+        "negative": 0,
+        "zero": 4,
+        "positive": 0,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "same_executed_action": 4,
+      "median_runtime_ratio": 1.0569933560300668
+    },
+    "welfare-supplier-minus-v16": {
+      "utility": {
+        "n": 16,
+        "mean": 0.02148838750000001,
+        "interval": [
+          -0.017941093749999998,
+          0.06744365624999998
+        ],
+        "negative": 9,
+        "zero": 0,
+        "positive": 7,
+        "worst": -0.14708560000000004,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "profit_cents": {
+        "n": 16,
+        "mean": 778023.8125,
+        "interval": [
+          253784.5625,
+          1353309.75
+        ],
+        "negative": 4,
+        "zero": 0,
+        "positive": 12,
+        "worst": -635968.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "welfare_cents": {
+        "n": 16,
+        "mean": 214883.875,
+        "interval": [
+          -179410.9375,
+          674436.5625
+        ],
+        "negative": 9,
+        "zero": 0,
+        "positive": 7,
+        "worst": -1470856.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "same_executed_action": 0,
+      "median_runtime_ratio": 0.2359609900010603
+    },
+    "welfare-supplier-minus-strong": {
+      "utility": {
+        "n": 4,
+        "mean": 0.0720615,
+        "interval": [
+          0.023017049999999983,
+          0.12110595000000002
+        ],
+        "negative": 0,
+        "zero": 1,
+        "positive": 3,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "profit_cents": {
+        "n": 4,
+        "mean": 254675.875,
+        "interval": [
+          36074.0,
+          610322.625
+        ],
+        "negative": 0,
+        "zero": 1,
+        "positive": 3,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "welfare_cents": {
+        "n": 4,
+        "mean": 720615.0,
+        "interval": [
+          230170.5,
+          1211059.5
+        ],
+        "negative": 0,
+        "zero": 1,
+        "positive": 3,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "same_executed_action": 1,
+      "median_runtime_ratio": 2.1395580903345452
+    },
+    "welfare-government-minus-v16": {
+      "utility": {
+        "n": 16,
+        "mean": 0.006493740625000077,
+        "interval": [
+          -0.023149049999999838,
+          0.03611386250000009
+        ],
+        "negative": 8,
+        "zero": 0,
+        "positive": 8,
+        "worst": -0.14102060000000005,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "profit_cents": {
+        "n": 16,
+        "mean": 511201.8125,
+        "interval": [
+          14781.46875,
+          1098311.4375
+        ],
+        "negative": 5,
+        "zero": 0,
+        "positive": 11,
+        "worst": -765841.5,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "welfare_cents": {
+        "n": 16,
+        "mean": 64937.40625,
+        "interval": [
+          -231490.5,
+          361138.625
+        ],
+        "negative": 8,
+        "zero": 0,
+        "positive": 8,
+        "worst": -1410206.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "same_executed_action": 0,
+      "median_runtime_ratio": 0.23689527413990877
+    },
+    "welfare-government-minus-strong": {
+      "utility": {
+        "n": 4,
+        "mean": 0.06416286250000003,
+        "interval": [
+          -0.01600897499999976,
+          0.20849756249999984
+        ],
+        "negative": 1,
+        "zero": 2,
+        "positive": 1,
+        "worst": -0.02134529999999968,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "profit_cents": {
+        "n": 4,
+        "mean": 1227850.25,
+        "interval": [
+          0.0,
+          3287947.5
+        ],
+        "negative": 0,
+        "zero": 2,
+        "positive": 2,
+        "worst": 0.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "welfare_cents": {
+        "n": 4,
+        "mean": 641628.625,
+        "interval": [
+          -160089.75,
+          2084975.625
+        ],
+        "negative": 1,
+        "zero": 2,
+        "positive": 1,
+        "worst": -213453.0,
+        "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+      },
+      "same_executed_action": 2,
+      "median_runtime_ratio": 2.092590445716259
+    }
+  },
+  "matched_pressures": {
+    "profit-supplier-minus-normal": {
+      "n": 16,
+      "mean": 0.0006421812499999967,
+      "interval": [
+        -0.029916296875000012,
+        0.027643662499999992
+      ],
+      "negative": 2,
+      "zero": 11,
+      "positive": 3,
+      "worst": -0.15406005000000003,
+      "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+    },
+    "profit-government-minus-normal": {
+      "n": 16,
+      "mean": 0.034260009375,
+      "interval": [
+        0.0005459218749999991,
+        0.07046070624999999
+      ],
+      "negative": 2,
+      "zero": 5,
+      "positive": 9,
+      "worst": -0.07811415000000002,
+      "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+    },
+    "welfare-supplier-minus-normal": {
+      "n": 16,
+      "mean": 0.0003806468750000569,
+      "interval": [
+        -0.014433978124999913,
+        0.019834453125000095
+      ],
+      "negative": 4,
+      "zero": 9,
+      "positive": 3,
+      "worst": -0.05728674999999983,
+      "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+    },
+    "welfare-government-minus-normal": {
+      "n": 16,
+      "mean": 0.0007995500000000655,
+      "interval": [
+        -0.006306681249999918,
+        0.009163490625000104
+      ],
+      "negative": 2,
+      "zero": 10,
+      "positive": 4,
+      "worst": -0.030583150000000003,
+      "scope": "按独立种子重采样的95%百分位bootstrap区间；只对指定合成环境，探索性比较未校正多重检验。"
+    }
+  },
+  "multiplayer": [
+    {
+      "companies": 2,
+      "seed": 372101,
+      "rounds": 10,
+      "comparator": "rule",
+      "profit_delta": 118967866,
+      "welfare_delta": 50859619,
+      "volatility_delta": -0.0014562145806157594,
+      "exits": 0
+    },
+    {
+      "companies": 2,
+      "seed": 372101,
+      "rounds": 10,
+      "comparator": "advisor_profit",
+      "profit_delta": 69385740,
+      "welfare_delta": 40310094,
+      "volatility_delta": -0.011615557980226178,
+      "exits": 0
+    },
+    {
+      "companies": 2,
+      "seed": 372102,
+      "rounds": 10,
+      "comparator": "rule",
+      "profit_delta": 114783476,
+      "welfare_delta": 50894068,
+      "volatility_delta": 0.0066149279613632785,
+      "exits": 0
+    },
+    {
+      "companies": 2,
+      "seed": 372102,
+      "rounds": 10,
+      "comparator": "advisor_profit",
+      "profit_delta": 67558117,
+      "welfare_delta": 29673101,
+      "volatility_delta": 0.0008877234451602559,
+      "exits": 0
+    },
+    {
+      "companies": 5,
+      "seed": 372101,
+      "rounds": 10,
+      "comparator": "rule",
+      "profit_delta": 183774140,
+      "welfare_delta": 66355493,
+      "volatility_delta": 0.009485979174010383,
+      "exits": 0
+    },
+    {
+      "companies": 5,
+      "seed": 372101,
+      "rounds": 10,
+      "comparator": "advisor_profit",
+      "profit_delta": 74592790,
+      "welfare_delta": -7668324,
+      "volatility_delta": 0.00939328340393053,
+      "exits": 0
+    },
+    {
+      "companies": 5,
+      "seed": 372102,
+      "rounds": 10,
+      "comparator": "rule",
+      "profit_delta": 150296148,
+      "welfare_delta": 53343793,
+      "volatility_delta": 0.0007104923469446814,
+      "exits": 0
+    },
+    {
+      "companies": 5,
+      "seed": 372102,
+      "rounds": 10,
+      "comparator": "advisor_profit",
+      "profit_delta": 45789746,
+      "welfare_delta": -10768798,
+      "volatility_delta": 0.0006708049894663774,
+      "exits": 0
+    },
+    {
+      "companies": 10,
+      "seed": 372101,
+      "rounds": 10,
+      "comparator": "rule",
+      "profit_delta": 241820838,
+      "welfare_delta": 144333837,
+      "volatility_delta": 0.07260203022923145,
+      "exits": 0
+    },
+    {
+      "companies": 10,
+      "seed": 372101,
+      "rounds": 10,
+      "comparator": "advisor_profit",
+      "profit_delta": 59842877,
+      "welfare_delta": -9442635,
+      "volatility_delta": 0.05887860043984227,
+      "exits": 0
+    },
+    {
+      "companies": 10,
+      "seed": 372102,
+      "rounds": 10,
+      "comparator": "rule",
+      "profit_delta": 226021893,
+      "welfare_delta": 159262742,
+      "volatility_delta": 0.08844134902092388,
+      "exits": 0
+    },
+    {
+      "companies": 10,
+      "seed": 372102,
+      "rounds": 10,
+      "comparator": "advisor_profit",
+      "profit_delta": 32074746,
+      "welfare_delta": -9751401,
+      "volatility_delta": 0.06898778593736689,
+      "exits": 0
+    },
+    {
+      "companies": 5,
+      "seed": 372101,
+      "rounds": 20,
+      "comparator": "rule",
+      "profit_delta": 322965084,
+      "welfare_delta": 98428613,
+      "volatility_delta": 0.01709490786478035,
+      "exits": 0
+    },
+    {
+      "companies": 5,
+      "seed": 372101,
+      "rounds": 20,
+      "comparator": "advisor_profit",
+      "profit_delta": 112681802,
+      "welfare_delta": -30804070,
+      "volatility_delta": 0.014222996353094729,
+      "exits": 0
+    },
+    {
+      "companies": 5,
+      "seed": 372102,
+      "rounds": 20,
+      "comparator": "rule",
+      "profit_delta": 297262282,
+      "welfare_delta": 100536504,
+      "volatility_delta": 0.04253980071513215,
+      "exits": 0
+    },
+    {
+      "companies": 5,
+      "seed": 372102,
+      "rounds": 20,
+      "comparator": "advisor_profit",
+      "profit_delta": 105243473,
+      "welfare_delta": 13094360,
+      "volatility_delta": 0.03747210166229167,
+      "exits": 0
+    }
+  ],
+  "adverse_cases": [
+    {
+      "seed": 379008,
+      "goal": "profit",
+      "pressure": "normal",
+      "variant": "v17",
+      "selected": "expanded-2",
+      "gain": 0.05670285000000001,
+      "profit_gain": 567028.5,
+      "welfare_gain": -4383557.5
+    },
+    {
+      "seed": 379008,
+      "goal": "profit",
+      "pressure": "normal",
+      "variant": "strong",
+      "selected": "expanded-2",
+      "gain": 0.05670285000000001,
+      "profit_gain": 567028.5,
+      "welfare_gain": -4383557.5
+    },
+    {
+      "seed": 379008,
+      "goal": "profit",
+      "pressure": "normal",
+      "variant": "no_response",
+      "selected": "expanded-2",
+      "gain": 0.05670285000000001,
+      "profit_gain": 567028.5,
+      "welfare_gain": -4383557.5
+    },
+    {
+      "seed": 379008,
+      "goal": "profit",
+      "pressure": "normal",
+      "variant": "no_learning",
+      "selected": "expanded-2",
+      "gain": 0.05670285000000001,
+      "profit_gain": 567028.5,
+      "welfare_gain": -4383557.5
+    },
+    {
+      "seed": 379008,
+      "goal": "profit",
+      "pressure": "government",
+      "variant": "v17",
+      "selected": "expanded-4",
+      "gain": 0.2287059,
+      "profit_gain": 2287059.0,
+      "welfare_gain": -124030.5
+    },
+    {
+      "seed": 379008,
+      "goal": "profit",
+      "pressure": "government",
+      "variant": "strong",
+      "selected": "expanded-4",
+      "gain": 0.2287059,
+      "profit_gain": 2287059.0,
+      "welfare_gain": -124030.5
+    },
+    {
+      "seed": 379010,
+      "goal": "profit",
+      "pressure": "government",
+      "variant": "v17",
+      "selected": "expanded-2",
+      "gain": 0.1740624,
+      "profit_gain": 1740624.0,
+      "welfare_gain": -193042.0
+    },
+    {
+      "seed": 379016,
+      "goal": "profit",
+      "pressure": "normal",
+      "variant": "v17",
+      "selected": "expanded-2",
+      "gain": 0.14162765,
+      "profit_gain": 1416276.5,
+      "welfare_gain": -528119.5
+    },
+    {
+      "seed": 379016,
+      "goal": "profit",
+      "pressure": "supplier",
+      "variant": "v17",
+      "selected": "expanded-2",
+      "gain": 0.14162765,
+      "profit_gain": 1416276.5,
+      "welfare_gain": -528119.5
+    },
+    {
+      "seed": 379016,
+      "goal": "profit",
+      "pressure": "government",
+      "variant": "v17",
+      "selected": "expanded-2",
+      "gain": 0.14162765,
+      "profit_gain": 1416276.5,
+      "welfare_gain": -528119.5
+    },
+    {
+      "seed": 379022,
+      "goal": "profit",
+      "pressure": "government",
+      "variant": "v17",
+      "selected": "expanded-2",
+      "gain": 0.12981065,
+      "profit_gain": 1298106.5,
+      "welfare_gain": -1663652.0
+    }
+  ],
+  "arithmetic_checks": 45464,
+  "scope": "32 independent seeds total, 16 per goal; pressure variants are paired repeats, not 96 independent seeds. Strong/ablation groups have only four seeds per goal. Bootstrap intervals are exploratory and unadjusted for multiple comparisons. Runtime under four concurrent workers is not an isolated latency benchmark. All losses retained; no holdout-based retuning."
+}

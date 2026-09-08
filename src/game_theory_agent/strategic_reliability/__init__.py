@@ -36,6 +36,7 @@ from .public_rollout import (
     generate_public_overlay_candidates,
     generate_public_reliable_candidates,
     generate_public_marginal_candidates,
+    generate_final_market_candidates,
 )
 from .marginal_investment import (
     InvestmentMarginalAssessment,
@@ -63,11 +64,13 @@ from .pareto_planner import (
     select_pareto_decision,
 )
 from .reliable_planner import (
+    FINAL_MARKET_GATE_POLICY,
     ExcludedCandidate,
     ParetoAbstentionGate,
     ParetoReliabilityGate,
     build_abstention_gate,
     build_reliability_gate,
+    build_final_market_gate,
     compute_abstention_gate_hash,
     compute_reliability_gate_hash,
 )
@@ -95,6 +98,7 @@ __all__ = [
     "PROMOTION_EVIDENCE_SHA256",
     "ParetoSituation",
     "ParetoReliabilityGate",
+    "FINAL_MARKET_GATE_POLICY",
     "ParetoAbstentionGate",
     "ExcludedCandidate",
     "InvestmentMarginalAssessment",
@@ -111,6 +115,7 @@ __all__ = [
     "calibrate_objective_decision",
     "select_pareto_decision",
     "build_reliability_gate",
+    "build_final_market_gate",
     "build_abstention_gate",
     "build_marginal_investment_plan",
     "build_calibrated_strategy_model_v2",
@@ -120,6 +125,7 @@ __all__ = [
     "generate_public_overlay_candidates",
     "generate_public_reliable_candidates",
     "generate_public_marginal_candidates",
+    "generate_final_market_candidates",
     "compute_marginal_assessment_hash",
     "compute_marginal_investment_plan_hash",
     "run_opponent_benchmark",

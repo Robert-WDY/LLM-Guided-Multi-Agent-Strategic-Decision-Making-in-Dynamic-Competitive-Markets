@@ -1,0 +1,43 @@
+{
+  "boundary": "Synthetic open economy. Prepaid perishable inputs; external consumer endowments, operating costs and liquidation. No welfare superiority gate between different accounting models.",
+  "config_hashes": {
+    "base": "sha256:c90feac6e5377e26a2877f8d0d12ef3b5fcbcf16b74ee21279dfa0775d593984",
+    "expensive": "sha256:9f01dc6040df759a9ecea15dbeb06b0504e6d2e9a265f332ec7a7306bb62a38e",
+    "long": "sha256:c90feac6e5377e26a2877f8d0d12ef3b5fcbcf16b74ee21279dfa0775d593984",
+    "low_demand": "sha256:f29f00f8dd76475e06a0ba7f4c0fefb0dae4ebadcdb51b4320f077a50b02973a",
+    "outage": "sha256:016df7f7658427db4b6a0a18336a767634ab983d81c6b1282c9dcc3dca758024",
+    "thin_cash": "sha256:e4a5a6f76ccfaca6309ddfafb7572db06cef257e613693000e8a1fb686cc927e"
+  },
+  "gates": [
+    "cash nonnegative",
+    "invoice receipt equality",
+    "production and material closure",
+    "company cash including explicit liquidation",
+    "restore and full replay"
+  ],
+  "hash": "sha256:6294765f96db2287de75e45bc2dd0f1bc5fed31ec5710b70abe010591ae37e8b",
+  "model_calls": 0,
+  "policies": [
+    "diverse",
+    "price_stress"
+  ],
+  "regimes": [
+    "base",
+    "thin_cash",
+    "expensive",
+    "low_demand",
+    "outage",
+    "long"
+  ],
+  "seeds": [
+    170101,
+    170102,
+    170103,
+    170104,
+    170105,
+    170106,
+    170107,
+    170108
+  ],
+  "source_hash": "sha256:f972b6a2c7595672a18c10b5e344f058e1947b953bd60d3c8d3657e27569a333"
+}

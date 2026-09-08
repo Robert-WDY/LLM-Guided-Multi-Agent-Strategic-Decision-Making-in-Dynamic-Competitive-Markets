@@ -1,0 +1,29 @@
+extends: market_v12_accounting.yaml
+config_id: market-v13-autonomous-local
+config_version: market-v13.0.0
+environment_version: market-env-v13.0.0
+schema_versions:
+  state: market-state-v13.0.0
+  action: company-action-v13.0.0
+episode_options:
+  round_options: [5, 10, 15, 20, 60]
+autonomous_market:
+  policy_version: four-actor-market-v1.0.0
+  company_procurement: true
+  supplier_investment:
+    enabled: true
+    reserve_cash_cents: 10000000
+    unit_capacity_cost_cents: 20000
+    max_addition_orders: 800
+    max_base_capacity_orders: 30000
+    utilization_threshold_ppm: 850000
+  government:
+    enabled: true
+    initial_cash_cents: 50000000
+    inspection_cost_per_case_cents: 100000
+    max_inspection_cases: 2
+    concentration_threshold_ppm: 300000
+    detection_boost_ppm: 250000
+    stockout_threshold_ppm: 100000
+    support_cash_share_ppm: 100000
+    max_support_cents: 3000000

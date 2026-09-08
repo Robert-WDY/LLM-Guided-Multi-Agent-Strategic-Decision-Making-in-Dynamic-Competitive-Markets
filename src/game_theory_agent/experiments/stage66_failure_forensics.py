@@ -10,7 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 from dataclasses import replace
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Any, Mapping, Sequence
 
 from game_theory_agent.advisor import build_advisor_adoption_trace
@@ -320,11 +320,28 @@ def _paid_trace(events: Sequence[Any]) -> tuple[Any, Any]:
     return event, trace
 
 
+def _resolve_source_summary(source: str) -> Path:
+    """Relocate old workstation references without rewriting hashed evidence."""
+    path = Path(source)
+    if path.is_file():
+        return path
+    legacy_root = PureWindowsPath("C:/Users/12204/Desktop/game-theory-agent")
+    try:
+        relative = PureWindowsPath(source).relative_to(legacy_root)
+    except ValueError:
+        return path
+    if relative.parts and relative.parts[0] == "runs" and ".." not in relative.parts:
+        relocated = PROJECT_ROOT.joinpath(*relative.parts)
+        if relocated.is_file():
+            return relocated
+    return path
+
+
 def _canonical_rows(stage65_summary: Path) -> list[dict[str, Any]]:
     merged = json.loads(stage65_summary.read_text(encoding="utf-8"))
     rows: list[dict[str, Any]] = []
     for source in merged["source_summaries"]:
-        path = Path(source)
+        path = _resolve_source_summary(source)
         source_summary = json.loads(path.read_text(encoding="utf-8"))
         for row in source_summary["rows"]:
             item = dict(row)

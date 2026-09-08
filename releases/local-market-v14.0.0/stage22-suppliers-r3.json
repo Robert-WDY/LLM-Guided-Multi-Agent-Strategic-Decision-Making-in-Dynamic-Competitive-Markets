@@ -1,0 +1,72 @@
+{
+  "passed": true,
+  "episodes": 64,
+  "rounds": 1280,
+  "groups": [
+    {
+      "regime": "normal",
+      "option": "balanced",
+      "n": 8,
+      "mean_welfare_cents": 1171951738.75,
+      "bankrupt_suppliers": 0,
+      "borrowed_cents": 0
+    },
+    {
+      "regime": "normal",
+      "option": "inventory",
+      "n": 8,
+      "mean_welfare_cents": 1172143652.625,
+      "bankrupt_suppliers": 0,
+      "borrowed_cents": 0
+    },
+    {
+      "regime": "normal",
+      "option": "reliability",
+      "n": 8,
+      "mean_welfare_cents": 1174012658.75,
+      "bankrupt_suppliers": 0,
+      "borrowed_cents": 0
+    },
+    {
+      "regime": "normal",
+      "option": "no_credit",
+      "n": 8,
+      "mean_welfare_cents": 1171951738.75,
+      "bankrupt_suppliers": 0,
+      "borrowed_cents": 0
+    },
+    {
+      "regime": "low_capital",
+      "option": "balanced",
+      "n": 8,
+      "mean_welfare_cents": 1165750123.375,
+      "bankrupt_suppliers": 0,
+      "borrowed_cents": 16757957
+    },
+    {
+      "regime": "low_capital",
+      "option": "inventory",
+      "n": 8,
+      "mean_welfare_cents": 1159243752.75,
+      "bankrupt_suppliers": 1,
+      "borrowed_cents": 23932166
+    },
+    {
+      "regime": "low_capital",
+      "option": "reliability",
+      "n": 8,
+      "mean_welfare_cents": 1166802853.25,
+      "bankrupt_suppliers": 0,
+      "borrowed_cents": 16757957
+    },
+    {
+      "regime": "low_capital",
+      "option": "no_credit",
+      "n": 8,
+      "mean_welfare_cents": 1165750123.375,
+      "bankrupt_suppliers": 0,
+      "borrowed_cents": 0
+    }
+  ],
+  "limits": "Synthetic scenarios and constrained policy grid; no proof of real-world profit or welfare optimality."
+}

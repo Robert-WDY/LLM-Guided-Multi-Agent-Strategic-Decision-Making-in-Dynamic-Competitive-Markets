@@ -13,7 +13,11 @@ from pydantic import Field, model_validator
 
 from game_theory_agent.market.protocols import sha256_hash
 
-from .contracts import StrictModel, StrategicActionCandidate
+from .contracts import (
+    StrictModel,
+    StrategicActionCandidate,
+    strip_final_market_null_action_fields,
+)
 
 
 class PublicForecastStateRecord(StrictModel):
@@ -53,6 +57,7 @@ class PublicStrategicAdvice(StrictModel):
         "public-pareto-reliable-advice-v5.0.0",
         "public-pareto-marginal-advice-v6.0.0",
         "public-pareto-abstention-advice-v7.0.0",
+        "public-strategic-market-advice-v9.0.0",
     ] = (
         "public-strategic-advice-v3.0.0"
     )
@@ -62,6 +67,7 @@ class PublicStrategicAdvice(StrictModel):
         "pareto_reliable_v5",
         "pareto_reliable_v6",
         "pareto_reliable_v7",
+        "strategic_market_v9",
     ] = (
         "public_rollout_v3"
     )
@@ -71,6 +77,7 @@ class PublicStrategicAdvice(StrictModel):
         "public-pareto-reliable-market-rollout-v1.0.0",
         "public-pareto-marginal-market-rollout-v2.0.0",
         "public-pareto-abstention-market-rollout-v3.0.0",
+        "public-final-strategic-market-rollout-v1.0.0",
     ] = "public-observation-market-rollout-v1.0.0"
     episode_id: str
     round: int = Field(ge=1)
@@ -107,6 +114,8 @@ class PublicStrategicAdvice(StrictModel):
     investment_marginal_plan: dict[str, Any] | None = None
     execution_disposition: Literal["recommend", "defer_to_agent"] | None = None
     withheld_candidate_id: str | None = None
+    research_only_candidate_ids: list[str] | None = None
+    final_market_gate_policy: dict[str, Any] | None = None
     limitations: list[str] = Field(min_length=1)
     advice_hash: str
 
@@ -160,8 +169,11 @@ class PublicStrategicAdvice(StrictModel):
             is_v5 = self.advisor_mode == "pareto_reliable_v5"
             is_v6 = self.advisor_mode == "pareto_reliable_v6"
             is_v7 = self.advisor_mode == "pareto_reliable_v7"
+            is_v9 = self.advisor_mode == "strategic_market_v9"
             expected_schema = (
-                "public-pareto-abstention-advice-v7.0.0"
+                "public-strategic-market-advice-v9.0.0"
+                if is_v9
+                else "public-pareto-abstention-advice-v7.0.0"
                 if is_v7
                 else "public-pareto-marginal-advice-v6.0.0"
                 if is_v6
@@ -171,7 +183,9 @@ class PublicStrategicAdvice(StrictModel):
                 else "public-pareto-advice-v4.0.0"
             )
             expected_model = (
-                "public-pareto-abstention-market-rollout-v3.0.0"
+                "public-final-strategic-market-rollout-v1.0.0"
+                if is_v9
+                else "public-pareto-abstention-market-rollout-v3.0.0"
                 if is_v7
                 else "public-pareto-marginal-market-rollout-v2.0.0"
                 if is_v6
@@ -184,13 +198,16 @@ class PublicStrategicAdvice(StrictModel):
                 self.advice_schema_version != expected_schema
                 or self.advisor_model_version != expected_model
                 or self.pareto_decision is None
-                or self.promotion_evidence_sha256 != PROMOTION_EVIDENCE_SHA256
+                or (
+                    self.promotion_evidence_sha256
+                    != (None if is_v9 else PROMOTION_EVIDENCE_SHA256)
+                )
             ):
                 raise ValueError("Pareto advice contract fields are inconsistent")
             decision = ParetoPlannerDecision.model_validate(self.pareto_decision)
             if self.selection_situation != decision.situation.situation:
                 raise ValueError("Pareto selection situation mismatch")
-            if is_v5 or is_v6 or is_v7:
+            if is_v5 or is_v6 or is_v7 or is_v9:
                 if (
                     self.reliability_gate is None
                     or self.safe_candidate_ids is None
@@ -201,7 +218,7 @@ class PublicStrategicAdvice(StrictModel):
                     raise ValueError("reliable Pareto fields are missing")
                 gate = (
                     ParetoAbstentionGate.model_validate(self.reliability_gate)
-                    if is_v7
+                    if is_v7 or is_v9
                     else ParetoReliabilityGate.model_validate(
                         self.reliability_gate
                     )
@@ -220,7 +237,7 @@ class PublicStrategicAdvice(StrictModel):
                     != self.excluded_candidates
                 ):
                     raise ValueError("reliable Pareto gate binding mismatch")
-                if is_v7:
+                if is_v7 or is_v9:
                     if (
                         self.execution_disposition
                         != gate.execution_disposition
@@ -233,7 +250,7 @@ class PublicStrategicAdvice(StrictModel):
                     or self.withheld_candidate_id is not None
                 ):
                     raise ValueError("legacy advice cannot carry v7 disposition")
-                if is_v6 or is_v7:
+                if is_v6 or is_v7 or is_v9:
                     if self.investment_marginal_plan is None:
                         raise ValueError("marginal investment plan is missing")
                     marginal = MarginalInvestmentPlan.model_validate(
@@ -244,7 +261,7 @@ class PublicStrategicAdvice(StrictModel):
                         gate.gate_schema_version
                         != (
                             "pareto-reliability-gate-v3.0.0"
-                            if is_v7
+                            if is_v7 or is_v9
                             else "pareto-reliability-gate-v2.0.0"
                         )
                         or gate.marginal_investment_plan_hash != marginal.plan_hash
@@ -256,6 +273,30 @@ class PublicStrategicAdvice(StrictModel):
                         raise ValueError("marginal plan binding mismatch")
                 elif self.investment_marginal_plan is not None:
                     raise ValueError("v5 cannot carry a marginal investment plan")
+                if is_v9:
+                    from .reliable_planner import FINAL_MARKET_GATE_POLICY
+                    from .paired_gate import PAIRED_MARKET_GATE_POLICY
+
+                    expected_research_only = {
+                        "price_coordination_honor",
+                        "price_coordination_undercut",
+                    }
+                    if set(self.research_only_candidate_ids or ()) != (
+                        expected_research_only.intersection(by_id)
+                    ):
+                        raise ValueError("v9 research-only candidate binding mismatch")
+                    if expected_research_only.intersection(
+                        item.candidate_id for item in decision.candidate_assessments
+                    ):
+                        raise ValueError(
+                            "v9 research-only candidate entered executable selection"
+                        )
+                    if self.final_market_gate_policy not in (FINAL_MARKET_GATE_POLICY, PAIRED_MARKET_GATE_POLICY):
+                        raise ValueError("v9 final-market gate policy mismatch")
+                elif self.research_only_candidate_ids is not None:
+                    raise ValueError("legacy advice cannot carry research-only candidates")
+                elif self.final_market_gate_policy is not None:
+                    raise ValueError("legacy advice cannot carry final-market gate policy")
             else:
                 if (
                     self.recommended_candidate_id
@@ -276,7 +317,7 @@ class PublicStrategicAdvice(StrictModel):
             )
         if selected is None:
             if (
-                self.advisor_mode != "pareto_reliable_v7"
+                self.advisor_mode not in {"pareto_reliable_v7", "strategic_market_v9"}
                 or self.execution_disposition != "defer_to_agent"
                 or self.recommended_candidate_id is not None
                 or self.recommended_action is not None
@@ -306,7 +347,7 @@ class PublicStrategicAdvice(StrictModel):
 def compute_public_advice_hash(
     advice: PublicStrategicAdvice | Mapping[str, Any],
 ) -> str:
-    payload = (
+    payload = strip_final_market_null_action_fields(
         advice.model_dump(mode="json")
         if isinstance(advice, PublicStrategicAdvice)
         else dict(advice)
@@ -333,10 +374,23 @@ def compute_public_advice_hash(
     if payload.get("advisor_mode") == "pareto_reliable_v5":
         if payload.get("investment_marginal_plan") is None:
             payload.pop("investment_marginal_plan", None)
-    if payload.get("advisor_mode") != "pareto_reliable_v7":
+    if payload.get("advisor_mode") not in {
+        "pareto_reliable_v7",
+        "strategic_market_v9",
+    }:
         for field in ("execution_disposition", "withheld_candidate_id"):
             if payload.get(field) is None:
                 payload.pop(field, None)
+    if (
+        payload.get("advisor_mode") != "strategic_market_v9"
+        and payload.get("research_only_candidate_ids") is None
+    ):
+        payload.pop("research_only_candidate_ids", None)
+    if (
+        payload.get("advisor_mode") != "strategic_market_v9"
+        and payload.get("final_market_gate_policy") is None
+    ):
+        payload.pop("final_market_gate_policy", None)
     return sha256_hash(
         {
             "hash_protocol_version": "public-strategic-advice-hash-v1.0.0",

@@ -1,0 +1,51 @@
+{
+  "stage": 3,
+  "passed": true,
+  "cases": 6,
+  "new_real_calls": 0,
+  "elapsed_seconds": 10.857785300002433,
+  "results": [
+    {
+      "goal": "company",
+      "seed": 360201,
+      "selected": "refine-975000-resilience",
+      "used": 72,
+      "all_candidate_scores_independently_recomputed": true
+    },
+    {
+      "goal": "company",
+      "seed": 360202,
+      "selected": "refine-975000-resilience",
+      "used": 72,
+      "all_candidate_scores_independently_recomputed": true
+    },
+    {
+      "goal": "profit",
+      "seed": 360201,
+      "selected": "refine-975000-baseline",
+      "used": 72,
+      "all_candidate_scores_independently_recomputed": true
+    },
+    {
+      "goal": "profit",
+      "seed": 360202,
+      "selected": "baseline",
+      "used": 68,
+      "all_candidate_scores_independently_recomputed": true
+    },
+    {
+      "goal": "welfare",
+      "seed": 360201,
+      "selected": "refine-975000-reserve",
+      "used": 72,
+      "all_candidate_scores_independently_recomputed": true
+    },
+    {
+      "goal": "welfare",
+      "seed": 360202,
+      "selected": "refine-975000-reserve",
+      "used": 72,
+      "all_candidate_scores_independently_recomputed": true
+    }
+  ]
+}

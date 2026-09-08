@@ -1,0 +1,93 @@
+{
+  "stage": 2,
+  "passed": true,
+  "cases": 12,
+  "new_real_calls": 0,
+  "elapsed_seconds": 0.6703157000010833,
+  "results": [
+    {
+      "companies": 2,
+      "seed": 360201,
+      "scenario": 0,
+      "rounds": 3,
+      "profit": 12508055.4725
+    },
+    {
+      "companies": 2,
+      "seed": 360201,
+      "scenario": 1,
+      "rounds": 3,
+      "profit": 14177436.752500001
+    },
+    {
+      "companies": 2,
+      "seed": 360202,
+      "scenario": 0,
+      "rounds": 3,
+      "profit": 12480548.19
+    },
+    {
+      "companies": 2,
+      "seed": 360202,
+      "scenario": 1,
+      "rounds": 3,
+      "profit": 10664060.6275
+    },
+    {
+      "companies": 5,
+      "seed": 360201,
+      "scenario": 0,
+      "rounds": 3,
+      "profit": -4451828.4775
+    },
+    {
+      "companies": 5,
+      "seed": 360201,
+      "scenario": 1,
+      "rounds": 3,
+      "profit": 1676378.0375
+    },
+    {
+      "companies": 5,
+      "seed": 360202,
+      "scenario": 0,
+      "rounds": 3,
+      "profit": -1007998.6575000001
+    },
+    {
+      "companies": 5,
+      "seed": 360202,
+      "scenario": 1,
+      "rounds": 3,
+      "profit": -1179778.2925
+    },
+    {
+      "companies": 10,
+      "seed": 360201,
+      "scenario": 0,
+      "rounds": 3,
+      "profit": -10248085.825
+    },
+    {
+      "companies": 10,
+      "seed": 360201,
+      "scenario": 1,
+      "rounds": 3,
+      "profit": -6691690.0175
+    },
+    {
+      "companies": 10,
+      "seed": 360202,
+      "scenario": 0,
+      "rounds": 3,
+      "profit": -7980124.067499999
+    },
+    {
+      "companies": 10,
+      "seed": 360202,
+      "scenario": 1,
+      "rounds": 3,
+      "profit": -9167052.715
+    }
+  ]
+}

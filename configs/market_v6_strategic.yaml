@@ -1,0 +1,54 @@
+extends: market_v5_cooperation.yaml
+
+config_id: market-v6-strategic
+config_version: market-v6.0.0
+environment_version: market-env-v6.0.0
+
+schema_versions:
+  state: market-state-v6.0.0
+  action: company-action-v4.1.0
+
+action:
+  bounds:
+    threshold_project_contribution_cents: {min: 0, max: 4000000}
+
+strategic_market:
+  enabled: true
+  protocol_version: strategic-market-v1.0.0
+
+  # A company first becomes distressed. Continued distress or exhausted cash
+  # makes it exit at the end of a settled round. Exit is absorbing in v6.
+  distress_cash_threshold_cents: 5000000
+  immediate_exit_cash_threshold_cents: 250000
+  distress_rounds_to_exit: 2
+  liquidation_recovery_ppm: 300000
+
+  # Concentration is measured on active sellers with normalized settled shares.
+  hhi_moderate_ppm: 300000
+  hhi_concentrated_ppm: 500000
+  dominance_share_ppm: 700000
+
+  # v4/v5 compare sellers only. v6 also compares each offer with consumers'
+  # willingness-to-pay anchor so monopoly pricing still changes demand.
+  relative_price_weight_ppm: 650000
+  absolute_price_weight_ppm: 350000
+
+  # Stage 7.1 records regulatory pressure; later v6 stages may attach auditable
+  # interventions without changing this historical transition contract.
+  regulatory_pressure_retention_ppm: 850000
+  concentration_pressure_weight_ppm: 350000
+  predatory_pressure_weight_ppm: 450000
+  monopoly_markup_pressure_weight_ppm: 300000
+
+  # Transparent welfare proxies used for mechanism validation. They do not
+  # directly alter company cash or consumer allocation.
+  stockout_social_cost_per_order_cents: 2500
+
+  threshold_project:
+    enabled: true
+    project_id: shared-cold-chain-v1
+    required_total_contribution_cents: 8000000
+    deadline_round: 4
+    failure_refund_rate_ppm: 200000
+    public_protection_bonus_ppm: 180000
+    supply_cost_reduction_ppm: 60000

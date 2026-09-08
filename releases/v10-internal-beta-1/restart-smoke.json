@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "actual_process_restart": true,
+  "idempotent_http_retry": true,
+  "v10_procurement_preserved": true,
+  "config_id": "market-v10-multi-objective",
+  "state_hash": "sha256:1c5a44ca2c8e7f9acadecb040a5f639f4bd578ff01f1f8fa3a71665f4fe144ab",
+  "provider_calls": 0
+}

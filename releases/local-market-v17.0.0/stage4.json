@@ -1,0 +1,797 @@
+{
+  "stage": 4,
+  "passed": true,
+  "cases": 10,
+  "elapsed_seconds": 58.84945439999865,
+  "new_real_calls": 0,
+  "results": [
+    {
+      "phase": "survival",
+      "horizon": 1,
+      "selected": "expanded-1",
+      "recipe": {
+        "price": 900000,
+        "reserve": true
+      },
+      "sensitivity": {
+        "perturbations": [
+          {
+            "component": "profit",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "profit",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "welfare",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "welfare",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "cash",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "cash",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "share",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "share",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "capacity",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "capacity",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "resilience",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "resilience",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          }
+        ],
+        "same_choice_fraction": 1,
+        "pareto_dominators": [],
+        "scope": "已验证候选范围；非零权重±20%，零权重加2%后归一化。只报告敏感性，不篡改用户目标。"
+      },
+      "profit_gain": 1499607.5,
+      "welfare_gain": 2923807.5,
+      "utility_gain": 0.134964675
+    },
+    {
+      "phase": "survival",
+      "horizon": 3,
+      "selected": "expanded-3",
+      "recipe": {
+        "price": 950000,
+        "reserve": true
+      },
+      "sensitivity": {
+        "perturbations": [
+          {
+            "component": "profit",
+            "factor": 0.8,
+            "selected": "baseline"
+          },
+          {
+            "component": "profit",
+            "factor": 1.2,
+            "selected": "expanded-3"
+          },
+          {
+            "component": "welfare",
+            "factor": 0.8,
+            "selected": "expanded-3"
+          },
+          {
+            "component": "welfare",
+            "factor": 1.2,
+            "selected": "expanded-3"
+          },
+          {
+            "component": "cash",
+            "factor": 0.8,
+            "selected": "baseline"
+          },
+          {
+            "component": "cash",
+            "factor": 1.2,
+            "selected": "expanded-3"
+          },
+          {
+            "component": "share",
+            "factor": 0.8,
+            "selected": "baseline"
+          },
+          {
+            "component": "share",
+            "factor": 1.2,
+            "selected": "baseline"
+          },
+          {
+            "component": "capacity",
+            "factor": 0.8,
+            "selected": "expanded-3"
+          },
+          {
+            "component": "capacity",
+            "factor": 1.2,
+            "selected": "expanded-3"
+          },
+          {
+            "component": "resilience",
+            "factor": 0.8,
+            "selected": "expanded-3"
+          },
+          {
+            "component": "resilience",
+            "factor": 1.2,
+            "selected": "baseline"
+          }
+        ],
+        "same_choice_fraction": 0.5833333333333334,
+        "pareto_dominators": [],
+        "scope": "已验证候选范围；非零权重±20%，零权重加2%后归一化。只报告敏感性，不篡改用户目标。"
+      },
+      "profit_gain": 2190039.2625,
+      "welfare_gain": 6689355.055000007,
+      "utility_gain": 0.14233019524999999
+    },
+    {
+      "phase": "expansion",
+      "horizon": 1,
+      "selected": "expanded-1",
+      "recipe": {
+        "price": 900000,
+        "reserve": true
+      },
+      "sensitivity": {
+        "perturbations": [
+          {
+            "component": "profit",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "profit",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "welfare",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "welfare",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "cash",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "cash",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "share",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "share",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "capacity",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "capacity",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "resilience",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "resilience",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          }
+        ],
+        "same_choice_fraction": 1,
+        "pareto_dominators": [],
+        "scope": "已验证候选范围；非零权重±20%，零权重加2%后归一化。只报告敏感性，不篡改用户目标。"
+      },
+      "profit_gain": 1499607.5,
+      "welfare_gain": 2923807.5,
+      "utility_gain": 0.1571185875
+    },
+    {
+      "phase": "expansion",
+      "horizon": 3,
+      "selected": "expanded-5",
+      "recipe": {
+        "price": 950000
+      },
+      "sensitivity": {
+        "perturbations": [
+          {
+            "component": "profit",
+            "factor": 0.8,
+            "selected": "expanded-5"
+          },
+          {
+            "component": "profit",
+            "factor": 1.2,
+            "selected": "expanded-5"
+          },
+          {
+            "component": "welfare",
+            "factor": 0.8,
+            "selected": "expanded-5"
+          },
+          {
+            "component": "welfare",
+            "factor": 1.2,
+            "selected": "expanded-5"
+          },
+          {
+            "component": "cash",
+            "factor": 0.8,
+            "selected": "expanded-5"
+          },
+          {
+            "component": "cash",
+            "factor": 1.2,
+            "selected": "expanded-5"
+          },
+          {
+            "component": "share",
+            "factor": 0.8,
+            "selected": "expanded-5"
+          },
+          {
+            "component": "share",
+            "factor": 1.2,
+            "selected": "expanded-5"
+          },
+          {
+            "component": "capacity",
+            "factor": 0.8,
+            "selected": "expanded-5"
+          },
+          {
+            "component": "capacity",
+            "factor": 1.2,
+            "selected": "expanded-5"
+          },
+          {
+            "component": "resilience",
+            "factor": 0.8,
+            "selected": "expanded-5"
+          },
+          {
+            "component": "resilience",
+            "factor": 1.2,
+            "selected": "expanded-5"
+          }
+        ],
+        "same_choice_fraction": 1,
+        "pareto_dominators": [],
+        "scope": "已验证候选范围；非零权重±20%，零权重加2%后归一化。只报告敏感性，不篡改用户目标。"
+      },
+      "profit_gain": 773956.7575000001,
+      "welfare_gain": 1045663.6500000209,
+      "utility_gain": 0.09901734151250001
+    },
+    {
+      "phase": "mature",
+      "horizon": 1,
+      "selected": "expanded-1",
+      "recipe": {
+        "price": 900000,
+        "reserve": true
+      },
+      "sensitivity": {
+        "perturbations": [
+          {
+            "component": "profit",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "profit",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "welfare",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "welfare",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "cash",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "cash",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "share",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "share",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "capacity",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "capacity",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "resilience",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "resilience",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          }
+        ],
+        "same_choice_fraction": 1,
+        "pareto_dominators": [],
+        "scope": "已验证候选范围；非零权重±20%，零权重加2%后归一化。只报告敏感性，不篡改用户目标。"
+      },
+      "profit_gain": 1499607.5,
+      "welfare_gain": 2923807.5,
+      "utility_gain": 0.11996860000000001
+    },
+    {
+      "phase": "mature",
+      "horizon": 3,
+      "selected": "baseline",
+      "recipe": {},
+      "sensitivity": {
+        "perturbations": [
+          {
+            "component": "profit",
+            "factor": 0.8,
+            "selected": "baseline"
+          },
+          {
+            "component": "profit",
+            "factor": 1.2,
+            "selected": "baseline"
+          },
+          {
+            "component": "welfare",
+            "factor": 0.8,
+            "selected": "baseline"
+          },
+          {
+            "component": "welfare",
+            "factor": 1.2,
+            "selected": "baseline"
+          },
+          {
+            "component": "cash",
+            "factor": 0.8,
+            "selected": "baseline"
+          },
+          {
+            "component": "cash",
+            "factor": 1.2,
+            "selected": "baseline"
+          },
+          {
+            "component": "share",
+            "factor": 0.8,
+            "selected": "baseline"
+          },
+          {
+            "component": "share",
+            "factor": 1.2,
+            "selected": "baseline"
+          },
+          {
+            "component": "capacity",
+            "factor": 0.8,
+            "selected": "baseline"
+          },
+          {
+            "component": "capacity",
+            "factor": 1.2,
+            "selected": "baseline"
+          },
+          {
+            "component": "resilience",
+            "factor": 0.8,
+            "selected": "baseline"
+          },
+          {
+            "component": "resilience",
+            "factor": 1.2,
+            "selected": "baseline"
+          }
+        ],
+        "same_choice_fraction": 1,
+        "pareto_dominators": [
+          "expanded-5"
+        ],
+        "scope": "已验证候选范围；非零权重±20%，零权重加2%后归一化。只报告敏感性，不篡改用户目标。"
+      },
+      "profit_gain": 0.0,
+      "welfare_gain": 0.0,
+      "utility_gain": 0.0
+    },
+    {
+      "phase": "catch_up",
+      "horizon": 1,
+      "selected": "expanded-1",
+      "recipe": {
+        "price": 900000,
+        "reserve": true
+      },
+      "sensitivity": {
+        "perturbations": [
+          {
+            "component": "profit",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "profit",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "welfare",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "welfare",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "cash",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "cash",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "share",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "share",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "capacity",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "capacity",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "resilience",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "resilience",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          }
+        ],
+        "same_choice_fraction": 1,
+        "pareto_dominators": [],
+        "scope": "已验证候选范围；非零权重±20%，零权重加2%后归一化。只报告敏感性，不篡改用户目标。"
+      },
+      "profit_gain": 1499607.5,
+      "welfare_gain": 2923807.5,
+      "utility_gain": 0.1900419125
+    },
+    {
+      "phase": "catch_up",
+      "horizon": 3,
+      "selected": "expanded-1",
+      "recipe": {
+        "price": 900000,
+        "reserve": true
+      },
+      "sensitivity": {
+        "perturbations": [
+          {
+            "component": "profit",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "profit",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "welfare",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "welfare",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "cash",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "cash",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "share",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "share",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "capacity",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "capacity",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "resilience",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "resilience",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          }
+        ],
+        "same_choice_fraction": 1,
+        "pareto_dominators": [],
+        "scope": "已验证候选范围；非零权重±20%，零权重加2%后归一化。只报告敏感性，不篡改用户目标。"
+      },
+      "profit_gain": 2361630.4225000003,
+      "welfare_gain": 7314649.645000011,
+      "utility_gain": 0.11958531189999999
+    },
+    {
+      "phase": "closing",
+      "horizon": 1,
+      "selected": "expanded-1",
+      "recipe": {
+        "price": 900000,
+        "reserve": true
+      },
+      "sensitivity": {
+        "perturbations": [
+          {
+            "component": "profit",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "profit",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "welfare",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "welfare",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "cash",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "cash",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "share",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "share",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "capacity",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "capacity",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "resilience",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "resilience",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          }
+        ],
+        "same_choice_fraction": 1,
+        "pareto_dominators": [],
+        "scope": "已验证候选范围；非零权重±20%，零权重加2%后归一化。只报告敏感性，不篡改用户目标。"
+      },
+      "profit_gain": 1499607.5,
+      "welfare_gain": 2923807.5,
+      "utility_gain": 0.14996074999999998
+    },
+    {
+      "phase": "closing",
+      "horizon": 3,
+      "selected": "expanded-3",
+      "recipe": {
+        "price": 950000,
+        "reserve": true
+      },
+      "sensitivity": {
+        "perturbations": [
+          {
+            "component": "profit",
+            "factor": 0.8,
+            "selected": "expanded-3"
+          },
+          {
+            "component": "profit",
+            "factor": 1.2,
+            "selected": "expanded-3"
+          },
+          {
+            "component": "welfare",
+            "factor": 0.8,
+            "selected": "expanded-3"
+          },
+          {
+            "component": "welfare",
+            "factor": 1.2,
+            "selected": "expanded-3"
+          },
+          {
+            "component": "cash",
+            "factor": 0.8,
+            "selected": "expanded-3"
+          },
+          {
+            "component": "cash",
+            "factor": 1.2,
+            "selected": "expanded-3"
+          },
+          {
+            "component": "share",
+            "factor": 0.8,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "share",
+            "factor": 1.2,
+            "selected": "expanded-1"
+          },
+          {
+            "component": "capacity",
+            "factor": 0.8,
+            "selected": "expanded-3"
+          },
+          {
+            "component": "capacity",
+            "factor": 1.2,
+            "selected": "expanded-3"
+          },
+          {
+            "component": "resilience",
+            "factor": 0.8,
+            "selected": "expanded-3"
+          },
+          {
+            "component": "resilience",
+            "factor": 1.2,
+            "selected": "expanded-3"
+          }
+        ],
+        "same_choice_fraction": 0.8333333333333334,
+        "pareto_dominators": [],
+        "scope": "已验证候选范围；非零权重±20%，零权重加2%后归一化。只报告敏感性，不篡改用户目标。"
+      },
+      "profit_gain": 2190039.2625,
+      "welfare_gain": 6689355.055000007,
+      "utility_gain": 0.223429638375
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+extends: market_v9_welfare.yaml
+
+config_id: market-v10-multi-objective
+config_version: market-v10.0.0
+environment_version: market-env-v10.0.0
+
+schema_versions:
+  state: market-state-v10.0.0
+  action: company-action-v8.0.0
+
+persona_utilities:
+  schema_version: persona-catalog-v1.2.0
+  capabilities:
+    social_welfare: true
+    cooperation: false
+  social_welfare_scale_cents: 100000000
+  weights_ppm:
+    stakeholder_balanced: {profit: 200000, share: 50000, growth: 50000, stability: 80000, cash: 80000, reputation: 80000, resilience: 80000, social_welfare: 380000, cooperation_reputation: 0}
+    public_service: {profit: 20000, share: 10000, growth: 10000, stability: 50000, cash: 40000, reputation: 80000, resilience: 100000, social_welfare: 690000, cooperation_reputation: 0}
+    resilience_steward: {profit: 120000, share: 30000, growth: 30000, stability: 100000, cash: 80000, reputation: 80000, resilience: 250000, social_welfare: 310000, cooperation_reputation: 0}
+  traits_ppm:
+    stakeholder_balanced: {time_discount: 950000, risk_aversion: 550000, reciprocity: 500000, commitment_honesty: 800000, opportunism: 150000}
+    public_service: {time_discount: 970000, risk_aversion: 650000, reciprocity: 650000, commitment_honesty: 900000, opportunism: 50000}
+    resilience_steward: {time_discount: 980000, risk_aversion: 800000, reciprocity: 500000, commitment_honesty: 850000, opportunism: 100000}
+  labels:
+    stakeholder_balanced: 利益相关者均衡型
+    public_service: 公共服务使命型
+    resilience_steward: 韧性治理型
+  objectives:
+    stakeholder_balanced: 在企业可持续经营的前提下，同时权衡利润、消费者福利、服务连续性、声誉与系统韧性。
+    public_service: 优先改善可负担性、消费者福利和持续供给，同时保留最低生存与现金边界。
+    resilience_steward: 优先降低供应和事故下行风险，维护企业生存、市场服务连续性与整体经济福利。
+
+calibration_metadata:
+  status: synthetic_prior_pending_external_data
+  multi_objective_claim_boundary: >-
+    Objective weights are explicit research treatments. They are not inferred
+    from real firms and should be varied in sensitivity analysis.

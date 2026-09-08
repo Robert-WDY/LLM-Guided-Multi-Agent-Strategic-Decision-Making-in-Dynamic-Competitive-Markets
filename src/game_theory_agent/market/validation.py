@@ -10,11 +10,15 @@ from game_theory_agent.market.config import MarketConfig
 from game_theory_agent.market.exceptions import ActionValidationError
 from game_theory_agent.market.models import (
     CompanyAction,
+    CompanyOperatingStatus,
     IncidentResponse,
     IncidentResponseMode,
     Level,
     MarketState,
 )
+
+
+PPM = 1_000_000
 
 
 @dataclass(frozen=True, slots=True)
@@ -99,7 +103,20 @@ class ActionValidator:
         }
     )
     optional_fields = frozenset(
-        {"strategy_summary", "shared_resilience_contribution_cents"}
+        {
+            "strategy_summary",
+            "shared_resilience_contribution_cents",
+            "threshold_project_contribution_cents",
+            "mutual_aid_partner_company_id",
+            "mutual_aid_capacity_offer_orders",
+            "mutual_aid_capacity_request_orders",
+            "price_coordination_partner_company_id",
+            "price_coordination_target_cents",
+            "primary_supplier_id",
+            "backup_supplier_id",
+            "primary_supplier_share_ppm",
+            "procurement_quantity_orders", "contract_quantity_orders", "contract_duration_rounds", "contract_bid_cents",
+        }
     )
 
     def __init__(self, config: MarketConfig) -> None:
@@ -157,6 +174,61 @@ class ActionValidator:
             errors.append(
                 "shared_resilience_contribution_cents must be an integer"
             )
+        project_raw = parsed.get("threshold_project_contribution_cents")
+        if project_raw is not None and (
+            isinstance(project_raw, bool) or not isinstance(project_raw, int)
+        ):
+            errors.append(
+                "threshold_project_contribution_cents must be an integer"
+            )
+        mutual_partner_raw = parsed.get("mutual_aid_partner_company_id")
+        if mutual_partner_raw is not None and (
+            not isinstance(mutual_partner_raw, str)
+            or not mutual_partner_raw.strip()
+        ):
+            errors.append(
+                "mutual_aid_partner_company_id must be a non-empty string"
+            )
+        for field in (
+            "mutual_aid_capacity_offer_orders",
+            "mutual_aid_capacity_request_orders",
+        ):
+            value = parsed.get(field)
+            if value is not None and (
+                isinstance(value, bool) or not isinstance(value, int)
+            ):
+                errors.append(f"{field} must be an integer")
+        coordination_partner_raw = parsed.get(
+            "price_coordination_partner_company_id"
+        )
+        if coordination_partner_raw is not None and (
+            not isinstance(coordination_partner_raw, str)
+            or not coordination_partner_raw.strip()
+        ):
+            errors.append(
+                "price_coordination_partner_company_id must be a non-empty string"
+            )
+        coordination_target_raw = parsed.get("price_coordination_target_cents")
+        if coordination_target_raw is not None and (
+            isinstance(coordination_target_raw, bool)
+            or not isinstance(coordination_target_raw, int)
+        ):
+            errors.append("price_coordination_target_cents must be an integer")
+        for field in ("primary_supplier_id", "backup_supplier_id"):
+            value = parsed.get(field)
+            if value is not None and (
+                not isinstance(value, str) or not value.strip()
+            ):
+                errors.append(f"{field} must be a non-empty string")
+        supplier_share_raw = parsed.get("primary_supplier_share_ppm")
+        quantity = parsed.get("procurement_quantity_orders")
+        if quantity is not None and type(quantity) is not int:
+            errors.append("procurement_quantity_orders must be an integer")
+        if supplier_share_raw is not None and (
+            isinstance(supplier_share_raw, bool)
+            or not isinstance(supplier_share_raw, int)
+        ):
+            errors.append("primary_supplier_share_ppm must be an integer")
 
         response_raw = parsed.get("incident_response")
         if not isinstance(response_raw, Mapping):
@@ -200,6 +272,58 @@ class ActionValidator:
                 if state.shared_resilience is not None
                 else (int(shared_raw) if shared_raw not in (None, 0) else None)
             ),
+            threshold_project_contribution_cents=(
+                int(project_raw or 0)
+                if state.strategic_market is not None
+                and state.strategic_market.threshold_project is not None
+                else (
+                    int(project_raw)
+                    if project_raw not in (None, 0)
+                    else None
+                )
+            ),
+            mutual_aid_partner_company_id=(
+                str(mutual_partner_raw)
+                if mutual_partner_raw is not None
+                else None
+            ),
+            mutual_aid_capacity_offer_orders=(
+                int(parsed.get("mutual_aid_capacity_offer_orders") or 0)
+                if parsed.get("mutual_aid_capacity_offer_orders") is not None
+                else None
+            ),
+            mutual_aid_capacity_request_orders=(
+                int(parsed.get("mutual_aid_capacity_request_orders") or 0)
+                if parsed.get("mutual_aid_capacity_request_orders") is not None
+                else None
+            ),
+            price_coordination_partner_company_id=(
+                str(coordination_partner_raw)
+                if coordination_partner_raw is not None
+                else None
+            ),
+            price_coordination_target_cents=(
+                int(coordination_target_raw)
+                if coordination_target_raw is not None
+                else None
+            ),
+            primary_supplier_id=(
+                str(parsed["primary_supplier_id"])
+                if parsed.get("primary_supplier_id") is not None
+                else None
+            ),
+            backup_supplier_id=(
+                str(parsed["backup_supplier_id"])
+                if parsed.get("backup_supplier_id") is not None
+                else None
+            ),
+            primary_supplier_share_ppm=(
+                int(parsed["primary_supplier_share_ppm"])
+                if parsed.get("primary_supplier_share_ppm") is not None
+                else None
+            ),
+            **{key:parsed.get(key) for key in ("contract_quantity_orders", "contract_duration_rounds", "contract_bid_cents")},
+            procurement_quantity_orders=parsed.get("procurement_quantity_orders"),
             incident_response=response,
             strategy_summary=str(parsed.get("strategy_summary", "")),
         )
@@ -252,6 +376,147 @@ class ActionValidator:
                     f"[{shared_bounds['min']}, {shared_bounds['max']}]"
                 )
 
+        project = (
+            state.strategic_market.threshold_project
+            if state.strategic_market is not None
+            else None
+        )
+        project_contribution = action.threshold_project_contribution_cents
+        if project is None:
+            if project_contribution not in (None, 0):
+                errors.append("threshold project contribution is disabled")
+        else:
+            project_value = int(project_contribution or 0)
+            project_bounds = bounds["threshold_project_contribution_cents"]
+            if not int(project_bounds["min"]) <= project_value <= int(
+                project_bounds["max"]
+            ):
+                errors.append(
+                    "threshold_project_contribution_cents must be in "
+                    f"[{project_bounds['min']}, {project_bounds['max']}]"
+                )
+            if project.status.value != "active" and project_value != 0:
+                errors.append("threshold project no longer accepts contributions")
+            if state.round > project.deadline_round and project_value != 0:
+                errors.append("threshold project deadline has passed")
+
+        mutual_enabled = bool(
+            state.strategic_market is not None
+            and state.strategic_market.mutual_aid_enabled
+        )
+        mutual_partner = action.mutual_aid_partner_company_id
+        mutual_offer = int(action.mutual_aid_capacity_offer_orders or 0)
+        mutual_request = int(action.mutual_aid_capacity_request_orders or 0)
+        if not mutual_enabled:
+            if mutual_partner is not None or mutual_offer or mutual_request:
+                errors.append("mutual aid is disabled")
+        else:
+            for field, value in (
+                ("mutual_aid_capacity_offer_orders", mutual_offer),
+                ("mutual_aid_capacity_request_orders", mutual_request),
+            ):
+                mutual_bounds = bounds[field]
+                if not int(mutual_bounds["min"]) <= value <= int(
+                    mutual_bounds["max"]
+                ):
+                    errors.append(
+                        f"{field} must be in "
+                        f"[{mutual_bounds['min']}, {mutual_bounds['max']}]"
+                    )
+            if mutual_offer or mutual_request:
+                if mutual_partner is None:
+                    errors.append("mutual aid amount requires a partner")
+                elif mutual_partner == company_id:
+                    errors.append("mutual aid partner cannot be self")
+                elif mutual_partner not in state.company_ids:
+                    errors.append("mutual aid partner is unknown")
+                elif (
+                    state.strategic_market is not None
+                    and mutual_partner
+                    not in state.strategic_market.active_company_ids
+                ):
+                    errors.append("mutual aid partner has exited")
+            elif mutual_partner is not None:
+                errors.append("mutual aid partner requires an offer or request")
+
+        coordination_enabled = bool(
+            state.strategic_market is not None
+            and state.strategic_market.price_coordination_enabled
+        )
+        coordination_partner = action.price_coordination_partner_company_id
+        coordination_target = action.price_coordination_target_cents
+        if not coordination_enabled:
+            if coordination_partner is not None or coordination_target is not None:
+                errors.append("price coordination is disabled")
+        elif (coordination_partner is None) != (coordination_target is None):
+            errors.append(
+                "price coordination partner and target must be supplied together"
+            )
+        elif coordination_partner is not None and coordination_target is not None:
+            if coordination_partner == company_id:
+                errors.append("price coordination partner cannot be self")
+            elif coordination_partner not in state.company_ids:
+                errors.append("price coordination partner is unknown")
+            elif (
+                state.strategic_market is not None
+                and coordination_partner
+                not in state.strategic_market.active_company_ids
+            ):
+                errors.append("price coordination partner has exited")
+            price_bounds = bounds["price_cents"]
+            if not int(price_bounds["min"]) <= coordination_target <= int(
+                price_bounds["max"]
+            ):
+                errors.append(
+                    "price_coordination_target_cents must be in "
+                    f"[{price_bounds['min']}, {price_bounds['max']}]"
+                )
+
+        supply_chain_enabled = state.supply_chain is not None
+        for key,maximum in (("contract_quantity_orders",state.company(company_id).operations.base_capacity_orders),("contract_duration_rounds",5),("contract_bid_cents",100000)):
+            value=getattr(action,key)
+            if value is not None and (not self.config.data.get("supply_chain",{}).get("strategic_policy") or type(value) is not int or not 0 <= value <= maximum):
+                errors.append("invalid supply contract field: "+key)
+        quantity = action.procurement_quantity_orders
+        if quantity is not None:
+            if not self.config.data.get("autonomous_market") or type(quantity) is not int or not 0 <= quantity <= state.company(company_id).operations.base_capacity_orders:
+                errors.append("procurement quantity requires autonomous market and must fit own capacity")
+        primary_supplier = action.primary_supplier_id
+        backup_supplier = action.backup_supplier_id
+        primary_share = action.primary_supplier_share_ppm
+        if not supply_chain_enabled:
+            if (
+                primary_supplier is not None
+                or backup_supplier is not None
+                or primary_share is not None
+            ):
+                errors.append("supply chain procurement is disabled")
+        else:
+            assert state.supply_chain is not None
+            supplier_ids = set(state.supply_chain.supplier_ids)
+            if primary_supplier is not None and primary_supplier not in supplier_ids:
+                errors.append("primary supplier is unknown")
+            if backup_supplier is not None and backup_supplier not in supplier_ids:
+                errors.append("backup supplier is unknown")
+            if (
+                primary_supplier is not None
+                and backup_supplier is not None
+                and primary_supplier == backup_supplier
+            ):
+                errors.append("primary and backup suppliers must differ")
+            if primary_share is not None:
+                share_bounds = bounds["primary_supplier_share_ppm"]
+                if not int(share_bounds["min"]) <= primary_share <= int(
+                    share_bounds["max"]
+                ):
+                    errors.append(
+                        "primary_supplier_share_ppm must be in [0, 1000000]"
+                    )
+            if backup_supplier is None and primary_share not in (None, PPM):
+                errors.append(
+                    "primary supplier share requires a distinct backup supplier"
+                )
+
         repair_bounds = bounds["repair_budget_cents"]
         repair = action.incident_response.repair_budget_cents
         if not int(repair_bounds["min"]) <= repair <= int(repair_bounds["max"]):
@@ -260,6 +525,31 @@ class ActionValidator:
             )
 
         company = state.company(company_id)
+        if state.strategic_market is not None:
+            lifecycle = state.strategic_market.lifecycle(company_id)
+            if lifecycle.status is CompanyOperatingStatus.EXITED:
+                if action.price_cents != company.commercial.price_cents:
+                    errors.append("exited company must keep its frozen price")
+                if action.fixed_spend_cents != 0:
+                    errors.append("exited company cannot spend or contribute")
+                if action.incident_response.mode is not IncidentResponseMode.WAIT:
+                    errors.append("exited company cannot repair incidents")
+                if action.mutual_aid_partner_company_id is not None:
+                    errors.append(
+                        "exited company cannot select a mutual aid partner"
+                    )
+                if (action.mutual_aid_capacity_offer_orders or 0) != 0:
+                    errors.append("exited company cannot offer mutual aid")
+                if (action.mutual_aid_capacity_request_orders or 0) != 0:
+                    errors.append("exited company cannot request mutual aid")
+                if action.price_coordination_partner_company_id is not None:
+                    errors.append("exited company cannot coordinate price")
+                if action.price_coordination_target_cents is not None:
+                    errors.append("exited company cannot set coordination target")
+                if action.primary_supplier_id is not None:
+                    errors.append("exited company cannot select a supplier")
+                if action.backup_supplier_id is not None:
+                    errors.append("exited company cannot select a backup supplier")
         incident = company.risk.active_incident
         if incident is None:
             if (
@@ -286,6 +576,10 @@ class ActionValidator:
             if (action.shared_resilience_contribution_cents or 0) != 0:
                 errors.append(
                     "shared resilience contribution is disabled in the last round"
+                )
+            if (action.threshold_project_contribution_cents or 0) != 0:
+                errors.append(
+                    "threshold project contribution is disabled in the last round"
                 )
         if action.fixed_spend_cents > company.financial.cash_balance_cents:
             errors.append("BUDGET_EXCEEDED")

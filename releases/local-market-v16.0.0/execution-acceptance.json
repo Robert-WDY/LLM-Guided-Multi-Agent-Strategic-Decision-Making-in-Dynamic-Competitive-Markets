@@ -1,0 +1,127 @@
+{
+  "passed": true,
+  "independent_deviation_checks": [
+    {
+      "companies": 2,
+      "kind": "recommendation_check",
+      "actors": 6,
+      "all_gaps_match": true
+    },
+    {
+      "companies": 2,
+      "kind": "equilibrium",
+      "actors": 6,
+      "all_gaps_match": true
+    },
+    {
+      "companies": 5,
+      "kind": "recommendation_check",
+      "actors": 9,
+      "all_gaps_match": true
+    },
+    {
+      "companies": 5,
+      "kind": "equilibrium",
+      "actors": 9,
+      "all_gaps_match": true
+    },
+    {
+      "companies": 10,
+      "kind": "recommendation_check",
+      "actors": 14,
+      "all_gaps_match": true
+    },
+    {
+      "companies": 10,
+      "kind": "equilibrium",
+      "actors": 14,
+      "all_gaps_match": true
+    }
+  ],
+  "episodes": 8,
+  "rounds": 40,
+  "results": [
+    {
+      "seed": 369601,
+      "mode": "rule",
+      "profit": 10463365,
+      "welfare": 262397955,
+      "replay": true,
+      "rounds": 5,
+      "profit_gain_cents": 0,
+      "welfare_gain_cents": 0
+    },
+    {
+      "seed": 369601,
+      "mode": "advisor_company",
+      "profit": 16889845,
+      "welfare": 264297845,
+      "replay": true,
+      "rounds": 5,
+      "profit_gain_cents": 6426480,
+      "welfare_gain_cents": 1899890
+    },
+    {
+      "seed": 369601,
+      "mode": "advisor_profit",
+      "profit": 15473658,
+      "welfare": 268996954,
+      "replay": true,
+      "rounds": 5,
+      "profit_gain_cents": 5010293,
+      "welfare_gain_cents": 6598999
+    },
+    {
+      "seed": 369601,
+      "mode": "advisor_welfare",
+      "profit": 15694005,
+      "welfare": 270017737,
+      "replay": true,
+      "rounds": 5,
+      "profit_gain_cents": 5230640,
+      "welfare_gain_cents": 7619782
+    },
+    {
+      "seed": 369602,
+      "mode": "rule",
+      "profit": 7210187,
+      "welfare": 257848166,
+      "replay": true,
+      "rounds": 5,
+      "profit_gain_cents": 0,
+      "welfare_gain_cents": 0
+    },
+    {
+      "seed": 369602,
+      "mode": "advisor_company",
+      "profit": 11690404,
+      "welfare": 265318080,
+      "replay": true,
+      "rounds": 5,
+      "profit_gain_cents": 4480217,
+      "welfare_gain_cents": 7469914
+    },
+    {
+      "seed": 369602,
+      "mode": "advisor_profit",
+      "profit": 15176257,
+      "welfare": 264873658,
+      "replay": true,
+      "rounds": 5,
+      "profit_gain_cents": 7966070,
+      "welfare_gain_cents": 7025492
+    },
+    {
+      "seed": 369602,
+      "mode": "advisor_welfare",
+      "profit": 13755200,
+      "welfare": 270841374,
+      "replay": true,
+      "rounds": 5,
+      "profit_gain_cents": 6545013,
+      "welfare_gain_cents": 12993208
+    }
+  ],
+  "elapsed_seconds": 41.34630659999675,
+  "new_real_calls": 0
+}

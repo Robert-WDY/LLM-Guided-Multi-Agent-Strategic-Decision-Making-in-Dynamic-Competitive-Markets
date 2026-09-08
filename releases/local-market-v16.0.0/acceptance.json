@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "release": "local-market-v16.0.0",
+  "browser_qa": true,
+  "backup_restore": true,
+  "frontend": {
+    "build": true,
+    "typecheck": true,
+    "lint": true,
+    "tests": 14
+  },
+  "backend_tests": 461,
+  "new_real_calls": 0,
+  "budget_reserved_cny": 9.993565,
+  "browser_checks": [
+    "five-company welfare/expansion advice saved with seed 360801",
+    "action table, utility decomposition and risk formula",
+    "alternative validation scores and explicit unsearched templates",
+    "multiplayer profitable deviations and local payoff conditions",
+    "full experiment export button and stored API record equality",
+    "UI queue seed 360802: rule/advisor welfare, two five-round episodes completed",
+    "all five executed decisions inspectable; closing phase at final round",
+    "invalid custom weights rejected, valid saved parameters restored",
+    "six stage acceptance records visible",
+    "browser reload after actual backup and restore"
+  ],
+  "browser_advisor_record_prefix": "36f203ba",
+  "browser_job_prefix": "ecfaf2ca",
+  "scope": "synthetic market execution; no new paid model experiment; no global/dynamic Nash or real-economy certificate"
+}

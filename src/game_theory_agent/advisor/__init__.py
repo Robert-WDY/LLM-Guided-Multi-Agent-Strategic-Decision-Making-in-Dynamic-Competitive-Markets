@@ -26,6 +26,7 @@ from game_theory_agent.advisor.adoption import (
     build_advisor_adoption_trace,
     compute_adoption_trace_hash,
 )
+from game_theory_agent.advisor.context_view import build_agent_advice_view
 
 __all__ = [
     "ADVISOR_HASH_PROTOCOL_VERSION",
@@ -43,6 +44,7 @@ __all__ = [
     "StrategicGameTheoryAdvice",
     "compute_advice_hash",
     "build_advisor_adoption_trace",
+    "build_agent_advice_view",
     "compute_adoption_trace_hash",
     "compute_strategic_advice_hash",
     "verify_advisor_replay",

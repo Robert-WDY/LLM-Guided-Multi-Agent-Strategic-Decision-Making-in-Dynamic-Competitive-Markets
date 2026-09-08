@@ -1,0 +1,56 @@
+{
+  "episodes": 48,
+  "rounds": 960,
+  "real_passed": true,
+  "budget_after": {
+    "ready": true,
+    "total_cny": 10,
+    "reserved_cny": 7.548171,
+    "remaining_cny": 2.451829,
+    "historical_estimate_cny": 1.093593,
+    "maximum_call_cny": 0.42,
+    "new_calls": 7,
+    "model": "deepseek-v4-flash",
+    "price_valid_through": "2026-09-08",
+    "message": "已保留失败及未知调用的额度。"
+  },
+  "groups": [
+    {
+      "option": "reserve",
+      "n": 8,
+      "mean_welfare_cents": 1093480428.5,
+      "mean_government_cash_cents": 50000000
+    },
+    {
+      "option": "enforce",
+      "n": 8,
+      "mean_welfare_cents": 1089480428.5,
+      "mean_government_cash_cents": 46000000
+    },
+    {
+      "option": "resilience",
+      "n": 8,
+      "mean_welfare_cents": 1093480428.5,
+      "mean_government_cash_cents": 48100000
+    },
+    {
+      "option": "consumer",
+      "n": 8,
+      "mean_welfare_cents": 1093480428.5,
+      "mean_government_cash_cents": 30000000
+    },
+    {
+      "option": "balanced",
+      "n": 8,
+      "mean_welfare_cents": 1089480428.5,
+      "mean_government_cash_cents": 33600000
+    },
+    {
+      "option": "learning",
+      "n": 8,
+      "mean_welfare_cents": 1091880428.5,
+      "mean_government_cash_cents": 41612500
+    }
+  ],
+  "limits": "Post-purchase rebates redistribute surplus, without household saving/dynamic demand. UCB explores realized welfare, not a guarantee of causal improvement or optimal long-horizon policy."
+}

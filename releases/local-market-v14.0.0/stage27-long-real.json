@@ -1,0 +1,98 @@
+{
+  "passed": true,
+  "episodes": 6,
+  "rounds": 60,
+  "real_model_calls": 160,
+  "budget_after": {
+    "ready": false,
+    "total_cny": 10,
+    "reserved_cny": 9.938022,
+    "remaining_cny": 0.061978,
+    "historical_estimate_cny": 1.093593,
+    "maximum_call_cny": 0.42,
+    "new_calls": 180,
+    "model": "deepseek-v4-flash",
+    "price_valid_through": "2026-09-08",
+    "message": "已保留失败及未知调用的额度。"
+  },
+  "groups": [
+    {
+      "model": "rule",
+      "n": 2,
+      "mean_welfare_cents": 574959348
+    },
+    {
+      "model": "doubao-seed-2-0-lite-260215",
+      "n": 2,
+      "mean_welfare_cents": 568308263.5
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "n": 2,
+      "mean_welfare_cents": 578981574.5
+    }
+  ],
+  "role_diagnostics": [
+    {
+      "model": "doubao-seed-2-0-lite-260215",
+      "actor": "company_A",
+      "n": 20,
+      "execution_rate": 1,
+      "mean_conditional_three_round_regret_cents": 1525785.9985
+    },
+    {
+      "model": "doubao-seed-2-0-lite-260215",
+      "actor": "economy_supplier",
+      "n": 20,
+      "execution_rate": 1,
+      "mean_conditional_three_round_regret_cents": 135044.18687500004
+    },
+    {
+      "model": "doubao-seed-2-0-lite-260215",
+      "actor": "consumers",
+      "n": 20,
+      "execution_rate": 1,
+      "mean_conditional_three_round_regret_cents": 420447.27387500106
+    },
+    {
+      "model": "doubao-seed-2-0-lite-260215",
+      "actor": "government",
+      "n": 20,
+      "execution_rate": 1,
+      "mean_conditional_three_round_regret_cents": 0.0
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "actor": "company_A",
+      "n": 20,
+      "execution_rate": 1,
+      "mean_conditional_three_round_regret_cents": 1130201.4243750002
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "actor": "economy_supplier",
+      "n": 20,
+      "execution_rate": 1,
+      "mean_conditional_three_round_regret_cents": 40506.75312499999
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "actor": "consumers",
+      "n": 20,
+      "execution_rate": 1,
+      "mean_conditional_three_round_regret_cents": 52750.80024999976
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "actor": "government",
+      "n": 20,
+      "execution_rate": 1,
+      "mean_conditional_three_round_regret_cents": 515400.0
+    }
+  ],
+  "limits": "Two paired seeds. Regret uses a simulator teacher holding others' current portfolios fixed for three rounds, not an achievable hidden-information optimum. Model output is a finite menu choice.",
+  "real_attempts": 161,
+  "completed_schema_rejections": 1,
+  "reviewed_retries": 1,
+  "original_failed_raw_response_retained": false
+}

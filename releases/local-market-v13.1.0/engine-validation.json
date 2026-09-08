@@ -1,0 +1,66 @@
+{
+  "episodes": 256,
+  "mechanisms_exercised": {
+    "inspection_cents": 51800000,
+    "refunds_cents": 230741408,
+    "supplier_investment_cents": 2962940000,
+    "support_cents": 2690932588
+  },
+  "model_calls": 0,
+  "paired_metrics": {
+    "001": {
+      "extra_exit_pairs": 1,
+      "median_welfare_delta_cents": 0.0,
+      "pairs": 32,
+      "positive": 13,
+      "worst_welfare_delta_cents": -172844494
+    },
+    "010": {
+      "extra_exit_pairs": 1,
+      "median_welfare_delta_cents": 0.0,
+      "pairs": 32,
+      "positive": 7,
+      "worst_welfare_delta_cents": -309531110
+    },
+    "011": {
+      "extra_exit_pairs": 2,
+      "median_welfare_delta_cents": 77136648.5,
+      "pairs": 32,
+      "positive": 21,
+      "worst_welfare_delta_cents": -172844494
+    },
+    "100": {
+      "extra_exit_pairs": 0,
+      "median_welfare_delta_cents": 604657517.5,
+      "pairs": 32,
+      "positive": 32,
+      "worst_welfare_delta_cents": 61534809
+    },
+    "101": {
+      "extra_exit_pairs": 0,
+      "median_welfare_delta_cents": 604657517.5,
+      "pairs": 32,
+      "positive": 32,
+      "worst_welfare_delta_cents": 61534809
+    },
+    "110": {
+      "extra_exit_pairs": 0,
+      "median_welfare_delta_cents": 604657517.5,
+      "pairs": 32,
+      "positive": 32,
+      "worst_welfare_delta_cents": 61534809
+    },
+    "111": {
+      "extra_exit_pairs": 0,
+      "median_welfare_delta_cents": 604657517.5,
+      "pairs": 32,
+      "positive": 32,
+      "worst_welfare_delta_cents": 61534809
+    }
+  },
+  "passed": true,
+  "promotion_passed": true,
+  "rounds": 7680,
+  "source_hash": "sha256:5d3ca07d5d6eec67cea3d8bc778ad54bcacf92871a85a824a9b3dfc253aa8195",
+  "spec_hash": "sha256:2c30a828ac71d8b1fde77211c278dd9b217aebd5e2d7597cc1cb566a1659e1b4"
+}

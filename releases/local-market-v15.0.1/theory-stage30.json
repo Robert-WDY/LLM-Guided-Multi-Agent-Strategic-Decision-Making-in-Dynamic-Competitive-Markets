@@ -1,0 +1,93 @@
+{
+  "stage": 30,
+  "passed": true,
+  "episodes": 576,
+  "rounds": 34560,
+  "groups": [
+    {
+      "noise": 0,
+      "strategy": "cooperate",
+      "n": 48,
+      "mean_payoff": 2.5,
+      "cooperation": 1.0
+    },
+    {
+      "noise": 0,
+      "strategy": "defect",
+      "n": 48,
+      "mean_payoff": 2.1666666666666665,
+      "cooperation": 0.0
+    },
+    {
+      "noise": 0,
+      "strategy": "tit_for_tat",
+      "n": 48,
+      "mean_payoff": 2.6638888888888888,
+      "cooperation": 0.8361111111111111
+    },
+    {
+      "noise": 0,
+      "strategy": "grim_trigger",
+      "n": 48,
+      "mean_payoff": 2.6638888888888888,
+      "cooperation": 0.8361111111111111
+    },
+    {
+      "noise": 0,
+      "strategy": "generous_tft",
+      "n": 48,
+      "mean_payoff": 2.6274305555555557,
+      "cooperation": 0.8725694444444444
+    },
+    {
+      "noise": 0,
+      "strategy": "win_stay_lose_shift",
+      "n": 48,
+      "mean_payoff": 2.5833333333333335,
+      "cooperation": 0.9166666666666666
+    },
+    {
+      "noise": 0.1,
+      "strategy": "cooperate",
+      "n": 48,
+      "mean_payoff": 1.8791666666666667,
+      "cooperation": 0.9083333333333333
+    },
+    {
+      "noise": 0.1,
+      "strategy": "defect",
+      "n": 48,
+      "mean_payoff": 2.3354166666666667,
+      "cooperation": 0.09166666666666666
+    },
+    {
+      "noise": 0.1,
+      "strategy": "tit_for_tat",
+      "n": 48,
+      "mean_payoff": 2.1625,
+      "cooperation": 0.5045138888888889
+    },
+    {
+      "noise": 0.1,
+      "strategy": "grim_trigger",
+      "n": 48,
+      "mean_payoff": 2.3444444444444446,
+      "cooperation": 0.17916666666666667
+    },
+    {
+      "noise": 0.1,
+      "strategy": "generous_tft",
+      "n": 48,
+      "mean_payoff": 2.1173611111111112,
+      "cooperation": 0.6086805555555556
+    },
+    {
+      "noise": 0.1,
+      "strategy": "win_stay_lose_shift",
+      "n": 48,
+      "mean_payoff": 2.1788194444444446,
+      "cooperation": 0.5770833333333334
+    }
+  ],
+  "conclusion": "Tournament scores depend on this opponent population and noise; not an equilibrium certificate."
+}

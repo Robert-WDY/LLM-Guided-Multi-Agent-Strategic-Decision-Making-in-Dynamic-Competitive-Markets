@@ -1,13 +1,17 @@
 """HTTP adapter for the Engineering MVP v4 market environment."""
 
 from __future__ import annotations
+from game_theory_agent.local_budget import protected as local_budget_protected
 
 import hashlib
 import json
 import os
 import secrets
+import sqlite3
 import threading
 import uuid
+import inspect
+from functools import wraps
 from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
@@ -42,6 +46,7 @@ from game_theory_agent.advisor import (
     AdvisorMode,
     BayesianGameAdvisor,
     BayesianStrategyAdvisor,
+    build_agent_advice_view,
 )
 from game_theory_agent.opponent import (
     OpponentModelLedger,
@@ -104,6 +109,7 @@ from game_theory_agent.market import (
 )
 from game_theory_agent.market.exceptions import MarketError
 from game_theory_agent.market.replay import EpisodeManifest, MarketTransition
+from game_theory_agent.persistence import CODEC, CheckpointError, SessionStore, restore as restore_session
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -159,7 +165,7 @@ class CreateEpisodeRequest(BaseModel):
         "quality_oriented",
         "service_oriented",
     ] = "random"
-    max_rounds: Literal[5, 10, 15, 20] = 10
+    max_rounds: Literal[5, 10, 15, 20, 60] = 10
     information_mode: Literal["perfect", "public"] = "perfect"
     observer_information_modes: dict[
         str, Literal["perfect", "public"]
@@ -174,11 +180,13 @@ class CreateEpisodeRequest(BaseModel):
 
 
 class StepRequest(BaseModel):
+    actor_choices: dict[str,str] = Field(default_factory=dict)
     step_id: str
     joint_action: dict[str, dict[str, Any]]
 
 
 class PlayerStepRequest(BaseModel):
+    actor_choices: dict[str,str] = Field(default_factory=dict)
     step_id: str
     player_action: dict[str, Any]
 
@@ -196,6 +204,7 @@ class AutoRunRequest(BaseModel):
 
 
 class CoordinatorRunRequest(BaseModel):
+    actor_choices: dict[str,str] = Field(default_factory=dict)
     """Idempotent authorization to advance rounds through RoundCoordinator."""
 
     model_config = ConfigDict(extra="forbid")
@@ -206,6 +215,7 @@ class CoordinatorRunRequest(BaseModel):
     expected_state_hash: str = Field(min_length=1)
     max_rounds: int | None = Field(default=None, ge=1, le=20)
     player_action: dict[str, Any] | None = None
+    player_communication: dict[str, Any] | None = None
     authorize_real_model: bool = False
     maximum_model_calls: int | None = Field(default=None, ge=1, le=400)
 
@@ -252,6 +262,7 @@ class CloseCommunicationRequest(BaseModel):
 
 
 class SettleAgentRoundRequest(BaseModel):
+    actor_choices: dict[str,str] = Field(default_factory=dict)
     model_config = ConfigDict(extra="forbid")
 
     step_id: str = Field(min_length=1)
@@ -319,6 +330,11 @@ class EpisodeSession:
     ] = field(default_factory=dict)
     agent_runtimes: dict[str, Any] = field(default_factory=dict)
     coordinator_active_run_id: str | None = None
+    recovery_required: bool = False
+    interrupted_run_ids: set[str] = field(default_factory=set)
+    checkpoint_ui_state: dict[str, Any] = field(default_factory=dict)
+    restored_runtime_states: dict[str, Any] = field(default_factory=dict)
+    endpoint_replays: dict[str, Any] = field(default_factory=dict)
     communication_mode: CommunicationMode = "off"
     cooperation_mode: CooperationMode = "off"
     cooperation_ledger: CooperationLedger | None = None
@@ -338,6 +354,61 @@ class EpisodeSession:
 
 SESSIONS: dict[str, EpisodeSession] = {}
 SESSIONS_LOCK = threading.RLock()
+CODEC.register(AgentIntentRecord)
+SESSION_STORE = SessionStore(Path(os.environ.get("MARKET_SESSION_DB", PROJECT_ROOT / ".local-state" / "sessions.sqlite3")))
+
+
+def _persistence_enabled() -> bool:
+    return os.environ.get("MARKET_PERSISTENCE", "1") == "1"
+
+
+def _persist_session(session: EpisodeSession) -> dict[str, Any] | None:
+    if not _persistence_enabled():
+        return None
+    with session.lock:
+        try:
+            return SESSION_STORE.save(session)
+        except (OSError, ValueError, sqlite3.Error) as exc:
+            raise HTTPException(status_code=503, detail="实验保存失败；请检查本地存储后重试，勿新建替代动作。") from exc
+
+
+def _durable_endpoint(function):
+    """Checkpoint HTTP and in-process mutations using the same boundary."""
+    signature = inspect.signature(function)
+
+    @wraps(function)
+    def wrapped(*args, **kwargs):
+        bound = signature.bind(*args, **kwargs).arguments
+        episode_id = bound.get("episode_id")
+        result = None
+        replay_key = None
+        try:
+            if episode_id and function.__name__ != "recover_interrupted_episode":
+                session = _session(episode_id)
+                if session.recovery_required:
+                    raise HTTPException(status_code=409, detail="实验曾在执行中中断；请先完成中断轮恢复，不会自动重试模型调用。")
+                if function.__name__ in {"step_episode", "step_player_episode"}:
+                    request_data = bound["request"].model_dump(mode="json")
+                    replay_key = function.__name__ + ":" + str(request_data["step_id"])
+                    with session.lock:
+                        prior = session.endpoint_replays.get(replay_key)
+                        if prior is not None:
+                            if prior[0] != request_data:
+                                raise HTTPException(status_code=409, detail="相同 step_id 的动作内容不同")
+                            return prior[1]
+                        result = function(*args, **kwargs)
+                        session.endpoint_replays[replay_key] = (request_data, result)
+                        return result
+            result = function(*args, **kwargs)
+            return result
+        finally:
+            if episode_id is None and isinstance(result, dict):
+                episode_id = result.get("state", {}).get("episode_id")
+            session = SESSIONS.get(episode_id)
+            if session is not None:
+                _persist_session(session)
+
+    return wrapped
 
 
 app = FastAPI(
@@ -387,6 +458,14 @@ async def agent_market_error_handler(
 def _session(episode_id: str) -> EpisodeSession:
     with SESSIONS_LOCK:
         session = SESSIONS.get(episode_id)
+        if session is None and _persistence_enabled():
+            try:
+                saved = SESSION_STORE.load(episode_id)
+                if saved is not None:
+                    session = restore_session(saved, CONFIG, EpisodeSession)
+                    SESSIONS[episode_id] = session
+            except (CheckpointError, OSError, sqlite3.Error) as exc:
+                raise HTTPException(status_code=409, detail=str(exc)) from exc
     if session is None:
         raise HTTPException(status_code=404, detail="episode not found")
     return session
@@ -465,6 +544,13 @@ def _canonical_agent_id(
     return company_id
 
 
+def _session_rule_action(session, state, company_id):
+    from game_theory_agent.market.cooperation_personas import apply_cooperation_persona
+    action = build_rule_action(session.env.config, state, company_id)
+    return apply_cooperation_persona(session.env.config, state, company_id, action,
+                                    _configured_persona_profile(session, company_id).persona_id)
+
+
 def _configured_persona_profile(
     session: EpisodeSession, company_id: str
 ):
@@ -475,6 +561,8 @@ def _configured_persona_profile(
     if isinstance(persona_config, dict):
         persona_id = persona_config.get("persona_id")
         expected_hash = persona_config.get("profile_hash")
+    if not persona_id:
+        persona_id = configured.get("persona_name")
     if not persona_id:
         persona_id = session.env.get_state().company(company_id).persona.value
     profile = PERSONA_REGISTRY.get(str(persona_id))
@@ -701,6 +789,7 @@ def _episode_payload(session: EpisodeSession) -> dict[str, Any]:
     )
     payload = {
         "manifest": session.manifest.to_dict(),
+        "checkpoint": {"enabled": _persistence_enabled(), "recovery_required": session.recovery_required, "ui_state": session.checkpoint_ui_state},
         "state": state.to_dict(),
         "action_constraints": _constraints(session.env),
         "action_presets": CONFIG.to_dict()["action"]["presets"],
@@ -716,6 +805,8 @@ def _episode_payload(session: EpisodeSession) -> dict[str, Any]:
             "mechanism": (
                 "shared_resilience_contribution"
                 if session.cooperation_mode == "shared_resilience_v1"
+                else "final_strategic_market"
+                if session.cooperation_mode == "combined_v1"
                 else None
             ),
             "commitments_are_non_binding": True,
@@ -1033,13 +1124,14 @@ def _agent_observation(session: EpisodeSession, company_id: str) -> dict[str, An
             "pareto_reliable_v5",
             "pareto_reliable_v6",
             "pareto_reliable_v7",
+            "strategic_market_v9",
         }
         and belief_state is not None
         and opponent_model_state is not None
         and observer_information_mode == "public"
         and not state.terminal
     ):
-        observation["game_theory_advice"] = PUBLIC_ROLLOUT_ADVISOR.advise(
+        full_advice = PUBLIC_ROLLOUT_ADVISOR.advise(
             observation=observation,
             company_id=company_id,
             persona_profile=_configured_persona_profile(session, company_id),
@@ -1049,6 +1141,15 @@ def _agent_observation(session: EpisodeSession, company_id: str) -> dict[str, An
             scenario_count=5,
             advisor_mode=session.advisor_mode,
         ).model_dump(mode="json")
+        agent_advice = build_agent_advice_view(full_advice)
+        if agent_advice is not None:
+            observation["game_theory_advice"] = agent_advice
+        else:
+            # Do not leak even the treatment label into an abstained decision.
+            # For the Agent, this round is observationally identical to the
+            # Advisor-off condition; the full result remains reproducible from
+            # the frozen public inputs and manifest.
+            observation["episode_config"]["advisor_mode"] = "off"
     return seal_observation(observation)
 
 
@@ -1368,6 +1469,7 @@ def agent_capabilities() -> dict[str, Any]:
             "pareto_reliable_v5",
             "pareto_reliable_v6",
             "pareto_reliable_v7",
+            "strategic_market_v9",
         ],
         "repeated_game_modes": ["off", "reciprocity_v1"],
     }
@@ -1493,6 +1595,9 @@ def _episode_options() -> dict[str, Any]:
                 "shared_resilience_v1": (
                     "仅允许私密韧性提议、非约束承诺和真实公共韧性贡献。"
                 ),
+                "combined_v1": (
+                    "最终战略市场：公共韧性、门槛项目、双边应急互助、价格协调/背叛、监管、供应链、福利核算与破产退出。"
+                ),
             },
             "supported_communication_modes": ["off", "public_private"],
             "repeated_game": {
@@ -1538,6 +1643,7 @@ def get_agent_observation(
     "/v1/episodes/{episode_id}/companies/{company_id}/communication/submissions",
     status_code=202,
 )
+@_durable_endpoint
 def submit_agent_communication(
     episode_id: str,
     company_id: str,
@@ -1662,6 +1768,7 @@ def get_agent_action_contract(
 
 
 @agent_app.post("/v1/episodes/{episode_id}/intents", status_code=202)
+@_durable_endpoint
 def submit_agent_intent(
     episode_id: str,
     request: SubmitAgentIntentRequest,
@@ -1754,6 +1861,7 @@ def get_agent_intent(
 
 @app.get("/api/health")
 def health() -> dict[str, Any]:
+    from game_theory_agent.local_budget import status as budget_status
     return {
         "status": "ok",
         "environment_version": CONFIG.environment_version,
@@ -1761,6 +1869,7 @@ def health() -> dict[str, Any]:
         "config_version": CONFIG.config_version,
         "config_sha256": CONFIG.config_sha256,
         "decision_policy_version": POLICY_VERSION,
+        **({"local_model_budget": budget_status()} if local_budget_protected(CONFIG) else {}),
     }
 
 
@@ -1769,7 +1878,10 @@ def persona_capabilities() -> dict[str, Any]:
     """Expose the authoritative, experiment-selectable persona catalogue."""
 
     profiles = []
-    for persona_id in MIDTERM_VALIDATED_PERSONA_IDS:
+    selectable = list(MIDTERM_VALIDATED_PERSONA_IDS)
+    available = CONFIG.mapping("persona_utilities", "weights_ppm")
+    selectable.extend(name for name in ("stakeholder_balanced", "public_service", "resilience_steward", "cooperator", "free_rider", "retaliator") if name in available)
+    for persona_id in selectable:
         profile = PERSONA_REGISTRY.get(persona_id)
         profiles.append(
             {
@@ -1788,6 +1900,7 @@ def persona_capabilities() -> dict[str, Any]:
                     "social_welfare": profile.social_welfare_enabled,
                 },
                 "validation_status": "validated",
+                "evidence_level": "deterministic_synthetic" if persona_id not in MIDTERM_VALIDATED_PERSONA_IDS else "research_baseline",
                 "experiment_selectable": True,
             }
         )
@@ -1801,10 +1914,110 @@ def persona_capabilities() -> dict[str, Any]:
                 "validation_status": "ui_demo_not_implemented",
                 "experiment_selectable": False,
             }
-            for persona_id in ("cooperator", "free_rider", "retaliator")
+            for persona_id in ("cooperator", "free_rider", "retaliator") if persona_id not in available
         ],
-        "cooperation_persona_claim": "not_implemented_or_validated",
+        "cooperation_persona_claim": "public_history_rule_and_versioned_model_objectives" if CONFIG.data.get("formal_cooperation_personas") else "not_implemented_or_validated",
     }
+
+
+class SaveEpisodeRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    ui_state: dict[str, Any] = Field(default_factory=dict)
+
+
+def _clean_ui_state(value: dict[str, Any]) -> dict[str, Any]:
+    config_keys = {"informationMode", "marketType", "rounds", "seed", "communication", "cooperation", "gameTheory", "repeatedGame"}
+    agent_keys = {"companyId", "shortName", "companyName", "color", "driver", "model", "persona", "information", "communication", "gameTheory"}
+    if len(json.dumps(value)) > 30_000:
+        raise HTTPException(status_code=422, detail="界面配置过大")
+    if not isinstance(value.get("config", {}), dict) or not isinstance(value.get("agents", []), list) or any(not isinstance(item, dict) for item in value.get("agents", [])):
+        raise HTTPException(status_code=422, detail="界面配置格式错误")
+    return {
+        "entryMode": value.get("entryMode", "research"),
+        "config": {k:v for k,v in value.get("config", {}).items() if k in config_keys},
+        "agents": [{k:v for k,v in item.items() if k in agent_keys} for item in value.get("agents", [])][:10],
+    }
+
+
+@app.get("/api/v1/controller/saved-episodes")
+def list_saved_episodes(controller_token: str | None = Header(default=None, alias="X-Controller-Token")) -> dict[str, Any]:
+    _require_controller_token(controller_token)
+    return {"episodes": SESSION_STORE.list(), "config_sha256": CONFIG.config_sha256}
+
+
+@app.get("/api/v1/controller/runtime-status")
+def local_runtime_status(controller_token: str | None = Header(default=None, alias="X-Controller-Token")) -> dict[str, Any]:
+    _require_controller_token(controller_token)
+    from game_theory_agent.research_workbench import active_jobs
+    queued = active_jobs(Path(os.environ.get("MARKET_SESSION_DB", PROJECT_ROOT / ".local-state" / "sessions.sqlite3")).parent / "workbench")
+    with SESSIONS_LOCK:
+        return {"active_runs": sum(s.coordinator_active_run_id is not None for s in SESSIONS.values())+queued, "loaded_episodes": len(SESSIONS), "workbench_jobs":queued}
+
+
+@app.post("/api/v1/controller/episodes/{episode_id}/save")
+def save_episode(episode_id: str, request: SaveEpisodeRequest, controller_token: str | None = Header(default=None, alias="X-Controller-Token")) -> dict[str, Any]:
+    _require_controller_token(controller_token)
+    session = _session(episode_id)
+    with session.lock:
+        if session.coordinator_active_run_id:
+            raise HTTPException(status_code=409, detail="请等待当前回合完成后保存")
+        if request.ui_state:
+            session.checkpoint_ui_state = _clean_ui_state(request.ui_state)
+        return {"checkpoint": SESSION_STORE.save(session)}
+
+
+@app.post("/api/v1/controller/episodes/{episode_id}/restore")
+def restore_episode(episode_id: str, controller_token: str | None = Header(default=None, alias="X-Controller-Token")) -> dict[str, Any]:
+    _require_controller_token(controller_token)
+    # Reconnect to the latest state; never roll a live experiment back.
+    session = _session(episode_id)
+    with session.lock:
+        return _episode_payload(session)
+
+
+@app.get("/api/v1/controller/episodes/{episode_id}/export")
+def export_episode(episode_id: str, controller_token: str | None = Header(default=None, alias="X-Controller-Token")) -> dict[str, Any]:
+    _require_controller_token(controller_token)
+    session = _session(episode_id)
+    with session.lock:
+        return {"manifest": session.manifest.to_dict(), "state":session.env.get_state().to_dict(), "transitions":[t.to_dict() for t in session.transitions], "communication":[ledger.to_dict() for ledger in session.communication_ledgers.values()] if hasattr(CommunicationRoundLedger, "to_dict") else [CODEC.encode(ledger) for ledger in session.communication_ledgers.values()], "coordinator_runs":{key:value[1] for key,value in session.coordinator_runs.items()}, "ui_state":session.checkpoint_ui_state, "contains_credentials":False}
+
+
+@app.get("/api/v1/controller/episodes/{episode_id}/research-view")
+def episode_research_view(episode_id: str, round_number: int | None = None, controller_token: str | None = Header(default=None, alias="X-Controller-Token")) -> dict[str, Any]:
+    _require_controller_token(controller_token)
+    from game_theory_agent.research_view import build_research_view
+    session = _session(episode_id)
+    with session.lock:
+        try:
+            return build_research_view(session, round_number)
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.post("/api/v1/controller/episodes/{episode_id}/recover")
+@_durable_endpoint
+def recover_interrupted_episode(episode_id: str, controller_token: str | None = Header(default=None, alias="X-Controller-Token")) -> dict[str, Any]:
+    """Explicit recovery: preserve accepted intents; fill missing actions by rules."""
+    _require_controller_token(controller_token)
+    session = _session(episode_id)
+    with session.lock:
+        if not session.recovery_required:
+            return _episode_payload(session)
+        state = session.env.get_state()
+        session.recovery_required = False
+        if not state.terminal:
+            intents = {item.company_id:key for key,item in session.agent_intents.items() if item.round==state.round and item.state_version==state.state_version and item.status=="accepted"}
+            try:
+                if session.communication_mode != "off":
+                    close_agent_communication(episode_id, CloseCommunicationRequest(round=state.round,state_version=state.state_version,state_hash=state.state_hash), controller_token)
+                settle_agent_round(episode_id, SettleAgentRoundRequest(step_id=f"{episode_id}:{state.round}:{state.state_version}",intent_ids=intents,fallback="rule"),controller_token)
+            except Exception:
+                session.recovery_required = True
+                raise
+        payload = _episode_payload(session)
+        payload["recovery"] = {"missing_actions":"rule", "model_calls":0, "preserved_intent_count":len(intents) if not state.terminal else 0}
+        return payload
 
 
 @app.get("/api/v1/research/experiments")
@@ -2060,6 +2273,7 @@ def evaluate_preset_endpoint(
 
 
 @app.post("/api/episodes", status_code=201)
+@_durable_endpoint
 def create_episode(
     request: CreateEpisodeRequest,
     controller_token: str | None = Header(
@@ -2081,7 +2295,7 @@ def create_episode(
     if protected_creation:
         _require_controller_token(controller_token)
     if (
-        request.cooperation_mode == "shared_resilience_v1"
+        request.cooperation_mode in {"shared_resilience_v1", "combined_v1"}
         and request.communication_mode == "public_only"
     ):
         raise HTTPException(
@@ -2124,6 +2338,7 @@ def create_episode(
         "pareto_reliable_v5",
         "pareto_reliable_v6",
         "pareto_reliable_v7",
+        "strategic_market_v9",
     } and (
         request.information_mode != "public"
         or request.opponent_model_mode != "public_strategy_v1"
@@ -2286,7 +2501,7 @@ def create_episode(
         agent_token_hashes=agent_token_hashes,
     )
     with SESSIONS_LOCK:
-        if episode_id in SESSIONS:
+        if episode_id in SESSIONS or (_persistence_enabled() and SESSION_STORE.load(episode_id) is not None):
             raise HTTPException(status_code=409, detail="episode_id already exists")
         SESSIONS[episode_id] = session
     payload = _episode_payload(session)
@@ -2313,6 +2528,7 @@ def get_action_constraints(episode_id: str, agent_id: str) -> dict[str, Any]:
 
 
 @app.post("/api/episodes/{episode_id}/steps")
+@_durable_endpoint
 def step_episode(episode_id: str, request: StepRequest) -> dict[str, Any]:
     session = _session(episode_id)
     with session.lock:
@@ -2341,7 +2557,7 @@ def step_episode(episode_id: str, request: StepRequest) -> dict[str, Any]:
             company_id: decision.action
             for company_id, decision in resolutions.items()
         }
-        result = session.env.step(request.step_id, actions)
+        result = session.env.step(request.step_id, actions,actor_choices=request.actor_choices)
         _record_transition(session, state_before, actions, result)
         payload = {
             "step_result": result.to_dict(),
@@ -2357,6 +2573,7 @@ def step_episode(episode_id: str, request: StepRequest) -> dict[str, Any]:
 
 
 @app.post("/api/episodes/{episode_id}/player-steps")
+@_durable_endpoint
 def step_player_episode(episode_id: str, request: PlayerStepRequest) -> dict[str, Any]:
     session = _session(episode_id)
     with session.lock:
@@ -2380,7 +2597,7 @@ def step_player_episode(episode_id: str, request: PlayerStepRequest) -> dict[str
                     raw.get("action_id", f"player:{request.step_id}:{company_id}")
                 )
             else:
-                rule_action = build_rule_action(CONFIG, state_before, company_id)
+                rule_action = _session_rule_action(session, state_before, company_id)
                 raw = rule_action.to_dict()
                 source = "rule-opponent"
                 action_id = rule_action.action_id
@@ -2395,7 +2612,7 @@ def step_player_episode(episode_id: str, request: PlayerStepRequest) -> dict[str
             company_id: decision.action
             for company_id, decision in resolutions.items()
         }
-        result = session.env.step(request.step_id, actions)
+        result = session.env.step(request.step_id, actions,actor_choices=request.actor_choices)
         _record_transition(session, state_before, actions, result)
         state = result.state_after
         payload: dict[str, Any] = {
@@ -2429,6 +2646,7 @@ def step_player_episode(episode_id: str, request: PlayerStepRequest) -> dict[str
 @app.post(
     "/api/v1/controller/episodes/{episode_id}/communication/close"
 )
+@_durable_endpoint
 def close_agent_communication(
     episode_id: str,
     request: CloseCommunicationRequest,
@@ -2496,6 +2714,7 @@ def close_agent_communication(
 
 
 @app.post("/api/v1/controller/episodes/{episode_id}/settle-agent-round")
+@_durable_endpoint
 def settle_agent_round(
     episode_id: str,
     request: SettleAgentRoundRequest,
@@ -2532,7 +2751,7 @@ def settle_agent_round(
                     detail={"code": "COMMUNICATION_NOT_CLOSED"},
                 )
         if (
-            session.cooperation_mode == "shared_resilience_v1"
+            session.cooperation_mode in {"shared_resilience_v1", "combined_v1"}
             and session.cooperation_ledger is not None
             and not session.cooperation_ledger.has_closed_round(
                 state_before.round
@@ -2579,7 +2798,7 @@ def settle_agent_round(
             elif intent_id:
                 raise HTTPException(status_code=404, detail=f"intent {intent_id} not found")
             elif request.fallback == "rule":
-                raw = build_rule_action(CONFIG, state_before, company_id).to_dict()
+                raw = _session_rule_action(session, state_before, company_id).to_dict()
                 source = "controller-rule-fallback"
             else:
                 raise HTTPException(
@@ -2598,18 +2817,18 @@ def settle_agent_round(
             for company_id, decision in resolutions.items()
         }
         no_public_protection_result = None
-        if session.cooperation_mode == "shared_resilience_v1":
+        if session.cooperation_mode in {"shared_resilience_v1", "combined_v1"}:
             no_public_protection_result = (
                 session.env.counterfactual_without_public_resilience(
-                    state_before, actions
+                    state_before, actions,actor_choices=request.actor_choices
                 )
             )
-        result = session.env.step(request.step_id, actions)
+        result = session.env.step(request.step_id, actions,actor_choices=request.actor_choices)
         _record_transition(session, state_before, actions, result)
         cooperation_round = None
         if (
             session.cooperation_ledger is not None
-            and session.cooperation_mode == "shared_resilience_v1"
+            and session.cooperation_mode in {"shared_resilience_v1", "combined_v1"}
         ):
             before_shared = state_before.shared_resilience
             after_shared = result.state_after.shared_resilience
@@ -2714,7 +2933,7 @@ def _auto_run_remaining(
         state_before = session.env.get_state()
         resolutions: dict[str, ResolvedDecision] = {}
         for company_id in state_before.company_ids:
-            rule_action = build_rule_action(CONFIG, state_before, company_id)
+            rule_action = _session_rule_action(session, state_before, company_id)
             resolutions[company_id] = _resolve(
                 state_before,
                 company_id,
@@ -2749,6 +2968,7 @@ def _auto_run_remaining(
 
 
 @app.post("/api/v1/controller/episodes/{episode_id}/auto-run")
+@_durable_endpoint
 def auto_run_episode(
     episode_id: str,
     request: AutoRunRequest,
@@ -2832,6 +3052,7 @@ def auto_run_episode(
 
 
 @app.post("/api/v1/controller/episodes/{episode_id}/coordinator-run")
+@_durable_endpoint
 def coordinator_run_episode(
     episode_id: str,
     request: CoordinatorRunRequest,
@@ -2913,26 +3134,42 @@ def coordinator_run_episode(
                     "maximum_model_calls": request.maximum_model_calls,
                 },
             )
+        if request.run_id in session.interrupted_run_ids:
+            raise HTTPException(status_code=409, detail="中断的执行编号不能再次调用模型，请使用新的回合操作。")
+        if model_seats and local_budget_protected(CONFIG):
+            from game_theory_agent.local_budget import status as budget_status
+            cash_budget = budget_status()
+            if not cash_budget['ready']:
+                raise HTTPException(status_code=422, detail=cash_budget['message'])
+            if any((str(seat.get('provider')),str(seat.get('model'))) not in {('deepseek','deepseek-v4-flash'),('doubao','doubao-seed-2-0-lite-260215')} for seat in model_seats.values()):
+                raise HTTPException(status_code=422, detail='本机费用保护仅开放已核价的官方 DeepSeek Flash 和豆包 Seed 2.0 Lite。')
+            if round(cash_budget['remaining_cny'] * 1_000_000) < required_model_calls * 420_000:
+                raise HTTPException(status_code=422, detail='剩余总预算不足以保留本次全部调用，请减少模型席位或改用规则代理。')
         session.coordinator_active_run_id = request.run_id
+        _persist_session(session)
 
     include_human = request.max_rounds == 1 and request.player_action is not None
     maximum_model_calls = request.maximum_model_calls or 0
+    local_cash_budget = local_budget_protected(CONFIG)
+    reserved_prompt = 128_000 if local_cash_budget else COORDINATOR_RESERVED_PROMPT_TOKENS
+    input_price = 3 if local_cash_budget else COORDINATOR_INPUT_PRICE_MICROUNITS
+    output_price = 11 if local_cash_budget else COORDINATOR_OUTPUT_PRICE_MICROUNITS
     guard = (
         RealModelCostGuard(
             RealModelBudget(
                 max_calls=maximum_model_calls,
                 max_prompt_tokens=(
-                    maximum_model_calls * COORDINATOR_RESERVED_PROMPT_TOKENS
+                    maximum_model_calls * reserved_prompt
                 ),
                 max_completion_tokens=(
                     maximum_model_calls * COORDINATOR_RESERVED_COMPLETION_TOKENS
                 ),
                 max_estimated_cost_microunits=maximum_model_calls
                 * (
-                    COORDINATOR_RESERVED_PROMPT_TOKENS
-                    * COORDINATOR_INPUT_PRICE_MICROUNITS
+                    reserved_prompt
+                    * input_price
                     + COORDINATOR_RESERVED_COMPLETION_TOKENS
-                    * COORDINATOR_OUTPUT_PRICE_MICROUNITS
+                    * output_price
                 ),
             ),
             explicitly_authorized=request.authorize_real_model,
@@ -2947,6 +3184,8 @@ def coordinator_run_episode(
             controller_token,
             max_rounds=request.max_rounds,
             human_action=request.player_action,
+            human_communication=request.player_communication,
+            actor_choices=request.actor_choices,
             include_human=include_human,
             real_model_cost_guard=guard,
         )
@@ -2954,16 +3193,22 @@ def coordinator_run_episode(
         with session.lock:
             if session.coordinator_active_run_id == request.run_id:
                 session.coordinator_active_run_id = None
+                session.recovery_required = True
+                session.interrupted_run_ids.add(request.run_id)
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except (RuntimeError, RealModelBudgetExceeded) as exc:
         with session.lock:
             if session.coordinator_active_run_id == request.run_id:
                 session.coordinator_active_run_id = None
+                session.recovery_required = True
+                session.interrupted_run_ids.add(request.run_id)
         raise HTTPException(status_code=409, detail=str(exc)) from exc
     except Exception:
         with session.lock:
             if session.coordinator_active_run_id == request.run_id:
                 session.coordinator_active_run_id = None
+                session.recovery_required = True
+                session.interrupted_run_ids.add(request.run_id)
         raise
 
     rounds = [
@@ -2974,6 +3219,7 @@ def coordinator_run_episode(
             "state": item.settlement["state"],
             "settled_market": item.settlement.get("settled_market"),
             "decision_resolutions": item.settlement.get("decision_resolutions"),
+            "research_event": item.event.model_dump(mode="json", exclude={"state_before", "state_after", "joint_action", "step_result"}),
         }
         for item in coordinated
     ]
@@ -3004,8 +3250,8 @@ def coordinator_run_episode(
                 ),
                 "actual_usage": asdict(guard.actual) if guard is not None else None,
                 "price_snapshot_microunits_per_token": {
-                    "input": COORDINATOR_INPUT_PRICE_MICROUNITS,
-                    "output": COORDINATOR_OUTPUT_PRICE_MICROUNITS,
+                    "input": input_price,
+                    "output": output_price,
                     "currency": "CNY",
                 },
             },
@@ -3047,6 +3293,26 @@ def get_retrospective(episode_id: str) -> dict[str, Any]:
         )
 
 
+from game_theory_agent.research_workbench import router as workbench_router
+app.include_router(workbench_router(CONFIG, Path(os.environ.get("MARKET_SESSION_DB", PROJECT_ROOT / ".local-state" / "sessions.sqlite3")).parent / "workbench", _require_controller_token))
+
+from game_theory_agent.game_theory.service import router as theory_router
+
+def _theory_source_state(episode_id):
+    session=_session(episode_id)
+    with session.lock:
+        state=session.env.get_state()
+        return session.transitions[-1].state_before if state.terminal and session.transitions else state
+
+def _theory_source_history(episode_id,before_round):
+    from game_theory_agent.game_theory.advisor_beliefs import public_frame
+    session=_session(episode_id)
+    with session.lock:
+        return [public_frame(t.state_before) for t in session.transitions if t.state_before.round<before_round][-60:]
+
+app.include_router(theory_router(Path(os.environ.get("MARKET_SESSION_DB", PROJECT_ROOT / ".local-state" / "sessions.sqlite3")).parent / "workbench" / "theory-lab",CONFIG,_require_controller_token,_theory_source_state,_theory_source_history))
+
+
 def run() -> None:
     """Run the private engine and read/intent Agent Gateway on separate ports."""
 
@@ -3077,4 +3343,7 @@ def run() -> None:
 
 
 if __name__ == "__main__":
-    run()
+    # Hosted clients import this canonical module. Serving __main__.app would
+    # create a second session registry and misclassify a live run as interrupted.
+    from game_theory_agent import api as canonical_api
+    canonical_api.run()

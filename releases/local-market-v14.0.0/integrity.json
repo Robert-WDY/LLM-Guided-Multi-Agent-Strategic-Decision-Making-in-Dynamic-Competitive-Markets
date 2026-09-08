@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "files": 473,
+  "archive_sha256": "fa4c93f6014951bac9b317650e67125acae19f7f65da670291bdcc470ff02555",
+  "source_matches_archive": true,
+  "neural_weights_included": true,
+  "credentials_excluded": true
+}

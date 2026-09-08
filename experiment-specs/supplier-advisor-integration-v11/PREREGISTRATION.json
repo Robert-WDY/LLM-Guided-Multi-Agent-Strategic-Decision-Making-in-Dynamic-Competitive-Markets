@@ -1,0 +1,22 @@
+{
+  "acceptance": [
+    "all_engineering_gates",
+    "at_least_one_release"
+  ],
+  "boundary": "Small new-seed integration smoke; v10.1 holdout effect estimates do not transfer automatically to endogenous supplier prices.",
+  "config_hash": "sha256:05c11bc55d717fb5be30d175d505b59c8ead7a09839ac954ac445e4284e7af7f",
+  "hash": "sha256:b0385edb4402220c1a40dfcf3efb41f798c267d03c42ec7d26a347af0a39a6d2",
+  "modes": [
+    "rule",
+    "paired"
+  ],
+  "personas": [
+    "balanced_v1",
+    "public_service"
+  ],
+  "rounds": 20,
+  "seeds": [
+    140301,
+    140302
+  ]
+}

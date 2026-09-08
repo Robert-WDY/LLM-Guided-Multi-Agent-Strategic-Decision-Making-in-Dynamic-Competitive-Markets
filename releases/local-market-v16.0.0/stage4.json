@@ -1,0 +1,30 @@
+{
+  "stage": 4,
+  "passed": true,
+  "cases": 3,
+  "new_real_calls": 0,
+  "elapsed_seconds": 28.725964500001282,
+  "results": [
+    {
+      "companies": 2,
+      "actors": 6,
+      "steps": 182,
+      "recommendation_check_complete": true,
+      "equilibrium_check_complete": true
+    },
+    {
+      "companies": 5,
+      "actors": 9,
+      "steps": 184,
+      "recommendation_check_complete": true,
+      "equilibrium_check_complete": true
+    },
+    {
+      "companies": 10,
+      "actors": 14,
+      "steps": 424,
+      "recommendation_check_complete": true,
+      "equilibrium_check_complete": true
+    }
+  ]
+}

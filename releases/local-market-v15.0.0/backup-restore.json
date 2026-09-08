@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "exact_api_and_file_equality": true,
+  "ordinary_episodes": 1,
+  "completed_jobs": 8,
+  "concept_records": 10,
+  "workbench_json_files": 456,
+  "budget_unchanged": {
+    "ready": false,
+    "total_cny": 10,
+    "reserved_cny": 9.993565,
+    "remaining_cny": 0.006435,
+    "historical_estimate_cny": 1.093593,
+    "maximum_call_cny": 0.42,
+    "new_calls": 186,
+    "model": "deepseek-v4-flash",
+    "price_valid_through": "2026-09-08",
+    "message": "已保留失败及未知调用的额度。"
+  },
+  "backup": "../../.local-state-v14-release/backups/theory-v15-accepted",
+  "budget_restored": false
+}

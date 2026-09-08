@@ -138,7 +138,8 @@ class LocalGatewayClient:
 
 
 class LocalControllerClient:
-    def __init__(self, controller_token: str) -> None:
+    def __init__(self, controller_token: str, actor_choices: dict[str,str] | None = None) -> None:
+        self._actor_choices = dict(actor_choices or {})
         self._token = controller_token
 
     async def create_episode(self, payload: dict[str, Any]) -> dict[str, Any]:
@@ -178,7 +179,7 @@ class LocalControllerClient:
         )
 
         request = SettleAgentRoundRequest(
-            step_id=step_id, intent_ids=intent_ids, fallback="rule"
+            step_id=step_id, intent_ids=intent_ids, fallback="rule", actor_choices=self._actor_choices
         )
         try:
             return settle_agent_round(

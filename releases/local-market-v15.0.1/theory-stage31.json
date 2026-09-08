@@ -1,0 +1,65 @@
+{
+  "stage": 31,
+  "passed": true,
+  "runs": 64,
+  "rounds": 192000,
+  "groups": [
+    {
+      "game": "prisoners_dilemma",
+      "algorithm": "regret_matching",
+      "n": 8,
+      "mean_cce_gap": 0.00041666666666666664,
+      "maximum_cce_gap": 0.0006666666666666666
+    },
+    {
+      "game": "prisoners_dilemma",
+      "algorithm": "fictitious_play",
+      "n": 8,
+      "mean_cce_gap": 0.0,
+      "maximum_cce_gap": 0.0
+    },
+    {
+      "game": "stag_hunt",
+      "algorithm": "regret_matching",
+      "n": 8,
+      "mean_cce_gap": 0.0012916666666666667,
+      "maximum_cce_gap": 0.003
+    },
+    {
+      "game": "stag_hunt",
+      "algorithm": "fictitious_play",
+      "n": 8,
+      "mean_cce_gap": 0.0,
+      "maximum_cce_gap": 0.0
+    },
+    {
+      "game": "chicken",
+      "algorithm": "regret_matching",
+      "n": 8,
+      "mean_cce_gap": 0.0003333333333333333,
+      "maximum_cce_gap": 0.0003333333333333333
+    },
+    {
+      "game": "chicken",
+      "algorithm": "fictitious_play",
+      "n": 8,
+      "mean_cce_gap": 0.000125,
+      "maximum_cce_gap": 0.0003333333333333333
+    },
+    {
+      "game": "matching_pennies",
+      "algorithm": "regret_matching",
+      "n": 8,
+      "mean_cce_gap": 0.018166666666666678,
+      "maximum_cce_gap": 0.02866666666666673
+    },
+    {
+      "game": "matching_pennies",
+      "algorithm": "fictitious_play",
+      "n": 8,
+      "mean_cce_gap": 0.014916666666666696,
+      "maximum_cce_gap": 0.01666666666666672
+    }
+  ],
+  "conclusion": "Report measured external regret/CCE gaps separately from marginal Nash gaps; no universal convergence claim."
+}

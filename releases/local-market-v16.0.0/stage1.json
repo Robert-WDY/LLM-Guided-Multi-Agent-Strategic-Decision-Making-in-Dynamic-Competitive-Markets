@@ -1,0 +1,326 @@
+{
+  "passed": true,
+  "cases": 20,
+  "results": [
+    {
+      "goal": "company",
+      "phase": "survival",
+      "scores": [
+        0.27,
+        0.09
+      ],
+      "weights": {
+        "profit": 0.2,
+        "welfare": 0.0,
+        "cash": 0.7,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.1
+      }
+    },
+    {
+      "goal": "profit",
+      "phase": "survival",
+      "scores": [
+        0.3,
+        0.1
+      ],
+      "weights": {
+        "profit": 1.0,
+        "welfare": 0.0,
+        "cash": 0.0,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.0
+      }
+    },
+    {
+      "goal": "welfare",
+      "phase": "survival",
+      "scores": [
+        -0.1,
+        0.5
+      ],
+      "weights": {
+        "profit": 0.0,
+        "welfare": 1.0,
+        "cash": 0.0,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.0
+      }
+    },
+    {
+      "goal": "balanced",
+      "phase": "survival",
+      "scores": [
+        0.09999999999999999,
+        0.3
+      ],
+      "weights": {
+        "profit": 0.5,
+        "welfare": 0.5,
+        "cash": 0.0,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.0
+      }
+    },
+    {
+      "goal": "company",
+      "phase": "expansion",
+      "scores": [
+        0.135,
+        0.045
+      ],
+      "weights": {
+        "profit": 0.35,
+        "welfare": 0.0,
+        "cash": 0.1,
+        "share": 0.25,
+        "capacity": 0.2,
+        "resilience": 0.1
+      }
+    },
+    {
+      "goal": "profit",
+      "phase": "expansion",
+      "scores": [
+        0.3,
+        0.1
+      ],
+      "weights": {
+        "profit": 1.0,
+        "welfare": 0.0,
+        "cash": 0.0,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.0
+      }
+    },
+    {
+      "goal": "welfare",
+      "phase": "expansion",
+      "scores": [
+        -0.1,
+        0.5
+      ],
+      "weights": {
+        "profit": 0.0,
+        "welfare": 1.0,
+        "cash": 0.0,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.0
+      }
+    },
+    {
+      "goal": "balanced",
+      "phase": "expansion",
+      "scores": [
+        0.09999999999999999,
+        0.3
+      ],
+      "weights": {
+        "profit": 0.5,
+        "welfare": 0.5,
+        "cash": 0.0,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.0
+      }
+    },
+    {
+      "goal": "company",
+      "phase": "mature",
+      "scores": [
+        0.24,
+        0.08
+      ],
+      "weights": {
+        "profit": 0.6,
+        "welfare": 0.0,
+        "cash": 0.2,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.2
+      }
+    },
+    {
+      "goal": "profit",
+      "phase": "mature",
+      "scores": [
+        0.3,
+        0.1
+      ],
+      "weights": {
+        "profit": 1.0,
+        "welfare": 0.0,
+        "cash": 0.0,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.0
+      }
+    },
+    {
+      "goal": "welfare",
+      "phase": "mature",
+      "scores": [
+        -0.1,
+        0.5
+      ],
+      "weights": {
+        "profit": 0.0,
+        "welfare": 1.0,
+        "cash": 0.0,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.0
+      }
+    },
+    {
+      "goal": "balanced",
+      "phase": "mature",
+      "scores": [
+        0.09999999999999999,
+        0.3
+      ],
+      "weights": {
+        "profit": 0.5,
+        "welfare": 0.5,
+        "cash": 0.0,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.0
+      }
+    },
+    {
+      "goal": "company",
+      "phase": "catch_up",
+      "scores": [
+        0.16499999999999998,
+        0.05500000000000001
+      ],
+      "weights": {
+        "profit": 0.4,
+        "welfare": 0.0,
+        "cash": 0.15,
+        "share": 0.3,
+        "capacity": 0.15,
+        "resilience": 0.0
+      }
+    },
+    {
+      "goal": "profit",
+      "phase": "catch_up",
+      "scores": [
+        0.3,
+        0.1
+      ],
+      "weights": {
+        "profit": 1.0,
+        "welfare": 0.0,
+        "cash": 0.0,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.0
+      }
+    },
+    {
+      "goal": "welfare",
+      "phase": "catch_up",
+      "scores": [
+        -0.1,
+        0.5
+      ],
+      "weights": {
+        "profit": 0.0,
+        "welfare": 1.0,
+        "cash": 0.0,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.0
+      }
+    },
+    {
+      "goal": "balanced",
+      "phase": "catch_up",
+      "scores": [
+        0.09999999999999999,
+        0.3
+      ],
+      "weights": {
+        "profit": 0.5,
+        "welfare": 0.5,
+        "cash": 0.0,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.0
+      }
+    },
+    {
+      "goal": "company",
+      "phase": "closing",
+      "scores": [
+        0.3,
+        0.09999999999999999
+      ],
+      "weights": {
+        "profit": 0.7,
+        "welfare": 0.0,
+        "cash": 0.3,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.0
+      }
+    },
+    {
+      "goal": "profit",
+      "phase": "closing",
+      "scores": [
+        0.3,
+        0.1
+      ],
+      "weights": {
+        "profit": 1.0,
+        "welfare": 0.0,
+        "cash": 0.0,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.0
+      }
+    },
+    {
+      "goal": "welfare",
+      "phase": "closing",
+      "scores": [
+        -0.1,
+        0.5
+      ],
+      "weights": {
+        "profit": 0.0,
+        "welfare": 1.0,
+        "cash": 0.0,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.0
+      }
+    },
+    {
+      "goal": "balanced",
+      "phase": "closing",
+      "scores": [
+        0.09999999999999999,
+        0.3
+      ],
+      "weights": {
+        "profit": 0.5,
+        "welfare": 0.5,
+        "cash": 0.0,
+        "share": 0.0,
+        "capacity": 0.0,
+        "resilience": 0.0
+      }
+    }
+  ]
+}

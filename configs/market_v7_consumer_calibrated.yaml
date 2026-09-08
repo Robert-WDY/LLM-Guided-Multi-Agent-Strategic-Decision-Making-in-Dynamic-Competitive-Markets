@@ -1,0 +1,76 @@
+extends: market_v6_final.yaml
+
+config_id: market-v7-consumer-calibrated
+config_version: market-v7.0.0
+environment_version: market-env-v7.0.0
+
+schema_versions:
+  state: market-state-v7.0.0
+  action: company-action-v6.3.0
+
+strategic_market:
+  # Competition remains the largest price signal, but explicit willingness to
+  # pay has enough weight to discipline monopoly and industry-wide price rises.
+  relative_price_weight_ppm: 550000
+  absolute_price_weight_ppm: 450000
+
+consumer_choice:
+  # The previous lower clamp made demand identical at 16,000 and 18,000 cents.
+  # The wider interval restores a declining high-price demand curve.
+  temperature_ppm: 900000
+  price_scale_cents: 3000
+  relative_price_signal_min_ppm: -4000000
+  relative_price_signal_max_ppm: 4000000
+  utility_noise_std_ppm: 20000
+
+  # These are synthetic calibration priors, not observed household data.
+  # Each offset is relative to the selected market profile's price anchor.
+  segments:
+    price_sensitive:
+      weight_ppm: 450000
+      outside_utility_ppm: 180000
+      coefficients_ppm:
+        price: 1300000
+        awareness: 350000
+        service: 300000
+        reputation: 250000
+        prior_stockout: -750000
+      wtp_distribution:
+        weights_ppm: {budget: 100000, core: 300000, upper: 350000, premium: 180000, tail: 70000}
+        offsets_cents: {budget: -1500, core: 1000, upper: 2500, premium: 5200, tail: 8500}
+    brand_sensitive:
+      weight_ppm: 300000
+      outside_utility_ppm: 120000
+      coefficients_ppm:
+        price: 700000
+        awareness: 1050000
+        service: 450000
+        reputation: 700000
+        prior_stockout: -600000
+      wtp_distribution:
+        weights_ppm: {budget: 50000, core: 200000, upper: 350000, premium: 250000, tail: 150000}
+        offsets_cents: {budget: -500, core: 1500, upper: 3500, premium: 6000, tail: 9000}
+    service_sensitive:
+      weight_ppm: 250000
+      outside_utility_ppm: 140000
+      coefficients_ppm:
+        price: 600000
+        awareness: 350000
+        service: 1250000
+        reputation: 800000
+        prior_stockout: -1000000
+      wtp_distribution:
+        weights_ppm: {budget: 50000, core: 200000, upper: 350000, premium: 250000, tail: 150000}
+        offsets_cents: {budget: -700, core: 1200, upper: 3300, premium: 5800, tail: 8800}
+
+calibration_metadata:
+  status: synthetic_prior_pending_external_data
+  target_moments:
+    balanced_market_own_price_arc_elasticity_absolute_min_ppm: 1200000
+    balanced_market_own_price_arc_elasticity_absolute_max_ppm: 3000000
+    all_firms_18000_no_purchase_share_min_ppm: 300000
+    price_monotonicity_required: true
+    service_monotonicity_required: true
+  forbidden_claims:
+    - real_household_distribution
+    - externally_validated_elasticity

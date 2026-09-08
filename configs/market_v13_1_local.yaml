@@ -1,0 +1,12 @@
+extends: market_v13_autonomous.yaml
+config_id: market-v13-1-autonomous-local
+config_version: market-v13.1.0
+environment_version: market-env-v13.1.0
+schema_versions:
+  state: market-state-v13.1.0
+supply_chain:
+  track_supplier_demand: true
+autonomous_market:
+  supplier_investment:
+    payback_guard_ppm: 1500000
+    margin_realization_ppm: 700000

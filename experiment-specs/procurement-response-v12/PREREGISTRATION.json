@@ -1,0 +1,77 @@
+{
+  "config_hashes": {
+    "base": "sha256:05c11bc55d717fb5be30d175d505b59c8ead7a09839ac954ac445e4284e7af7f",
+    "cap120": "sha256:bb2ea28f8c656c00b37657c37ea1fcdc337be8208e2b51d9241e7ef771f9ef17",
+    "capacity_tilt": "sha256:fe81fe8f1aa2d2bf7076b11f9aede81a785e9441a266ad3d2917b41e4065e2b2",
+    "compound": "sha256:18154ad429b30987d53ba1e682283d7a9004f940a9927b4d0b57d083b637a692",
+    "fixed_quotes": "sha256:9398d815e5820eea2db52dbe97fe57153faf407f73922947eb3edb77de635de0",
+    "input_share55": "sha256:f38bf939f89e7d81d3043c7f49bfb33af7a2f47b23f308e538eb4ab48053b6d5",
+    "reliability_reversal": "sha256:b638cf43cf3014d9fb62945bcc1886bf45db0d0d8d6def29f830b3532c04c0cb",
+    "reverse_capacity": "sha256:838d7e175c661af0254ff1ff1978383a17cb6bd3cf550c1209145e68c04149bb",
+    "step03": "sha256:fbb137eb19016411227119892906d2fb71e0f24db97cc95410145f9444f858cf",
+    "step10": "sha256:5b176fac9d37503c8597935e89007a0aaeaf75bda5eec434573165e0af4f7c8d",
+    "step15": "sha256:1706d9bd4014fe0f91fe5edd47d613fad501c8fa3e88c36177dbac591138e30a",
+    "thin_cash": "sha256:601769c1f83202099190c9c3ebfdba5d28b842e49690453573a1229b60c22d1c"
+  },
+  "design": "All firms use the same tested procurement policy; operating rule unchanged, current quote/capacity known, proportional demand congestion approximated by equal capacity per active buyer. Compare diverse 50:50 as primary control, cheapest and fixed economy as secondary. Development selects one of capacity/gradual by extra-exit pairs ascending, normalized lower-tail CVaR descending, median welfare descending. Choice frozen before holdout; all holdout candidates retained for transparency but cannot replace the selection.",
+  "dev_regimes": [
+    "base",
+    "step10",
+    "capacity_tilt",
+    "cap120",
+    "fixed_quotes",
+    "input_share55"
+  ],
+  "dev_seeds": [
+    150101,
+    150102,
+    150103,
+    150104,
+    150105,
+    150106,
+    150107,
+    150108
+  ],
+  "hash": "sha256:d949947e726e94b12217aa09279077689a4e0ebd4e4be808f9781056aa047559",
+  "holdout_regimes": [
+    "step03",
+    "step15",
+    "reverse_capacity",
+    "reliability_reversal",
+    "thin_cash",
+    "compound"
+  ],
+  "holdout_seeds": [
+    150201,
+    150202,
+    150203,
+    150204,
+    150205,
+    150206,
+    150207,
+    150208,
+    150209,
+    150210,
+    150211,
+    150212
+  ],
+  "model_calls": 0,
+  "normalization": "paired welfare delta / max(abs(diverse cumulative welfare), initial total buyer cash), scaled ppm; empirical CVaR10 is mean of worst ceil(n*0.1) cells. No confidence interval or real-world safety claim; cells share seeds across regimes.",
+  "policies": [
+    "fixed_economy",
+    "cheapest",
+    "diverse",
+    "capacity",
+    "gradual"
+  ],
+  "promotion": {
+    "cvar10_welfare_delta_ppm_min": -20000,
+    "development_and_holdout_required": true,
+    "engineering": true,
+    "extra_exit_pairs_max": 0,
+    "median_welfare_delta_ppm_min": 0,
+    "worst_welfare_delta_ppm_min": -50000
+  },
+  "rounds": 20,
+  "source_hash": "sha256:1aa5596046958570e5ec5b0340adfa90529e4c2808ad2f4d6b68c6eb663d934e"
+}

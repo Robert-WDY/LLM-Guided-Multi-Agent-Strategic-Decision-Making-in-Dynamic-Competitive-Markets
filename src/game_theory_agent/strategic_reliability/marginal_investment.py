@@ -29,6 +29,7 @@ from .contracts import (
     CandidateEconomicAction,
     StrategicActionCandidate,
     StrictModel,
+    strip_final_market_null_action_fields,
 )
 from .rollout import AuthoritativeMarketRolloutEvaluator, generate_candidate_actions
 
@@ -107,7 +108,7 @@ class MarginalInvestmentPlan(StrictModel):
 def compute_marginal_assessment_hash(
     assessment: InvestmentMarginalAssessment | Mapping[str, Any],
 ) -> str:
-    payload = (
+    payload = strip_final_market_null_action_fields(
         assessment.model_dump(mode="json")
         if isinstance(assessment, InvestmentMarginalAssessment)
         else dict(assessment)
@@ -124,7 +125,7 @@ def compute_marginal_assessment_hash(
 def compute_marginal_investment_plan_hash(
     plan: MarginalInvestmentPlan | Mapping[str, Any],
 ) -> str:
-    payload = (
+    payload = strip_final_market_null_action_fields(
         plan.model_dump(mode="json")
         if isinstance(plan, MarginalInvestmentPlan)
         else dict(plan)

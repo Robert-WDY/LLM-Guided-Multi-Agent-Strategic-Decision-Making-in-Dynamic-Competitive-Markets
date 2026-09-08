@@ -8,6 +8,15 @@ from game_theory_agent.market import CompanyAction, MarketEnv, load_market_confi
 ROOT = Path(__file__).resolve().parents[1]
 
 
+@pytest.fixture(autouse=True)
+def isolated_persistence(monkeypatch, tmp_path):
+    """Legacy tests never read or write a user's saved local experiments."""
+    monkeypatch.setenv("MARKET_PERSISTENCE", "0")
+    from game_theory_agent import api
+    from game_theory_agent.persistence import SessionStore
+    monkeypatch.setattr(api, "SESSION_STORE", SessionStore(tmp_path / "sessions.sqlite3"))
+
+
 @pytest.fixture(scope="session")
 def config():
     return load_market_config(ROOT / "configs" / "market_v4.yaml")

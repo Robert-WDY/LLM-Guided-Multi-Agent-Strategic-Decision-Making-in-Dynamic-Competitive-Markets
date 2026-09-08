@@ -1,0 +1,2426 @@
+{
+  "stage": 1,
+  "passed": true,
+  "cases": 96,
+  "elapsed_seconds": 0.06711190000351053,
+  "new_real_calls": 0,
+  "results": [
+    {
+      "seed": 371001,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.001095809285595032,
+      "flat_relative_error": 0.0010814462835203413,
+      "interval_samples": 32,
+      "empirical_coverage": 0.9375,
+      "mean_relative_halfwidth": 0.001936867143454973,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -0.0002630521913573877,
+          0.05000000000000005
+        ],
+        "expected_change": -0.00020857962826988024,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371001,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.01334124265954087,
+      "flat_relative_error": 0.02991747016274914,
+      "interval_samples": 32,
+      "empirical_coverage": 0.96875,
+      "mean_relative_halfwidth": 0.0197938486967993,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.029887724165833778
+        ],
+        "expected_change": 0.01851698469048008,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371001,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.02083304572182398,
+      "flat_relative_error": 0.034774914510901485,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03499699845051096,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.04015143113006792,
+          0.0,
+          0.029907636239895834
+        ],
+        "expected_change": -0.02693232098895282,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371002,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.000947751228110078,
+      "flat_relative_error": 0.0008766658130200776,
+      "interval_samples": 32,
+      "empirical_coverage": 0.9375,
+      "mean_relative_halfwidth": 0.0018335495686961519,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -0.00027149469833819386,
+          0.05000000000000005
+        ],
+        "expected_change": -0.00021527387004234273,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371002,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013471405690224428,
+      "flat_relative_error": 0.030155484375312867,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.020831064890459768,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.030525282912686923
+        ],
+        "expected_change": 0.019022419291415703,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371002,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020777396700914684,
+      "flat_relative_error": 0.03469855813125221,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03399694053093221,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.040054076765960955,
+          0.0,
+          0.029801997954365427
+        ],
+        "expected_change": -0.026871299956065808,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371003,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.00097431220551713,
+      "flat_relative_error": 0.001030520294542472,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.0019085640987842381,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0005422467000946998,
+          0.05000000000000005
+        ],
+        "expected_change": 0.00042995884030732034,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371003,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013325126325926582,
+      "flat_relative_error": 0.02992435694170987,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.020201640242951523,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.02990794924138221
+        ],
+        "expected_change": 0.01853301843331424,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371003,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.021130755317369503,
+      "flat_relative_error": 0.03525211639283398,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.034187442719269406,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.04039486990249655,
+          0.0,
+          0.03060464010452963
+        ],
+        "expected_change": -0.02702895781911598,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371004,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0010226305158008372,
+      "flat_relative_error": 0.000985123534385369,
+      "interval_samples": 32,
+      "empirical_coverage": 0.875,
+      "mean_relative_halfwidth": 0.0019295941490954692,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -0.0001892859392570368,
+          0.05000000000000005
+        ],
+        "expected_change": -0.00015008881181798625,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371004,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013419917439379002,
+      "flat_relative_error": 0.029985361751689532,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.020081394695345242,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.030267842787489313
+        ],
+        "expected_change": 0.018818329632876295,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371004,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020920262710090468,
+      "flat_relative_error": 0.03525083951444521,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03507599857898797,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.040322286739580424,
+          0.0,
+          0.029999130930954753
+        ],
+        "expected_change": -0.027051549178193034,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371005,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0008513647564262287,
+      "flat_relative_error": 0.0008267754950766317,
+      "interval_samples": 32,
+      "empirical_coverage": 0.875,
+      "mean_relative_halfwidth": 0.0017797798426171941,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -0.00017909684915044642,
+          0.05000000000000005
+        ],
+        "expected_change": -0.00014200966746311732,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371005,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013339462428587542,
+      "flat_relative_error": 0.03017267511657914,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.020988782734189075,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.029695967806240925
+        ],
+        "expected_change": 0.018364966857510084,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371005,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.021030837290620646,
+      "flat_relative_error": 0.03506656271933915,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03443843901390412,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.04040195479425043,
+          0.0,
+          0.030330666215067702
+        ],
+        "expected_change": -0.027069805246973284,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371006,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0010271878575729121,
+      "flat_relative_error": 0.0009977344264431513,
+      "interval_samples": 32,
+      "empirical_coverage": 0.9375,
+      "mean_relative_halfwidth": 0.0019519032076932166,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -0.00016015028550339625,
+          0.05000000000000005
+        ],
+        "expected_change": -0.00012698653771042018,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371006,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013364378335921735,
+      "flat_relative_error": 0.02988151013441421,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.020576897091323213,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.03008509606890226
+        ],
+        "expected_change": 0.018673454332776902,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371006,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.02084865496406821,
+      "flat_relative_error": 0.03506450761527154,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03465459292060159,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.0399608295493044,
+          0.0,
+          0.029944525998746162
+        ],
+        "expected_change": -0.026781352130584406,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371007,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0009399794033166465,
+      "flat_relative_error": 0.00094524543437125,
+      "interval_samples": 32,
+      "empirical_coverage": 0.8125,
+      "mean_relative_halfwidth": 0.0014865538492196283,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -9.129614712233434e-05,
+          0.05000000000000005
+        ],
+        "expected_change": -7.239063978515682e-05,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371007,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013421009478024166,
+      "flat_relative_error": 0.030121695074291157,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.02115161948941756,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.030428561829135073
+        ],
+        "expected_change": 0.018945742149884225,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371007,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.02107051475362033,
+      "flat_relative_error": 0.03516804853187848,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.034609667439688484,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.040400211280208945,
+          0.0,
+          0.030442851873022293
+        ],
+        "expected_change": -0.027053967134234764,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371008,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0010530181466189123,
+      "flat_relative_error": 0.0010032929555508626,
+      "interval_samples": 32,
+      "empirical_coverage": 0.96875,
+      "mean_relative_halfwidth": 0.0019312363092316115,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -0.0004439586516942199,
+          0.05000000000000005
+        ],
+        "expected_change": -0.00035202417459343085,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371008,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013408927886093906,
+      "flat_relative_error": 0.03014607654443708,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.020917334636309463,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.030120278497420015
+        ],
+        "expected_change": 0.018701345749537458,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371008,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020932598300496718,
+      "flat_relative_error": 0.03511197080307925,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03401483345281016,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.04064719547830966,
+          0.0,
+          0.029887170288693362
+        ],
+        "expected_change": -0.027315241524704117,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371009,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0010723018123488285,
+      "flat_relative_error": 0.0010141079254036018,
+      "interval_samples": 32,
+      "empirical_coverage": 0.96875,
+      "mean_relative_halfwidth": 0.0019610956674527085,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          1.0251979469222794e-05,
+          0.05000000000000005
+        ],
+        "expected_change": 8.129010656351941e-06,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371009,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013309187049622166,
+      "flat_relative_error": 0.029987003518534724,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.020897156846746322,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.029676488051066773
+        ],
+        "expected_change": 0.018349523978981055,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371009,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020668789204039733,
+      "flat_relative_error": 0.03497216101977642,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.033364329256887384,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.0399496061352024,
+          0.0,
+          0.029439689693901958
+        ],
+        "expected_change": -0.02683799672967389,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371010,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0009492718751824785,
+      "flat_relative_error": 0.0009468517277574464,
+      "interval_samples": 32,
+      "empirical_coverage": 0.875,
+      "mean_relative_halfwidth": 0.001861319528442923,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -0.00047799168734521925,
+          0.05000000000000005
+        ],
+        "expected_change": -0.00037900968605543856,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371010,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013378043107837514,
+      "flat_relative_error": 0.029883502086052224,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.01996936038367157,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.029990982602169876
+        ],
+        "expected_change": 0.018598844419987944,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371010,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020892207873162944,
+      "flat_relative_error": 0.034946685867913684,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.034552272837441625,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.03979333749450864,
+          0.0,
+          0.030227624297078804
+        ],
+        "expected_change": -0.02661628527834635,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371011,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.001009043994368093,
+      "flat_relative_error": 0.0009899787746446996,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.001825101169093232,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -6.349686710417307e-05,
+          0.05000000000000005
+        ],
+        "expected_change": -5.034800458627105e-05,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371011,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013404320416862108,
+      "flat_relative_error": 0.030006574427738276,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.019972802388649926,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.030239825706348252
+        ],
+        "expected_change": 0.01879611865656108,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371011,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.02095574842751092,
+      "flat_relative_error": 0.03515449953315691,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03557939795388538,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.03935431739866851,
+          0.0,
+          0.03057587709222606
+        ],
+        "expected_change": -0.026234521660254844,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371012,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0009219745508842872,
+      "flat_relative_error": 0.0008838900004527084,
+      "interval_samples": 32,
+      "empirical_coverage": 0.8125,
+      "mean_relative_halfwidth": 0.0018981599702396364,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          1.5653759867147842e-05,
+          0.05000000000000005
+        ],
+        "expected_change": 1.2412196215768074e-05,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371012,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013454998256751189,
+      "flat_relative_error": 0.03011932781399935,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.02009744876691187,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.030405246699398997
+        ],
+        "expected_change": 0.018927258718589336,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371012,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020874828616508356,
+      "flat_relative_error": 0.03485258566000363,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.033342397145653416,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.040183037198835564,
+          0.0,
+          0.029966631212716827
+        ],
+        "expected_change": -0.026948938870192472,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371013,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.001121899056210542,
+      "flat_relative_error": 0.0011145467479326246,
+      "interval_samples": 32,
+      "empirical_coverage": 0.875,
+      "mean_relative_halfwidth": 0.0019165871405301931,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0001461753309308136,
+          0.05000000000000005
+        ],
+        "expected_change": 0.0001159055016057731,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371013,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013232065977141296,
+      "flat_relative_error": 0.029720348910052,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.0197594887903151,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.029443434173320203
+        ],
+        "expected_change": 0.01816476689694471,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371013,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.02080938538404204,
+      "flat_relative_error": 0.03484145162229847,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03470694319841907,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.040126253574383354,
+          0.0,
+          0.029874522704393433
+        ],
+        "expected_change": -0.026917288736965125,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371014,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0011149417883271674,
+      "flat_relative_error": 0.0010493210489280877,
+      "interval_samples": 32,
+      "empirical_coverage": 0.875,
+      "mean_relative_halfwidth": 0.001974132498412721,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0002414411119495052,
+          0.05000000000000005
+        ],
+        "expected_change": 0.00019144374779632493,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371014,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013331764889517508,
+      "flat_relative_error": 0.029914798966385724,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.02108256950265407,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.029876701740262558
+        ],
+        "expected_change": 0.01850824649137697,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371014,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020880296872684403,
+      "flat_relative_error": 0.035034846025180574,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03376896949206554,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.04014634287764847,
+          0.0,
+          0.02998360236737774
+        ],
+        "expected_change": -0.02691859891924373,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371015,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0010537998337339842,
+      "flat_relative_error": 0.0010352562249423196,
+      "interval_samples": 32,
+      "empirical_coverage": 0.875,
+      "mean_relative_halfwidth": 0.0018380632225393307,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -0.000548863413811156,
+          0.05000000000000005
+        ],
+        "expected_change": -0.0004352053721085765,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371015,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013277565329475426,
+      "flat_relative_error": 0.029814109337142673,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.021095371892233334,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.02961109013736825
+        ],
+        "expected_change": 0.018297678766950973,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371015,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.02095158764700616,
+      "flat_relative_error": 0.035162791310151785,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.033459573561795575,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.04015085918348787,
+          0.0,
+          0.03014037048750412
+        ],
+        "expected_change": -0.026901799806270173,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371016,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0011380654214501443,
+      "flat_relative_error": 0.001102870189068036,
+      "interval_samples": 32,
+      "empirical_coverage": 0.9375,
+      "mean_relative_halfwidth": 0.0019152091013040886,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0005063228163864945,
+          0.05000000000000005
+        ],
+        "expected_change": 0.00040147403555734675,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371016,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013379727267863087,
+      "flat_relative_error": 0.03012870143188861,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.02122434295383447,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.030124394753120287
+        ],
+        "expected_change": 0.018704608975189187,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371016,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.02061258926479452,
+      "flat_relative_error": 0.03467747659132996,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03483247765363013,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.040020901353580614,
+          0.0,
+          0.02928972079256038
+        ],
+        "expected_change": -0.026912068094368233,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371017,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.000955607555130332,
+      "flat_relative_error": 0.0009214566137228322,
+      "interval_samples": 32,
+      "empirical_coverage": 0.84375,
+      "mean_relative_halfwidth": 0.0017785816351628743,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0001819834244154859,
+          0.05000000000000005
+        ],
+        "expected_change": 0.00014429849384638423,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371017,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013213482892400446,
+      "flat_relative_error": 0.029616995097021665,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.019994070248477096,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.029285014028516007
+        ],
+        "expected_change": 0.018039176866120905,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371017,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.02090406264763087,
+      "flat_relative_error": 0.03498540120212411,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.033706653763188384,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.040580558716950994,
+          0.0,
+          0.02984976127643553
+        ],
+        "expected_change": -0.02726896328110641,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371018,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0010759189404152497,
+      "flat_relative_error": 0.0010389706056598016,
+      "interval_samples": 32,
+      "empirical_coverage": 0.9375,
+      "mean_relative_halfwidth": 0.0018498570409679015,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.00045787048110799874,
+          0.05000000000000005
+        ],
+        "expected_change": 0.00036305515742883954,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371018,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013330883525429302,
+      "flat_relative_error": 0.02990361402462023,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.0205949279124826,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.02987486674388133
+        ],
+        "expected_change": 0.01850679176948939,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371018,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020924944671346746,
+      "flat_relative_error": 0.03509371100248038,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03499584210311366,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.03974145475468614,
+          0.0,
+          0.03031627814051431
+        ],
+        "expected_change": -0.02656502960627318,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371019,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0009508999168702341,
+      "flat_relative_error": 0.0009206449939950995,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.0017911098623760479,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -0.00027402976655342877,
+          0.05000000000000005
+        ],
+        "expected_change": -0.000217283979075246,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371019,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.01328805478733411,
+      "flat_relative_error": 0.02984292866625725,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.021144333706653633,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.029664333440643606
+        ],
+        "expected_change": 0.018339888222748263,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371019,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020887131123016572,
+      "flat_relative_error": 0.035098520030819626,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.035411481454513005,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.040736332060662406,
+          0.0,
+          0.029674004213753886
+        ],
+        "expected_change": -0.027411166737491072,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371020,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.000867650647602005,
+      "flat_relative_error": 0.0008823021822742083,
+      "interval_samples": 32,
+      "empirical_coverage": 0.875,
+      "mean_relative_halfwidth": 0.001987089524222068,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -0.0003048783855795034,
+          0.05000000000000005
+        ],
+        "expected_change": -0.00024174449946055582,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371020,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013499814339366667,
+      "flat_relative_error": 0.030336804547585087,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.020005413361201055,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.030540351535161263
+        ],
+        "expected_change": 0.01903436517597075,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371020,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020668104180700374,
+      "flat_relative_error": 0.034493501048320704,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.033822748389959856,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.039009354052143404,
+          0.0,
+          0.03005426300026044
+        ],
+        "expected_change": -0.026037340271967812,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371021,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0008738251248124221,
+      "flat_relative_error": 0.0008487246869814472,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.00183402826667179,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          8.415755810249898e-05,
+          0.05000000000000005
+        ],
+        "expected_change": 6.673030205352479e-05,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371021,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013408755004767889,
+      "flat_relative_error": 0.0303203242776319,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.0208063687192791,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.030099481087457074
+        ],
+        "expected_change": 0.018684858279705074,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371021,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.02073283970249093,
+      "flat_relative_error": 0.03490601029610248,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.0338286325540539,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.03938683586801788,
+          0.0,
+          0.02993112850474076
+        ],
+        "expected_change": -0.026342803000996225,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371022,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0010371244028898852,
+      "flat_relative_error": 0.001088001857399075,
+      "interval_samples": 32,
+      "empirical_coverage": 0.84375,
+      "mean_relative_halfwidth": 0.0019044455297254858,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          7.575673844590151e-05,
+          0.05000000000000005
+        ],
+        "expected_change": 6.0069115039291654e-05,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371022,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013384294060407418,
+      "flat_relative_error": 0.030159323381516733,
+      "interval_samples": 32,
+      "empirical_coverage": 0.96875,
+      "mean_relative_halfwidth": 0.020862861748613726,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.02998117765464237
+        ],
+        "expected_change": 0.018591071395517304,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371022,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.021094338639286087,
+      "flat_relative_error": 0.03526721788135455,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03520935930114096,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.039844998975338115,
+          0.0,
+          0.030761234526974535
+        ],
+        "expected_change": -0.02658693940339959,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371023,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0010252853650923614,
+      "flat_relative_error": 0.0010556667811560019,
+      "interval_samples": 32,
+      "empirical_coverage": 0.84375,
+      "mean_relative_halfwidth": 0.0017283688237083124,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -0.00010881866670097537,
+          0.05000000000000005
+        ],
+        "expected_change": -8.62846149739022e-05,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371023,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013313447233041035,
+      "flat_relative_error": 0.03005934372827397,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.020256049482493658,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.02963265309808859
+        ],
+        "expected_change": 0.018314773139038988,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371023,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020919507657483422,
+      "flat_relative_error": 0.034896139512298356,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03438256712620861,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.039710456710964626,
+          0.0,
+          0.030348572509104783
+        ],
+        "expected_change": -0.02653707834615378,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371024,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.001054834214242442,
+      "flat_relative_error": 0.0010210070886354113,
+      "interval_samples": 32,
+      "empirical_coverage": 0.875,
+      "mean_relative_halfwidth": 0.0018507662668544836,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          5.614212108584035e-05,
+          0.05000000000000005
+        ],
+        "expected_change": 4.451627141344593e-05,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371024,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013495620407608017,
+      "flat_relative_error": 0.030207133920274947,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.01979582468223678,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.030528106768615254
+        ],
+        "expected_change": 0.019024657947071016,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371024,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020997639356118477,
+      "flat_relative_error": 0.03520099310596925,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03368514935628762,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.0406432829203196,
+          0.0,
+          0.029992001626892185
+        ],
+        "expected_change": -0.02729869024606819,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371025,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0011118702703668036,
+      "flat_relative_error": 0.0010695200794732847,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.0018749606538552366,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -0.00026387217711552245,
+          0.05000000000000005
+        ],
+        "expected_change": -0.00020922981226468294,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371025,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013408828736162615,
+      "flat_relative_error": 0.030104220103986685,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.020607350580096776,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.03012467782262876
+        ],
+        "expected_change": 0.018704833382939465,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371025,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020958749725027568,
+      "flat_relative_error": 0.03514313373833285,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.033333516724478734,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.04008305393323732,
+          0.0,
+          0.030249678546621025
+        ],
+        "expected_change": -0.0268356611037534,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371026,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0009667631904266548,
+      "flat_relative_error": 0.0009712742744069432,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.0019338230592194823,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0005023371308480131,
+          0.05000000000000005
+        ],
+        "expected_change": 0.00039831370146650616,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371026,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013337199163518554,
+      "flat_relative_error": 0.029807915655743124,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.020299331754220093,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.030011991711223845
+        ],
+        "expected_change": 0.01861549971756345,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371026,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.021159474433258663,
+      "flat_relative_error": 0.03524397692006166,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03455539603350776,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.04030394458377768,
+          0.0,
+          0.030766134779062447
+        ],
+        "expected_change": -0.02693833943643416,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371027,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0011439000369871206,
+      "flat_relative_error": 0.0011148384947422868,
+      "interval_samples": 32,
+      "empirical_coverage": 0.84375,
+      "mean_relative_halfwidth": 0.001914853123245411,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          1.7123481760632528e-05,
+          0.05000000000000005
+        ],
+        "expected_change": 1.3577569690215396e-05,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371027,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013346706740098396,
+      "flat_relative_error": 0.03020804329250994,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.02075064514297317,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.0297124442455994
+        ],
+        "expected_change": 0.018378028810770226,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371027,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020746803649504778,
+      "flat_relative_error": 0.034921300035825005,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03520523267423965,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.03989311276859856,
+          0.0,
+          0.029718090235165116
+        ],
+        "expected_change": -0.02675867844325764,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371028,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0009766197720297767,
+      "flat_relative_error": 0.000991322569909644,
+      "interval_samples": 32,
+      "empirical_coverage": 0.875,
+      "mean_relative_halfwidth": 0.0018993092068447992,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -0.0005528475297888078,
+          0.05000000000000005
+        ],
+        "expected_change": -0.0004383644616615454,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371028,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.01332581608873712,
+      "flat_relative_error": 0.029940272277854195,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.0212105015385725,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.029832905140593606
+        ],
+        "expected_change": 0.018473526056616604,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371028,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020587214958866503,
+      "flat_relative_error": 0.0345719137634465,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.0347599482892072,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.039822034961855296,
+          0.0,
+          0.029356230068772717
+        ],
+        "expected_change": -0.026750931204752873,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371029,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0011630439285046528,
+      "flat_relative_error": 0.0011552286499741894,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.001973166931308545,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.00034541612406339365,
+          0.05000000000000005
+        ],
+        "expected_change": 0.0002738877269327948,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371029,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013268889878471532,
+      "flat_relative_error": 0.029758359378145048,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.020138983780632447,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.02967556549508087
+        ],
+        "expected_change": 0.01834879260839148,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371029,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.0207260349521325,
+      "flat_relative_error": 0.03476470145527052,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03394648260439297,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.04028167402982282,
+          0.0,
+          0.029581091358223517
+        ],
+        "expected_change": -0.027074431706261223,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371030,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0011544391523752127,
+      "flat_relative_error": 0.001099367264993436,
+      "interval_samples": 32,
+      "empirical_coverage": 0.84375,
+      "mean_relative_halfwidth": 0.0017664304393017348,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -3.9786498769848626e-05,
+          0.05000000000000005
+        ],
+        "expected_change": -3.154755366512179e-05,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371030,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013487491704211969,
+      "flat_relative_error": 0.03004141879377938,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.021472982078759775,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.030780485505599822
+        ],
+        "expected_change": 0.01922473511147672,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371030,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.02096084939916556,
+      "flat_relative_error": 0.03503124614607258,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.034087795309580705,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.040054822860775136,
+          0.0,
+          0.030270507273621676
+        ],
+        "expected_change": -0.026811314255632504,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371031,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0009836277797418544,
+      "flat_relative_error": 0.0009278291571859415,
+      "interval_samples": 32,
+      "empirical_coverage": 0.8125,
+      "mean_relative_halfwidth": 0.0016454730431069283,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.00028019325387235026,
+          0.05000000000000005
+        ],
+        "expected_change": 0.0002221711381108465,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371031,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013230089730177523,
+      "flat_relative_error": 0.029437715300300114,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.01989054009039807,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.029615403533516195
+        ],
+        "expected_change": 0.01830109827875514,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371031,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020782930611389912,
+      "flat_relative_error": 0.03482198312610277,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.033261868337629834,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.03981665129949899,
+          0.0,
+          0.029889642991766992
+        ],
+        "expected_change": -0.026677854456065662,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371032,
+      "kind": "flat",
+      "n": 40,
+      "mean_relative_error": 0.0010786393433410675,
+      "flat_relative_error": 0.0010403312888127014,
+      "interval_samples": 32,
+      "empirical_coverage": 0.84375,
+      "mean_relative_halfwidth": 0.0018954218842374285,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.7929210822900921,
+          0.103539458854954
+        ],
+        "changes": [
+          -0.05000000000000005,
+          -6.212636159217044e-05,
+          0.05000000000000005
+        ],
+        "expected_change": -4.926130187240939e-05,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371032,
+      "kind": "trend",
+      "n": 40,
+      "mean_relative_error": 0.013493585059492316,
+      "flat_relative_error": 0.030256299546679778,
+      "interval_samples": 32,
+      "empirical_coverage": 1,
+      "mean_relative_halfwidth": 0.020708895273036793,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.103539458854954,
+          0.10369500631340484,
+          0.7927655348316412
+        ],
+        "changes": [
+          -0.05000000000000005,
+          0.0,
+          0.030735608470204612
+        ],
+        "expected_change": 0.019189158144509978,
+        "observations": 40
+      }
+    },
+    {
+      "seed": 371032,
+      "kind": "reversal",
+      "n": 40,
+      "mean_relative_error": 0.020948874109847738,
+      "flat_relative_error": 0.034979695518949555,
+      "interval_samples": 32,
+      "empirical_coverage": 0.90625,
+      "mean_relative_halfwidth": 0.03406544311801189,
+      "scope": "逐时点只用此前数据；90%历史残差分位带，非分布变化下覆盖保证。",
+      "final_belief": {
+        "probabilities": [
+          0.7670482453948979,
+          0.10369500631340484,
+          0.1292567482916973
+        ],
+        "changes": [
+          -0.039510199909589566,
+          0.0,
+          0.030506238726030522
+        ],
+        "expected_change": -0.026363092295515374,
+        "observations": 40
+      }
+    }
+  ],
+  "calibration_by_kind": {
+    "flat": {
+      "relative_mae": 0.0010222937928841055,
+      "flat_mae": 0.001000941045792562,
+      "coverage": 0.8857421875
+    },
+    "trend": {
+      "relative_mae": 0.013365378184062296,
+      "flat_mae": 0.029996240893286143,
+      "coverage": 0.998046875
+    },
+    "reversal": {
+      "relative_mae": 0.020880906214563136,
+      "flat_mae": 0.034982795644760735,
+      "coverage": 0.90625
+    }
+  }
+}

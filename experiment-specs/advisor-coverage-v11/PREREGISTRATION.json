@@ -1,0 +1,57 @@
+{
+  "acceptance": {
+    "all_engineering_gates": true,
+    "median_holdout_utility_delta_nonnegative": true,
+    "minimum_holdout_eligible_coverage_ppm": 100000,
+    "no_extra_focal_exits": true,
+    "worst_holdout_ev_delta_floor_cents": -2500000
+  },
+  "config_hash": "sha256:cd0d414c520511e5bd9c52ea4c26108ed987cd8463e7a2785a24c92eeec29147",
+  "design": "Natural evolving 20-round trajectories, no resets or injected future state. Holdout seeds fixed before running. Rule baseline and legacy vs paired gate; 7-round warmup is required by unchanged n/(n+3)>=0.7 confidence gate. Loss floor is 5% of config initial cash (50m cents), not a claim of no possible losses.",
+  "gate_policy": {
+    "comparators": [
+      "maintain",
+      "diagnostic_fallback"
+    ],
+    "minimum_expected_enterprise_value_gain_cents": 250000,
+    "minimum_opponent_confidence_ppm": 700000,
+    "minimum_paired_enterprise_value_gain_cents": 0,
+    "minimum_paired_persona_gain_cents": 0,
+    "minimum_paired_risk_adjusted_gain_cents": 0,
+    "minimum_scenarios": 5,
+    "optimality_claim": false,
+    "policy_version": "paired-baseline-dominance-v1.0.0",
+    "price_coordination_is_research_only": true
+  },
+  "hash": "sha256:a334aa96addcb703b61aa8fac9fb00e352151f54b4d6bfd6e119646907530fa3",
+  "history_min": 7,
+  "holdout": [
+    130705,
+    130706,
+    130707,
+    130708
+  ],
+  "horizon": 3,
+  "model_calls": 0,
+  "modes": [
+    "rule",
+    "legacy",
+    "paired"
+  ],
+  "personas": [
+    "balanced_v1",
+    "public_service"
+  ],
+  "rounds": 20,
+  "scenarios": 5,
+  "seeds": [
+    130701,
+    130702,
+    130703,
+    130704,
+    130705,
+    130706,
+    130707,
+    130708
+  ]
+}

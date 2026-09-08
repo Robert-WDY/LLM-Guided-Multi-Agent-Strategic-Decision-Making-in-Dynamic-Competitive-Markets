@@ -96,7 +96,7 @@ def _economic_action(action: Mapping[str, Any]) -> dict[str, Any]:
     incident = action.get("incident_response")
     if not isinstance(incident, Mapping):
         incident = {}
-    return {
+    result = {
         "price_cents": int(action.get("price_cents", 0)),
         "advertising_budget_cents": int(
             action.get("advertising_budget_cents", 0)
@@ -118,6 +118,22 @@ def _economic_action(action: Mapping[str, Any]) -> dict[str, Any]:
             action.get("repair_budget_cents", incident.get("repair_budget_cents", 0))
         ),
     }
+    optional_fields = (
+        "threshold_project_contribution_cents",
+        "mutual_aid_capacity_offer_orders",
+        "mutual_aid_capacity_request_orders",
+        "price_coordination_target_cents",
+    )
+    for field in optional_fields:
+        if action.get(field) is not None:
+            result[field] = int(action[field])
+    for field in (
+        "mutual_aid_partner_company_id",
+        "price_coordination_partner_company_id",
+    ):
+        if action.get(field) is not None:
+            result[field] = str(action[field])
+    return result
 
 
 def _ranked_candidates(advice: Mapping[str, Any]) -> list[tuple[str, dict[str, Any]]]:
@@ -130,6 +146,7 @@ def _ranked_candidates(advice: Mapping[str, Any]) -> list[tuple[str, dict[str, A
         "pareto_reliable_v5",
         "pareto_reliable_v6",
         "pareto_reliable_v7",
+        "strategic_market_v9",
     }:
         rows = [item for item in raw_candidates if isinstance(item, Mapping)]
         decision = advice.get("pareto_decision")
@@ -201,6 +218,7 @@ def build_advisor_adoption_trace(
         "pareto_reliable_v5",
         "pareto_reliable_v6",
         "pareto_reliable_v7",
+        "strategic_market_v9",
     }:
         candidate_id = str(advice.get("recommended_candidate_id", "")) or None
         execution_disposition = advice.get("execution_disposition")
@@ -236,6 +254,12 @@ def build_advisor_adoption_trace(
             "resilience": "resilience_budget_cents",
             "shared_resilience": "shared_resilience_contribution_cents",
             "repair": "repair_budget_cents",
+            "threshold_project_contribution": (
+                "threshold_project_contribution_cents"
+            ),
+            "mutual_aid_request": "mutual_aid_capacity_request_orders",
+            "mutual_aid_offer": "mutual_aid_capacity_offer_orders",
+            "price_coordination_target": "price_coordination_target_cents",
         }
         changed_dimensions = [
             dimension_fields.get(str(field), str(field))

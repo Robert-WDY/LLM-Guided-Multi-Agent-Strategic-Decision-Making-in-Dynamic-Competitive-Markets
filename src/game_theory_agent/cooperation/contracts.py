@@ -10,7 +10,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from game_theory_agent.market.protocols import sha256_hash
 
 
-CooperationMode = Literal["off", "shared_resilience_v1"]
+CooperationMode = Literal["off", "shared_resilience_v1", "combined_v1"]
 ProposalResponseDisposition = Literal["accept", "reject"]
 CommitmentVerificationStatus = Literal[
     "fulfilled", "partial_betrayal", "betrayed"

@@ -1,6 +1,9 @@
 """Stateful, replayable Engineering MVP v4 grocery market environment."""
 
 from __future__ import annotations
+from game_theory_agent.market.transaction_accounting import enabled as cash_accounting, close_materials, accounting_failures
+from game_theory_agent.market.autonomous_market import decide_government, settle_government, advance_investment, actor_failures
+from game_theory_agent.market.models import GovernmentState, ConsumerDecisionAudit
 
 import math
 from collections.abc import Mapping, Sequence
@@ -22,20 +25,43 @@ from game_theory_agent.market.models import (
     CompanyAction,
     CompanyHistory,
     CompanyIncident,
+    CompanyOperatingStatus,
     CompanyState,
     FinancialState,
     MarketEvent,
     MarketSnapshot,
     MarketState,
+    MutualAidTransfer,
     OperationsState,
     Persona,
+    PriceCoordinationOutcome,
+    PriceCoordinationStatus,
     RiskSignal,
     RiskState,
     SharedResilienceState,
     StepResult,
+    SupplyChainState,
+    WelfareAccountingState,
 )
 from game_theory_agent.market.protocols import ComponentRng, sha256_hash, state_hash
+from game_theory_agent.market.strategic import (
+    apply_threshold_project_refunds,
+    advance_strategic_market_state,
+    initial_strategic_market_state,
+    liquidate_newly_exited,
+    settle_threshold_project,
+)
+from game_theory_agent.market.supply_chain import (
+    advance_supplier_availability,
+    initial_supply_chain_state,
+    settle_procurement,
+)
+from game_theory_agent.market.supplier_policy import advance_supplier_quotes, decide_quote, price_bounds, pricing_enabled
 from game_theory_agent.market.validation import ActionValidator, ValidationResult
+from game_theory_agent.market.welfare import (
+    advance_welfare_state,
+    initial_welfare_state,
+)
 
 
 PPM = 1_000_000
@@ -113,6 +139,7 @@ class MarketEnv:
         market_model: str = "random",
         max_rounds: int | None = None,
         cooperation_mode: str = "off",
+        cooperation_modes: Sequence[str] | None = None,
     ) -> MarketState:
         ids = tuple(
             company_ids
@@ -126,7 +153,25 @@ class MarketEnv:
             raise StateInvariantError("episode_id must be non-empty")
         if not 0 <= episode_seed < (1 << 64):
             raise StateInvariantError("episode_seed must fit uint64")
-        if cooperation_mode not in {"off", "shared_resilience_v1"}:
+        supported_cooperation_modes = {
+            "shared_resilience_v1",
+            "threshold_project_v1",
+            "mutual_aid_v1",
+            "price_coordination_v1",
+        }
+        if cooperation_modes is not None:
+            if cooperation_mode != "off":
+                raise StateInvariantError(
+                    "use cooperation_mode or cooperation_modes, not both"
+                )
+            selected_cooperation_modes = set(cooperation_modes)
+        elif cooperation_mode == "off":
+            selected_cooperation_modes = set()
+        elif cooperation_mode == "combined_v1":
+            selected_cooperation_modes = set(supported_cooperation_modes)
+        else:
+            selected_cooperation_modes = {cooperation_mode}
+        if not selected_cooperation_modes <= supported_cooperation_modes:
             raise StateInvariantError("unsupported cooperation_mode")
         selected_rounds = (
             self.config.integer("episode_options", "default_rounds")
@@ -219,6 +264,36 @@ class MarketEnv:
             )
             for company_id in ids
         )
+        strategic_cfg = self.config.data.get("strategic_market")
+        if (
+            (
+                "threshold_project_v1" in selected_cooperation_modes
+                or "mutual_aid_v1" in selected_cooperation_modes
+                or "price_coordination_v1" in selected_cooperation_modes
+            )
+            and not isinstance(strategic_cfg, Mapping)
+        ):
+            raise StateInvariantError(
+                "strategic cooperation requires a strategic market config"
+            )
+        strategic_market = (
+            initial_strategic_market_state(
+                company_ids=ids,
+                companies=companies,
+                config=strategic_cfg,
+                threshold_project_enabled=(
+                    "threshold_project_v1" in selected_cooperation_modes
+                ),
+                mutual_aid_enabled=(
+                    "mutual_aid_v1" in selected_cooperation_modes
+                ),
+                price_coordination_enabled=(
+                    "price_coordination_v1" in selected_cooperation_modes
+                ),
+            )
+            if isinstance(strategic_cfg, Mapping)
+            else None
+        )
         segments = tuple(
             sorted(
                 (name, int(weight))
@@ -279,9 +354,28 @@ class MarketEnv:
                         (company_id, 0) for company_id in sorted(ids)
                     ),
                 )
-                if cooperation_mode == "shared_resilience_v1"
+                if "shared_resilience_v1" in selected_cooperation_modes
                 else None
             ),
+            strategic_market=strategic_market,
+            supply_chain=(
+                initial_supply_chain_state(
+                    self.config.mapping("supply_chain")
+                )
+                if isinstance(self.config.data.get("supply_chain"), Mapping)
+                else None
+            ),
+            welfare_accounting=(
+                initial_welfare_state(
+                    self.config.mapping("welfare_accounting")
+                )
+                if isinstance(
+                    self.config.data.get("welfare_accounting"), Mapping
+                )
+                else None
+            ),
+            government=(GovernmentState(self.config.data["autonomous_market"]["government"]["initial_cash_cents"])
+                        if self.config.data.get("autonomous_market") else None),
         )
         state = replace(state, state_hash=state_hash(state.to_dict()))
         self.assert_invariants(state)
@@ -310,26 +404,140 @@ class MarketEnv:
         if state_version != state.state_version:
             raise StateVersionConflictError("STATE_VERSION_CONFLICT")
         company = state.company(agent_id)
+        operating_status = (
+            state.strategic_market.lifecycle(agent_id).status.value
+            if state.strategic_market is not None
+            else "operating"
+        )
         incident = company.risk.active_incident
         operating = self.config.mapping("operating_costs")
         bounds = self.config.to_dict()["action"]["bounds"]
         if state.shared_resilience is None:
             bounds.pop("shared_resilience_contribution_cents", None)
+        threshold_project = (
+            state.strategic_market.threshold_project
+            if state.strategic_market is not None
+            else None
+        )
+        if threshold_project is None:
+            bounds.pop("threshold_project_contribution_cents", None)
+        mutual_aid_enabled = bool(
+            state.strategic_market is not None
+            and state.strategic_market.mutual_aid_enabled
+        )
+        if not mutual_aid_enabled:
+            bounds.pop("mutual_aid_capacity_offer_orders", None)
+            bounds.pop("mutual_aid_capacity_request_orders", None)
+        price_coordination_enabled = bool(
+            state.strategic_market is not None
+            and state.strategic_market.price_coordination_enabled
+        )
+        supply_chain_enabled = state.supply_chain is not None
+        if not supply_chain_enabled:
+            bounds.pop("primary_supplier_share_ppm", None)
+        if self.config.data.get("autonomous_market"):
+            bounds["procurement_quantity_orders"] = {"min":0,"max":company.operations.base_capacity_orders}
         return {
+            **({"cash_material_accounting":True,"procurement_quantity_enabled":bool(self.config.data.get("autonomous_market"))} if cash_accounting(self.config.data.get("supply_chain")) else {}),
             "schema_version": self.config.text("schema_versions", "action"),
             "cash_available_cents": company.financial.cash_balance_cents,
+            "operating_status": operating_status,
+            "commercial_action_enabled": operating_status != "exited",
             "bounds": bounds,
+            "supply_contract_enabled": bool(self.config.data.get("supply_chain",{}).get("strategic_policy")),
             "capacity_investment_enabled": state.rounds_remaining > 1,
             "resilience_investment_enabled": state.rounds_remaining > 1,
             "shared_resilience_contribution_enabled": (
                 state.shared_resilience is not None
                 and state.rounds_remaining > 1
             ),
-            "cooperation_mode": (
-                "shared_resilience_v1"
-                if state.shared_resilience is not None
-                else "off"
+            "threshold_project_contribution_enabled": (
+                threshold_project is not None
+                and threshold_project.status.value == "active"
+                and state.round <= threshold_project.deadline_round
+                and state.rounds_remaining > 1
             ),
+            "mutual_aid_enabled": mutual_aid_enabled,
+            "mutual_aid_eligible_partners": [
+                company_id
+                for company_id in (
+                    state.strategic_market.active_company_ids
+                    if state.strategic_market is not None
+                    else ()
+                )
+                if company_id != agent_id
+            ],
+            "mutual_aid_fee_per_order_cents": (
+                int(self.config.mapping("strategic_market", "mutual_aid")["fee_per_order_cents"])
+                if mutual_aid_enabled
+                else None
+            ),
+            "price_coordination_enabled": price_coordination_enabled,
+            "price_coordination_eligible_partners": [
+                company_id
+                for company_id in (
+                    state.strategic_market.active_company_ids
+                    if state.strategic_market is not None
+                    else ()
+                )
+                if company_id != agent_id
+            ],
+            "price_coordination_adherence_tolerance_cents": (
+                int(
+                    self.config.mapping(
+                        "strategic_market", "price_coordination"
+                    )["adherence_tolerance_cents"]
+                )
+                if price_coordination_enabled
+                else None
+            ),
+            "supply_chain_enabled": supply_chain_enabled,
+            "eligible_suppliers": (
+                [{k:v for k,v in supplier.to_dict().items() if supplier.account is None or k not in {"account","investment_decision","unit_cost_cents","round_requested_orders"}} for supplier in state.supply_chain.suppliers]
+                if state.supply_chain is not None
+                else []
+            ),
+            "cooperation_mode": (
+                "combined_v1"
+                if sum(
+                    (
+                        state.shared_resilience is not None,
+                        threshold_project is not None,
+                        mutual_aid_enabled,
+                        price_coordination_enabled,
+                    )
+                )
+                > 1
+                else (
+                    "shared_resilience_v1"
+                    if state.shared_resilience is not None
+                    else (
+                        "threshold_project_v1"
+                        if threshold_project is not None
+                        else (
+                            "mutual_aid_v1" if mutual_aid_enabled else "off"
+                            if not price_coordination_enabled
+                            else "price_coordination_v1"
+                        )
+                    )
+                )
+            ),
+            "cooperation_modes": [
+                mode
+                for mode, enabled in (
+                    (
+                        "shared_resilience_v1",
+                        state.shared_resilience is not None,
+                    ),
+                    ("threshold_project_v1", threshold_project is not None),
+                    ("mutual_aid_v1", mutual_aid_enabled),
+                    (
+                        "price_coordination_v1",
+                        price_coordination_enabled,
+                    ),
+                )
+                if enabled
+            ],
             "active_incident": incident.to_dict() if incident else None,
             "max_useful_repair_budget_cents": (
                 incident.remaining_repair_cents if incident else 0
@@ -353,8 +561,20 @@ class MarketEnv:
         self,
         step_id: str,
         joint_action: Mapping[str, CompanyAction | Mapping[str, Any]],
+        *, actor_choices: Mapping[str,str] | None = None,
     ) -> StepResult:
         state = self.get_state()
+        actor_choices=dict(actor_choices or {})
+        if actor_choices:
+            allowed={sid:{"balanced","inventory","reliability","no_credit"} for sid in state.supply_chain.supplier_ids} if self.config.data.get("supply_chain",{}).get("strategic_policy") else {}
+            if self.config.data.get("autonomous_market",{}).get("government",{}).get("strategic_policy"):
+                from .government_strategy import OPTIONS
+                allowed["government"] = set(OPTIONS)
+            if self.config.data.get("four_actor_policies"):
+                from .actor_policies import CONSUMER_OPTIONS
+                allowed["consumers"] = set(CONSUMER_OPTIONS)
+            if any(k not in allowed or v not in allowed[k] for k,v in actor_choices.items()):
+                raise ValueError("unknown strategic actor or policy option")
         raw_joint_hash = sha256_hash(
             {
                 str(company_id): (
@@ -366,6 +586,7 @@ class MarketEnv:
             }
         )
         cached = self._step_cache.get(step_id)
+        if actor_choices: raw_joint_hash=sha256_hash({"company_actions":raw_joint_hash,"actor_choices":actor_choices})
         if cached:
             cached_hash, result = cached
             if cached_hash != raw_joint_hash:
@@ -396,7 +617,7 @@ class MarketEnv:
                 raise IdempotencyConflictError("action_id has already been executed")
             pending_action_ids[action.action_id] = payload_hash
 
-        result = self._transition(state, step_id, actions, joint_hash)
+        result = self._transition(state, step_id, actions, joint_hash,actor_choices)
         self.assert_invariants(result.state_after)
         self._state = result.state_after
         self._step_cache[step_id] = (raw_joint_hash, result)
@@ -407,6 +628,7 @@ class MarketEnv:
         self,
         state: MarketState,
         joint_action: Mapping[str, CompanyAction | Mapping[str, Any]],
+        *, actor_choices: Mapping[str,str] | None = None,
     ) -> StepResult:
         """Settle the same round with inherited public stock set to zero.
 
@@ -439,6 +661,7 @@ class MarketEnv:
         return shadow.step(
             f"{state.episode_id}:{state.round}:{state.state_version}",
             actions,
+            actor_choices=actor_choices,
         )
 
     def _transition(
@@ -447,6 +670,7 @@ class MarketEnv:
         step_id: str,
         actions: Mapping[str, CompanyAction],
         joint_hash: str,
+        actor_choices: Mapping[str,str] | None = None,
     ) -> StepResult:
         random_summary: dict[str, int] = {}
         market_cfg = self.config.mapping("market")
@@ -458,6 +682,43 @@ class MarketEnv:
         incident_cfg = self.config.mapping("incidents")
         operating_cfg = self.config.mapping("operating_costs")
         shared_cfg = self.config.mapping("shared_resilience")
+        strategic_cfg = self.config.data.get("strategic_market")
+        supply_chain_cfg = self.config.data.get("supply_chain")
+        welfare_cfg = self.config.data.get("welfare_accounting")
+        autonomous_cfg = self.config.data.get("autonomous_market")
+        government_action = decide_government(state, autonomous_cfg["government"], (actor_choices or {}).get("government")) if autonomous_cfg else None
+        from .government_strategy import matched_support, rebates, unpack, learn
+        government_support = matched_support(government_action, actions) if government_action else {}
+        active_company_ids = (
+            set(state.strategic_market.active_company_ids)
+            if state.strategic_market is not None
+            else set(state.company_ids)
+        )
+        settled_supply_chain: SupplyChainState | None = None
+        procurement_capacity_by_company: dict[str, int] = {}
+        procurement_price_by_company: dict[str, int] = {}
+        if state.supply_chain is not None:
+            if not isinstance(supply_chain_cfg, Mapping):
+                raise StateInvariantError("supply chain state requires config")
+            (
+                settled_supply_chain,
+                procurement_capacity_by_company,
+                procurement_price_by_company,
+            ) = settle_procurement(
+                previous=state.supply_chain,
+                companies=tuple(
+                    company
+                    for company in state.companies
+                    if company.company_id in active_company_ids
+                ),
+                actions=actions,
+                config=supply_chain_cfg,
+                fixed_overhead_cents=int(operating_cfg["fixed_overhead_cents"]),
+                rounds_remaining=state.rounds_remaining,
+                actor_choices=actor_choices,
+            )
+        material_payments = ({o.company_id: o.material.payment_cents for o in settled_supply_chain.last_procurement_outcomes}
+                             if cash_accounting(supply_chain_cfg) else {})
         current_industry_resilience = (
             state.shared_resilience.industry_resilience_ppm
             if state.shared_resilience is not None
@@ -466,6 +727,23 @@ class MarketEnv:
         current_public_protection = _ppm_mul(
             int(shared_cfg["public_protection_weight_ppm"]),
             current_industry_resilience,
+        )
+        current_threshold_project = (
+            state.strategic_market.threshold_project
+            if state.strategic_market is not None
+            else None
+        )
+        if current_threshold_project is not None:
+            current_public_protection = _clip(
+                current_public_protection
+                + current_threshold_project.public_protection_bonus_ppm,
+                0,
+                PPM,
+            )
+        project_supply_multiplier = (
+            PPM - current_threshold_project.supply_cost_reduction_ppm
+            if current_threshold_project is not None
+            else PPM
         )
 
         scales = action_cfg["saturation_scales_cents"]
@@ -485,8 +763,13 @@ class MarketEnv:
             )
             for company_id, action in actions.items()
         }
-        average_offered_price = _round_ratio(
-            sum(action.price_cents for action in actions.values()), len(actions)
+        average_offered_price = (
+            _round_ratio(
+                sum(actions[company_id].price_cents for company_id in active_company_ids),
+                len(active_company_ids),
+            )
+            if active_company_ids
+            else state.market.price_anchor_cents
         )
 
         event_demand_multiplier = PPM
@@ -516,6 +799,40 @@ class MarketEnv:
             realized_demand,
             dict(state.consumer_segments),
         )
+        # v7 may split each preference segment into explicit willingness-to-pay
+        # cohorts.  Older configs create exactly one identically named group,
+        # preserving their RNG keys and transition hashes.
+        consumer_groups: dict[str, dict[str, int | str | None]] = {}
+        for segment_name, demand in segment_demand.items():
+            segment = segment_definitions[segment_name]
+            wtp_distribution = segment.get("wtp_distribution")
+            if isinstance(wtp_distribution, Mapping):
+                weights = {
+                    str(key): int(value)
+                    for key, value in wtp_distribution["weights_ppm"].items()
+                }
+                offsets = {
+                    str(key): int(value)
+                    for key, value in wtp_distribution["offsets_cents"].items()
+                }
+                cohort_demand = _allocate_integer(demand, weights)
+                for cohort_name in sorted(weights):
+                    group_name = f"{segment_name}::{cohort_name}"
+                    consumer_groups[group_name] = {
+                        "segment_name": segment_name,
+                        "demand_orders": cohort_demand[cohort_name],
+                        "wtp_cents": max(
+                            0,
+                            state.market.price_anchor_cents
+                            + offsets[cohort_name],
+                        ),
+                    }
+            else:
+                consumer_groups[segment_name] = {
+                    "segment_name": segment_name,
+                    "demand_orders": demand,
+                    "wtp_cents": None,
+                }
 
         company_runtime: dict[str, dict[str, int | CompanyIncident | None]] = {}
         utilities: dict[str, dict[str, float]] = {}
@@ -524,6 +841,8 @@ class MarketEnv:
         for company in state.companies:
             company_id = company.company_id
             action = actions[company_id]
+            if company_id not in active_company_ids:
+                continue
             resilience = company.risk.resilience_ppm
             effective_resilience = PPM - _ppm_mul(
                 PPM - resilience,
@@ -609,6 +928,31 @@ class MarketEnv:
                 * supply_multiplier,
                 PPM * PPM,
             )
+            actual_unit_cost = _ppm_mul(
+                actual_unit_cost, project_supply_multiplier
+            )
+            if state.supply_chain is not None:
+                assert isinstance(supply_chain_cfg, Mapping)
+                baseline_input_price = int(
+                    supply_chain_cfg["baseline_input_price_cents"]
+                )
+                input_share = int(
+                    supply_chain_cfg["downstream_input_cost_share_ppm"]
+                )
+                supplier_price = procurement_price_by_company[company_id]
+                supplier_price_index = _round_ratio(
+                    supplier_price * PPM,
+                    baseline_input_price,
+                )
+                supplier_cost_multiplier = (
+                    PPM - input_share
+                    + _ppm_mul(input_share, supplier_price_index)
+                )
+                if cash_accounting(supply_chain_cfg):
+                    supplier_cost_multiplier = PPM - input_share
+                actual_unit_cost = _ppm_mul(
+                    actual_unit_cost, supplier_cost_multiplier
+                )
             operational_rng = self._rng(
                 state,
                 "operational_capacity_noise",
@@ -636,6 +980,11 @@ class MarketEnv:
                 )
                 // (PPM * PPM * PPM),
             )
+            if state.supply_chain is not None:
+                effective_capacity = min(
+                    effective_capacity,
+                    procurement_capacity_by_company[company_id],
+                )
             refund_per_order = _round_ratio(
                 action.price_cents * incident_factors["refund_rate_ppm"], PPM
             )
@@ -649,7 +998,7 @@ class MarketEnv:
                 - fulfillment_cost_per_order
             )
             available_after_action = max(
-                0, company.financial.cash_balance_cents - action.fixed_spend_cents
+                0, company.financial.cash_balance_cents - action.fixed_spend_cents - material_payments.get(company_id, 0)
             )
             operating_overhead = min(
                 int(operating_cfg["fixed_overhead_cents"]), available_after_action
@@ -683,7 +1032,7 @@ class MarketEnv:
                 "fulfillment_cap_orders": fulfillment_cap,
             }
 
-            relative_price_signal = _clip(
+            seller_relative_price_signal = _clip(
                 _round_ratio(
                     (average_offered_price - action.price_cents) * PPM,
                     int(choice_cfg["price_scale_cents"]),
@@ -692,12 +1041,42 @@ class MarketEnv:
                 int(choice_cfg["relative_price_signal_max_ppm"]),
             )
             utilities[company_id] = {}
-            for segment_name, segment in segment_definitions.items():
+            for group_name, group in consumer_groups.items():
+                segment_name = str(group["segment_name"])
+                segment = segment_definitions[segment_name]
                 coefficients = segment["coefficients_ppm"]
+                if self.config.data.get("four_actor_policies"):
+                    from .actor_policies import consumer_coefficients
+                    coefficients = consumer_coefficients(coefficients,(actor_choices or {}).get("consumers","balanced"))
+                price_signal = seller_relative_price_signal
+                if isinstance(strategic_cfg, Mapping):
+                    reference_price = (
+                        int(group["wtp_cents"])
+                        if group["wtp_cents"] is not None
+                        else state.market.price_anchor_cents
+                    )
+                    absolute_price_signal = _clip(
+                        _round_ratio(
+                            (reference_price - action.price_cents) * PPM,
+                            int(choice_cfg["price_scale_cents"]),
+                        ),
+                        int(choice_cfg["relative_price_signal_min_ppm"]),
+                        int(choice_cfg["relative_price_signal_max_ppm"]),
+                    )
+                    price_signal = (
+                        _ppm_mul(
+                            seller_relative_price_signal,
+                            int(strategic_cfg["relative_price_weight_ppm"]),
+                        )
+                        + _ppm_mul(
+                            absolute_price_signal,
+                            int(strategic_cfg["absolute_price_weight_ppm"]),
+                        )
+                    )
                 utility_noise_rng = self._rng(
                     state,
                     "consumer_utility_noise",
-                    f"{company_id}|{segment_name}",
+                    f"{company_id}|{group_name}",
                     summary=random_summary,
                 )
                 noise_ppm = int(
@@ -710,7 +1089,7 @@ class MarketEnv:
                     _ppm_mul(
                         int(coefficients["price"]),
                         state.market.utility_price_multiplier_ppm,
-                        relative_price_signal,
+                        price_signal,
                     )
                     + _ppm_mul(
                         int(coefficients["awareness"]),
@@ -734,27 +1113,40 @@ class MarketEnv:
                     )
                     + noise_ppm
                 )
-                utilities[company_id][segment_name] = utility_ppm / PPM
+                utilities[company_id][group_name] = utility_ppm / PPM
 
         initial_assignments: dict[str, dict[str, int]] = {
-            company_id: {segment: 0 for segment in segment_definitions}
+            company_id: {group_name: 0 for group_name in consumer_groups}
             for company_id in state.company_ids
         }
         no_purchase_orders = 0
+        no_purchase_by_group = {}
         temperature = int(choice_cfg["temperature_ppm"]) / PPM
-        for segment_name, demand in segment_demand.items():
+        for group_name, group in consumer_groups.items():
+            demand = int(group["demand_orders"])
+            segment_name = str(group["segment_name"])
             values = {
-                company_id: utilities[company_id][segment_name]
-                for company_id in state.company_ids
+                company_id: utilities[company_id][group_name]
+                for company_id in active_company_ids
+                if (
+                    group["wtp_cents"] is None
+                    or actions[company_id].price_cents
+                    <= int(group["wtp_cents"])
+                )
             }
             values["outside"] = (
                 int(segment_definitions[segment_name]["outside_utility_ppm"]) / PPM
             )
+            if (actor_choices or {}).get("consumers")=="cautious":
+                values["outside"] += 0.5
             probabilities = self._softmax(values, temperature)
             allocation = _allocate_integer(demand, probabilities)
             no_purchase_orders += allocation["outside"]
+            no_purchase_by_group[group_name] = allocation["outside"]
             for company_id in state.company_ids:
-                initial_assignments[company_id][segment_name] = allocation[company_id]
+                initial_assignments[company_id][group_name] = allocation.get(
+                    company_id, 0
+                )
 
         initial_fulfilled: dict[str, dict[str, int]] = {}
         attempted: dict[str, dict[str, int]] = {}
@@ -762,35 +1154,140 @@ class MarketEnv:
         for company_id in state.company_ids:
             assigned = initial_assignments[company_id]
             total_assigned = sum(assigned.values())
-            cap = int(company_runtime[company_id]["fulfillment_cap_orders"])
+            cap = (
+                int(company_runtime[company_id]["fulfillment_cap_orders"])
+                if company_id in company_runtime
+                else 0
+            )
             fulfill_total = min(total_assigned, cap)
             fulfilled = (
                 _allocate_integer(fulfill_total, assigned)
                 if total_assigned
-                else {segment: 0 for segment in segment_definitions}
+                else {group_name: 0 for group_name in consumer_groups}
             )
             initial_fulfilled[company_id] = fulfilled
             attempted[company_id] = {
                 segment: assigned[segment] - fulfilled[segment]
-                for segment in segment_definitions
+                for segment in consumer_groups
             }
             remaining_caps[company_id] = cap - fulfill_total
 
+        attempted_before_mutual_aid = {
+            company_id: dict(by_segment)
+            for company_id, by_segment in attempted.items()
+        }
+        mutual_aid_received = {
+            company_id: 0 for company_id in state.company_ids
+        }
+        mutual_aid_received_by_group = {
+            company_id: {group_name: 0 for group_name in consumer_groups}
+            for company_id in state.company_ids
+        }
+        mutual_aid_provided = {
+            company_id: 0 for company_id in state.company_ids
+        }
+        mutual_aid_transfers: list[MutualAidTransfer] = []
+        mutual_aid_enabled = bool(
+            state.strategic_market is not None
+            and state.strategic_market.mutual_aid_enabled
+        )
+        mutual_aid_fee_per_order = 0
+        if mutual_aid_enabled:
+            if not isinstance(strategic_cfg, Mapping):
+                raise StateInvariantError("mutual aid requires strategic config")
+            mutual_aid_cfg = strategic_cfg.get("mutual_aid")
+            if not isinstance(mutual_aid_cfg, Mapping):
+                raise StateInvariantError("mutual aid config is missing")
+            mutual_aid_fee_per_order = int(
+                mutual_aid_cfg["fee_per_order_cents"]
+            )
+            for donor_id in sorted(active_company_ids):
+                donor_action = actions[donor_id]
+                recipient_id = donor_action.mutual_aid_partner_company_id
+                offered = int(
+                    donor_action.mutual_aid_capacity_offer_orders or 0
+                )
+                if recipient_id is None or offered <= 0:
+                    continue
+                if recipient_id not in active_company_ids:
+                    continue
+                if cash_accounting(supply_chain_cfg):
+                    donor_runtime = company_runtime[donor_id]
+                    recipient_runtime = company_runtime[recipient_id]
+                    # Both incremental legs must be self-financing. Existing
+                    # own-order financial caps cannot secure a different fee.
+                    donor_margin = mutual_aid_fee_per_order - donor_runtime["actual_unit_cost_cents"] - donor_runtime["fulfillment_cost_per_order_cents"]
+                    recipient_margin = recipient_action_price = actions[recipient_id].price_cents
+                    recipient_margin -= mutual_aid_fee_per_order + _round_ratio(recipient_action_price * recipient_runtime["refund_rate_ppm"], PPM)
+                    if donor_margin < 0 or recipient_margin < 0:
+                        continue
+                recipient_action = actions[recipient_id]
+                requested = int(
+                    recipient_action.mutual_aid_capacity_request_orders or 0
+                )
+                if (
+                    recipient_action.mutual_aid_partner_company_id != donor_id
+                    or requested <= 0
+                ):
+                    continue
+                unmet = sum(attempted[recipient_id].values())
+                fulfilled_orders = min(
+                    offered,
+                    requested,
+                    remaining_caps[donor_id],
+                    unmet,
+                )
+                if fulfilled_orders <= 0:
+                    continue
+                fulfilled_by_segment = _allocate_integer(
+                    fulfilled_orders, attempted[recipient_id]
+                )
+                for segment_name, quantity in fulfilled_by_segment.items():
+                    attempted[recipient_id][segment_name] -= quantity
+                    mutual_aid_received_by_group[recipient_id][
+                        segment_name
+                    ] += quantity
+                remaining_caps[donor_id] -= fulfilled_orders
+                mutual_aid_received[recipient_id] += fulfilled_orders
+                mutual_aid_provided[donor_id] += fulfilled_orders
+                mutual_aid_transfers.append(
+                    MutualAidTransfer(
+                        donor_company_id=donor_id,
+                        recipient_company_id=recipient_id,
+                        fulfilled_orders=fulfilled_orders,
+                        fee_per_order_cents=mutual_aid_fee_per_order,
+                        total_transfer_fee_cents=(
+                            fulfilled_orders * mutual_aid_fee_per_order
+                        ),
+                    )
+                )
+
         received = {company_id: 0 for company_id in state.company_ids}
+        received_by_group = {
+            company_id: {group_name: 0 for group_name in consumer_groups}
+            for company_id in state.company_ids
+        }
         own_lost = {company_id: 0 for company_id in state.company_ids}
         lost_after_stockout = 0
         for origin in sorted(state.company_ids):
-            for segment_name in sorted(segment_definitions):
-                quantity = attempted[origin][segment_name]
+            for group_name in sorted(consumer_groups):
+                quantity = attempted[origin][group_name]
                 if quantity <= 0:
                     continue
+                segment_name = str(consumer_groups[group_name]["segment_name"])
                 candidates = [
                     company_id
-                    for company_id in state.company_ids
-                    if company_id != origin and remaining_caps[company_id] > 0
+                    for company_id in active_company_ids
+                    if company_id != origin
+                    and remaining_caps[company_id] > 0
+                    and (
+                        consumer_groups[group_name]["wtp_cents"] is None
+                        or actions[company_id].price_cents
+                        <= int(consumer_groups[group_name]["wtp_cents"])
+                    )
                 ]
                 values = {
-                    company_id: utilities[company_id][segment_name]
+                    company_id: utilities[company_id][group_name]
                     for company_id in candidates
                 }
                 values["outside"] = (
@@ -803,6 +1300,7 @@ class MarketEnv:
                 for company_id in candidates:
                     accepted = min(allocation[company_id], remaining_caps[company_id])
                     received[company_id] += accepted
+                    received_by_group[company_id][group_name] += accepted
                     remaining_caps[company_id] -= accepted
                     recovered += accepted
                 batch_lost = quantity - recovered
@@ -812,45 +1310,293 @@ class MarketEnv:
         sales = {
             company_id: sum(initial_fulfilled[company_id].values())
             + received[company_id]
+            + mutual_aid_received[company_id]
             for company_id in state.company_ids
         }
+        sales_by_company_group = {
+            company_id: {
+                group_name: (
+                    initial_fulfilled[company_id][group_name]
+                    + received_by_group[company_id][group_name]
+                    + mutual_aid_received_by_group[company_id][group_name]
+                )
+                for group_name in consumer_groups
+            }
+            for company_id in state.company_ids
+        }
+        exact_consumer_surplus = sum(
+            quantity
+            * max(
+                0,
+                int(consumer_groups[group_name]["wtp_cents"])
+                - actions[company_id].price_cents,
+            )
+            for company_id, by_group in sales_by_company_group.items()
+            for group_name, quantity in by_group.items()
+            if consumer_groups[group_name]["wtp_cents"] is not None
+        )
         total_sales = sum(sales.values())
+        consumer_decisions = ()
+        if autonomous_cfg:
+            consumer_decisions = tuple(ConsumerDecisionAudit(
+                group_id=group_id, settled_round=state.round, demand_orders=int(group["demand_orders"]),
+                unit_budget_cents=int(group["wtp_cents"]), voluntary_no_purchase_orders=no_purchase_by_group[group_id],
+                stockout_orders=int(group["demand_orders"])-no_purchase_by_group[group_id]-sum(sales_by_company_group[cid][group_id] for cid in state.company_ids),
+                purchases_by_company=tuple((cid,sales_by_company_group[cid][group_id]) for cid in state.company_ids),
+                posted_prices_cents=tuple((cid,actions[cid].price_cents) for cid in state.company_ids),
+                spending_cents=sum(actions[cid].price_cents*sales_by_company_group[cid][group_id] for cid in state.company_ids),
+                refund_cents=sum(_round_ratio(actions[cid].price_cents*company_runtime[cid]["refund_rate_ppm"],PPM)*sales_by_company_group[cid][group_id] for cid in active_company_ids),
+            ) for group_id,group in sorted(consumer_groups.items()))
+            exact_consumer_surplus += sum(d.refund_cents for d in consumer_decisions)
+            consumer_decisions = rebates(government_action, consumer_decisions)
+            exact_consumer_surplus += sum(d.government_rebate_cents or 0 for d in consumer_decisions)
         shares = (
             _allocate_integer(PPM, sales)
             if total_sales > 0
             else {company_id: 0 for company_id in state.company_ids}
         )
 
+        price_coordination_enabled = bool(
+            state.strategic_market is not None
+            and state.strategic_market.price_coordination_enabled
+        )
+        coordination_specs: list[dict[str, Any]] = []
+        regulatory_fine_assessed = {
+            company_id: 0 for company_id in state.company_ids
+        }
+        if price_coordination_enabled:
+            if not isinstance(strategic_cfg, Mapping):
+                raise StateInvariantError(
+                    "price coordination requires strategic config"
+                )
+            coordination_cfg = strategic_cfg.get("price_coordination")
+            if not isinstance(coordination_cfg, Mapping):
+                raise StateInvariantError(
+                    "price coordination config is missing"
+                )
+            tolerance = int(coordination_cfg["adherence_tolerance_cents"])
+            for company_a_id in sorted(active_company_ids):
+                action_a = actions[company_a_id]
+                company_b_id = action_a.price_coordination_partner_company_id
+                target = action_a.price_coordination_target_cents
+                if (
+                    company_b_id is None
+                    or company_b_id not in active_company_ids
+                    or company_a_id >= company_b_id
+                    or target is None
+                ):
+                    continue
+                action_b = actions[company_b_id]
+                if (
+                    action_b.price_coordination_partner_company_id
+                    != company_a_id
+                    or action_b.price_coordination_target_cents != target
+                ):
+                    continue
+                adhered_a = abs(action_a.price_cents - target) <= tolerance
+                adhered_b = abs(action_b.price_cents - target) <= tolerance
+                if adhered_a and adhered_b:
+                    status = PriceCoordinationStatus.HONORED
+                elif (
+                    not adhered_a
+                    and adhered_b
+                    and action_a.price_cents < target - tolerance
+                ):
+                    status = PriceCoordinationStatus.UNDERCUT_BY_A
+                elif (
+                    adhered_a
+                    and not adhered_b
+                    and action_b.price_cents < target - tolerance
+                ):
+                    status = PriceCoordinationStatus.UNDERCUT_BY_B
+                else:
+                    status = PriceCoordinationStatus.MUTUAL_DEVIATION
+                markup_signal = _clip(
+                    _round_ratio(
+                        max(0, target - state.market.price_anchor_cents)
+                        * PPM,
+                        max(1, state.market.price_anchor_cents),
+                    ),
+                    0,
+                    PPM,
+                )
+                detection_probability = _clip(
+                    int(coordination_cfg["base_detection_probability_ppm"])
+                    + _ppm_mul(
+                        markup_signal,
+                        int(coordination_cfg["markup_detection_weight_ppm"]),
+                    )
+                    + _ppm_mul(
+                        state.strategic_market.regulatory_pressure_ppm,
+                        int(
+                            coordination_cfg[
+                                "regulatory_pressure_detection_weight_ppm"
+                            ]
+                        ),
+                    ),
+                    0,
+                    PPM,
+                )
+                detection_rng = self._rng(
+                    state,
+                    "price_coordination_detection",
+                    f"{company_a_id}|{company_b_id}",
+                    summary=random_summary,
+                )
+                if government_action is not None:
+                    detection_probability = min(PPM, detection_probability + government_action.detection_boost_ppm) if len(coordination_specs) < government_action.inspection_cases else 0
+                detected = detection_rng.uniform() < (
+                    detection_probability / PPM
+                )
+                if detected:
+                    for company_id in (company_a_id, company_b_id):
+                        consumer_revenue = actions[company_id].price_cents * sales[
+                            company_id
+                        ]
+                        regulatory_fine_assessed[company_id] += int(
+                            coordination_cfg["base_fine_cents"]
+                        ) + _ppm_mul(
+                            consumer_revenue,
+                            int(coordination_cfg["fine_revenue_share_ppm"]),
+                        )
+                coordination_specs.append(
+                    {
+                        "company_a_id": company_a_id,
+                        "company_b_id": company_b_id,
+                        "target_price_cents": target,
+                        "company_a_actual_price_cents": action_a.price_cents,
+                        "company_b_actual_price_cents": action_b.price_cents,
+                        "company_a_adhered": adhered_a,
+                        "company_b_adhered": adhered_b,
+                        "status": status,
+                        "detection_probability_ppm": detection_probability,
+                        "detected": detected,
+                    }
+                )
+
+        if government_action and government_action.strategic_policy:
+            multiplier = unpack(government_action.strategic_policy)["fine_multiplier_ppm"]
+            regulatory_fine_assessed = {cid:value*multiplier//PPM for cid,value in regulatory_fine_assessed.items()}
         next_companies: list[CompanyState] = []
         history_window = int(self.config.get("company_initial", "history_window"))
         for company in state.companies:
             company_id = company.company_id
             action = actions[company_id]
+            if company_id not in active_company_ids:
+                next_companies.append(
+                    replace(
+                        company,
+                        financial=replace(
+                            company.financial,
+                            round_revenue_cents=0,
+                            round_variable_cost_cents=0,
+                            round_fixed_spend_cents=0,
+                            round_incident_cost_cents=0,
+                            round_operating_cost_cents=0,
+                            round_profit_cents=0,
+                            round_material_payment_cents=(0 if cash_accounting(supply_chain_cfg) else None),
+                            round_government_support_cents=(0 if autonomous_cfg else None),
+                            round_regulatory_fine_cents=(
+                                0 if price_coordination_enabled else None
+                            ),
+                        ),
+                        commercial=replace(
+                            company.commercial,
+                            market_share_ppm=0,
+                            potential_demand_orders=0,
+                            sales_orders=0,
+                            attempted_unfulfilled_orders=0,
+                            orders_received_from_redistribution=0,
+                            orders_lost_after_redistribution=0,
+                            mutual_aid_fulfilled_orders=(
+                                0 if mutual_aid_enabled else None
+                            ),
+                            mutual_aid_provided_orders=(
+                                0 if mutual_aid_enabled else None
+                            ),
+                        ),
+                        operations=replace(
+                            company.operations,
+                            effective_capacity_orders=0,
+                            financial_capacity_orders=0,
+                            capacity_utilization_ppm=0,
+                        ),
+                        risk=replace(company.risk, active_incident=None),
+                        history=replace(
+                            company.history,
+                            last_action_id=action.action_id,
+                            last_action=action,
+                            recent_profit_cents=(
+                                company.history.recent_profit_cents + (0,)
+                            )[-int(self.config.get("company_initial", "history_window")):],
+                            recent_market_share_ppm=(
+                                company.history.recent_market_share_ppm + (0,)
+                            )[-int(self.config.get("company_initial", "history_window")):],
+                        ),
+                    )
+                )
+                continue
             runtime = company_runtime[company_id]
             company_sales = sales[company_id]
             actual_unit_cost = int(runtime["actual_unit_cost_cents"])
-            revenue = action.price_cents * company_sales
-            variable_cost = actual_unit_cost * company_sales
+            internally_fulfilled_orders = (
+                company_sales
+                - mutual_aid_received[company_id]
+                + mutual_aid_provided[company_id]
+            )
+            transfer_fee_income = (
+                mutual_aid_provided[company_id] * mutual_aid_fee_per_order
+            )
+            transfer_fee_expense = (
+                mutual_aid_received[company_id] * mutual_aid_fee_per_order
+            )
+            revenue = (
+                action.price_cents * company_sales + transfer_fee_income
+            )
+            variable_cost = (
+                actual_unit_cost * internally_fulfilled_orders
+                + transfer_fee_expense
+                + material_payments.get(company_id, 0)
+            )
             refund_per_order = _round_ratio(
                 action.price_cents * int(runtime["refund_rate_ppm"]), PPM
             )
             refund_cost = refund_per_order * company_sales
             operating_cost = int(runtime["operating_overhead_cents"]) + (
-                int(runtime["fulfillment_cost_per_order_cents"]) * company_sales
+                int(runtime["fulfillment_cost_per_order_cents"])
+                * internally_fulfilled_orders
             )
-            round_profit = (
+            pre_fine_profit = (
                 revenue
                 - variable_cost
                 - action.fixed_spend_cents
                 - refund_cost
                 - operating_cost
+                + government_support.get(company_id, 0)
             )
+            regulatory_fine = min(
+                regulatory_fine_assessed[company_id],
+                max(
+                    0,
+                    company.financial.cash_balance_cents + pre_fine_profit,
+                ),
+            )
+            round_profit = pre_fine_profit - regulatory_fine
             next_cash = company.financial.cash_balance_cents + round_profit
 
             assigned_total = sum(initial_assignments[company_id].values())
-            attempted_total = sum(attempted[company_id].values())
+            attempted_total = sum(
+                attempted_before_mutual_aid[company_id].values()
+            )
+            unfulfilled_after_mutual_aid = max(
+                0,
+                attempted_total - mutual_aid_received[company_id],
+            )
             unfulfilled_rate = (
-                _round_ratio(attempted_total * PPM, assigned_total)
+                _round_ratio(
+                    unfulfilled_after_mutual_aid * PPM,
+                    assigned_total,
+                )
                 if assigned_total
                 else 0
             )
@@ -941,6 +1687,8 @@ class MarketEnv:
                 persona=company.persona,
                 financial=FinancialState(
                     cash_balance_cents=next_cash,
+                    round_material_payment_cents=(material_payments.get(company_id, 0) if cash_accounting(supply_chain_cfg) else None),
+                    round_government_support_cents=(government_support.get(company_id, 0) if autonomous_cfg else None),
                     round_revenue_cents=revenue,
                     round_variable_cost_cents=variable_cost,
                     round_fixed_spend_cents=action.fixed_spend_cents,
@@ -951,6 +1699,11 @@ class MarketEnv:
                         company.financial.cumulative_profit_cents + round_profit
                     ),
                     capacity_book_value_cents=book_value_next,
+                    round_regulatory_fine_cents=(
+                        regulatory_fine
+                        if price_coordination_enabled
+                        else None
+                    ),
                 ),
                 commercial=CommercialState(
                     price_cents=action.price_cents,
@@ -960,6 +1713,16 @@ class MarketEnv:
                     attempted_unfulfilled_orders=attempted_total,
                     orders_received_from_redistribution=received[company_id],
                     orders_lost_after_redistribution=own_lost[company_id],
+                    mutual_aid_fulfilled_orders=(
+                        mutual_aid_received[company_id]
+                        if mutual_aid_enabled
+                        else None
+                    ),
+                    mutual_aid_provided_orders=(
+                        mutual_aid_provided[company_id]
+                        if mutual_aid_enabled
+                        else None
+                    ),
                 ),
                 operations=OperationsState(
                     base_capacity_orders=base_capacity_next,
@@ -967,7 +1730,7 @@ class MarketEnv:
                     financial_capacity_orders=int(runtime["financial_capacity_orders"]),
                     capacity_utilization_ppm=(
                         _round_ratio(
-                            company_sales * PPM,
+                            internally_fulfilled_orders * PPM,
                             int(runtime["effective_capacity_orders"]),
                         )
                         if int(runtime["effective_capacity_orders"])
@@ -975,6 +1738,21 @@ class MarketEnv:
                     ),
                     base_unit_cost_cents=company.operations.base_unit_cost_cents,
                     actual_unit_cost_cents=actual_unit_cost,
+                    procurement_requested_orders=(
+                        company.operations.base_capacity_orders
+                        if state.supply_chain is not None
+                        else None
+                    ),
+                    procurement_fulfilled_orders=(
+                        procurement_capacity_by_company[company_id]
+                        if state.supply_chain is not None
+                        else None
+                    ),
+                    procurement_unit_input_price_cents=(
+                        procurement_price_by_company[company_id]
+                        if state.supply_chain is not None
+                        else None
+                    ),
                 ),
                 brand=BrandState(
                     brand_awareness_ppm=awareness_next,
@@ -998,6 +1776,29 @@ class MarketEnv:
                 ),
             )
             next_companies.append(next_company)
+
+        actual_fines = {
+            company.company_id: int(
+                company.financial.round_regulatory_fine_cents or 0
+            )
+            for company in next_companies
+        }
+        price_coordination_outcomes = tuple(
+            PriceCoordinationOutcome(
+                **spec,
+                fine_by_company_cents=tuple(
+                    (
+                        company_id,
+                        actual_fines[company_id],
+                    )
+                    for company_id in (
+                        spec["company_a_id"],
+                        spec["company_b_id"],
+                    )
+                ),
+            )
+            for spec in coordination_specs
+        )
 
         sentiment_rng = self._rng(state, "sentiment_noise", summary=random_summary)
         sentiment_noise = int(
@@ -1077,6 +1878,24 @@ class MarketEnv:
                 next_industry_resilience,
             )
 
+        next_threshold_project, project_refunds, _ = settle_threshold_project(
+            previous=current_threshold_project,
+            settled_round=state.round,
+            company_ids=state.company_ids,
+            actions=actions,
+            config=strategic_cfg if isinstance(strategic_cfg, Mapping) else {},
+        )
+        next_companies = list(
+            apply_threshold_project_refunds(next_companies, project_refunds)
+        )
+        if next_threshold_project is not None:
+            next_public_protection = _clip(
+                next_public_protection
+                + next_threshold_project.public_protection_bonus_ppm,
+                0,
+                PPM,
+            )
+
         terminal = state.round >= state.max_rounds
         if terminal:
             next_events: tuple[MarketEvent, ...] = ()
@@ -1093,20 +1912,52 @@ class MarketEnv:
             )
             random_summary.update(generated_summary)
 
+        if cash_accounting(supply_chain_cfg):
+            settled_supply_chain = close_materials(settled_supply_chain, {
+                cid: sales[cid] - mutual_aid_received[cid] + mutual_aid_provided[cid] for cid in state.company_ids})
+        next_supply_chain = settled_supply_chain
+        if not terminal and settled_supply_chain is not None:
+            assert isinstance(supply_chain_cfg, Mapping)
+            quoted_supply_chain = advance_supplier_quotes(
+                settled=settled_supply_chain, config=supply_chain_cfg,
+                observed_round=state.round,
+            )
+            if autonomous_cfg:
+                quoted_supply_chain = advance_investment(quoted_supply_chain, autonomous_cfg["supplier_investment"], state.round, False, state.rounds_remaining-1)
+            supplier_draws: dict[str, float] = {}
+            for supplier in settled_supply_chain.suppliers:
+                supplier_draws[supplier.supplier_id] = self._rng(
+                    state,
+                    "supplier_disruption",
+                    supplier.supplier_id,
+                    summary=random_summary,
+                ).uniform()
+            next_supply_chain = advance_supplier_availability(
+                settled=quoted_supply_chain,
+                uniform_draw_by_supplier=supplier_draws,
+                config=supply_chain_cfg,
+            )
+        elif terminal and settled_supply_chain is not None and autonomous_cfg:
+            next_supply_chain = advance_investment(settled_supply_chain, autonomous_cfg["supplier_investment"], state.round, True, 0)
+
         if not terminal:
             next_companies = [
-                replace(
-                    company,
-                    risk=replace(
-                        company.risk,
-                        active_incident=self._maybe_generate_incident(
-                            state,
-                            company,
-                            company.risk.active_incident,
-                            random_summary,
-                            public_protection_ppm=next_public_protection,
+                (
+                    replace(
+                        company,
+                        risk=replace(
+                            company.risk,
+                            active_incident=self._maybe_generate_incident(
+                                state,
+                                company,
+                                company.risk.active_incident,
+                                random_summary,
+                                public_protection_ppm=next_public_protection,
+                            ),
                         ),
-                    ),
+                    )
+                    if company.company_id in active_company_ids
+                    else company
                 )
                 for company in next_companies
             ]
@@ -1116,6 +1967,11 @@ class MarketEnv:
             next_actual_supply = _ppm_mul(
                 next_actual_supply, event.supply_cost_multiplier_ppm
             )
+        if next_threshold_project is not None:
+            next_actual_supply = _ppm_mul(
+                next_actual_supply,
+                PPM - next_threshold_project.supply_cost_reduction_ppm,
+            )
         average_paid_price = (
             _round_ratio(
                 sum(actions[cid].price_cents * sales[cid] for cid in state.company_ids),
@@ -1124,10 +1980,153 @@ class MarketEnv:
             if total_sales
             else 0
         )
+        next_market = MarketSnapshot(
+            base_demand_orders=state.market.base_demand_orders,
+            realized_demand_orders=realized_demand,
+            no_purchase_orders=no_purchase_orders,
+            lost_after_stockout_orders=lost_after_stockout,
+            market_sentiment_ppm=next_sentiment,
+            base_supply_cost_index_ppm=next_base_supply,
+            actual_supply_cost_index_ppm=next_actual_supply,
+            average_paid_price_cents=average_paid_price,
+            market_model_id=state.market.market_model_id,
+            market_model_label=state.market.market_model_label,
+            market_model_description=state.market.market_model_description,
+            demand_bias_ppm=state.market.demand_bias_ppm,
+            price_anchor_cents=state.market.price_anchor_cents,
+            price_band_cents=state.market.price_band_cents,
+            utility_price_multiplier_ppm=state.market.utility_price_multiplier_ppm,
+            utility_awareness_multiplier_ppm=state.market.utility_awareness_multiplier_ppm,
+            utility_service_multiplier_ppm=state.market.utility_service_multiplier_ppm,
+            utility_reputation_multiplier_ppm=state.market.utility_reputation_multiplier_ppm,
+            utility_prior_stockout_multiplier_ppm=state.market.utility_prior_stockout_multiplier_ppm,
+        )
+        next_strategic_market = None
+        newly_exited: tuple[str, ...] = ()
+        if state.strategic_market is not None:
+            if not isinstance(strategic_cfg, Mapping):
+                raise StateInvariantError("v6 strategic state requires config")
+            next_strategic_market, newly_exited = advance_strategic_market_state(
+                previous=state.strategic_market,
+                settled_round=state.round,
+                companies=next_companies,
+                actions=actions,
+                market=next_market,
+                config=strategic_cfg,
+                fulfillment_cost_per_order_cents=int(
+                    operating_cfg["fulfillment_cost_per_order_cents"]
+                ),
+            )
+            next_strategic_market = replace(
+                next_strategic_market,
+                threshold_project=next_threshold_project,
+                last_mutual_aid_transfers=tuple(mutual_aid_transfers),
+            )
+            if price_coordination_enabled:
+                coordination_cfg = strategic_cfg.get("price_coordination")
+                if not isinstance(coordination_cfg, Mapping):
+                    raise StateInvariantError(
+                        "price coordination config is missing"
+                    )
+                update_weight = int(
+                    coordination_cfg["credibility_update_weight_ppm"]
+                )
+                credibility = dict(
+                    state.strategic_market.coordination_credibility_by_company_ppm
+                )
+                for outcome in price_coordination_outcomes:
+                    for company_id, adhered in (
+                        (outcome.company_a_id, outcome.company_a_adhered),
+                        (outcome.company_b_id, outcome.company_b_adhered),
+                    ):
+                        credibility[company_id] = _clip(
+                            _ppm_mul(
+                                credibility[company_id],
+                                PPM - update_weight,
+                            )
+                            + _ppm_mul(
+                                PPM if adhered else 0,
+                                update_weight,
+                            ),
+                            0,
+                            PPM,
+                        )
+                coordination_signal = max(
+                    (
+                        outcome.detection_probability_ppm
+                        for outcome in price_coordination_outcomes
+                    ),
+                    default=0,
+                )
+                coordination_pressure = _ppm_mul(
+                    coordination_signal,
+                    int(
+                        coordination_cfg[
+                            "coordination_pressure_weight_ppm"
+                        ]
+                    ),
+                )
+                next_strategic_market = replace(
+                    next_strategic_market,
+                    regulatory_pressure_ppm=_clip(
+                        next_strategic_market.regulatory_pressure_ppm
+                        + coordination_pressure,
+                        0,
+                        PPM,
+                    ),
+                    coordination_credibility_by_company_ppm=tuple(
+                        (company_id, credibility[company_id])
+                        for company_id in state.company_ids
+                    ),
+                    last_price_coordination_outcomes=(
+                        price_coordination_outcomes
+                    ),
+                )
+            next_companies = list(
+                liquidate_newly_exited(
+                    next_companies, newly_exited, strategic_cfg
+                )
+            )
+        next_welfare: WelfareAccountingState | None = None
+        consumer_rebates = sum(d.government_rebate_cents or 0 for d in consumer_decisions)
+        next_government = settle_government(state.government, government_action, sum(actual_fines.values()),
+                                           sum(government_support.values()), consumer_rebates) if government_action else None
+        if state.welfare_accounting is not None:
+            if not isinstance(welfare_cfg, Mapping):
+                raise StateInvariantError("welfare state requires config")
+            next_welfare = advance_welfare_state(
+                previous=state.welfare_accounting,
+                companies=next_companies,
+                supply_chain=next_supply_chain,
+                consumer_surplus_cents=exact_consumer_surplus,
+                government_fine_revenue_cents=sum(actual_fines.values()),
+                enforcement_case_count=sum(
+                    1 for outcome in price_coordination_outcomes if outcome.detected
+                ),
+                lost_after_stockout_orders=lost_after_stockout,
+                voluntary_no_purchase_orders=no_purchase_orders,
+                newly_exited_company_count=len(newly_exited),
+                config=welfare_cfg,
+                actual_enforcement_cost_cents=government_action.inspection_cost_cents if government_action else None,
+                government_support_cents=sum(government_support.values())+consumer_rebates,
+            )
+        if next_government and next_welfare:
+            next_government = learn(next_government, next_welfare.round_total_economic_welfare_cents)
         terminal_values: tuple[tuple[str, int], ...] = ()
         if terminal:
             terminal_values = tuple(
-                (company.company_id, self._terminal_value(company))
+                (
+                    company.company_id,
+                    (
+                        company.financial.cash_balance_cents
+                        if next_strategic_market is not None
+                        and next_strategic_market.lifecycle(
+                            company.company_id
+                        ).status
+                        is CompanyOperatingStatus.EXITED
+                        else self._terminal_value(company)
+                    ),
+                )
                 for company in next_companies
             )
         next_state = MarketState(
@@ -1138,32 +2137,17 @@ class MarketEnv:
             state_version=state.state_version + 1,
             terminal=terminal,
             max_rounds=state.max_rounds,
-            market=MarketSnapshot(
-                base_demand_orders=state.market.base_demand_orders,
-                realized_demand_orders=realized_demand,
-                no_purchase_orders=no_purchase_orders,
-                lost_after_stockout_orders=lost_after_stockout,
-                market_sentiment_ppm=next_sentiment,
-                base_supply_cost_index_ppm=next_base_supply,
-                actual_supply_cost_index_ppm=next_actual_supply,
-                average_paid_price_cents=average_paid_price,
-                market_model_id=state.market.market_model_id,
-                market_model_label=state.market.market_model_label,
-                market_model_description=state.market.market_model_description,
-                demand_bias_ppm=state.market.demand_bias_ppm,
-                price_anchor_cents=state.market.price_anchor_cents,
-                price_band_cents=state.market.price_band_cents,
-                utility_price_multiplier_ppm=state.market.utility_price_multiplier_ppm,
-                utility_awareness_multiplier_ppm=state.market.utility_awareness_multiplier_ppm,
-                utility_service_multiplier_ppm=state.market.utility_service_multiplier_ppm,
-                utility_reputation_multiplier_ppm=state.market.utility_reputation_multiplier_ppm,
-                utility_prior_stockout_multiplier_ppm=state.market.utility_prior_stockout_multiplier_ppm,
-            ),
+            market=next_market,
             consumer_segments=state.consumer_segments,
             risk_signals=next_signals,
             active_market_events=next_events,
             companies=tuple(next_companies),
             shared_resilience=next_shared_resilience,
+            strategic_market=next_strategic_market,
+            supply_chain=next_supply_chain,
+            welfare_accounting=next_welfare,
+            government=next_government,
+            consumer_decisions=consumer_decisions,
             last_joint_action=tuple(
                 actions[company_id] for company_id in state.company_ids
             ),
@@ -1178,10 +2162,13 @@ class MarketEnv:
             joint_action_hash=joint_hash,
             random_draw_summary=tuple(sorted(random_summary.items())),
             invariant_results=("all_passed",),
+            actor_choices=tuple(sorted((actor_choices or {}).items())),
         )
 
     def assert_invariants(self, state: MarketState) -> None:
         failures: list[str] = []
+        if self.config.data.get("autonomous_market"):
+            failures.extend(actor_failures(state, self.config.data))
         if not self.config.min_agents <= len(state.companies) <= self.config.max_agents:
             failures.append("company count is outside configured bounds")
         if len(set(state.company_ids)) != len(state.company_ids):
@@ -1237,16 +2224,364 @@ class MarketEnv:
                     "shared resilience contribution total is inconsistent"
                 )
 
+        supply_chain_cfg = self.config.data.get("supply_chain")
+        supply_chain = state.supply_chain
+        if supply_chain is None and isinstance(supply_chain_cfg, Mapping):
+            failures.append("supply chain state is missing")
+        if supply_chain is not None and not isinstance(supply_chain_cfg, Mapping):
+            failures.append("supply chain state exists without config")
+        if supply_chain is not None:
+            if cash_accounting(supply_chain_cfg):
+                failures.extend(accounting_failures(state, supply_chain_cfg))
+            supplier_ids = supply_chain.supplier_ids
+            if len(supplier_ids) != len(set(supplier_ids)):
+                failures.append("supplier ids must be unique")
+            sold_by_supplier = {supplier_id: 0 for supplier_id in supplier_ids}
+            outcome_company_ids: set[str] = set()
+            for outcome in supply_chain.last_procurement_outcomes:
+                if outcome.company_id not in state.company_ids:
+                    failures.append("procurement outcome company is unknown")
+                if outcome.company_id in outcome_company_ids:
+                    failures.append("duplicate procurement outcome")
+                outcome_company_ids.add(outcome.company_id)
+                if outcome.primary_supplier_id not in sold_by_supplier:
+                    failures.append("procurement primary supplier is unknown")
+                if (
+                    outcome.backup_supplier_id is not None
+                    and outcome.backup_supplier_id not in sold_by_supplier
+                ):
+                    failures.append("procurement backup supplier is unknown")
+                if not 0 <= outcome.primary_supplier_share_ppm <= PPM:
+                    failures.append("procurement share is outside bounds")
+                allocations = dict(outcome.supplier_allocation_orders)
+                if any(
+                    supplier_id not in sold_by_supplier
+                    for supplier_id in allocations
+                ):
+                    failures.append("procurement allocation supplier is unknown")
+                if any(value < 0 for value in allocations.values()):
+                    failures.append("procurement allocation is negative")
+                if sum(allocations.values()) != outcome.fulfilled_orders:
+                    failures.append("procurement fulfilled total conflicts")
+                if outcome.fulfilled_orders + outcome.unfulfilled_orders != (
+                    outcome.requested_orders
+                ):
+                    failures.append("procurement request does not close")
+                for supplier_id, value in allocations.items():
+                    if supplier_id in sold_by_supplier:
+                        sold_by_supplier[supplier_id] += value
+            upstream_surplus = 0
+            for supplier in supply_chain.suppliers:
+                from game_theory_agent.market.supplier_strategy import decode as decode_supplier
+                supplier_ledger=decode_supplier(supplier)
+                inventory_bound=supplier_ledger.get("inventory_orders",0)
+                if state.terminal and supplier_ledger.get("audit"):
+                    inventory_bound=max(inventory_bound,supplier_ledger["audit"]["opening_inventory_orders"])
+                if not 0 <= supplier.reliability_ppm <= PPM:
+                    failures.append("supplier reliability is outside bounds")
+                if not 0 <= supplier.available_capacity_orders <= (
+                    supplier.base_capacity_orders+inventory_bound
+                ):
+                    failures.append("supplier available capacity is invalid")
+                if supplier.round_sales_orders != sold_by_supplier[supplier.supplier_id]:
+                    failures.append("supplier sales attribution conflicts")
+                settlement_price = supplier.unit_price_cents
+                if pricing_enabled(supply_chain_cfg):
+                    floor, ceiling = price_bounds(supplier, supply_chain_cfg)
+                    if not floor <= supplier.unit_price_cents <= ceiling:
+                        failures.append("supplier quote outside policy bounds")
+                    if state.state_version > 0:
+                        if supplier.last_settled_unit_price_cents is None:
+                            failures.append("supplier settlement price missing")
+                        else:
+                            settlement_price = supplier.last_settled_unit_price_cents
+                        if not floor <= settlement_price <= ceiling:
+                            failures.append("supplier settlement price outside policy bounds")
+                    decision = supplier.quote_decision
+                    if decision is None and state.state_version > 0 and not state.terminal:
+                        failures.append("supplier quote audit missing")
+                    if decision is not None:
+                        audited = replace(supplier, unit_price_cents=decision.previous_price_cents,
+                                          round_sales_orders=decision.observed_sales_orders,
+                                          available_capacity_orders=decision.observed_capacity_orders)
+                        expected = decide_quote(supplier=audited, config=supply_chain_cfg, observed_round=decision.observed_round)
+                        if (expected != decision or decision.quoted_price_cents != supplier.unit_price_cents
+                            or not 0 <= decision.observed_sales_orders <= decision.observed_capacity_orders <= supplier.base_capacity_orders+((supply_chain_cfg.get("strategic_policy") or {}).get("max_inventory_orders",0) if state.terminal else (supplier_ledger.get("audit") or {}).get("opening_inventory_orders",0))):
+                            failures.append("supplier quote audit conflicts")
+                        if not state.terminal and (decision.applies_round != state.round
+                            or decision.previous_price_cents != settlement_price
+                            or decision.observed_sales_orders != supplier.round_sales_orders):
+                            failures.append("supplier quote timing conflicts")
+                elif supplier.quote_decision is not None or supplier.last_settled_unit_price_cents is not None:
+                    failures.append("supplier autonomous fields without enabled policy")
+                expected_profit = supplier.round_sales_orders * (settlement_price - supplier.unit_cost_cents) - ((supplier.account.investment_cents or 0) if supplier.account else 0)
+                if not supplier.strategic_ledger and supplier.round_profit_cents != expected_profit:
+                    failures.append("supplier round profit conflicts")
+                upstream_surplus += supplier.round_profit_cents
+                upstream_surplus += (supplier_ledger.get("audit") or {}).get("lender_profit_cents",0)
+            if upstream_surplus != (
+                supply_chain.round_upstream_producer_surplus_cents
+            ):
+                failures.append("upstream producer surplus conflicts")
+
+        welfare_cfg = self.config.data.get("welfare_accounting")
+        welfare = state.welfare_accounting
+        if welfare is None and isinstance(welfare_cfg, Mapping):
+            failures.append("welfare accounting state is missing")
+        if welfare is not None and not isinstance(welfare_cfg, Mapping):
+            failures.append("welfare accounting exists without config")
+        if welfare is not None and state.state_version > 0:
+            if welfare.round_government_net_budget_cents != (
+                welfare.round_government_fine_revenue_cents
+                - welfare.round_government_enforcement_cost_cents
+                - ((state.government.round_matched_support_cents or 0)+(state.government.round_consumer_rebate_cents or 0)
+                   if state.government and state.government.last_decision and state.government.last_decision.strategic_policy
+                   else sum(v for _,v in state.government.last_decision.support_by_company_cents) if state.government and state.government.last_decision else 0)
+            ):
+                failures.append("government welfare ledger does not close")
+            if welfare.round_service_continuity_orders != sum(
+                item.commercial.sales_orders for item in state.companies
+            ):
+                failures.append("service continuity conflicts with sales")
+            if welfare.round_voluntary_no_purchase_orders != (
+                state.market.no_purchase_orders
+            ):
+                failures.append("voluntary no-purchase attribution conflicts")
+            expected_welfare = (
+                welfare.round_consumer_surplus_cents
+                + welfare.round_downstream_producer_surplus_cents
+                + welfare.round_upstream_producer_surplus_cents
+                + welfare.round_government_net_budget_cents
+                - welfare.round_stockout_externality_cents
+                - welfare.round_business_exit_externality_cents
+            )
+            if welfare.round_total_economic_welfare_cents != expected_welfare:
+                failures.append("total economic welfare does not close")
+            if supply_chain is not None and (
+                welfare.round_upstream_producer_surplus_cents
+                != supply_chain.round_upstream_producer_surplus_cents
+            ):
+                failures.append("welfare upstream surplus conflicts")
+
+        strategic = state.strategic_market
+        strategic_cfg = self.config.data.get("strategic_market")
+        if strategic is None and isinstance(strategic_cfg, Mapping):
+            failures.append("v6 strategic market state is missing")
+        if strategic is not None:
+            lifecycle_ids = tuple(
+                item.company_id for item in strategic.company_lifecycle
+            )
+            if lifecycle_ids != state.company_ids:
+                failures.append("strategic lifecycle company order is inconsistent")
+            if strategic.active_company_count != len(
+                strategic.active_company_ids
+            ):
+                failures.append("strategic active company count is inconsistent")
+            if not 0 <= strategic.hhi_ppm <= PPM:
+                failures.append("strategic HHI is outside [0, 1000000]")
+            if not 0 <= strategic.dominant_share_ppm <= PPM:
+                failures.append("dominant share is outside [0, 1000000]")
+            if not 0 <= strategic.regulatory_pressure_ppm <= PPM:
+                failures.append("regulatory pressure is outside [0, 1000000]")
+            if not 0 <= strategic.price_war_intensity_ppm <= PPM:
+                failures.append("price war intensity is outside [0, 1000000]")
+            if not 0 <= strategic.market_power_markup_ppm <= PPM:
+                failures.append("market-power markup is outside [0, 1000000]")
+            for lifecycle in strategic.company_lifecycle:
+                if lifecycle.distress_streak < 0:
+                    failures.append(
+                        f"{lifecycle.company_id} distress streak is negative"
+                    )
+                if (
+                    lifecycle.status is CompanyOperatingStatus.EXITED
+                    and lifecycle.exit_round is None
+                ):
+                    failures.append(
+                        f"{lifecycle.company_id} exited without exit round"
+                    )
+                company = state.company(lifecycle.company_id)
+                if (
+                    lifecycle.status is CompanyOperatingStatus.EXITED
+                    and lifecycle.exit_round is not None
+                    and lifecycle.exit_round < state.round - 1
+                    and (
+                        company.commercial.sales_orders != 0
+                        or company.commercial.market_share_ppm != 0
+                    )
+                ):
+                    failures.append(
+                        f"{lifecycle.company_id} exited company still trades"
+                    )
+            project = strategic.threshold_project
+            if project is not None:
+                contributed = dict(project.contribution_by_company_cents)
+                last = dict(project.last_contribution_by_company_cents)
+                refunds = dict(project.last_refund_by_company_cents)
+                if set(contributed) != set(state.company_ids):
+                    failures.append("threshold project attribution is incomplete")
+                if set(last) != set(state.company_ids):
+                    failures.append("threshold project last contribution is incomplete")
+                if set(refunds) != set(state.company_ids):
+                    failures.append("threshold project refund attribution is incomplete")
+                if any(value < 0 for value in contributed.values()):
+                    failures.append("threshold project contribution is negative")
+                if any(value < 0 for value in refunds.values()):
+                    failures.append("threshold project refund is negative")
+                if sum(contributed.values()) != (
+                    project.accumulated_total_contribution_cents
+                ):
+                    failures.append("threshold project contribution total conflicts")
+                if project.status.value == "succeeded":
+                    if project.success_round is None or project.failure_round is not None:
+                        failures.append("threshold project success markers conflict")
+                    if project.accumulated_total_contribution_cents < (
+                        project.required_total_contribution_cents
+                    ):
+                        failures.append("threshold project succeeded below threshold")
+                if project.status.value == "failed":
+                    if project.failure_round is None or project.success_round is not None:
+                        failures.append("threshold project failure markers conflict")
+            if not strategic.mutual_aid_enabled and (
+                strategic.last_mutual_aid_transfers
+            ):
+                failures.append("mutual aid transfers exist while disabled")
+            received_by_company = {
+                company_id: 0 for company_id in state.company_ids
+            }
+            provided_by_company = {
+                company_id: 0 for company_id in state.company_ids
+            }
+            for transfer in strategic.last_mutual_aid_transfers:
+                if (
+                    transfer.donor_company_id not in received_by_company
+                    or transfer.recipient_company_id not in received_by_company
+                ):
+                    failures.append("mutual aid transfer company is unknown")
+                    continue
+                if transfer.donor_company_id == transfer.recipient_company_id:
+                    failures.append("mutual aid transfer cannot target self")
+                if transfer.fulfilled_orders <= 0:
+                    failures.append("mutual aid transfer must be positive")
+                if transfer.fee_per_order_cents < 0:
+                    failures.append("mutual aid transfer fee is negative")
+                if transfer.total_transfer_fee_cents != (
+                    transfer.fulfilled_orders * transfer.fee_per_order_cents
+                ):
+                    failures.append("mutual aid transfer fee total conflicts")
+                received_by_company[transfer.recipient_company_id] += (
+                    transfer.fulfilled_orders
+                )
+                provided_by_company[transfer.donor_company_id] += (
+                    transfer.fulfilled_orders
+                )
+            if strategic.mutual_aid_enabled and state.state_version > 0:
+                for company in state.companies:
+                    if company.commercial.mutual_aid_fulfilled_orders != (
+                        received_by_company[company.company_id]
+                    ):
+                        failures.append(
+                            f"{company.company_id} mutual aid received conflicts"
+                        )
+                    if company.commercial.mutual_aid_provided_orders != (
+                        provided_by_company[company.company_id]
+                    ):
+                        failures.append(
+                            f"{company.company_id} mutual aid provided conflicts"
+                        )
+            coordination_credibility = dict(
+                strategic.coordination_credibility_by_company_ppm
+            )
+            if strategic.price_coordination_enabled:
+                if set(coordination_credibility) != set(state.company_ids):
+                    failures.append(
+                        "price coordination credibility attribution is incomplete"
+                    )
+                if any(
+                    value < 0 or value > PPM
+                    for value in coordination_credibility.values()
+                ):
+                    failures.append(
+                        "price coordination credibility is outside bounds"
+                    )
+            elif (
+                coordination_credibility
+                or strategic.last_price_coordination_outcomes
+            ):
+                failures.append(
+                    "price coordination state exists while disabled"
+                )
+            outcome_fines = {
+                company_id: 0 for company_id in state.company_ids
+            }
+            seen_coordination_companies: set[str] = set()
+            for outcome in strategic.last_price_coordination_outcomes:
+                participants = (outcome.company_a_id, outcome.company_b_id)
+                if (
+                    outcome.company_a_id not in outcome_fines
+                    or outcome.company_b_id not in outcome_fines
+                    or outcome.company_a_id >= outcome.company_b_id
+                ):
+                    failures.append(
+                        "price coordination participant attribution conflicts"
+                    )
+                    continue
+                if seen_coordination_companies.intersection(participants):
+                    failures.append(
+                        "company appears in multiple price coordination outcomes"
+                    )
+                seen_coordination_companies.update(participants)
+                if not 0 <= outcome.detection_probability_ppm <= PPM:
+                    failures.append(
+                        "price coordination detection probability is outside bounds"
+                    )
+                fines = dict(outcome.fine_by_company_cents)
+                if set(fines) != set(participants):
+                    failures.append(
+                        "price coordination fine attribution is incomplete"
+                    )
+                if any(value < 0 for value in fines.values()):
+                    failures.append("price coordination fine is negative")
+                if not outcome.detected and any(fines.values()):
+                    failures.append(
+                        "undetected price coordination has a regulatory fine"
+                    )
+                for company_id, value in fines.items():
+                    outcome_fines[company_id] += value
+            if strategic.price_coordination_enabled and state.state_version > 0:
+                for company in state.companies:
+                    if company.financial.round_regulatory_fine_cents != (
+                        outcome_fines[company.company_id]
+                    ):
+                        failures.append(
+                            f"{company.company_id} regulatory fine conflicts"
+                        )
+
         for company in state.companies:
             if company.financial.cash_balance_cents < 0:
                 failures.append(f"{company.company_id} cash is negative")
+            if (company.financial.round_regulatory_fine_cents or 0) < 0:
+                failures.append(f"{company.company_id} regulatory fine is negative")
+            outsourced = company.commercial.mutual_aid_fulfilled_orders or 0
+            provided = company.commercial.mutual_aid_provided_orders or 0
+            internal_throughput = (
+                company.commercial.sales_orders - outsourced + provided
+            )
+            just_exited = bool(
+                strategic is not None
+                and strategic.lifecycle(company.company_id).status
+                is CompanyOperatingStatus.EXITED
+                and strategic.lifecycle(company.company_id).exit_round
+                == state.round - 1
+            )
             if (
-                company.commercial.sales_orders
+                not just_exited
+                and internal_throughput
                 > company.operations.effective_capacity_orders
             ):
                 failures.append(f"{company.company_id} sales exceed effective capacity")
             if (
-                company.commercial.sales_orders
+                not just_exited
+                and internal_throughput
                 > company.operations.financial_capacity_orders
             ):
                 failures.append(f"{company.company_id} sales exceed financial capacity")

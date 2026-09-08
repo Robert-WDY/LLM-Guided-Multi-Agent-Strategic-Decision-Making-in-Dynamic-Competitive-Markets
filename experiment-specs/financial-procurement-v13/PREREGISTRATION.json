@@ -1,0 +1,60 @@
+{
+  "config_hashes": {
+    "asymmetric": "sha256:26eefa6518a289d3f2212110469c6f608dae93f8055da4ca44d60dec3372f457",
+    "cash16": "sha256:8667cc3d0a34197b316e81a17c222dcd75bc5c166a5d11a3342453bf22fa77b9",
+    "compound75": "sha256:79e8d50a42fb247dcf7c690884f6391e42d1ffb95bf616d8aa66c71de10db43f",
+    "low_demand": "sha256:958303f5f499714c33213c375e75e7298fce28a1fdee8d94382bf039e754197b",
+    "material45": "sha256:bc3788ed5d5063d7a95ce85a46633134fcf8a9755052a82e6399c47cdbc90123",
+    "material62": "sha256:a45dc835ae4d9384fec4f002fb99bc14ab7d224b7d1d34ec77fb04411b22eea1",
+    "old_failure": "sha256:18154ad429b30987d53ba1e682283d7a9004f940a9927b4d0b57d083b637a692"
+  },
+  "design": "Old failure group is diagnostic only. Financial guard evaluated on 6 unseen regimes and 12 independent seeds; primary diverse baseline, unguarded capacity secondary. No selection/tuning using new holdout. All families are synthetic, not industry calibration.",
+  "diagnostic_old_seeds": [
+    150205,
+    150206,
+    150207,
+    150208,
+    150209,
+    150210,
+    150211,
+    150212
+  ],
+  "gates": {
+    "cvar10_delta_ppm_min": -20000,
+    "extra_exit_pairs_max": 0,
+    "median_delta_ppm_min": 0,
+    "minimum_released_ppm": 10000,
+    "worst_delta_ppm_min": -50000
+  },
+  "hash": "sha256:ddceb504c5445177405c9453912a2a12b7f2bbaac4218411448943951e19c845",
+  "model_calls": 0,
+  "policies": [
+    "diverse",
+    "capacity",
+    "guarded"
+  ],
+  "regimes": [
+    "material45",
+    "material62",
+    "compound75",
+    "cash16",
+    "asymmetric",
+    "low_demand"
+  ],
+  "rounds": 20,
+  "seeds": [
+    160201,
+    160202,
+    160203,
+    160204,
+    160205,
+    160206,
+    160207,
+    160208,
+    160209,
+    160210,
+    160211,
+    160212
+  ],
+  "source_hash": "sha256:eee2022d7f27d608686b171f42a6cc1536d0f5ce320a19b15e67069d70cad071"
+}

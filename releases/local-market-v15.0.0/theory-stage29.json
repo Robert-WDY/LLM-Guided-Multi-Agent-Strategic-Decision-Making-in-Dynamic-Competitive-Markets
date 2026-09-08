@@ -1,0 +1,6 @@
+{
+  "stage": 29,
+  "passed": true,
+  "conditions": 4,
+  "conclusion": "A Nash outcome need not be Pareto efficient; matching pennies requires mixing."
+}

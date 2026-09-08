@@ -1,0 +1,98 @@
+{
+  "passed": true,
+  "browser_qa": true,
+  "backup_restore": true,
+  "backend_tests": 444,
+  "frontend": {
+    "build": true,
+    "typecheck": true,
+    "lint": true,
+    "tests": 11
+  },
+  "budget": {
+    "ready": false,
+    "total_cny": 10,
+    "reserved_cny": 9.938022,
+    "remaining_cny": 0.061978,
+    "historical_estimate_cny": 1.093593,
+    "maximum_call_cny": 0.42,
+    "new_calls": 180,
+    "model": "deepseek-v4-flash",
+    "price_valid_through": "2026-09-08",
+    "message": "已保留失败及未知调用的额度。"
+  },
+  "browser": {
+    "browser_qa": true,
+    "download_verified": true,
+    "downloads_lossless": 2,
+    "download_sha256": "86460ab7a1595f1548a76b97a833526e66a4c37e17a98d63055b925d55e0f59b",
+    "download_cases": 2,
+    "download_rounds": 20,
+    "cold_restart_checkpoint_sha256": "2FEC72896E0CCB23C92DF2FB8A4795D74EED958D6CCFB36A1CA1A8F046A95E2F",
+    "paused_after_round": 8,
+    "resumed_completed_rounds": 240,
+    "neural_browser_rounds": 10,
+    "invalid_inventory_parameter_rejected": true,
+    "cross_batch_comparison_verified": true,
+    "normal_persona_cold_restore": true,
+    "frontend": {
+      "build": true,
+      "typecheck": true,
+      "lint": true,
+      "tests": 11
+    }
+  },
+  "backup": {
+    "passed": true,
+    "workbench_jobs": 7,
+    "json_files": 432,
+    "files_unchanged": true,
+    "budget_unchanged": true,
+    "episode_state_hash": "sha256:548a8de34b19a1470e4096676cde0051ba60edc9ee2727a0b5259344b5204201",
+    "backup": ".local-state-v14-release/backups/stage28-accepted"
+  },
+  "final_jobs": [
+    {
+      "id": "ca236bd1c5864d40964bd24785fc2a2e",
+      "status": "complete",
+      "cases": 2,
+      "all_replayed": true
+    },
+    {
+      "id": "e8407b1b43dd414ca44143167e973635",
+      "status": "complete",
+      "cases": 4,
+      "all_replayed": true
+    },
+    {
+      "id": "979ee5c5f6de42a99d6d1af66ff765fa",
+      "status": "complete",
+      "cases": 2,
+      "all_replayed": true
+    },
+    {
+      "id": "e6667771c4424eff836e286c2077abff",
+      "status": "complete",
+      "cases": 2,
+      "all_replayed": true
+    },
+    {
+      "id": "83e7523f856646eeaeebe192e39b131d",
+      "status": "complete",
+      "cases": 2,
+      "all_replayed": true
+    },
+    {
+      "id": "dbed7c6debfe41b39711b7d9d55070b9",
+      "status": "complete",
+      "cases": 2,
+      "all_replayed": true
+    },
+    {
+      "id": "49ce87a76dcd4fc297c6eded6888b375",
+      "status": "complete",
+      "cases": 4,
+      "all_replayed": true
+    }
+  ]
+}

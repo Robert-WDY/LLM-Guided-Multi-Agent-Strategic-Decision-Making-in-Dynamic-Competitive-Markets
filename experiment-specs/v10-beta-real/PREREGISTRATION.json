@@ -1,0 +1,301 @@
+{
+  "authorization_cny": 10,
+  "cells": [
+    {
+      "advice_hash": "sha256:d04e83de713fab028026984c670210682434983beba7ff73705ad21e5eb55972",
+      "disposition": "defer_to_agent",
+      "eligible": true,
+      "exposed": false,
+      "observation_hashes": {
+        "advice": "sha256:40198a7d4680f64dcce4b5bddcd4af7c846a04a601396289357824c6ff3be90a",
+        "baseline": "sha256:40198a7d4680f64dcce4b5bddcd4af7c846a04a601396289357824c6ff3be90a"
+      },
+      "order": [
+        "baseline"
+      ],
+      "persona": "balanced_v1",
+      "seed": 120801,
+      "state_hash": "sha256:5bdcff4b11a99a0e18afad5d93bf3c86486b1678f2d9539038cf31bdfb5cd0ca",
+      "window": "normal_supply"
+    },
+    {
+      "advice_hash": "sha256:445b0df598ee8795ed26e7dcf95025052e5ef40212bd71af352813e935b70b94",
+      "disposition": "defer_to_agent",
+      "eligible": true,
+      "exposed": false,
+      "observation_hashes": {
+        "advice": "sha256:40198a7d4680f64dcce4b5bddcd4af7c846a04a601396289357824c6ff3be90a",
+        "baseline": "sha256:40198a7d4680f64dcce4b5bddcd4af7c846a04a601396289357824c6ff3be90a"
+      },
+      "order": [
+        "baseline"
+      ],
+      "persona": "stakeholder_balanced",
+      "seed": 120801,
+      "state_hash": "sha256:5bdcff4b11a99a0e18afad5d93bf3c86486b1678f2d9539038cf31bdfb5cd0ca",
+      "window": "normal_supply"
+    },
+    {
+      "advice_hash": "sha256:205585e349aca872ce259d39a7878cb2533e342b9ab87a4d259bd6117e9f838a",
+      "disposition": "defer_to_agent",
+      "eligible": true,
+      "exposed": false,
+      "observation_hashes": {
+        "advice": "sha256:40198a7d4680f64dcce4b5bddcd4af7c846a04a601396289357824c6ff3be90a",
+        "baseline": "sha256:40198a7d4680f64dcce4b5bddcd4af7c846a04a601396289357824c6ff3be90a"
+      },
+      "order": [
+        "baseline"
+      ],
+      "persona": "public_service",
+      "seed": 120801,
+      "state_hash": "sha256:5bdcff4b11a99a0e18afad5d93bf3c86486b1678f2d9539038cf31bdfb5cd0ca",
+      "window": "normal_supply"
+    },
+    {
+      "advice_hash": "sha256:c94ece64dbc67dfca8b53cac93db7bf175150495c84f8b4f0e26cf7a06555a39",
+      "disposition": "defer_to_agent",
+      "eligible": true,
+      "exposed": false,
+      "observation_hashes": {
+        "advice": "sha256:40198a7d4680f64dcce4b5bddcd4af7c846a04a601396289357824c6ff3be90a",
+        "baseline": "sha256:40198a7d4680f64dcce4b5bddcd4af7c846a04a601396289357824c6ff3be90a"
+      },
+      "order": [
+        "baseline"
+      ],
+      "persona": "resilience_steward",
+      "seed": 120801,
+      "state_hash": "sha256:5bdcff4b11a99a0e18afad5d93bf3c86486b1678f2d9539038cf31bdfb5cd0ca",
+      "window": "normal_supply"
+    },
+    {
+      "advice_hash": "sha256:bd57db7f2e2222928c5ae46e58f2d8e9b257d13644ac20f1e6fe512d2702ea45",
+      "disposition": "defer_to_agent",
+      "eligible": true,
+      "exposed": false,
+      "observation_hashes": {
+        "advice": "sha256:b908b104184551764d936ee7afeb38eec13dc4050edac224935c9178a156014e",
+        "baseline": "sha256:b908b104184551764d936ee7afeb38eec13dc4050edac224935c9178a156014e"
+      },
+      "order": [
+        "baseline"
+      ],
+      "persona": "balanced_v1",
+      "seed": 120801,
+      "state_hash": "sha256:71c06c281960b4fb4c5795c25b74744f34d71224fe56a2519cee80d859a41447",
+      "window": "economy_outage"
+    },
+    {
+      "advice_hash": "sha256:5e27a1bb08f9173f6c590b23d44d8509932f6f3c9f005a483290ede055667158",
+      "disposition": "defer_to_agent",
+      "eligible": true,
+      "exposed": false,
+      "observation_hashes": {
+        "advice": "sha256:b908b104184551764d936ee7afeb38eec13dc4050edac224935c9178a156014e",
+        "baseline": "sha256:b908b104184551764d936ee7afeb38eec13dc4050edac224935c9178a156014e"
+      },
+      "order": [
+        "baseline"
+      ],
+      "persona": "stakeholder_balanced",
+      "seed": 120801,
+      "state_hash": "sha256:71c06c281960b4fb4c5795c25b74744f34d71224fe56a2519cee80d859a41447",
+      "window": "economy_outage"
+    },
+    {
+      "advice_hash": "sha256:9b72b73842dcaed7310c8f603af99e8ec578bcfa95dd9831ef24e33057b09bd5",
+      "disposition": "defer_to_agent",
+      "eligible": true,
+      "exposed": false,
+      "observation_hashes": {
+        "advice": "sha256:b908b104184551764d936ee7afeb38eec13dc4050edac224935c9178a156014e",
+        "baseline": "sha256:b908b104184551764d936ee7afeb38eec13dc4050edac224935c9178a156014e"
+      },
+      "order": [
+        "baseline"
+      ],
+      "persona": "public_service",
+      "seed": 120801,
+      "state_hash": "sha256:71c06c281960b4fb4c5795c25b74744f34d71224fe56a2519cee80d859a41447",
+      "window": "economy_outage"
+    },
+    {
+      "advice_hash": "sha256:8cef7bf2c07daab19a32781bd8ce789d89ea1e2df7a88960f181962ca9fa03dd",
+      "disposition": "defer_to_agent",
+      "eligible": true,
+      "exposed": false,
+      "observation_hashes": {
+        "advice": "sha256:b908b104184551764d936ee7afeb38eec13dc4050edac224935c9178a156014e",
+        "baseline": "sha256:b908b104184551764d936ee7afeb38eec13dc4050edac224935c9178a156014e"
+      },
+      "order": [
+        "baseline"
+      ],
+      "persona": "resilience_steward",
+      "seed": 120801,
+      "state_hash": "sha256:71c06c281960b4fb4c5795c25b74744f34d71224fe56a2519cee80d859a41447",
+      "window": "economy_outage"
+    },
+    {
+      "advice_hash": "sha256:d98aed5492eb7cc162adcb291f10e0a3f1a52fc502c59868b2f0a21c2ac65c2e",
+      "disposition": "defer_to_agent",
+      "eligible": true,
+      "exposed": false,
+      "observation_hashes": {
+        "advice": "sha256:1d419de91e89580c978e3d5a04433d4e38772836dd904f5d37d0a74dabd12472",
+        "baseline": "sha256:1d419de91e89580c978e3d5a04433d4e38772836dd904f5d37d0a74dabd12472"
+      },
+      "order": [
+        "baseline"
+      ],
+      "persona": "balanced_v1",
+      "seed": 120802,
+      "state_hash": "sha256:89433fc84b4c605c1020b6a21cadafeaaf4793619ef9ac93930f6ba7adab9f4a",
+      "window": "normal_supply"
+    },
+    {
+      "advice_hash": "sha256:63e765da0d07d4698662d2f3af41f2ace0a02c3e6fdb47b817ae2e6284ea7621",
+      "disposition": "defer_to_agent",
+      "eligible": true,
+      "exposed": false,
+      "observation_hashes": {
+        "advice": "sha256:1d419de91e89580c978e3d5a04433d4e38772836dd904f5d37d0a74dabd12472",
+        "baseline": "sha256:1d419de91e89580c978e3d5a04433d4e38772836dd904f5d37d0a74dabd12472"
+      },
+      "order": [
+        "baseline"
+      ],
+      "persona": "stakeholder_balanced",
+      "seed": 120802,
+      "state_hash": "sha256:89433fc84b4c605c1020b6a21cadafeaaf4793619ef9ac93930f6ba7adab9f4a",
+      "window": "normal_supply"
+    },
+    {
+      "advice_hash": "sha256:512a6e0baa8627b2277792f3499443d79ca36f77f16e5c08a121b78a6b659e66",
+      "disposition": "defer_to_agent",
+      "eligible": true,
+      "exposed": false,
+      "observation_hashes": {
+        "advice": "sha256:1d419de91e89580c978e3d5a04433d4e38772836dd904f5d37d0a74dabd12472",
+        "baseline": "sha256:1d419de91e89580c978e3d5a04433d4e38772836dd904f5d37d0a74dabd12472"
+      },
+      "order": [
+        "baseline"
+      ],
+      "persona": "public_service",
+      "seed": 120802,
+      "state_hash": "sha256:89433fc84b4c605c1020b6a21cadafeaaf4793619ef9ac93930f6ba7adab9f4a",
+      "window": "normal_supply"
+    },
+    {
+      "advice_hash": "sha256:6cc764bb33f076b303b7bc8afb515f4f47d9b289bed595b3a0f92df18210fa67",
+      "disposition": "defer_to_agent",
+      "eligible": true,
+      "exposed": false,
+      "observation_hashes": {
+        "advice": "sha256:1d419de91e89580c978e3d5a04433d4e38772836dd904f5d37d0a74dabd12472",
+        "baseline": "sha256:1d419de91e89580c978e3d5a04433d4e38772836dd904f5d37d0a74dabd12472"
+      },
+      "order": [
+        "baseline"
+      ],
+      "persona": "resilience_steward",
+      "seed": 120802,
+      "state_hash": "sha256:89433fc84b4c605c1020b6a21cadafeaaf4793619ef9ac93930f6ba7adab9f4a",
+      "window": "normal_supply"
+    },
+    {
+      "advice_hash": "sha256:f585c94f8e9433e4b3aeec832bafa8d134f2656fcb26688e195a25ef1a1b3d23",
+      "disposition": "defer_to_agent",
+      "eligible": true,
+      "exposed": false,
+      "observation_hashes": {
+        "advice": "sha256:92463e434b613ed60422eebcc1367850f9733613616747bb27686b2d510b1050",
+        "baseline": "sha256:92463e434b613ed60422eebcc1367850f9733613616747bb27686b2d510b1050"
+      },
+      "order": [
+        "baseline"
+      ],
+      "persona": "balanced_v1",
+      "seed": 120802,
+      "state_hash": "sha256:f8a551b1065b6ff56818410d16c2153459fa7b09c59de83ef30bdc63d4150fc1",
+      "window": "economy_outage"
+    },
+    {
+      "advice_hash": "sha256:7e1dd493445088ca79e7a356eac6671c13f9dc5d1e52d0cd275994ebc84764fb",
+      "disposition": "defer_to_agent",
+      "eligible": true,
+      "exposed": false,
+      "observation_hashes": {
+        "advice": "sha256:92463e434b613ed60422eebcc1367850f9733613616747bb27686b2d510b1050",
+        "baseline": "sha256:92463e434b613ed60422eebcc1367850f9733613616747bb27686b2d510b1050"
+      },
+      "order": [
+        "baseline"
+      ],
+      "persona": "stakeholder_balanced",
+      "seed": 120802,
+      "state_hash": "sha256:f8a551b1065b6ff56818410d16c2153459fa7b09c59de83ef30bdc63d4150fc1",
+      "window": "economy_outage"
+    },
+    {
+      "advice_hash": "sha256:3f1b8b8fd65c0ab6348566c9491a92475b67d3e6b778a364ceda1c21703e1aeb",
+      "disposition": "defer_to_agent",
+      "eligible": true,
+      "exposed": false,
+      "observation_hashes": {
+        "advice": "sha256:92463e434b613ed60422eebcc1367850f9733613616747bb27686b2d510b1050",
+        "baseline": "sha256:92463e434b613ed60422eebcc1367850f9733613616747bb27686b2d510b1050"
+      },
+      "order": [
+        "baseline"
+      ],
+      "persona": "public_service",
+      "seed": 120802,
+      "state_hash": "sha256:f8a551b1065b6ff56818410d16c2153459fa7b09c59de83ef30bdc63d4150fc1",
+      "window": "economy_outage"
+    },
+    {
+      "advice_hash": "sha256:f94551b61cfdfdff041647d498203c8e28892ada21663978d1a7ee25c06b7be1",
+      "disposition": "defer_to_agent",
+      "eligible": true,
+      "exposed": false,
+      "observation_hashes": {
+        "advice": "sha256:92463e434b613ed60422eebcc1367850f9733613616747bb27686b2d510b1050",
+        "baseline": "sha256:92463e434b613ed60422eebcc1367850f9733613616747bb27686b2d510b1050"
+      },
+      "order": [
+        "baseline"
+      ],
+      "persona": "resilience_steward",
+      "seed": 120802,
+      "state_hash": "sha256:f8a551b1065b6ff56818410d16c2153459fa7b09c59de83ef30bdc63d4150fc1",
+      "window": "economy_outage"
+    }
+  ],
+  "config_hash": "sha256:ecdcf0ac553ca868e628ea50a0be309f3a018379e25654080106957c7549ac97",
+  "design": "Same frozen v10 state/model/persona, baseline vs public v9 advice. 3-round responsive rule continuation. Four objective profiles, two engineered states, two new seeds. If advice abstains, run the baseline only to validate persona/market execution; do not spend on an identical unexposed treatment. Effect estimation requires exposed complete pairs. Legacy v6 mature_shortage was excluded before registration because the focal company exited under v10 in all first 10 inspected seeds. No LLM outcomes used to select cells.",
+  "hash": "sha256:d819201e59baef52db23f241fd99e1d2e33cb709568fa43da8230a0c9ac04d99",
+  "max_calls": 32,
+  "maximum_reserved_microunits": 7296000,
+  "model": "deepseek-v4-flash",
+  "price_snapshot": {
+    "basis": "peak cache-miss; deliberately do not discount cached/off-peak usage",
+    "input_cny_per_million": 3,
+    "output_cny_per_million": 9,
+    "url": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+    "verified_date": "2026-09-07"
+  },
+  "primary_metrics": [
+    "paired_discounted_persona_utility",
+    "paired_total_economic_welfare",
+    "paired_focal_enterprise_value",
+    "worst_pair",
+    "actual_exposure",
+    "failed_and_interrupted_calls"
+  ],
+  "registered_at": "2026-09-07T06:52:54.632254+00:00",
+  "retry_policy": "no schema repair, no transport retries, no automatic retry after interruption; full reservation retained on all failures",
+  "version": "v10-beta-real-v1"
+}

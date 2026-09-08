@@ -1,0 +1,45 @@
+{
+  "training_examples": 640,
+  "artifact_sha256": "sha256:d176332e18c6014a124edc9c419a371de2561bf9fac7fa83ffb193177e010ac6",
+  "holdout_episodes": 24,
+  "losses": {
+    "company": {
+      "loss_initial": 1.3974966200547105,
+      "loss_final": 0.5852358432041409,
+      "training_rows": 320
+    },
+    "supplier": {
+      "loss_initial": 1.3941506717552987,
+      "loss_final": 0.3968100302075375,
+      "training_rows": 160
+    },
+    "consumers": {
+      "loss_initial": 1.385747108074153,
+      "loss_final": 0.31708069270492645,
+      "training_rows": 80
+    },
+    "government": {
+      "loss_initial": 1.6157462938314708,
+      "loss_final": 0.005771236638215267,
+      "training_rows": 80
+    }
+  },
+  "groups": [
+    {
+      "treatment": "rule",
+      "n": 8,
+      "mean_welfare_cents": 1122354581
+    },
+    {
+      "treatment": "neural",
+      "n": 8,
+      "mean_welfare_cents": 1114050460
+    },
+    {
+      "treatment": "frozen_population",
+      "n": 8,
+      "mean_welfare_cents": 1114084054.125
+    }
+  ],
+  "all_replay_passed": true
+}

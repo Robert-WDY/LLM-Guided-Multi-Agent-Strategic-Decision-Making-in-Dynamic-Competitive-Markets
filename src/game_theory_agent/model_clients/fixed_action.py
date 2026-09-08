@@ -35,6 +35,10 @@ class FixedActionModelClient:
     ) -> None:
         self.model_name = model_name
         self.requested = requested or AgentRequestedAction(price_cents=10_000)
+        self.communication = CommunicationSubmission()
+
+    def set_communication(self, payload: dict[str, Any] | None) -> None:
+        self.communication = CommunicationSubmission.model_validate(payload or {})
 
     def set_requested(self, requested: AgentRequestedAction) -> None:
         self.requested = requested
@@ -43,7 +47,7 @@ class FixedActionModelClient:
         self, context: CommunicationContext
     ) -> ModelGeneration:
         del context
-        parsed = CommunicationSubmission().model_dump(mode="json")
+        parsed = self.communication.model_dump(mode="json")
         return ModelGeneration(
             model_name=self.model_name,
             prompt_version="human-communication-silence-v1.0.0",
@@ -87,6 +91,20 @@ class FixedActionModelClient:
                 if shared_enabled
                 else None
             ),
+            **{key:getattr(requested,key) for key in ("contract_quantity_orders", "contract_duration_rounds", "contract_bid_cents")},
+            primary_supplier_id=(requested.primary_supplier_id if context.action_constraints.get('supply_chain_enabled') else None),
+            backup_supplier_id=(requested.backup_supplier_id if context.action_constraints.get('supply_chain_enabled') else None),
+            primary_supplier_share_ppm=(requested.primary_supplier_share_ppm if context.action_constraints.get('supply_chain_enabled') else None),
+            procurement_quantity_orders=(
+                _bounded(requested.procurement_quantity_orders, 'procurement_quantity_orders', bounds)
+                if context.action_constraints.get('procurement_quantity_enabled') and requested.procurement_quantity_orders is not None else None
+            ),
+            threshold_project_contribution_cents=(requested.threshold_project_contribution_cents if context.action_constraints.get('threshold_project_contribution_enabled') else None),
+            mutual_aid_partner_company_id=(requested.mutual_aid_partner_company_id if context.action_constraints.get('mutual_aid_enabled') else None),
+            mutual_aid_capacity_offer_orders=(requested.mutual_aid_capacity_offer_orders if context.action_constraints.get('mutual_aid_enabled') else None),
+            mutual_aid_capacity_request_orders=(requested.mutual_aid_capacity_request_orders if context.action_constraints.get('mutual_aid_enabled') else None),
+            price_coordination_partner_company_id=(requested.price_coordination_partner_company_id if context.action_constraints.get('price_coordination_enabled') else None),
+            price_coordination_target_cents=(requested.price_coordination_target_cents if context.action_constraints.get('price_coordination_enabled') else None),
             incident_response=requested.incident_response or IncidentIntent(),
             strategy_summary=requested.strategy_summary or "human-submitted action",
         )

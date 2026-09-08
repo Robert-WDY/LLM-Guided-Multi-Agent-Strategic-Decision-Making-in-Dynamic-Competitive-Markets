@@ -93,7 +93,11 @@ class EpisodeManifest:
             raise ValueError(
                 f"unsupported communication mode: {communication_mode}"
             )
-        if cooperation_mode not in {"off", "shared_resilience_v1"}:
+        if cooperation_mode not in {
+            "off",
+            "shared_resilience_v1",
+            "combined_v1",
+        }:
             raise ValueError(f"unsupported cooperation mode: {cooperation_mode}")
         if belief_mode not in {
             "off", "public_action_v1", "public_action_signal_v2"
@@ -179,6 +183,7 @@ class EpisodeManifest:
             "pareto_reliable_v5",
             "pareto_reliable_v6",
             "pareto_reliable_v7",
+            "strategic_market_v9",
         }:
             raise ValueError(f"unsupported advisor mode: {advisor_mode}")
         if advisor_mode != "off" and belief_mode == "off":
@@ -189,6 +194,7 @@ class EpisodeManifest:
             "pareto_reliable_v5",
             "pareto_reliable_v6",
             "pareto_reliable_v7",
+            "strategic_market_v9",
         } and (
             information_mode != "public"
             or opponent_model_mode != "public_strategy_v1"
@@ -234,6 +240,11 @@ class EpisodeManifest:
             ),
             communication_mode=communication_mode,
             cooperation_mode=cooperation_mode,
+            cooperation_protocol_version=(
+                "final-strategic-cooperation-v1.0.0"
+                if cooperation_mode == "combined_v1"
+                else "shared-resilience-v1.0.0"
+            ),
             belief_mode=belief_mode,
             belief_schema_version=(
                 "belief-state-v1.0.0"
@@ -267,7 +278,9 @@ class EpisodeManifest:
                     if advisor_mode == "bayesian_strategy_v2"
                     else (
                         (
-                            "public-pareto-abstention-advice-v7.0.0"
+                            "public-strategic-market-advice-v9.0.0"
+                            if advisor_mode == "strategic_market_v9"
+                            else "public-pareto-abstention-advice-v7.0.0"
                             if advisor_mode == "pareto_reliable_v7"
                             else "public-pareto-marginal-advice-v6.0.0"
                             if advisor_mode == "pareto_reliable_v6"
@@ -284,6 +297,7 @@ class EpisodeManifest:
                             "pareto_reliable_v5",
                             "pareto_reliable_v6",
                             "pareto_reliable_v7",
+                            "strategic_market_v9",
                         }
                         else "none"
                     )
@@ -297,7 +311,9 @@ class EpisodeManifest:
                     if advisor_mode == "bayesian_strategy_v2"
                     else (
                         (
-                            "public-pareto-abstention-market-rollout-v3.0.0"
+                            "public-final-strategic-market-rollout-v1.0.0"
+                            if advisor_mode == "strategic_market_v9"
+                            else "public-pareto-abstention-market-rollout-v3.0.0"
                             if advisor_mode == "pareto_reliable_v7"
                             else "public-pareto-marginal-market-rollout-v2.0.0"
                             if advisor_mode == "pareto_reliable_v6"
@@ -314,6 +330,7 @@ class EpisodeManifest:
                             "pareto_reliable_v5",
                             "pareto_reliable_v6",
                             "pareto_reliable_v7",
+                            "strategic_market_v9",
                         }
                         else "none"
                     )
@@ -528,6 +545,7 @@ class MarketTransition:
                 )
             ),
             invariant_results=tuple(data.get("invariant_results", ())),
+            actor_choices=tuple(sorted(data.get("step_result",{}).get("actor_choices",{}).items())),
         )
         return cls(before, actions, step)
 
@@ -600,6 +618,7 @@ def verify_replay(
         result = env.step(
             transition.step_result.step_id,
             dict(transition.joint_action),
+            actor_choices=dict(transition.step_result.actor_choices),
         )
         if result.state_after.state_hash != transition.state_after.state_hash:
             raise ReplayMismatchError(f"transition {index} state_after hash mismatch")

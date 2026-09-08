@@ -108,6 +108,26 @@ def _candidate_action_payload(action: CompanyAction) -> CandidateEconomicAction:
         shared_resilience_contribution_cents=(
             action.shared_resilience_contribution_cents
         ),
+        threshold_project_contribution_cents=(
+            action.threshold_project_contribution_cents
+        ),
+        mutual_aid_partner_company_id=action.mutual_aid_partner_company_id,
+        mutual_aid_capacity_offer_orders=(
+            action.mutual_aid_capacity_offer_orders
+        ),
+        mutual_aid_capacity_request_orders=(
+            action.mutual_aid_capacity_request_orders
+        ),
+        price_coordination_partner_company_id=(
+            action.price_coordination_partner_company_id
+        ),
+        price_coordination_target_cents=(
+            action.price_coordination_target_cents
+        ),
+        primary_supplier_id=action.primary_supplier_id,
+        backup_supplier_id=action.backup_supplier_id,
+        primary_supplier_share_ppm=action.primary_supplier_share_ppm,
+        procurement_quantity_orders=action.procurement_quantity_orders,
         incident_response_mode=action.incident_response.mode.value,
         repair_budget_cents=action.incident_response.repair_budget_cents,
     )
@@ -144,6 +164,9 @@ def generate_candidate_actions(
         capacity: int = 0,
         resilience: int = 0,
         shared: int | None = shared_value,
+        primary_supplier: str | None = None,
+        backup_supplier: str | None = None,
+        primary_supplier_share: int | None = None,
         incident_response: IncidentResponse = IncidentResponse(),
     ) -> CompanyAction:
         return CompanyAction(
@@ -161,6 +184,9 @@ def generate_candidate_actions(
             capacity_investment_cents=capacity,
             resilience_budget_cents=resilience,
             shared_resilience_contribution_cents=shared,
+            primary_supplier_id=primary_supplier,
+            backup_supplier_id=backup_supplier,
+            primary_supplier_share_ppm=primary_supplier_share,
             incident_response=incident_response,
             strategy_summary=f"Stage 6 candidate: {candidate_id}",
         )
@@ -235,6 +261,45 @@ def generate_candidate_actions(
                 "为下一轮行业公共保护贡献，并保留搭便车对照。",
             )
         )
+    if constraints.get("supply_chain_enabled"):
+        supplier_ids = [
+            str(item["supplier_id"])
+            for item in constraints.get("eligible_suppliers", [])
+        ]
+        if len(supplier_ids) >= 2:
+            cheap = min(
+                constraints["eligible_suppliers"],
+                key=lambda item: (int(item["unit_price_cents"]), item["supplier_id"]),
+            )["supplier_id"]
+            stable = max(
+                constraints["eligible_suppliers"],
+                key=lambda item: (int(item["reliability_ppm"]), item["supplier_id"]),
+            )["supplier_id"]
+            specs.extend(
+                [
+                    (
+                        "sourcing_stable",
+                        action(
+                            "sourcing_stable",
+                            primary_supplier=str(stable),
+                            primary_supplier_share=PPM,
+                        ),
+                        ["supply_chain"],
+                        "集中采购高可靠投入，以更高成本换取连续供给。",
+                    ),
+                    (
+                        "sourcing_diverse",
+                        action(
+                            "sourcing_diverse",
+                            primary_supplier=str(cheap),
+                            backup_supplier=str(stable),
+                            primary_supplier_share=500_000,
+                        ),
+                        ["supply_chain"],
+                        "在低价与高可靠供应商之间分散采购。",
+                    ),
+                ]
+            )
     incident = company.risk.active_incident
     if incident is not None:
         useful = min(
@@ -307,6 +372,26 @@ def _candidate_to_action(
         shared_resilience_contribution_cents=(
             payload.shared_resilience_contribution_cents
         ),
+        threshold_project_contribution_cents=(
+            payload.threshold_project_contribution_cents
+        ),
+        mutual_aid_partner_company_id=payload.mutual_aid_partner_company_id,
+        mutual_aid_capacity_offer_orders=(
+            payload.mutual_aid_capacity_offer_orders
+        ),
+        mutual_aid_capacity_request_orders=(
+            payload.mutual_aid_capacity_request_orders
+        ),
+        price_coordination_partner_company_id=(
+            payload.price_coordination_partner_company_id
+        ),
+        price_coordination_target_cents=(
+            payload.price_coordination_target_cents
+        ),
+        primary_supplier_id=payload.primary_supplier_id,
+        backup_supplier_id=payload.backup_supplier_id,
+        primary_supplier_share_ppm=payload.primary_supplier_share_ppm,
+        procurement_quantity_orders=payload.procurement_quantity_orders,
         incident_response=IncidentResponse(
             IncidentResponseMode(payload.incident_response_mode),
             payload.repair_budget_cents,
@@ -341,6 +426,7 @@ def _opponent_response_action(
     *,
     config: MarketConfig,
     state: MarketState,
+    focal_company_id: str,
     opponent_id: str,
     focal_candidate: StrategicActionCandidate,
     scenario_index: int,
@@ -348,12 +434,22 @@ def _opponent_response_action(
     belief_state: BeliefState | None,
 ) -> CompanyAction:
     baseline = build_rule_action(config, state, opponent_id)
+    if state.strategic_market is not None and opponent_id not in state.strategic_market.active_company_ids:
+        # Exit is absorbing. A sampled response must not revive an inactive
+        # company's price, procurement, investment or cooperation choices.
+        return baseline
     bounds = config.mapping("action", "bounds", "price_cents")
     cut = 250_000
     raise_ppm = 150_000
+    cooperation_tendency = 500_000
+    price_aggressiveness = 250_000
+    profit_strategy = 250_000
     if opponent_model is not None and opponent_id in opponent_model.opponent_models:
         profile = opponent_model.opponent_models[opponent_id]
         strategy = profile.strategy_distribution
+        cooperation_tendency = profile.behavior_profile.cooperation_tendency_ppm
+        price_aggressiveness = profile.behavior_profile.price_aggressiveness_ppm
+        profit_strategy = strategy.profit_ppm
         cut = _clip(
             profile.behavior_profile.price_aggressiveness_ppm // 2
             + strategy.growth_ppm // 3,
@@ -397,7 +493,7 @@ def _opponent_response_action(
     elif direction == "price_raise":
         price += 500
     price = _clip(price, int(bounds["min"]), int(bounds["max"]))
-    return replace(
+    response = replace(
         baseline,
         action_id=f"{baseline.action_id}:response-{scenario_index}",
         price_cents=price,
@@ -405,6 +501,106 @@ def _opponent_response_action(
             f"{baseline.strategy_summary}; sampled public-model response={direction}"
         ),
     )
+    focal = focal_candidate.action
+    strategic = state.strategic_market
+    response_draw = int(
+        sha256_hash(
+            {
+                "protocol": "strategic-interaction-response-v1",
+                "scenario_index": scenario_index,
+                "opponent_id": opponent_id,
+                "candidate_id": focal_candidate.candidate_id,
+            }
+        ).rsplit(":", 1)[-1][-12:],
+        16,
+    ) % PPM
+    cooperation_response_threshold = _clip(
+        350_000 + cooperation_tendency // 2,
+        350_000,
+        850_000,
+    )
+    if focal.mutual_aid_partner_company_id == opponent_id:
+        if (
+            (focal.mutual_aid_capacity_request_orders or 0) > 0
+            and response_draw < cooperation_response_threshold
+        ):
+            response = replace(
+                response,
+                mutual_aid_partner_company_id=focal_company_id,
+                mutual_aid_capacity_offer_orders=(
+                    focal.mutual_aid_capacity_request_orders
+                ),
+                mutual_aid_capacity_request_orders=0,
+            )
+        elif (
+            (focal.mutual_aid_capacity_offer_orders or 0) > 0
+            and response_draw < cooperation_response_threshold
+        ):
+            response = replace(
+                response,
+                mutual_aid_partner_company_id=focal_company_id,
+                mutual_aid_capacity_offer_orders=0,
+                mutual_aid_capacity_request_orders=(
+                    focal.mutual_aid_capacity_offer_orders
+                ),
+            )
+    if (
+        focal.price_coordination_partner_company_id == opponent_id
+        and focal.price_coordination_target_cents is not None
+    ):
+        credibility = 500_000
+        if strategic is not None:
+            credibility = dict(
+                strategic.coordination_credibility_by_company_ppm
+            ).get(opponent_id, credibility)
+        acceptance_threshold = _clip(
+            250_000 + credibility // 3 + profit_strategy // 4,
+            300_000,
+            850_000,
+        )
+        if response_draw < acceptance_threshold:
+            target = focal.price_coordination_target_cents
+            opponent_price = target
+            betrayal_threshold = _clip(
+                40_000
+                + price_aggressiveness // 5
+                + (PPM - credibility) // 5,
+                40_000,
+                350_000,
+            )
+            if response_draw < betrayal_threshold:
+                opponent_price = max(int(bounds["min"]), target - 500)
+            response = replace(
+                response,
+                price_cents=opponent_price,
+                price_coordination_partner_company_id=focal_company_id,
+                price_coordination_target_cents=target,
+            )
+    if (
+        focal_candidate.label == "threshold_project_contribution"
+        and strategic is not None
+        and strategic.threshold_project is not None
+        and strategic.threshold_project.status.value == "active"
+        and response_draw < cooperation_response_threshold
+    ):
+        project = strategic.threshold_project
+        gap = max(
+            0,
+            project.required_total_contribution_cents
+            - project.accumulated_total_contribution_cents
+            - (focal.threshold_project_contribution_cents or 0),
+        )
+        peer_count = max(1, len(state.company_ids) - 1)
+        peer_share = min(
+            2_000_000,
+            (gap + peer_count - 1) // peer_count,
+            max(0, state.company(opponent_id).financial.cash_balance_cents // 5),
+        )
+        response = replace(
+            response,
+            threshold_project_contribution_cents=peer_share,
+        )
+    return response
 
 
 class AuthoritativeMarketRolloutEvaluator:
@@ -465,6 +661,15 @@ class AuthoritativeMarketRolloutEvaluator:
             share_growth_scale_ppm=self.config.integer(
                 "persona_utilities", "share_growth_scale_ppm"
             ),
+            social_welfare_scale_cents=int(
+                self.config.mapping("persona_utilities").get(
+                    "social_welfare_scale_cents",
+                    self.config.integer(
+                        "persona_utilities", "profit_scale_cents"
+                    )
+                    * 10,
+                )
+            ),
         )
         initial_ev = _enterprise_value(state, company_id, self.config)
         initial_profit = state.company(company_id).financial.cumulative_profit_cents
@@ -496,6 +701,7 @@ class AuthoritativeMarketRolloutEvaluator:
                             actions[opponent_id] = _opponent_response_action(
                                 config=self.config,
                                 state=before,
+                                focal_company_id=company_id,
                                 opponent_id=opponent_id,
                                 focal_candidate=candidate,
                                 scenario_index=scenario_index,
@@ -525,9 +731,21 @@ class AuthoritativeMarketRolloutEvaluator:
                 total_loss = incident_loss + unserved_loss
                 risk_adjusted = enterprise_value - total_loss
                 mean_utility = _mean(discounted_utilities)
-                persona_bonus = (
-                    mean_utility * persona_evaluator.profit_scale_cents // PPM
+                # Legacy private-value personas retain the original scale.
+                # A profile with an explicit social-welfare weight receives a
+                # larger, versioned alignment scale so the welfare term can
+                # genuinely trade off against enterprise value instead of
+                # becoming a decorative explanation-only feature.
+                social_weight = (
+                    persona_profile.utility_weights_ppm.social_welfare
                 )
+                alignment_scale = (
+                    persona_evaluator.profit_scale_cents
+                    + social_weight
+                    * persona_evaluator.social_welfare_scale_cents
+                    // PPM
+                )
+                persona_bonus = mean_utility * alignment_scale // PPM
                 outcomes.append(
                     RolloutScenarioOutcome(
                         scenario_index=scenario_index,

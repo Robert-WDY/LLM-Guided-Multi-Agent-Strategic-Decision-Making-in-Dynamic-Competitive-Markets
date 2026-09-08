@@ -38,6 +38,11 @@ class PartialActionClaim(BaseModel):
     service_budget_cents: int | None = Field(default=None, ge=0)
     capacity_investment_cents: int | None = Field(default=None, ge=0)
     resilience_budget_cents: int | None = Field(default=None, ge=0)
+    shared_resilience_contribution_cents: int | None = Field(default=None, ge=0)
+    threshold_project_contribution_cents: int | None = Field(default=None, ge=0)
+    mutual_aid_capacity_offer_orders: int | None = Field(default=None, ge=0)
+    mutual_aid_capacity_request_orders: int | None = Field(default=None, ge=0)
+    price_coordination_target_cents: int | None = Field(default=None, ge=0)
 
     @model_validator(mode="after")
     def require_at_least_one_claim(self) -> "PartialActionClaim":

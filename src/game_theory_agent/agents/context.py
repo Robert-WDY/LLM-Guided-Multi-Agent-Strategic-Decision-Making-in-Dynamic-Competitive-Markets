@@ -169,6 +169,10 @@ class DecisionContextBuilder:
             "capacity_investment_cents",
             "resilience_budget_cents",
             "shared_resilience_contribution_cents",
+            "threshold_project_contribution_cents",
+            "mutual_aid_capacity_offer_orders",
+            "mutual_aid_capacity_request_orders",
+            "price_coordination_target_cents",
         )
         return CommunicationContext(
             context_mode=self.context_mode,

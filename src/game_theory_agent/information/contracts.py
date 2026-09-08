@@ -81,7 +81,9 @@ class ObservationEnvelope(BaseModel):
     public_state: PublicState
     private_state: PrivateState
     communication_mode: Literal["off", "public_only", "public_private"] = "off"
-    cooperation_mode: Literal["off", "shared_resilience_v1"] = "off"
+    cooperation_mode: Literal[
+        "off", "shared_resilience_v1", "combined_v1"
+    ] = "off"
     market: dict[str, Any]
     shared_resilience: dict[str, Any] | None = None
     market_regime: dict[str, Any]

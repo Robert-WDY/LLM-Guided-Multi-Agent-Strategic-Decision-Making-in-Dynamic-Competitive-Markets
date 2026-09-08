@@ -1,6 +1,7 @@
 """Versioned visibility policies and the single TrueState -> view projection."""
 
 from __future__ import annotations
+from copy import deepcopy
 
 from dataclasses import dataclass
 from enum import Enum
@@ -167,6 +168,43 @@ class ObservationBuilder:
         public_market = self._project(
             state.market.to_dict(), policy.public_market_fields
         )
+        full_market = state.market.to_dict()
+        if state.strategic_market is not None:
+            strategic_market = state.strategic_market.to_dict()
+            public_market["strategic_market"] = strategic_market
+            full_market["strategic_market"] = strategic_market
+        if state.supply_chain is not None:
+            supply_chain = state.supply_chain.to_dict()
+            public_market["supply_chain"] = supply_chain
+            full_market["supply_chain"] = supply_chain
+            if any(s.account is not None for s in state.supply_chain.suppliers):
+                public_supply = deepcopy(supply_chain)
+                for supplier in public_supply["suppliers"].values():
+                    supplier.pop("account", None)
+                    supplier.pop("unit_cost_cents", None)
+                    supplier.pop("investment_decision", None)
+                    supplier.pop("round_requested_orders", None)
+                    strategic=supplier.pop("strategic_ledger",None)
+                    if strategic is not None:
+                        supplier["bankrupt"]=strategic["bankrupt"]
+                        # v14 declares settled contracts, stock and creditor books
+                        # public. Supplier cash, costs and rejected bids stay private.
+                        report=deepcopy(strategic)
+                        if report.get("audit"):
+                            for key in ("opening_cash_cents","opening_lender_cash_cents","unit_cost_cents","hash","negotiations"):
+                                report["audit"].pop(key,None)
+                        supplier["strategic_public"]=report
+                for outcome in public_supply["last_procurement_outcomes"].values():
+                    outcome.pop("material", None)
+                public_market["supply_chain"] = public_supply
+        if state.government is not None:
+            public_market["government"] = state.government.to_dict()
+            public_market["consumer_decisions"] = [d.to_dict() for d in state.consumer_decisions]
+            full_market.update({k:public_market[k] for k in ("government","consumer_decisions")})
+        if state.welfare_accounting is not None:
+            welfare = state.welfare_accounting.to_dict()
+            public_market["welfare_accounting"] = welfare
+            full_market["welfare_accounting"] = welfare
         public_events = [
             self._project(item.to_dict(), policy.public_event_fields)
             for item in state.active_market_events
@@ -221,7 +259,7 @@ class ObservationBuilder:
             "competitors": competitors,
             "public_companies": public_companies,
             "market": (
-                state.market.to_dict()
+                full_market
                 if policy.opponents_receive_full_state
                 else public_market
             ),

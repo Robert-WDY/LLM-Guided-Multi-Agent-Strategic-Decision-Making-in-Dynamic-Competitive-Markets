@@ -1,0 +1,35 @@
+{
+  "source_sha256": "96b5418daf27023b827d231969f9cd7c3233bc4adf3fddc26049401be9dad871",
+  "real_results": {
+    "budget_authorized_cny": 10,
+    "claim_boundary": "Small directional pilot, engineered states, one provider, not a significance or natural multi-round effectiveness claim.",
+    "complete_pairs": 0,
+    "conservative_cost_bound_cny": 0.609462,
+    "estimate_basis": "official peak/cache-miss pricing; not provider invoice",
+    "exposed_pairs": 0,
+    "logical_results": 16,
+    "mean_welfare_delta_cents": null,
+    "pairs": [],
+    "provider_attempts": 16,
+    "reservation_cny": 3.648,
+    "source_sha256": "96b5418daf27023b827d231969f9cd7c3233bc4adf3fddc26049401be9dad871",
+    "spec_hash": "sha256:c80e27c3d9b09b654220c2aea4a6158f6f753c76125ee220f00db9cec4d80b60",
+    "successful_results": 16,
+    "unknown_usage_calls": 0,
+    "usage_estimate_cny": 0.609462,
+    "utility_equal": 0,
+    "utility_negative": 0,
+    "utility_positive": 0,
+    "worst_utility_delta_ppm": null
+  },
+  "file_sha256": {
+    "runs/v10-beta-real/rows.json": "cb391ced03d9ee0cfe65ece4090b84511edb168e1bf035c2505e71dca892df40",
+    "runs/v10-beta-real/summary.json": "6b0e7f94647f03acbf7308007902700c27b85b1bc5b6c3059afd5e30e86ab354",
+    "runs/v10-beta-real/preflight_diagnostics.json": "e427ee361d1d0bc5076d0a7d444c5ebe6fd430313af831a884fe0a7609c06a3a",
+    "runs/v10-beta-validation/combination.json": "2ef0ae7002448118de682131f28a7d6631c75c9894a925232e03c8ad88cf13bb",
+    "runs/v10-beta-validation/sensitivity.json": "2a62ce1260825ea97604e452c9e2dc42e9c64548021a09ee8198b53721e35122",
+    "runs/v10-beta-validation/summary.json": "0da3d534ea063922713dd2c1e64b8b4219c4540e7677668c9e8e39a7fe5a7a83",
+    "experiment-specs/v10-beta-real/PREREGISTRATION_v2.json": "91452c3e6aa038550ea6376a2b65b59ac1581520838cee3443c15ccd42c221fa"
+  },
+  "next_expansion": "supplier first, after advisor coverage and natural multi-round gates; government deferred"
+}

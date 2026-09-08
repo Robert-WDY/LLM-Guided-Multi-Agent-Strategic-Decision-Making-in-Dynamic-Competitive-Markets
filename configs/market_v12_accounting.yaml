@@ -1,0 +1,17 @@
+extends: market_v11_supplier.yaml
+config_id: market-v12-cash-material
+config_version: market-v12.0.0
+environment_version: market-env-v12.0.0
+schema_versions:
+  state: market-state-v12.0.0
+supply_chain:
+  protocol_version: supply-chain-v3.0.0
+  transaction_accounting:
+    policy_version: cash-material-v1.0.0
+    initial_supplier_cash_cents: 20000000
+    inventory: perishable
+calibration_metadata:
+  supply_chain_claim_boundary: >-
+    Prepaid materials and supplier receipts reconcile exactly; materials expire
+    at round end. Processing excludes embedded material share. Consumers and
+    external costs are an open economic boundary, not a closed monetary system.

@@ -68,6 +68,7 @@ class DoubaoModelClient:
         base_url: str | None = None,
         timeout_seconds: float = 40.0,
         max_schema_attempts: int = 2,
+        max_transport_retries: int = 1,
         temperature: float | None = None,
         top_p: float | None = None,
         prompt_builder: AgentPromptBuilder | None = None,
@@ -97,7 +98,7 @@ class DoubaoModelClient:
             api_key=resolved_key,
             base_url=self.base_url,
             timeout=timeout_seconds,
-            max_retries=1,
+            max_retries=max_transport_retries,
         )
 
     async def generate_communication(

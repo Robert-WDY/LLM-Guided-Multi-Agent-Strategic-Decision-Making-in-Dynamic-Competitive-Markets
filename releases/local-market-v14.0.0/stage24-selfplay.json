@@ -1,0 +1,24 @@
+{
+  "training_episodes": 16,
+  "holdout_episodes": 24,
+  "rounds": 800,
+  "all_replays_passed": true,
+  "groups": [
+    {
+      "treatment": "rule",
+      "n": 8,
+      "mean_welfare_cents": 1169617024.25
+    },
+    {
+      "treatment": "online_learning",
+      "n": 8,
+      "mean_welfare_cents": 1148481702.75
+    },
+    {
+      "treatment": "frozen_population",
+      "n": 8,
+      "mean_welfare_cents": 1172415647.125
+    }
+  ],
+  "limits": "Synthetic jointly adaptive finite populations. Observed returns are confounded by co-adaptation; no Nash convergence or universal gain is claimed."
+}

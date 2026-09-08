@@ -123,6 +123,7 @@ class PersonaRegistry:
         default_profile_id: str,
         profit_scale_cents: int,
         share_growth_scale_ppm: int,
+        social_welfare_scale_cents: int,
         profiles: dict[str, PersonaProfile],
     ) -> None:
         if default_profile_id not in profiles:
@@ -133,6 +134,7 @@ class PersonaRegistry:
         self.default_profile_id = default_profile_id
         self.profit_scale_cents = profit_scale_cents
         self.share_growth_scale_ppm = share_growth_scale_ppm
+        self.social_welfare_scale_cents = social_welfare_scale_cents
         self._profiles = dict(profiles)
 
     @classmethod
@@ -164,6 +166,12 @@ class PersonaRegistry:
             default_profile_id=str(raw["default_profile_id"]),
             profit_scale_cents=int(raw["profit_scale_cents"]),
             share_growth_scale_ppm=int(raw["share_growth_scale_ppm"]),
+            social_welfare_scale_cents=int(
+                raw.get(
+                    "social_welfare_scale_cents",
+                    int(raw["profit_scale_cents"]) * 10,
+                )
+            ),
             profiles=profiles,
         )
 
@@ -185,6 +193,7 @@ class PersonaRegistry:
             profile,
             profit_scale_cents=self.profit_scale_cents,
             share_growth_scale_ppm=self.share_growth_scale_ppm,
+            social_welfare_scale_cents=self.social_welfare_scale_cents,
         )
 
 
@@ -229,10 +238,14 @@ class PersonaUtilityEvaluator:
         *,
         profit_scale_cents: int,
         share_growth_scale_ppm: int,
+        social_welfare_scale_cents: int | None = None,
     ) -> None:
         self.profile = profile
         self.profit_scale_cents = profit_scale_cents
         self.share_growth_scale_ppm = share_growth_scale_ppm
+        self.social_welfare_scale_cents = (
+            social_welfare_scale_cents or profit_scale_cents * 10
+        )
 
     def component_scores(
         self,
@@ -290,7 +303,20 @@ class PersonaUtilityEvaluator:
             ),
             "reputation": _clip(after.brand.reputation_ppm, 0, PPM),
             "resilience": _clip(after.risk.resilience_ppm, 0, PPM),
-            "social_welfare": 0,
+            "social_welfare": (
+                _clip(
+                    _round_div(
+                        state_after.welfare_accounting.round_total_economic_welfare_cents
+                        * PPM,
+                        self.social_welfare_scale_cents,
+                    ),
+                    -PPM,
+                    PPM,
+                )
+                if self.profile.social_welfare_enabled
+                and state_after.welfare_accounting is not None
+                else 0
+            ),
             "cooperation_reputation": 0,
         }
 

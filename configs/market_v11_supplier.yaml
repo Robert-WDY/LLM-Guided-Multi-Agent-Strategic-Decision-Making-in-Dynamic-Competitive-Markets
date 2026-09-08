@@ -1,0 +1,23 @@
+extends: market_v10_1_advisor.yaml
+config_id: market-v11-supplier-pricing
+config_version: market-v11.0.0
+environment_version: market-env-v11.0.0
+schema_versions:
+  state: market-state-v11.0.0
+
+supply_chain:
+  protocol_version: supply-chain-v2.0.0
+  autonomous_pricing:
+    enabled: true
+    policy_version: bounded-utilization-pricing-v1.0.0
+    step_ppm: 50000
+    min_markup_ppm: 100000
+    max_base_price_ppm: 1500000
+    raise_threshold_ppm: 850000
+    lower_threshold_ppm: 450000
+
+calibration_metadata:
+  supply_chain_claim_boundary: >-
+    Suppliers independently post bounded next-round prices from their own
+    last-settled utilization. This deterministic synthetic policy has no LLM,
+    endogenous capacity investment, financing or learned optimality claim.

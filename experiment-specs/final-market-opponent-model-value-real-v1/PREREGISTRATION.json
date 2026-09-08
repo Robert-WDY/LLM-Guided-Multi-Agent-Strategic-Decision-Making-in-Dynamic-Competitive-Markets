@@ -1,0 +1,59 @@
+{
+  "cells": [
+    {
+      "baseline_enterprise_value_cents": 11123809,
+      "correct_model_enterprise_value_cents": 11123809,
+      "correct_recommendation": "mutual_aid_request",
+      "persona_id": "balanced_v1",
+      "shuffled_advice_hash": "sha256:9fcb62be3ae1334db53649db390e68bd810f158800b108d28f1141f405bc1448",
+      "shuffled_observation_hash": "sha256:ee3c6f622d173ce398628012b27b7706b8120d2b826733f9c2001ee25132e15a",
+      "shuffled_opponent_model_hash": "sha256:be3fa8fd6e5cc9096a44eae240afdeb50a9db93bda2fb3b18f0d9c9b7e8cf632",
+      "shuffled_recommendation": "price_increase",
+      "state_hash": "sha256:5cd744e08e936bb417e99d92b054684429e493e51341bdb9166fd854c4c00216"
+    },
+    {
+      "baseline_enterprise_value_cents": 11606256,
+      "correct_model_enterprise_value_cents": 12269161,
+      "correct_recommendation": "mutual_aid_request",
+      "persona_id": "aggressive_v1_extreme",
+      "shuffled_advice_hash": "sha256:a0aceb372aa02edb40869cc65e33a7695da5bf578a84bb5914c2f8c2425cea6f",
+      "shuffled_observation_hash": "sha256:d0eae14bd28e3ceed0a8b81e14e3b4be7de5f080238ead8ecd263ad44abc2ca1",
+      "shuffled_opponent_model_hash": "sha256:be3fa8fd6e5cc9096a44eae240afdeb50a9db93bda2fb3b18f0d9c9b7e8cf632",
+      "shuffled_recommendation": "price_increase",
+      "state_hash": "sha256:5cd744e08e936bb417e99d92b054684429e493e51341bdb9166fd854c4c00216"
+    },
+    {
+      "baseline_enterprise_value_cents": 11123809,
+      "correct_model_enterprise_value_cents": 12269161,
+      "correct_recommendation": "mutual_aid_request",
+      "persona_id": "risk_guarded_v1",
+      "shuffled_advice_hash": "sha256:0f9286b452ea9afb630a5ff8b536984af43811aba6f02d43c1db4c7cc5b89510",
+      "shuffled_observation_hash": "sha256:b608e354f129db85a05807e9ecd637122c6b9e8cfed5c33f87e46f027ab57888",
+      "shuffled_opponent_model_hash": "sha256:be3fa8fd6e5cc9096a44eae240afdeb50a9db93bda2fb3b18f0d9c9b7e8cf632",
+      "shuffled_recommendation": "price_increase",
+      "state_hash": "sha256:5cd744e08e936bb417e99d92b054684429e493e51341bdb9166fd854c4c00216"
+    }
+  ],
+  "evidence_level": "POST_HOC_DIRECTIONAL_REAL_LLM_MECHANISM_EVIDENCE",
+  "experiment_schema_version": "opponent-model-value-prereg-v1.0.0",
+  "maximum_estimated_cost_microunits": 360000,
+  "maximum_logical_provider_calls": 3,
+  "model": "deepseek-v4-flash",
+  "preregistration_hash": "sha256:8da881759ec8a45e96f718daf18fa8c08a484017667455d210a062e2c25f47ed",
+  "price_snapshot": {
+    "currency": "CNY",
+    "input_price_microunits_per_token": 3,
+    "output_price_microunits_per_token": 9,
+    "status": "conservative_project_estimate_not_provider_invoice"
+  },
+  "provider": "deepseek",
+  "reserved_completion_tokens_per_call": 4000,
+  "reserved_prompt_tokens_per_call": 28000,
+  "seed": 95102,
+  "selection_rule": "zero-token scan selected the first frozen state where rotating only opponent identities changed released advice for all three personas",
+  "source_rows_sha256": "sha256:34d96961beb6492273cafa64839d758cb7bade69c6ce5491a89c107f1d2f6c08",
+  "temperature_ppm": 0,
+  "top_p_ppm": 100000,
+  "treatment": "cyclically rotate public-evidence-derived opponent profiles across B/C/D; keep market, seed, persona and action belief unchanged",
+  "window": "mature_shortage"
+}

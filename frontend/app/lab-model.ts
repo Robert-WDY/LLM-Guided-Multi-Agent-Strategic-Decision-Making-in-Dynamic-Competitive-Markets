@@ -16,7 +16,14 @@ export type PersonaKey =
   | "risk_guarded_v1"
   | "profit_myopic"
   | "selfish_long_term"
-  | "disciplined_growth_v1";
+  | "disciplined_growth_v1"
+  | "stakeholder_balanced"
+  | "public_service"
+  | "resilience_steward"
+  | "cooperator"
+  | "free_rider"
+  | "retaliator";
+ 
 
 export type PersonaProfile = {
   key: PersonaKey;
@@ -58,12 +65,13 @@ export type LabConfig = {
     | "supply_crisis"
     | "disaster"
     | "public_goods";
-  rounds: 5 | 10 | 15 | 20;
+  rounds: 5 | 10 | 15 | 20 | 60;
   seed: number;
   communication: boolean;
   cooperation: boolean;
   gameTheory: boolean;
   controllerToken: string;
+  repeatedGame?: boolean;
 };
 
 export type Belief = {
@@ -149,6 +157,13 @@ export type ReplayStep = {
 };
 
 export const PERSONAS: Record<PersonaKey, PersonaProfile> = {
+  cooperator:{key:"cooperator",label:"合作贡献者",summary:"保留现金后持续公共投入，终局不新增。五项权重为后端九项权重的分组概览；并非现实企业标定。",weights:{profit:15,growth:10,risk:30,cash:10,social:35},traits:{timeDiscount:98,riskAversion:50,cooperation:60,opportunism:0}},
+  free_rider:{key:"free_rider",label:"搭便车者",summary:"保留自己的公共投入，享受非排他公共保护，以利润和现金为主。五项权重是分组概览。",weights:{profit:55,growth:15,risk:10,cash:20,social:0},traits:{timeDiscount:90,riskAversion:30,cooperation:0,opportunism:100}},
+  retaliator:{key:"retaliator",label:"有限惩罚互惠者",summary:"首轮贡献；据上一轮已结算公共贡献暂停或恢复合作，不依据私信猜测惩罚。五项权重是分组概览。",weights:{profit:25,growth:10,risk:25,cash:15,social:25},traits:{timeDiscount:98,riskAversion:50,cooperation:100,opportunism:10}},
+  stakeholder_balanced: { key: "stakeholder_balanced", label: "利益相关者均衡", summary: "企业可持续经营与社会福利并重。合成研究权重，尚无真实企业标定。", weights: { profit: 20, growth: 10, risk: 24, cash: 8, social: 38 }, traits: { timeDiscount: 95, riskAversion: 55, cooperation: 50, opportunism: 15 } },
+  public_service: { key: "public_service", label: "公共服务使命", summary: "侧重可负担性、消费者福利与持续供给。合成研究权重，尚无真实企业标定。", weights: { profit: 2, growth: 2, risk: 23, cash: 4, social: 69 }, traits: { timeDiscount: 97, riskAversion: 65, cooperation: 65, opportunism: 5 } },
+  resilience_steward: { key: "resilience_steward", label: "韧性治理", summary: "侧重供应风险、生存与系统韧性。合成研究权重，尚无真实企业标定。", weights: { profit: 12, growth: 6, risk: 43, cash: 8, social: 31 }, traits: { timeDiscount: 98, riskAversion: 80, cooperation: 50, opportunism: 10 } },
+
   balanced_v1: {
     key: "balanced_v1",
     label: "均衡经营",

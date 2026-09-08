@@ -1,0 +1,3801 @@
+{
+  "manifest": {
+    "manifest_version": "episode-manifest-v1.8.0",
+    "experiment_id": "experiment-001",
+    "config_id": "market-v14-complete-local",
+    "config_version": "market-v14.0.0",
+    "config_sha256": "sha256:65df009470efb51abb11c1ae622d223c378a57133b9e716605516f3481262d56",
+    "episode_id": "theory-real-common-340101",
+    "episode_seed": 340101,
+    "environment_version": "market-env-v14.0.0",
+    "state_schema_version": "market-state-v14.0.0",
+    "action_schema_version": "company-action-v13.0.0",
+    "event_schema_version": "market-event-v4.0.0",
+    "rng_protocol_version": "rng-splitmix64-v1.0.0",
+    "hash_protocol_version": "rfc8785-sha256-fixedpoint-v1.0.0",
+    "rng_component_versions": {
+      "consumer_utility_noise": "v1",
+      "demand_noise": "v1",
+      "event_realization": "v1",
+      "incident_generation": "v1",
+      "market_model_selection": "v1",
+      "operational_capacity_noise": "v1",
+      "risk_signal_generation": "v1",
+      "rule_opponent_policy": "v1",
+      "sentiment_noise": "v1",
+      "supply_cost_noise": "v1"
+    },
+    "code_commit": "unknown",
+    "num_agents": 4,
+    "max_rounds": 10,
+    "information_mode": "perfect",
+    "observer_information_modes": {},
+    "observation_schema_version": "agent-observation-v1.8.0",
+    "visibility_policy_version": "visibility-perfect-v1.0.0",
+    "observation_hash_protocol_version": "observation-view-hash-v1.0.0",
+    "belief_schema_version": "none",
+    "belief_mode": "off",
+    "belief_updater_version": "none",
+    "belief_hash_protocol_version": "none",
+    "opponent_model_mode": "off",
+    "opponent_model_schema_version": "none",
+    "opponent_model_updater_version": "none",
+    "opponent_model_hash_protocol_version": "none",
+    "utility_inference_mode": "off",
+    "utility_inference_schema_version": "none",
+    "utility_inference_model_version": "none",
+    "utility_inference_hash_protocol_version": "none",
+    "advisor_mode": "off",
+    "advisor_schema_version": "none",
+    "advisor_model_version": "none",
+    "repeated_game_mode": "off",
+    "repeated_game_schema_version": "none",
+    "repeated_game_hash_protocol_version": "none",
+    "communication_mode": "off",
+    "communication_protocol_version": "simultaneous-one-shot-v1.0.0",
+    "communication_waves": 1,
+    "communication_max_messages_per_agent": 2,
+    "cooperation_mode": "off",
+    "cooperation_protocol_version": "shared-resilience-v1.0.0",
+    "agent_configs": {},
+    "agent_versioning_mode": "legacy",
+    "agent_roster": {},
+    "agent_roster_hash": "none",
+    "initial_state": {
+      "episode_id": "theory-real-common-340101",
+      "episode_seed": 340101,
+      "round": 1,
+      "rounds_remaining": 10,
+      "state_version": 0,
+      "terminal": false,
+      "max_rounds": 10,
+      "market": {
+        "base_demand_orders": 12000,
+        "realized_demand_orders": 0,
+        "no_purchase_orders": 0,
+        "lost_after_stockout_orders": 0,
+        "market_sentiment_ppm": 1000000,
+        "base_supply_cost_index_ppm": 1000000,
+        "actual_supply_cost_index_ppm": 1000000,
+        "average_paid_price_cents": 0,
+        "market_model_id": "value_oriented",
+        "market_model_label": "价格敏感市场",
+        "market_model_description": "消费者更关注价格，整体需求略高，但高价更难维持份额。",
+        "demand_bias_ppm": 1037649,
+        "price_anchor_cents": 10209,
+        "price_band_cents": 900,
+        "utility_price_multiplier_ppm": 1450000,
+        "utility_awareness_multiplier_ppm": 700000,
+        "utility_service_multiplier_ppm": 700000,
+        "utility_reputation_multiplier_ppm": 650000,
+        "utility_prior_stockout_multiplier_ppm": 900000
+      },
+      "consumer_segments": {
+        "brand_sensitive": 220000,
+        "price_sensitive": 600000,
+        "service_sensitive": 180000
+      },
+      "risk_signals": [],
+      "active_market_events": [],
+      "company_order": [
+        "company_A",
+        "company_B",
+        "company_C",
+        "company_D"
+      ],
+      "companies": {
+        "company_A": {
+          "company_id": "company_A",
+          "persona": "none",
+          "financial": {
+            "cash_balance_cents": 30000000,
+            "round_revenue_cents": 0,
+            "round_variable_cost_cents": 0,
+            "round_fixed_spend_cents": 0,
+            "round_incident_cost_cents": 0,
+            "round_operating_cost_cents": 0,
+            "round_profit_cents": 0,
+            "cumulative_profit_cents": 0,
+            "capacity_book_value_cents": 0
+          },
+          "commercial": {
+            "price_cents": 10000,
+            "market_share_ppm": 250000,
+            "potential_demand_orders": 0,
+            "sales_orders": 0,
+            "attempted_unfulfilled_orders": 0,
+            "orders_received_from_redistribution": 0,
+            "orders_lost_after_redistribution": 0
+          },
+          "operations": {
+            "base_capacity_orders": 3500,
+            "effective_capacity_orders": 3500,
+            "financial_capacity_orders": 2147483647,
+            "capacity_utilization_ppm": 0,
+            "base_unit_cost_cents": 6000,
+            "actual_unit_cost_cents": 6000
+          },
+          "brand": {
+            "brand_awareness_ppm": 350000,
+            "service_quality_ppm": 550000,
+            "reputation_ppm": 500000,
+            "last_attempted_unfulfilled_rate_ppm": 0
+          },
+          "risk": {
+            "resilience_ppm": 150000,
+            "active_incident": null
+          },
+          "history": {
+            "last_action_id": null,
+            "last_action": null,
+            "recent_profit_cents": [],
+            "recent_market_share_ppm": []
+          }
+        },
+        "company_B": {
+          "company_id": "company_B",
+          "persona": "none",
+          "financial": {
+            "cash_balance_cents": 30000000,
+            "round_revenue_cents": 0,
+            "round_variable_cost_cents": 0,
+            "round_fixed_spend_cents": 0,
+            "round_incident_cost_cents": 0,
+            "round_operating_cost_cents": 0,
+            "round_profit_cents": 0,
+            "cumulative_profit_cents": 0,
+            "capacity_book_value_cents": 0
+          },
+          "commercial": {
+            "price_cents": 10000,
+            "market_share_ppm": 250000,
+            "potential_demand_orders": 0,
+            "sales_orders": 0,
+            "attempted_unfulfilled_orders": 0,
+            "orders_received_from_redistribution": 0,
+            "orders_lost_after_redistribution": 0
+          },
+          "operations": {
+            "base_capacity_orders": 3500,
+            "effective_capacity_orders": 3500,
+            "financial_capacity_orders": 2147483647,
+            "capacity_utilization_ppm": 0,
+            "base_unit_cost_cents": 6000,
+            "actual_unit_cost_cents": 6000
+          },
+          "brand": {
+            "brand_awareness_ppm": 350000,
+            "service_quality_ppm": 550000,
+            "reputation_ppm": 500000,
+            "last_attempted_unfulfilled_rate_ppm": 0
+          },
+          "risk": {
+            "resilience_ppm": 150000,
+            "active_incident": null
+          },
+          "history": {
+            "last_action_id": null,
+            "last_action": null,
+            "recent_profit_cents": [],
+            "recent_market_share_ppm": []
+          }
+        },
+        "company_C": {
+          "company_id": "company_C",
+          "persona": "none",
+          "financial": {
+            "cash_balance_cents": 30000000,
+            "round_revenue_cents": 0,
+            "round_variable_cost_cents": 0,
+            "round_fixed_spend_cents": 0,
+            "round_incident_cost_cents": 0,
+            "round_operating_cost_cents": 0,
+            "round_profit_cents": 0,
+            "cumulative_profit_cents": 0,
+            "capacity_book_value_cents": 0
+          },
+          "commercial": {
+            "price_cents": 10000,
+            "market_share_ppm": 250000,
+            "potential_demand_orders": 0,
+            "sales_orders": 0,
+            "attempted_unfulfilled_orders": 0,
+            "orders_received_from_redistribution": 0,
+            "orders_lost_after_redistribution": 0
+          },
+          "operations": {
+            "base_capacity_orders": 3500,
+            "effective_capacity_orders": 3500,
+            "financial_capacity_orders": 2147483647,
+            "capacity_utilization_ppm": 0,
+            "base_unit_cost_cents": 6000,
+            "actual_unit_cost_cents": 6000
+          },
+          "brand": {
+            "brand_awareness_ppm": 350000,
+            "service_quality_ppm": 550000,
+            "reputation_ppm": 500000,
+            "last_attempted_unfulfilled_rate_ppm": 0
+          },
+          "risk": {
+            "resilience_ppm": 150000,
+            "active_incident": null
+          },
+          "history": {
+            "last_action_id": null,
+            "last_action": null,
+            "recent_profit_cents": [],
+            "recent_market_share_ppm": []
+          }
+        },
+        "company_D": {
+          "company_id": "company_D",
+          "persona": "none",
+          "financial": {
+            "cash_balance_cents": 30000000,
+            "round_revenue_cents": 0,
+            "round_variable_cost_cents": 0,
+            "round_fixed_spend_cents": 0,
+            "round_incident_cost_cents": 0,
+            "round_operating_cost_cents": 0,
+            "round_profit_cents": 0,
+            "cumulative_profit_cents": 0,
+            "capacity_book_value_cents": 0
+          },
+          "commercial": {
+            "price_cents": 10000,
+            "market_share_ppm": 250000,
+            "potential_demand_orders": 0,
+            "sales_orders": 0,
+            "attempted_unfulfilled_orders": 0,
+            "orders_received_from_redistribution": 0,
+            "orders_lost_after_redistribution": 0
+          },
+          "operations": {
+            "base_capacity_orders": 3500,
+            "effective_capacity_orders": 3500,
+            "financial_capacity_orders": 2147483647,
+            "capacity_utilization_ppm": 0,
+            "base_unit_cost_cents": 6000,
+            "actual_unit_cost_cents": 6000
+          },
+          "brand": {
+            "brand_awareness_ppm": 350000,
+            "service_quality_ppm": 550000,
+            "reputation_ppm": 500000,
+            "last_attempted_unfulfilled_rate_ppm": 0
+          },
+          "risk": {
+            "resilience_ppm": 150000,
+            "active_incident": null
+          },
+          "history": {
+            "last_action_id": null,
+            "last_action": null,
+            "recent_profit_cents": [],
+            "recent_market_share_ppm": []
+          }
+        }
+      },
+      "last_joint_action": {},
+      "terminal_enterprise_values_cents": {},
+      "state_hash": "sha256:a4ae3cc07e482abdcf5a31ce44c4ecf3ea15522b2e15804c8077a6b5e4cc9796",
+      "strategic_market": {
+        "protocol_version": "strategic-market-v1.0.0",
+        "company_lifecycle": [
+          {
+            "company_id": "company_A",
+            "status": "operating",
+            "distress_streak": 0,
+            "first_distress_round": null,
+            "exit_round": null,
+            "exit_reason": null
+          },
+          {
+            "company_id": "company_B",
+            "status": "operating",
+            "distress_streak": 0,
+            "first_distress_round": null,
+            "exit_round": null,
+            "exit_reason": null
+          },
+          {
+            "company_id": "company_C",
+            "status": "operating",
+            "distress_streak": 0,
+            "first_distress_round": null,
+            "exit_round": null,
+            "exit_reason": null
+          },
+          {
+            "company_id": "company_D",
+            "status": "operating",
+            "distress_streak": 0,
+            "first_distress_round": null,
+            "exit_round": null,
+            "exit_reason": null
+          }
+        ],
+        "active_company_count": 4,
+        "hhi_ppm": 250000,
+        "concentration_regime": "competitive",
+        "dominant_company_id": "company_A",
+        "dominant_share_ppm": 250000,
+        "predatory_pricing_company_ids": [],
+        "price_war_intensity_ppm": 0,
+        "market_power_markup_ppm": 0,
+        "regulatory_pressure_ppm": 0,
+        "consumer_surplus_proxy_cents": 0,
+        "producer_welfare_cents": 0,
+        "social_welfare_proxy_cents": 0,
+        "cumulative_consumer_surplus_proxy_cents": 0,
+        "cumulative_producer_welfare_cents": 0,
+        "cumulative_social_welfare_proxy_cents": 0
+      },
+      "supply_chain": {
+        "protocol_version": "supply-chain-v3.0.0",
+        "supplier_order": [
+          "economy_supplier",
+          "resilient_supplier"
+        ],
+        "suppliers": {
+          "economy_supplier": {
+            "supplier_id": "economy_supplier",
+            "label": "低价波动型供应商",
+            "unit_price_cents": 1800,
+            "unit_cost_cents": 1400,
+            "base_capacity_orders": 11000,
+            "available_capacity_orders": 11000,
+            "reliability_ppm": 780000,
+            "disrupted": false,
+            "round_sales_orders": 0,
+            "round_profit_cents": 0,
+            "cumulative_profit_cents": 0,
+            "strategic_ledger": {
+              "audit": null,
+              "bankrupt": false,
+              "contracts": [],
+              "cumulative_lender_profit_cents": 0,
+              "debt_cents": 0,
+              "debt_due_round": 0,
+              "inventory_orders": 0,
+              "lender_cash_cents": 5000000,
+              "version": "supplier-contract-inventory-credit-v1.0.0"
+            },
+            "round_requested_orders": 0,
+            "account": {
+              "opening_cash_cents": 20000000,
+              "cash_cents": 20000000,
+              "receipts_cents": 0,
+              "production_cost_cents": 0,
+              "settlement_price_cents": 0
+            }
+          },
+          "resilient_supplier": {
+            "supplier_id": "resilient_supplier",
+            "label": "稳健保障型供应商",
+            "unit_price_cents": 2400,
+            "unit_cost_cents": 1700,
+            "base_capacity_orders": 11000,
+            "available_capacity_orders": 11000,
+            "reliability_ppm": 960000,
+            "disrupted": false,
+            "round_sales_orders": 0,
+            "round_profit_cents": 0,
+            "cumulative_profit_cents": 0,
+            "strategic_ledger": {
+              "audit": null,
+              "bankrupt": false,
+              "contracts": [],
+              "cumulative_lender_profit_cents": 0,
+              "debt_cents": 0,
+              "debt_due_round": 0,
+              "inventory_orders": 0,
+              "lender_cash_cents": 5000000,
+              "version": "supplier-contract-inventory-credit-v1.0.0"
+            },
+            "round_requested_orders": 0,
+            "account": {
+              "opening_cash_cents": 20000000,
+              "cash_cents": 20000000,
+              "receipts_cents": 0,
+              "production_cost_cents": 0,
+              "settlement_price_cents": 0
+            }
+          }
+        },
+        "last_procurement_outcomes": {},
+        "round_upstream_producer_surplus_cents": 0,
+        "cumulative_upstream_producer_surplus_cents": 0
+      },
+      "welfare_accounting": {
+        "protocol_version": "welfare-accounting-v2.0.0",
+        "valuation_source": "explicit_synthetic_wtp_cohorts_v1",
+        "round_consumer_surplus_cents": 0,
+        "round_downstream_producer_surplus_cents": 0,
+        "round_upstream_producer_surplus_cents": 0,
+        "round_government_fine_revenue_cents": 0,
+        "round_government_enforcement_cost_cents": 0,
+        "round_government_net_budget_cents": 0,
+        "round_stockout_externality_cents": 0,
+        "round_business_exit_externality_cents": 0,
+        "round_total_economic_welfare_cents": 0,
+        "round_service_continuity_orders": 0,
+        "round_voluntary_no_purchase_orders": 0,
+        "cumulative_consumer_surplus_cents": 0,
+        "cumulative_downstream_producer_surplus_cents": 0,
+        "cumulative_upstream_producer_surplus_cents": 0,
+        "cumulative_government_net_budget_cents": 0,
+        "cumulative_externality_cost_cents": 0,
+        "cumulative_total_economic_welfare_cents": 0
+      },
+      "government": {
+        "cash_cents": 50000000,
+        "cumulative_net_cents": 0,
+        "round_fines_cents": 0,
+        "last_decision": null
+      },
+      "consumer_decisions": []
+    },
+    "initial_state_hash": "sha256:a4ae3cc07e482abdcf5a31ce44c4ecf3ea15522b2e15804c8077a6b5e4cc9796"
+  },
+  "transition": {
+    "event_id": "theory-real-common-340101:round-01",
+    "step_id": "theory-real-common-340101:1:0",
+    "settled_round": 1,
+    "state_before_hash": "sha256:a4ae3cc07e482abdcf5a31ce44c4ecf3ea15522b2e15804c8077a6b5e4cc9796",
+    "state_before": {
+      "episode_id": "theory-real-common-340101",
+      "episode_seed": 340101,
+      "round": 1,
+      "rounds_remaining": 10,
+      "state_version": 0,
+      "terminal": false,
+      "max_rounds": 10,
+      "market": {
+        "base_demand_orders": 12000,
+        "realized_demand_orders": 0,
+        "no_purchase_orders": 0,
+        "lost_after_stockout_orders": 0,
+        "market_sentiment_ppm": 1000000,
+        "base_supply_cost_index_ppm": 1000000,
+        "actual_supply_cost_index_ppm": 1000000,
+        "average_paid_price_cents": 0,
+        "market_model_id": "value_oriented",
+        "market_model_label": "价格敏感市场",
+        "market_model_description": "消费者更关注价格，整体需求略高，但高价更难维持份额。",
+        "demand_bias_ppm": 1037649,
+        "price_anchor_cents": 10209,
+        "price_band_cents": 900,
+        "utility_price_multiplier_ppm": 1450000,
+        "utility_awareness_multiplier_ppm": 700000,
+        "utility_service_multiplier_ppm": 700000,
+        "utility_reputation_multiplier_ppm": 650000,
+        "utility_prior_stockout_multiplier_ppm": 900000
+      },
+      "consumer_segments": {
+        "brand_sensitive": 220000,
+        "price_sensitive": 600000,
+        "service_sensitive": 180000
+      },
+      "risk_signals": [],
+      "active_market_events": [],
+      "company_order": [
+        "company_A",
+        "company_B",
+        "company_C",
+        "company_D"
+      ],
+      "companies": {
+        "company_A": {
+          "company_id": "company_A",
+          "persona": "none",
+          "financial": {
+            "cash_balance_cents": 30000000,
+            "round_revenue_cents": 0,
+            "round_variable_cost_cents": 0,
+            "round_fixed_spend_cents": 0,
+            "round_incident_cost_cents": 0,
+            "round_operating_cost_cents": 0,
+            "round_profit_cents": 0,
+            "cumulative_profit_cents": 0,
+            "capacity_book_value_cents": 0
+          },
+          "commercial": {
+            "price_cents": 10000,
+            "market_share_ppm": 250000,
+            "potential_demand_orders": 0,
+            "sales_orders": 0,
+            "attempted_unfulfilled_orders": 0,
+            "orders_received_from_redistribution": 0,
+            "orders_lost_after_redistribution": 0
+          },
+          "operations": {
+            "base_capacity_orders": 3500,
+            "effective_capacity_orders": 3500,
+            "financial_capacity_orders": 2147483647,
+            "capacity_utilization_ppm": 0,
+            "base_unit_cost_cents": 6000,
+            "actual_unit_cost_cents": 6000
+          },
+          "brand": {
+            "brand_awareness_ppm": 350000,
+            "service_quality_ppm": 550000,
+            "reputation_ppm": 500000,
+            "last_attempted_unfulfilled_rate_ppm": 0
+          },
+          "risk": {
+            "resilience_ppm": 150000,
+            "active_incident": null
+          },
+          "history": {
+            "last_action_id": null,
+            "last_action": null,
+            "recent_profit_cents": [],
+            "recent_market_share_ppm": []
+          }
+        },
+        "company_B": {
+          "company_id": "company_B",
+          "persona": "none",
+          "financial": {
+            "cash_balance_cents": 30000000,
+            "round_revenue_cents": 0,
+            "round_variable_cost_cents": 0,
+            "round_fixed_spend_cents": 0,
+            "round_incident_cost_cents": 0,
+            "round_operating_cost_cents": 0,
+            "round_profit_cents": 0,
+            "cumulative_profit_cents": 0,
+            "capacity_book_value_cents": 0
+          },
+          "commercial": {
+            "price_cents": 10000,
+            "market_share_ppm": 250000,
+            "potential_demand_orders": 0,
+            "sales_orders": 0,
+            "attempted_unfulfilled_orders": 0,
+            "orders_received_from_redistribution": 0,
+            "orders_lost_after_redistribution": 0
+          },
+          "operations": {
+            "base_capacity_orders": 3500,
+            "effective_capacity_orders": 3500,
+            "financial_capacity_orders": 2147483647,
+            "capacity_utilization_ppm": 0,
+            "base_unit_cost_cents": 6000,
+            "actual_unit_cost_cents": 6000
+          },
+          "brand": {
+            "brand_awareness_ppm": 350000,
+            "service_quality_ppm": 550000,
+            "reputation_ppm": 500000,
+            "last_attempted_unfulfilled_rate_ppm": 0
+          },
+          "risk": {
+            "resilience_ppm": 150000,
+            "active_incident": null
+          },
+          "history": {
+            "last_action_id": null,
+            "last_action": null,
+            "recent_profit_cents": [],
+            "recent_market_share_ppm": []
+          }
+        },
+        "company_C": {
+          "company_id": "company_C",
+          "persona": "none",
+          "financial": {
+            "cash_balance_cents": 30000000,
+            "round_revenue_cents": 0,
+            "round_variable_cost_cents": 0,
+            "round_fixed_spend_cents": 0,
+            "round_incident_cost_cents": 0,
+            "round_operating_cost_cents": 0,
+            "round_profit_cents": 0,
+            "cumulative_profit_cents": 0,
+            "capacity_book_value_cents": 0
+          },
+          "commercial": {
+            "price_cents": 10000,
+            "market_share_ppm": 250000,
+            "potential_demand_orders": 0,
+            "sales_orders": 0,
+            "attempted_unfulfilled_orders": 0,
+            "orders_received_from_redistribution": 0,
+            "orders_lost_after_redistribution": 0
+          },
+          "operations": {
+            "base_capacity_orders": 3500,
+            "effective_capacity_orders": 3500,
+            "financial_capacity_orders": 2147483647,
+            "capacity_utilization_ppm": 0,
+            "base_unit_cost_cents": 6000,
+            "actual_unit_cost_cents": 6000
+          },
+          "brand": {
+            "brand_awareness_ppm": 350000,
+            "service_quality_ppm": 550000,
+            "reputation_ppm": 500000,
+            "last_attempted_unfulfilled_rate_ppm": 0
+          },
+          "risk": {
+            "resilience_ppm": 150000,
+            "active_incident": null
+          },
+          "history": {
+            "last_action_id": null,
+            "last_action": null,
+            "recent_profit_cents": [],
+            "recent_market_share_ppm": []
+          }
+        },
+        "company_D": {
+          "company_id": "company_D",
+          "persona": "none",
+          "financial": {
+            "cash_balance_cents": 30000000,
+            "round_revenue_cents": 0,
+            "round_variable_cost_cents": 0,
+            "round_fixed_spend_cents": 0,
+            "round_incident_cost_cents": 0,
+            "round_operating_cost_cents": 0,
+            "round_profit_cents": 0,
+            "cumulative_profit_cents": 0,
+            "capacity_book_value_cents": 0
+          },
+          "commercial": {
+            "price_cents": 10000,
+            "market_share_ppm": 250000,
+            "potential_demand_orders": 0,
+            "sales_orders": 0,
+            "attempted_unfulfilled_orders": 0,
+            "orders_received_from_redistribution": 0,
+            "orders_lost_after_redistribution": 0
+          },
+          "operations": {
+            "base_capacity_orders": 3500,
+            "effective_capacity_orders": 3500,
+            "financial_capacity_orders": 2147483647,
+            "capacity_utilization_ppm": 0,
+            "base_unit_cost_cents": 6000,
+            "actual_unit_cost_cents": 6000
+          },
+          "brand": {
+            "brand_awareness_ppm": 350000,
+            "service_quality_ppm": 550000,
+            "reputation_ppm": 500000,
+            "last_attempted_unfulfilled_rate_ppm": 0
+          },
+          "risk": {
+            "resilience_ppm": 150000,
+            "active_incident": null
+          },
+          "history": {
+            "last_action_id": null,
+            "last_action": null,
+            "recent_profit_cents": [],
+            "recent_market_share_ppm": []
+          }
+        }
+      },
+      "last_joint_action": {},
+      "terminal_enterprise_values_cents": {},
+      "state_hash": "sha256:a4ae3cc07e482abdcf5a31ce44c4ecf3ea15522b2e15804c8077a6b5e4cc9796",
+      "strategic_market": {
+        "protocol_version": "strategic-market-v1.0.0",
+        "company_lifecycle": [
+          {
+            "company_id": "company_A",
+            "status": "operating",
+            "distress_streak": 0,
+            "first_distress_round": null,
+            "exit_round": null,
+            "exit_reason": null
+          },
+          {
+            "company_id": "company_B",
+            "status": "operating",
+            "distress_streak": 0,
+            "first_distress_round": null,
+            "exit_round": null,
+            "exit_reason": null
+          },
+          {
+            "company_id": "company_C",
+            "status": "operating",
+            "distress_streak": 0,
+            "first_distress_round": null,
+            "exit_round": null,
+            "exit_reason": null
+          },
+          {
+            "company_id": "company_D",
+            "status": "operating",
+            "distress_streak": 0,
+            "first_distress_round": null,
+            "exit_round": null,
+            "exit_reason": null
+          }
+        ],
+        "active_company_count": 4,
+        "hhi_ppm": 250000,
+        "concentration_regime": "competitive",
+        "dominant_company_id": "company_A",
+        "dominant_share_ppm": 250000,
+        "predatory_pricing_company_ids": [],
+        "price_war_intensity_ppm": 0,
+        "market_power_markup_ppm": 0,
+        "regulatory_pressure_ppm": 0,
+        "consumer_surplus_proxy_cents": 0,
+        "producer_welfare_cents": 0,
+        "social_welfare_proxy_cents": 0,
+        "cumulative_consumer_surplus_proxy_cents": 0,
+        "cumulative_producer_welfare_cents": 0,
+        "cumulative_social_welfare_proxy_cents": 0
+      },
+      "supply_chain": {
+        "protocol_version": "supply-chain-v3.0.0",
+        "supplier_order": [
+          "economy_supplier",
+          "resilient_supplier"
+        ],
+        "suppliers": {
+          "economy_supplier": {
+            "supplier_id": "economy_supplier",
+            "label": "低价波动型供应商",
+            "unit_price_cents": 1800,
+            "unit_cost_cents": 1400,
+            "base_capacity_orders": 11000,
+            "available_capacity_orders": 11000,
+            "reliability_ppm": 780000,
+            "disrupted": false,
+            "round_sales_orders": 0,
+            "round_profit_cents": 0,
+            "cumulative_profit_cents": 0,
+            "strategic_ledger": {
+              "audit": null,
+              "bankrupt": false,
+              "contracts": [],
+              "cumulative_lender_profit_cents": 0,
+              "debt_cents": 0,
+              "debt_due_round": 0,
+              "inventory_orders": 0,
+              "lender_cash_cents": 5000000,
+              "version": "supplier-contract-inventory-credit-v1.0.0"
+            },
+            "round_requested_orders": 0,
+            "account": {
+              "opening_cash_cents": 20000000,
+              "cash_cents": 20000000,
+              "receipts_cents": 0,
+              "production_cost_cents": 0,
+              "settlement_price_cents": 0
+            }
+          },
+          "resilient_supplier": {
+            "supplier_id": "resilient_supplier",
+            "label": "稳健保障型供应商",
+            "unit_price_cents": 2400,
+            "unit_cost_cents": 1700,
+            "base_capacity_orders": 11000,
+            "available_capacity_orders": 11000,
+            "reliability_ppm": 960000,
+            "disrupted": false,
+            "round_sales_orders": 0,
+            "round_profit_cents": 0,
+            "cumulative_profit_cents": 0,
+            "strategic_ledger": {
+              "audit": null,
+              "bankrupt": false,
+              "contracts": [],
+              "cumulative_lender_profit_cents": 0,
+              "debt_cents": 0,
+              "debt_due_round": 0,
+              "inventory_orders": 0,
+              "lender_cash_cents": 5000000,
+              "version": "supplier-contract-inventory-credit-v1.0.0"
+            },
+            "round_requested_orders": 0,
+            "account": {
+              "opening_cash_cents": 20000000,
+              "cash_cents": 20000000,
+              "receipts_cents": 0,
+              "production_cost_cents": 0,
+              "settlement_price_cents": 0
+            }
+          }
+        },
+        "last_procurement_outcomes": {},
+        "round_upstream_producer_surplus_cents": 0,
+        "cumulative_upstream_producer_surplus_cents": 0
+      },
+      "welfare_accounting": {
+        "protocol_version": "welfare-accounting-v2.0.0",
+        "valuation_source": "explicit_synthetic_wtp_cohorts_v1",
+        "round_consumer_surplus_cents": 0,
+        "round_downstream_producer_surplus_cents": 0,
+        "round_upstream_producer_surplus_cents": 0,
+        "round_government_fine_revenue_cents": 0,
+        "round_government_enforcement_cost_cents": 0,
+        "round_government_net_budget_cents": 0,
+        "round_stockout_externality_cents": 0,
+        "round_business_exit_externality_cents": 0,
+        "round_total_economic_welfare_cents": 0,
+        "round_service_continuity_orders": 0,
+        "round_voluntary_no_purchase_orders": 0,
+        "cumulative_consumer_surplus_cents": 0,
+        "cumulative_downstream_producer_surplus_cents": 0,
+        "cumulative_upstream_producer_surplus_cents": 0,
+        "cumulative_government_net_budget_cents": 0,
+        "cumulative_externality_cost_cents": 0,
+        "cumulative_total_economic_welfare_cents": 0
+      },
+      "government": {
+        "cash_cents": 50000000,
+        "cumulative_net_cents": 0,
+        "round_fines_cents": 0,
+        "last_decision": null
+      },
+      "consumer_decisions": []
+    },
+    "final_actions": {
+      "company_A": {
+        "action_id": "portfolio:1:company_A:value",
+        "episode_id": "theory-real-common-340101",
+        "agent_id": "company_A",
+        "round": 1,
+        "state_version": 0,
+        "price_cents": 9031,
+        "advertising_budget_cents": 939067,
+        "service_budget_cents": 725643,
+        "capacity_investment_cents": 0,
+        "resilience_budget_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "strategy_summary": "rule-opponent:value: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=8678250",
+        "primary_supplier_id": "economy_supplier",
+        "backup_supplier_id": "resilient_supplier",
+        "primary_supplier_share_ppm": 750000,
+        "contract_quantity_orders": 2625,
+        "contract_duration_rounds": 3,
+        "contract_bid_cents": 1746,
+        "procurement_quantity_orders": 3500
+      },
+      "company_B": {
+        "action_id": "portfolio:1:company_B:balanced",
+        "episode_id": "theory-real-common-340101",
+        "agent_id": "company_B",
+        "round": 1,
+        "state_version": 0,
+        "price_cents": 9957,
+        "advertising_budget_cents": 612393,
+        "service_budget_cents": 831105,
+        "capacity_investment_cents": 0,
+        "resilience_budget_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "strategy_summary": "rule-opponent:cautious: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=10253250",
+        "primary_supplier_id": "economy_supplier",
+        "backup_supplier_id": "resilient_supplier",
+        "primary_supplier_share_ppm": 750000,
+        "contract_quantity_orders": 2625,
+        "contract_duration_rounds": 3,
+        "contract_bid_cents": 1746,
+        "procurement_quantity_orders": 3500
+      },
+      "company_C": {
+        "action_id": "portfolio:1:company_C:balanced",
+        "episode_id": "theory-real-common-340101",
+        "agent_id": "company_C",
+        "round": 1,
+        "state_version": 0,
+        "price_cents": 9707,
+        "advertising_budget_cents": 1224361,
+        "service_budget_cents": 1035997,
+        "capacity_investment_cents": 0,
+        "resilience_budget_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "strategy_summary": "rule-opponent:growth: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=9378250",
+        "primary_supplier_id": "economy_supplier",
+        "backup_supplier_id": "resilient_supplier",
+        "primary_supplier_share_ppm": 750000,
+        "contract_quantity_orders": 2625,
+        "contract_duration_rounds": 3,
+        "contract_bid_cents": 1746,
+        "procurement_quantity_orders": 3500
+      },
+      "company_D": {
+        "action_id": "portfolio:1:company_D:balanced",
+        "episode_id": "theory-real-common-340101",
+        "agent_id": "company_D",
+        "round": 1,
+        "state_version": 0,
+        "price_cents": 10107,
+        "advertising_budget_cents": 646728,
+        "service_budget_cents": 877702,
+        "capacity_investment_cents": 0,
+        "resilience_budget_cents": 0,
+        "incident_response": {
+          "mode": "wait",
+          "repair_budget_cents": 0
+        },
+        "strategy_summary": "rule-opponent:cautious: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=10778250",
+        "primary_supplier_id": "economy_supplier",
+        "backup_supplier_id": "resilient_supplier",
+        "primary_supplier_share_ppm": 750000,
+        "contract_quantity_orders": 2625,
+        "contract_duration_rounds": 3,
+        "contract_bid_cents": 1746,
+        "procurement_quantity_orders": 3500
+      }
+    },
+    "joint_action_hash": "sha256:1be9e389ba2c704e9f5eab37753b1dd839870cc07d5bd9e6ff223af5d4b248cf",
+    "random_draw_summary": {
+      "consumer_utility_noise:company_A|brand_sensitive::budget:0": 16640570311044935693,
+      "consumer_utility_noise:company_A|brand_sensitive::core:0": 5121061702940832153,
+      "consumer_utility_noise:company_A|brand_sensitive::premium:0": 8201569671074024283,
+      "consumer_utility_noise:company_A|brand_sensitive::tail:0": 17914969016372312665,
+      "consumer_utility_noise:company_A|brand_sensitive::upper:0": 13154180634827377970,
+      "consumer_utility_noise:company_A|price_sensitive::budget:0": 3618141809742428608,
+      "consumer_utility_noise:company_A|price_sensitive::core:0": 7408976810606472336,
+      "consumer_utility_noise:company_A|price_sensitive::premium:0": 6214841134649306352,
+      "consumer_utility_noise:company_A|price_sensitive::tail:0": 8120006510646623044,
+      "consumer_utility_noise:company_A|price_sensitive::upper:0": 2255189504855807601,
+      "consumer_utility_noise:company_A|service_sensitive::budget:0": 2234298199395422221,
+      "consumer_utility_noise:company_A|service_sensitive::core:0": 7273057838930944613,
+      "consumer_utility_noise:company_A|service_sensitive::premium:0": 8078370628586705234,
+      "consumer_utility_noise:company_A|service_sensitive::tail:0": 5669006927779143659,
+      "consumer_utility_noise:company_A|service_sensitive::upper:0": 10368767031049107858,
+      "consumer_utility_noise:company_B|brand_sensitive::budget:0": 9815820966085942335,
+      "consumer_utility_noise:company_B|brand_sensitive::core:0": 1206908607120617334,
+      "consumer_utility_noise:company_B|brand_sensitive::premium:0": 7601557422546387287,
+      "consumer_utility_noise:company_B|brand_sensitive::tail:0": 5924797509118620559,
+      "consumer_utility_noise:company_B|brand_sensitive::upper:0": 17261674326624838443,
+      "consumer_utility_noise:company_B|price_sensitive::budget:0": 6078236540258590171,
+      "consumer_utility_noise:company_B|price_sensitive::core:0": 10297430506149781499,
+      "consumer_utility_noise:company_B|price_sensitive::premium:0": 5883656573967015565,
+      "consumer_utility_noise:company_B|price_sensitive::tail:0": 15158955593707370478,
+      "consumer_utility_noise:company_B|price_sensitive::upper:0": 15193238881687986299,
+      "consumer_utility_noise:company_B|service_sensitive::budget:0": 7870464794144690351,
+      "consumer_utility_noise:company_B|service_sensitive::core:0": 13171792956311695895,
+      "consumer_utility_noise:company_B|service_sensitive::premium:0": 6217895912583769124,
+      "consumer_utility_noise:company_B|service_sensitive::tail:0": 9547221063466005174,
+      "consumer_utility_noise:company_B|service_sensitive::upper:0": 13364974485859831297,
+      "consumer_utility_noise:company_C|brand_sensitive::budget:0": 17011812302420334873,
+      "consumer_utility_noise:company_C|brand_sensitive::core:0": 1232892269352394405,
+      "consumer_utility_noise:company_C|brand_sensitive::premium:0": 3532917763683914786,
+      "consumer_utility_noise:company_C|brand_sensitive::tail:0": 1886588292178814472,
+      "consumer_utility_noise:company_C|brand_sensitive::upper:0": 18305023334249858310,
+      "consumer_utility_noise:company_C|price_sensitive::budget:0": 6567375598846469670,
+      "consumer_utility_noise:company_C|price_sensitive::core:0": 9300109574880332363,
+      "consumer_utility_noise:company_C|price_sensitive::premium:0": 898031265776233367,
+      "consumer_utility_noise:company_C|price_sensitive::tail:0": 13046719659727024670,
+      "consumer_utility_noise:company_C|price_sensitive::upper:0": 5892393346208583450,
+      "consumer_utility_noise:company_C|service_sensitive::budget:0": 18429998003048314524,
+      "consumer_utility_noise:company_C|service_sensitive::core:0": 2337709116304174241,
+      "consumer_utility_noise:company_C|service_sensitive::premium:0": 12324545700149289408,
+      "consumer_utility_noise:company_C|service_sensitive::tail:0": 1230219060741395767,
+      "consumer_utility_noise:company_C|service_sensitive::upper:0": 3779516476235664149,
+      "consumer_utility_noise:company_D|brand_sensitive::budget:0": 8753260077178016955,
+      "consumer_utility_noise:company_D|brand_sensitive::core:0": 4085211690200218306,
+      "consumer_utility_noise:company_D|brand_sensitive::premium:0": 2286005284918956246,
+      "consumer_utility_noise:company_D|brand_sensitive::tail:0": 14800268117348917815,
+      "consumer_utility_noise:company_D|brand_sensitive::upper:0": 17731966462153033164,
+      "consumer_utility_noise:company_D|price_sensitive::budget:0": 1323077753502544739,
+      "consumer_utility_noise:company_D|price_sensitive::core:0": 7184460334826487002,
+      "consumer_utility_noise:company_D|price_sensitive::premium:0": 10005543741920582869,
+      "consumer_utility_noise:company_D|price_sensitive::tail:0": 7136775943056789104,
+      "consumer_utility_noise:company_D|price_sensitive::upper:0": 3166260083701872986,
+      "consumer_utility_noise:company_D|service_sensitive::budget:0": 16383121917869204260,
+      "consumer_utility_noise:company_D|service_sensitive::core:0": 7080829589769813196,
+      "consumer_utility_noise:company_D|service_sensitive::premium:0": 1074428704977734776,
+      "consumer_utility_noise:company_D|service_sensitive::tail:0": 5751589175285381273,
+      "consumer_utility_noise:company_D|service_sensitive::upper:0": 15533994867685901579,
+      "demand_noise::0": 11891336620927419162,
+      "incident_generation:company_A:0": 5115056618493585920,
+      "incident_generation:company_B:0": 2191893568429597875,
+      "incident_generation:company_C:0": 1479583641606306816,
+      "incident_generation:company_D:0": 7306437751590671856,
+      "operational_capacity_noise:company_A:0": 5821022305091602996,
+      "operational_capacity_noise:company_B:0": 10510561196269174324,
+      "operational_capacity_noise:company_C:0": 17812584040137349949,
+      "operational_capacity_noise:company_D:0": 4913486452333515680,
+      "risk_signal_generation:extreme_weather:0": 6828095423002075058,
+      "risk_signal_generation:festival_demand_surge:0": 11209320882226461387,
+      "risk_signal_generation:regional_logistics_disruption:0": 61559274592928444,
+      "risk_signal_generation:supply_chain_shock:0": 2390775073953473349,
+      "sentiment_noise::0": 15732307399623116102,
+      "supplier_disruption:economy_supplier:0": 238486625242171249,
+      "supplier_disruption:resilient_supplier:0": 5901960433039004089,
+      "supply_cost_noise::0": 7517440135906786506
+    },
+    "step_result": {
+      "step_id": "theory-real-common-340101:1:0",
+      "settled_round": 1,
+      "state_before_hash": "sha256:a4ae3cc07e482abdcf5a31ce44c4ecf3ea15522b2e15804c8077a6b5e4cc9796",
+      "state_after_hash": "sha256:bb1e380f5c0aa43a15e6081fe008f3fef3ed17575e2cc2d1aae7b9787f768e8e",
+      "state_after": {
+        "episode_id": "theory-real-common-340101",
+        "episode_seed": 340101,
+        "round": 2,
+        "rounds_remaining": 9,
+        "state_version": 1,
+        "terminal": false,
+        "max_rounds": 10,
+        "market": {
+          "base_demand_orders": 12000,
+          "realized_demand_orders": 12111,
+          "no_purchase_orders": 1511,
+          "lost_after_stockout_orders": 44,
+          "market_sentiment_ppm": 1023996,
+          "base_supply_cost_index_ppm": 980576,
+          "actual_supply_cost_index_ppm": 980576,
+          "average_paid_price_cents": 9617,
+          "market_model_id": "value_oriented",
+          "market_model_label": "价格敏感市场",
+          "market_model_description": "消费者更关注价格，整体需求略高，但高价更难维持份额。",
+          "demand_bias_ppm": 1037649,
+          "price_anchor_cents": 10209,
+          "price_band_cents": 900,
+          "utility_price_multiplier_ppm": 1450000,
+          "utility_awareness_multiplier_ppm": 700000,
+          "utility_service_multiplier_ppm": 700000,
+          "utility_reputation_multiplier_ppm": 650000,
+          "utility_prior_stockout_multiplier_ppm": 900000
+        },
+        "consumer_segments": {
+          "brand_sensitive": 220000,
+          "price_sensitive": 600000,
+          "service_sensitive": 180000
+        },
+        "risk_signals": [],
+        "active_market_events": [],
+        "company_order": [
+          "company_A",
+          "company_B",
+          "company_C",
+          "company_D"
+        ],
+        "companies": {
+          "company_A": {
+            "company_id": "company_A",
+            "persona": "none",
+            "financial": {
+              "cash_balance_cents": 32914708,
+              "round_revenue_cents": 31409818,
+              "round_variable_cost_cents": 19156800,
+              "round_fixed_spend_cents": 1664710,
+              "round_incident_cost_cents": 0,
+              "round_operating_cost_cents": 7673600,
+              "round_profit_cents": 2914708,
+              "cumulative_profit_cents": 2914708,
+              "capacity_book_value_cents": 0,
+              "round_material_payment_cents": 6636000,
+              "round_government_support_cents": 0
+            },
+            "commercial": {
+              "price_cents": 9031,
+              "market_share_ppm": 329481,
+              "potential_demand_orders": 3852,
+              "sales_orders": 3478,
+              "attempted_unfulfilled_orders": 374,
+              "orders_received_from_redistribution": 0,
+              "orders_lost_after_redistribution": 44
+            },
+            "operations": {
+              "base_capacity_orders": 3482,
+              "effective_capacity_orders": 3478,
+              "financial_capacity_orders": 2147483647,
+              "capacity_utilization_ppm": 1000000,
+              "base_unit_cost_cents": 6000,
+              "actual_unit_cost_cents": 3600,
+              "procurement_requested_orders": 3500,
+              "procurement_fulfilled_orders": 3500,
+              "procurement_unit_input_price_cents": 1896
+            },
+            "brand": {
+              "brand_awareness_ppm": 417996,
+              "service_quality_ppm": 584004,
+              "reputation_ppm": 515517,
+              "last_attempted_unfulfilled_rate_ppm": 97092
+            },
+            "risk": {
+              "resilience_ppm": 139500,
+              "active_incident": null
+            },
+            "history": {
+              "last_action_id": "portfolio:1:company_A:value",
+              "last_action": {
+                "action_id": "portfolio:1:company_A:value",
+                "episode_id": "theory-real-common-340101",
+                "agent_id": "company_A",
+                "round": 1,
+                "state_version": 0,
+                "price_cents": 9031,
+                "advertising_budget_cents": 939067,
+                "service_budget_cents": 725643,
+                "capacity_investment_cents": 0,
+                "resilience_budget_cents": 0,
+                "incident_response": {
+                  "mode": "wait",
+                  "repair_budget_cents": 0
+                },
+                "strategy_summary": "rule-opponent:value: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=8678250",
+                "primary_supplier_id": "economy_supplier",
+                "backup_supplier_id": "resilient_supplier",
+                "primary_supplier_share_ppm": 750000,
+                "contract_quantity_orders": 2625,
+                "contract_duration_rounds": 3,
+                "contract_bid_cents": 1746,
+                "procurement_quantity_orders": 3500
+              },
+              "recent_profit_cents": [
+                2914708
+              ],
+              "recent_market_share_ppm": [
+                329481
+              ]
+            }
+          },
+          "company_B": {
+            "company_id": "company_B",
+            "persona": "none",
+            "financial": {
+              "cash_balance_cents": 29925769,
+              "round_revenue_cents": 22214067,
+              "round_variable_cost_cents": 14667600,
+              "round_fixed_spend_cents": 1443498,
+              "round_incident_cost_cents": 0,
+              "round_operating_cost_cents": 6177200,
+              "round_profit_cents": -74231,
+              "cumulative_profit_cents": -74231,
+              "capacity_book_value_cents": 0,
+              "round_material_payment_cents": 6636000,
+              "round_government_support_cents": 0
+            },
+            "commercial": {
+              "price_cents": 9957,
+              "market_share_ppm": 211349,
+              "potential_demand_orders": 2127,
+              "sales_orders": 2231,
+              "attempted_unfulfilled_orders": 0,
+              "orders_received_from_redistribution": 104,
+              "orders_lost_after_redistribution": 0
+            },
+            "operations": {
+              "base_capacity_orders": 3482,
+              "effective_capacity_orders": 3500,
+              "financial_capacity_orders": 2147483647,
+              "capacity_utilization_ppm": 637429,
+              "base_unit_cost_cents": 6000,
+              "actual_unit_cost_cents": 3600,
+              "procurement_requested_orders": 3500,
+              "procurement_fulfilled_orders": 3500,
+              "procurement_unit_input_price_cents": 1896
+            },
+            "brand": {
+              "brand_awareness_ppm": 393079,
+              "service_quality_ppm": 591466,
+              "reputation_ppm": 519326,
+              "last_attempted_unfulfilled_rate_ppm": 0
+            },
+            "risk": {
+              "resilience_ppm": 139500,
+              "active_incident": null
+            },
+            "history": {
+              "last_action_id": "portfolio:1:company_B:balanced",
+              "last_action": {
+                "action_id": "portfolio:1:company_B:balanced",
+                "episode_id": "theory-real-common-340101",
+                "agent_id": "company_B",
+                "round": 1,
+                "state_version": 0,
+                "price_cents": 9957,
+                "advertising_budget_cents": 612393,
+                "service_budget_cents": 831105,
+                "capacity_investment_cents": 0,
+                "resilience_budget_cents": 0,
+                "incident_response": {
+                  "mode": "wait",
+                  "repair_budget_cents": 0
+                },
+                "strategy_summary": "rule-opponent:cautious: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=10253250",
+                "primary_supplier_id": "economy_supplier",
+                "backup_supplier_id": "resilient_supplier",
+                "primary_supplier_share_ppm": 750000,
+                "contract_quantity_orders": 2625,
+                "contract_duration_rounds": 3,
+                "contract_bid_cents": 1746,
+                "procurement_quantity_orders": 3500
+              },
+              "recent_profit_cents": [
+                -74231
+              ],
+              "recent_market_share_ppm": [
+                211349
+              ]
+            }
+          },
+          "company_C": {
+            "company_id": "company_C",
+            "persona": "none",
+            "financial": {
+              "cash_balance_cents": 31039008,
+              "round_revenue_cents": 26577766,
+              "round_variable_cost_cents": 16492800,
+              "round_fixed_spend_cents": 2260358,
+              "round_incident_cost_cents": 0,
+              "round_operating_cost_cents": 6785600,
+              "round_profit_cents": 1039008,
+              "cumulative_profit_cents": 1039008,
+              "capacity_book_value_cents": 0,
+              "round_material_payment_cents": 6636000,
+              "round_government_support_cents": 0
+            },
+            "commercial": {
+              "price_cents": 9707,
+              "market_share_ppm": 259378,
+              "potential_demand_orders": 2609,
+              "sales_orders": 2738,
+              "attempted_unfulfilled_orders": 0,
+              "orders_received_from_redistribution": 129,
+              "orders_lost_after_redistribution": 0
+            },
+            "operations": {
+              "base_capacity_orders": 3482,
+              "effective_capacity_orders": 3500,
+              "financial_capacity_orders": 2147483647,
+              "capacity_utilization_ppm": 782286,
+              "base_unit_cost_cents": 6000,
+              "actual_unit_cost_cents": 3600,
+              "procurement_requested_orders": 3500,
+              "procurement_fulfilled_orders": 3500,
+              "procurement_unit_input_price_cents": 1896
+            },
+            "brand": {
+              "brand_awareness_ppm": 435353,
+              "service_quality_ppm": 604255,
+              "reputation_ppm": 520029,
+              "last_attempted_unfulfilled_rate_ppm": 0
+            },
+            "risk": {
+              "resilience_ppm": 139500,
+              "active_incident": null
+            },
+            "history": {
+              "last_action_id": "portfolio:1:company_C:balanced",
+              "last_action": {
+                "action_id": "portfolio:1:company_C:balanced",
+                "episode_id": "theory-real-common-340101",
+                "agent_id": "company_C",
+                "round": 1,
+                "state_version": 0,
+                "price_cents": 9707,
+                "advertising_budget_cents": 1224361,
+                "service_budget_cents": 1035997,
+                "capacity_investment_cents": 0,
+                "resilience_budget_cents": 0,
+                "incident_response": {
+                  "mode": "wait",
+                  "repair_budget_cents": 0
+                },
+                "strategy_summary": "rule-opponent:growth: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=9378250",
+                "primary_supplier_id": "economy_supplier",
+                "backup_supplier_id": "resilient_supplier",
+                "primary_supplier_share_ppm": 750000,
+                "contract_quantity_orders": 2625,
+                "contract_duration_rounds": 3,
+                "contract_bid_cents": 1746,
+                "procurement_quantity_orders": 3500
+              },
+              "recent_profit_cents": [
+                1039008
+              ],
+              "recent_market_share_ppm": [
+                259378
+              ]
+            }
+          },
+          "company_D": {
+            "company_id": "company_D",
+            "persona": "none",
+            "financial": {
+              "cash_balance_cents": 29532033,
+              "round_revenue_cents": 21315663,
+              "round_variable_cost_cents": 14228400,
+              "round_fixed_spend_cents": 1524430,
+              "round_incident_cost_cents": 0,
+              "round_operating_cost_cents": 6030800,
+              "round_profit_cents": -467967,
+              "cumulative_profit_cents": -467967,
+              "capacity_book_value_cents": 0,
+              "round_material_payment_cents": 6636000,
+              "round_government_support_cents": 0
+            },
+            "commercial": {
+              "price_cents": 10107,
+              "market_share_ppm": 199792,
+              "potential_demand_orders": 2012,
+              "sales_orders": 2109,
+              "attempted_unfulfilled_orders": 0,
+              "orders_received_from_redistribution": 97,
+              "orders_lost_after_redistribution": 0
+            },
+            "operations": {
+              "base_capacity_orders": 3482,
+              "effective_capacity_orders": 3500,
+              "financial_capacity_orders": 2147483647,
+              "capacity_utilization_ppm": 602571,
+              "base_unit_cost_cents": 6000,
+              "actual_unit_cost_cents": 3600,
+              "procurement_requested_orders": 3500,
+              "procurement_fulfilled_orders": 3500,
+              "procurement_unit_input_price_cents": 1896
+            },
+            "brand": {
+              "brand_awareness_ppm": 396011,
+              "service_quality_ppm": 594560,
+              "reputation_ppm": 519496,
+              "last_attempted_unfulfilled_rate_ppm": 0
+            },
+            "risk": {
+              "resilience_ppm": 139500,
+              "active_incident": null
+            },
+            "history": {
+              "last_action_id": "portfolio:1:company_D:balanced",
+              "last_action": {
+                "action_id": "portfolio:1:company_D:balanced",
+                "episode_id": "theory-real-common-340101",
+                "agent_id": "company_D",
+                "round": 1,
+                "state_version": 0,
+                "price_cents": 10107,
+                "advertising_budget_cents": 646728,
+                "service_budget_cents": 877702,
+                "capacity_investment_cents": 0,
+                "resilience_budget_cents": 0,
+                "incident_response": {
+                  "mode": "wait",
+                  "repair_budget_cents": 0
+                },
+                "strategy_summary": "rule-opponent:cautious: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=10778250",
+                "primary_supplier_id": "economy_supplier",
+                "backup_supplier_id": "resilient_supplier",
+                "primary_supplier_share_ppm": 750000,
+                "contract_quantity_orders": 2625,
+                "contract_duration_rounds": 3,
+                "contract_bid_cents": 1746,
+                "procurement_quantity_orders": 3500
+              },
+              "recent_profit_cents": [
+                -467967
+              ],
+              "recent_market_share_ppm": [
+                199792
+              ]
+            }
+          }
+        },
+        "last_joint_action": {
+          "company_A": {
+            "action_id": "portfolio:1:company_A:value",
+            "episode_id": "theory-real-common-340101",
+            "agent_id": "company_A",
+            "round": 1,
+            "state_version": 0,
+            "price_cents": 9031,
+            "advertising_budget_cents": 939067,
+            "service_budget_cents": 725643,
+            "capacity_investment_cents": 0,
+            "resilience_budget_cents": 0,
+            "incident_response": {
+              "mode": "wait",
+              "repair_budget_cents": 0
+            },
+            "strategy_summary": "rule-opponent:value: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=8678250",
+            "primary_supplier_id": "economy_supplier",
+            "backup_supplier_id": "resilient_supplier",
+            "primary_supplier_share_ppm": 750000,
+            "contract_quantity_orders": 2625,
+            "contract_duration_rounds": 3,
+            "contract_bid_cents": 1746,
+            "procurement_quantity_orders": 3500
+          },
+          "company_B": {
+            "action_id": "portfolio:1:company_B:balanced",
+            "episode_id": "theory-real-common-340101",
+            "agent_id": "company_B",
+            "round": 1,
+            "state_version": 0,
+            "price_cents": 9957,
+            "advertising_budget_cents": 612393,
+            "service_budget_cents": 831105,
+            "capacity_investment_cents": 0,
+            "resilience_budget_cents": 0,
+            "incident_response": {
+              "mode": "wait",
+              "repair_budget_cents": 0
+            },
+            "strategy_summary": "rule-opponent:cautious: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=10253250",
+            "primary_supplier_id": "economy_supplier",
+            "backup_supplier_id": "resilient_supplier",
+            "primary_supplier_share_ppm": 750000,
+            "contract_quantity_orders": 2625,
+            "contract_duration_rounds": 3,
+            "contract_bid_cents": 1746,
+            "procurement_quantity_orders": 3500
+          },
+          "company_C": {
+            "action_id": "portfolio:1:company_C:balanced",
+            "episode_id": "theory-real-common-340101",
+            "agent_id": "company_C",
+            "round": 1,
+            "state_version": 0,
+            "price_cents": 9707,
+            "advertising_budget_cents": 1224361,
+            "service_budget_cents": 1035997,
+            "capacity_investment_cents": 0,
+            "resilience_budget_cents": 0,
+            "incident_response": {
+              "mode": "wait",
+              "repair_budget_cents": 0
+            },
+            "strategy_summary": "rule-opponent:growth: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=9378250",
+            "primary_supplier_id": "economy_supplier",
+            "backup_supplier_id": "resilient_supplier",
+            "primary_supplier_share_ppm": 750000,
+            "contract_quantity_orders": 2625,
+            "contract_duration_rounds": 3,
+            "contract_bid_cents": 1746,
+            "procurement_quantity_orders": 3500
+          },
+          "company_D": {
+            "action_id": "portfolio:1:company_D:balanced",
+            "episode_id": "theory-real-common-340101",
+            "agent_id": "company_D",
+            "round": 1,
+            "state_version": 0,
+            "price_cents": 10107,
+            "advertising_budget_cents": 646728,
+            "service_budget_cents": 877702,
+            "capacity_investment_cents": 0,
+            "resilience_budget_cents": 0,
+            "incident_response": {
+              "mode": "wait",
+              "repair_budget_cents": 0
+            },
+            "strategy_summary": "rule-opponent:cautious: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=10778250",
+            "primary_supplier_id": "economy_supplier",
+            "backup_supplier_id": "resilient_supplier",
+            "primary_supplier_share_ppm": 750000,
+            "contract_quantity_orders": 2625,
+            "contract_duration_rounds": 3,
+            "contract_bid_cents": 1746,
+            "procurement_quantity_orders": 3500
+          }
+        },
+        "terminal_enterprise_values_cents": {},
+        "state_hash": "sha256:bb1e380f5c0aa43a15e6081fe008f3fef3ed17575e2cc2d1aae7b9787f768e8e",
+        "strategic_market": {
+          "protocol_version": "strategic-market-v1.0.0",
+          "company_lifecycle": [
+            {
+              "company_id": "company_A",
+              "status": "operating",
+              "distress_streak": 0,
+              "first_distress_round": null,
+              "exit_round": null,
+              "exit_reason": null
+            },
+            {
+              "company_id": "company_B",
+              "status": "operating",
+              "distress_streak": 0,
+              "first_distress_round": null,
+              "exit_round": null,
+              "exit_reason": null
+            },
+            {
+              "company_id": "company_C",
+              "status": "operating",
+              "distress_streak": 0,
+              "first_distress_round": null,
+              "exit_round": null,
+              "exit_reason": null
+            },
+            {
+              "company_id": "company_D",
+              "status": "operating",
+              "distress_streak": 0,
+              "first_distress_round": null,
+              "exit_round": null,
+              "exit_reason": null
+            }
+          ],
+          "active_company_count": 4,
+          "hhi_ppm": 260420,
+          "concentration_regime": "competitive",
+          "dominant_company_id": "company_A",
+          "dominant_share_ppm": 329481,
+          "predatory_pricing_company_ids": [],
+          "price_war_intensity_ppm": 0,
+          "market_power_markup_ppm": 0,
+          "regulatory_pressure_ppm": 0,
+          "consumer_surplus_proxy_cents": 6248890,
+          "producer_welfare_cents": 3411518,
+          "social_welfare_proxy_cents": 9550408,
+          "cumulative_consumer_surplus_proxy_cents": 6248890,
+          "cumulative_producer_welfare_cents": 3411518,
+          "cumulative_social_welfare_proxy_cents": 9550408
+        },
+        "supply_chain": {
+          "protocol_version": "supply-chain-v3.0.0",
+          "supplier_order": [
+            "economy_supplier",
+            "resilient_supplier"
+          ],
+          "suppliers": {
+            "economy_supplier": {
+              "supplier_id": "economy_supplier",
+              "label": "低价波动型供应商",
+              "unit_price_cents": 1890,
+              "unit_cost_cents": 1400,
+              "base_capacity_orders": 11000,
+              "available_capacity_orders": 11000,
+              "reliability_ppm": 780000,
+              "disrupted": false,
+              "round_sales_orders": 10500,
+              "round_profit_cents": 3344000,
+              "cumulative_profit_cents": 3344000,
+              "strategic_ledger": {
+                "audit": {
+                  "borrowed_cents": 0,
+                  "contract_outcomes": [
+                    {
+                      "buyer_shortfall": false,
+                      "company_id": "company_A",
+                      "delivered_orders": 2625,
+                      "requested_orders": 2625,
+                      "reserved_orders": 2625,
+                      "supplier_shortfall_orders": 0
+                    },
+                    {
+                      "buyer_shortfall": false,
+                      "company_id": "company_B",
+                      "delivered_orders": 2625,
+                      "requested_orders": 2625,
+                      "reserved_orders": 2625,
+                      "supplier_shortfall_orders": 0
+                    },
+                    {
+                      "buyer_shortfall": false,
+                      "company_id": "company_C",
+                      "delivered_orders": 2625,
+                      "requested_orders": 2625,
+                      "reserved_orders": 2625,
+                      "supplier_shortfall_orders": 0
+                    },
+                    {
+                      "buyer_shortfall": false,
+                      "company_id": "company_D",
+                      "delivered_orders": 2625,
+                      "requested_orders": 2625,
+                      "reserved_orders": 2625,
+                      "supplier_shortfall_orders": 0
+                    }
+                  ],
+                  "defaulted_cents": 0,
+                  "hash": "sha256:ad2d87c55cedf7b0e4b44341b49f4e36f9e0ee782d1390611ed753d559213281",
+                  "interest_cents": 0,
+                  "lender_profit_cents": 0,
+                  "liquidated_orders": 0,
+                  "liquidation_loss_cents": 0,
+                  "liquidation_receipts_cents": 0,
+                  "negotiations": [
+                    {
+                      "accepted": true,
+                      "agreed_unit_price_cents": 1728,
+                      "bid_cents": 1746,
+                      "company_id": "company_A",
+                      "counter_offer_cents": 1710,
+                      "quantity_orders": 2625
+                    },
+                    {
+                      "accepted": true,
+                      "agreed_unit_price_cents": 1728,
+                      "bid_cents": 1746,
+                      "company_id": "company_B",
+                      "counter_offer_cents": 1710,
+                      "quantity_orders": 2625
+                    },
+                    {
+                      "accepted": true,
+                      "agreed_unit_price_cents": 1728,
+                      "bid_cents": 1746,
+                      "company_id": "company_C",
+                      "counter_offer_cents": 1710,
+                      "quantity_orders": 2625
+                    },
+                    {
+                      "accepted": true,
+                      "agreed_unit_price_cents": 1728,
+                      "bid_cents": 1746,
+                      "company_id": "company_D",
+                      "counter_offer_cents": 1710,
+                      "quantity_orders": 2625
+                    }
+                  ],
+                  "opening_cash_cents": 20000000,
+                  "opening_debt_cents": 0,
+                  "opening_inventory_orders": 0,
+                  "opening_lender_cash_cents": 5000000,
+                  "option": "balanced",
+                  "overhead_cents": 100000,
+                  "policy": "reserve_inventory_improve_reliability_bounded_credit",
+                  "produced_orders": 10500,
+                  "production_capacity_orders": 11000,
+                  "production_cost_cents": 14700000,
+                  "receipts_cents": 18144000,
+                  "reliability_gain_ppm": 0,
+                  "reliability_spend_cents": 0,
+                  "repaid_cents": 0,
+                  "round": 1,
+                  "settlement_prices_cents": {
+                    "company_A": 1728,
+                    "company_B": 1728,
+                    "company_C": 1728,
+                    "company_D": 1728
+                  },
+                  "sold_orders": 10500,
+                  "spoilage_orders": 0,
+                  "unit_cost_cents": 1400
+                },
+                "bankrupt": false,
+                "contracts": [
+                  {
+                    "company_id": "company_A",
+                    "end_round": 3,
+                    "quantity_orders": 2625,
+                    "start_round": 1,
+                    "terms": "prepaid_priority_reservation_v1",
+                    "unit_price_cents": 1728
+                  },
+                  {
+                    "company_id": "company_B",
+                    "end_round": 3,
+                    "quantity_orders": 2625,
+                    "start_round": 1,
+                    "terms": "prepaid_priority_reservation_v1",
+                    "unit_price_cents": 1728
+                  },
+                  {
+                    "company_id": "company_C",
+                    "end_round": 3,
+                    "quantity_orders": 2625,
+                    "start_round": 1,
+                    "terms": "prepaid_priority_reservation_v1",
+                    "unit_price_cents": 1728
+                  },
+                  {
+                    "company_id": "company_D",
+                    "end_round": 3,
+                    "quantity_orders": 2625,
+                    "start_round": 1,
+                    "terms": "prepaid_priority_reservation_v1",
+                    "unit_price_cents": 1728
+                  }
+                ],
+                "cumulative_lender_profit_cents": 0,
+                "debt_cents": 0,
+                "debt_due_round": 0,
+                "inventory_orders": 0,
+                "lender_cash_cents": 5000000,
+                "version": "supplier-contract-inventory-credit-v1.0.0"
+              },
+              "round_requested_orders": 10500,
+              "investment_decision": {
+                "observed_round": 1,
+                "applies_round": 2,
+                "observed_sales_orders": 10500,
+                "observed_capacity_orders": 11000,
+                "observed_cash_cents": 23344000,
+                "previous_base_capacity_orders": 11000,
+                "added_capacity_orders": 0,
+                "investment_cents": 0,
+                "reason": "no_excess_orders",
+                "policy_version": "demand-payback-investment-v1.0.0",
+                "observed_requested_orders": 10500,
+                "observed_unit_margin_cents": 400,
+                "remaining_rounds": 9
+              },
+              "account": {
+                "opening_cash_cents": 20000000,
+                "cash_cents": 23344000,
+                "receipts_cents": 18144000,
+                "production_cost_cents": 14700000,
+                "settlement_price_cents": 1800,
+                "investment_cents": 0
+              },
+              "last_settled_unit_price_cents": 1800,
+              "quote_decision": {
+                "policy_version": "bounded-utilization-pricing-v1.0.0",
+                "observed_round": 1,
+                "applies_round": 2,
+                "previous_price_cents": 1800,
+                "quoted_price_cents": 1890,
+                "observed_sales_orders": 10500,
+                "observed_capacity_orders": 11000,
+                "utilization_ppm": 954545,
+                "reason": "high_utilization"
+              }
+            },
+            "resilient_supplier": {
+              "supplier_id": "resilient_supplier",
+              "label": "稳健保障型供应商",
+              "unit_price_cents": 2280,
+              "unit_cost_cents": 1700,
+              "base_capacity_orders": 11000,
+              "available_capacity_orders": 11000,
+              "reliability_ppm": 960000,
+              "disrupted": false,
+              "round_sales_orders": 3500,
+              "round_profit_cents": 2350000,
+              "cumulative_profit_cents": 2350000,
+              "strategic_ledger": {
+                "audit": {
+                  "borrowed_cents": 0,
+                  "contract_outcomes": [],
+                  "defaulted_cents": 0,
+                  "hash": "sha256:3ce32065391628eeb7a2743b7c2ac94ec822c6bec31aaee65a4039f5430780aa",
+                  "interest_cents": 0,
+                  "lender_profit_cents": 0,
+                  "liquidated_orders": 0,
+                  "liquidation_loss_cents": 0,
+                  "liquidation_receipts_cents": 0,
+                  "negotiations": [],
+                  "opening_cash_cents": 20000000,
+                  "opening_debt_cents": 0,
+                  "opening_inventory_orders": 0,
+                  "opening_lender_cash_cents": 5000000,
+                  "option": "balanced",
+                  "overhead_cents": 100000,
+                  "policy": "reserve_inventory_improve_reliability_bounded_credit",
+                  "produced_orders": 3500,
+                  "production_capacity_orders": 11000,
+                  "production_cost_cents": 5950000,
+                  "receipts_cents": 8400000,
+                  "reliability_gain_ppm": 0,
+                  "reliability_spend_cents": 0,
+                  "repaid_cents": 0,
+                  "round": 1,
+                  "settlement_prices_cents": {
+                    "company_A": 2400,
+                    "company_B": 2400,
+                    "company_C": 2400,
+                    "company_D": 2400
+                  },
+                  "sold_orders": 3500,
+                  "spoilage_orders": 0,
+                  "unit_cost_cents": 1700
+                },
+                "bankrupt": false,
+                "contracts": [],
+                "cumulative_lender_profit_cents": 0,
+                "debt_cents": 0,
+                "debt_due_round": 0,
+                "inventory_orders": 0,
+                "lender_cash_cents": 5000000,
+                "version": "supplier-contract-inventory-credit-v1.0.0"
+              },
+              "round_requested_orders": 3500,
+              "investment_decision": {
+                "observed_round": 1,
+                "applies_round": 2,
+                "observed_sales_orders": 3500,
+                "observed_capacity_orders": 11000,
+                "observed_cash_cents": 22350000,
+                "previous_base_capacity_orders": 11000,
+                "added_capacity_orders": 0,
+                "investment_cents": 0,
+                "reason": "preserve_capacity",
+                "policy_version": "demand-payback-investment-v1.0.0",
+                "observed_requested_orders": 3500,
+                "observed_unit_margin_cents": 700,
+                "remaining_rounds": 9
+              },
+              "account": {
+                "opening_cash_cents": 20000000,
+                "cash_cents": 22350000,
+                "receipts_cents": 8400000,
+                "production_cost_cents": 5950000,
+                "settlement_price_cents": 2400,
+                "investment_cents": 0
+              },
+              "last_settled_unit_price_cents": 2400,
+              "quote_decision": {
+                "policy_version": "bounded-utilization-pricing-v1.0.0",
+                "observed_round": 1,
+                "applies_round": 2,
+                "previous_price_cents": 2400,
+                "quoted_price_cents": 2280,
+                "observed_sales_orders": 3500,
+                "observed_capacity_orders": 11000,
+                "utilization_ppm": 318181,
+                "reason": "low_utilization"
+              }
+            }
+          },
+          "last_procurement_outcomes": {
+            "company_A": {
+              "company_id": "company_A",
+              "material": {
+                "budget_cents": 24835290,
+                "payment_cents": 6636000,
+                "payments_by_supplier": {
+                  "economy_supplier": 4536000,
+                  "resilient_supplier": 2100000
+                },
+                "used_orders": 3478,
+                "wasted_orders": 22
+              },
+              "primary_supplier_id": "economy_supplier",
+              "backup_supplier_id": "resilient_supplier",
+              "primary_supplier_share_ppm": 750000,
+              "requested_orders": 3500,
+              "fulfilled_orders": 3500,
+              "unfulfilled_orders": 0,
+              "weighted_unit_input_price_cents": 1896,
+              "supplier_allocation_orders": {
+                "economy_supplier": 2625,
+                "resilient_supplier": 875
+              }
+            },
+            "company_B": {
+              "company_id": "company_B",
+              "material": {
+                "budget_cents": 25056502,
+                "payment_cents": 6636000,
+                "payments_by_supplier": {
+                  "economy_supplier": 4536000,
+                  "resilient_supplier": 2100000
+                },
+                "used_orders": 2231,
+                "wasted_orders": 1269
+              },
+              "primary_supplier_id": "economy_supplier",
+              "backup_supplier_id": "resilient_supplier",
+              "primary_supplier_share_ppm": 750000,
+              "requested_orders": 3500,
+              "fulfilled_orders": 3500,
+              "unfulfilled_orders": 0,
+              "weighted_unit_input_price_cents": 1896,
+              "supplier_allocation_orders": {
+                "economy_supplier": 2625,
+                "resilient_supplier": 875
+              }
+            },
+            "company_C": {
+              "company_id": "company_C",
+              "material": {
+                "budget_cents": 24239642,
+                "payment_cents": 6636000,
+                "payments_by_supplier": {
+                  "economy_supplier": 4536000,
+                  "resilient_supplier": 2100000
+                },
+                "used_orders": 2738,
+                "wasted_orders": 762
+              },
+              "primary_supplier_id": "economy_supplier",
+              "backup_supplier_id": "resilient_supplier",
+              "primary_supplier_share_ppm": 750000,
+              "requested_orders": 3500,
+              "fulfilled_orders": 3500,
+              "unfulfilled_orders": 0,
+              "weighted_unit_input_price_cents": 1896,
+              "supplier_allocation_orders": {
+                "economy_supplier": 2625,
+                "resilient_supplier": 875
+              }
+            },
+            "company_D": {
+              "company_id": "company_D",
+              "material": {
+                "budget_cents": 24975570,
+                "payment_cents": 6636000,
+                "payments_by_supplier": {
+                  "economy_supplier": 4536000,
+                  "resilient_supplier": 2100000
+                },
+                "used_orders": 2109,
+                "wasted_orders": 1391
+              },
+              "primary_supplier_id": "economy_supplier",
+              "backup_supplier_id": "resilient_supplier",
+              "primary_supplier_share_ppm": 750000,
+              "requested_orders": 3500,
+              "fulfilled_orders": 3500,
+              "unfulfilled_orders": 0,
+              "weighted_unit_input_price_cents": 1896,
+              "supplier_allocation_orders": {
+                "economy_supplier": 2625,
+                "resilient_supplier": 875
+              }
+            }
+          },
+          "round_upstream_producer_surplus_cents": 5694000,
+          "cumulative_upstream_producer_surplus_cents": 5694000
+        },
+        "welfare_accounting": {
+          "protocol_version": "welfare-accounting-v2.0.0",
+          "valuation_source": "explicit_synthetic_wtp_cohorts_v1",
+          "round_consumer_surplus_cents": 44568290,
+          "round_downstream_producer_surplus_cents": 3411518,
+          "round_upstream_producer_surplus_cents": 5694000,
+          "round_government_fine_revenue_cents": 0,
+          "round_government_enforcement_cost_cents": 0,
+          "round_government_net_budget_cents": 0,
+          "round_stockout_externality_cents": 110000,
+          "round_business_exit_externality_cents": 0,
+          "round_total_economic_welfare_cents": 53563808,
+          "round_service_continuity_orders": 10556,
+          "round_voluntary_no_purchase_orders": 1511,
+          "cumulative_consumer_surplus_cents": 44568290,
+          "cumulative_downstream_producer_surplus_cents": 3411518,
+          "cumulative_upstream_producer_surplus_cents": 5694000,
+          "cumulative_government_net_budget_cents": 0,
+          "cumulative_externality_cost_cents": 110000,
+          "cumulative_total_economic_welfare_cents": 53563808
+        },
+        "government": {
+          "cash_cents": 50000000,
+          "cumulative_net_cents": 0,
+          "round_fines_cents": 0,
+          "last_decision": {
+            "observed_round": 0,
+            "applies_round": 1,
+            "opening_cash_cents": 50000000,
+            "observed_stockout_orders": 0,
+            "observed_demand_orders": 0,
+            "observed_hhi_ppm": 250000,
+            "active_company_ids": [
+              "company_A",
+              "company_B",
+              "company_C",
+              "company_D"
+            ],
+            "inspection_cases": 0,
+            "inspection_cost_cents": 0,
+            "detection_boost_ppm": 0,
+            "support_by_company_cents": {
+              "company_A": 0,
+              "company_B": 0,
+              "company_C": 0,
+              "company_D": 0
+            },
+            "reason": "reserve",
+            "policy_version": "budgeted-policy-learning-v1",
+            "strategic_policy": "{\"consumer_budget_cents\":0,\"consumer_contract\":\"post_purchase_rebate_no_intrinsic_valuation_change\",\"fine_multiplier_ppm\":1000000,\"grant_contract\":\"reimburse_verified_current_resilience_expense\",\"observed_resilience\":{\"company_A\":150000,\"company_B\":150000,\"company_C\":150000,\"company_D\":150000},\"opening_memory\":{},\"option\":\"reserve\",\"rebate_share_ppm\":50000,\"remaining_rounds\":10,\"selection\":\"ucb_public_welfare\",\"version\":\"budgeted-policy-learning-v1\"}"
+          },
+          "policy_memory": "{\"counts\":{\"reserve\":1},\"last_reward_cents\":53563808,\"means\":{\"reserve\":0.3488048954868324},\"observations\":1}",
+          "round_consumer_rebate_cents": 0,
+          "round_matched_support_cents": 0
+        },
+        "consumer_decisions": [
+          {
+            "group_id": "brand_sensitive::budget",
+            "settled_round": 1,
+            "demand_orders": 133,
+            "unit_budget_cents": 9709,
+            "voluntary_no_purchase_orders": 24,
+            "stockout_orders": 2,
+            "purchases_by_company": {
+              "company_A": 54,
+              "company_B": 0,
+              "company_C": 53,
+              "company_D": 0
+            },
+            "posted_prices_cents": {
+              "company_A": 9031,
+              "company_B": 9957,
+              "company_C": 9707,
+              "company_D": 10107
+            },
+            "spending_cents": 1002145,
+            "refund_cents": 0,
+            "policy_version": "budget-constrained-logit-v1.0.0",
+            "government_rebate_cents": 0
+          },
+          {
+            "group_id": "brand_sensitive::core",
+            "settled_round": 1,
+            "demand_orders": 533,
+            "unit_budget_cents": 11709,
+            "voluntary_no_purchase_orders": 43,
+            "stockout_orders": 2,
+            "purchases_by_company": {
+              "company_A": 144,
+              "company_B": 107,
+              "company_C": 132,
+              "company_D": 105
+            },
+            "posted_prices_cents": {
+              "company_A": 9031,
+              "company_B": 9957,
+              "company_C": 9707,
+              "company_D": 10107
+            },
+            "spending_cents": 4708422,
+            "refund_cents": 0,
+            "policy_version": "budget-constrained-logit-v1.0.0",
+            "government_rebate_cents": 0
+          },
+          {
+            "group_id": "brand_sensitive::premium",
+            "settled_round": 1,
+            "demand_orders": 666,
+            "unit_budget_cents": 16209,
+            "voluntary_no_purchase_orders": 26,
+            "stockout_orders": 1,
+            "purchases_by_company": {
+              "company_A": 179,
+              "company_B": 145,
+              "company_C": 178,
+              "company_D": 137
+            },
+            "posted_prices_cents": {
+              "company_A": 9031,
+              "company_B": 9957,
+              "company_C": 9707,
+              "company_D": 10107
+            },
+            "spending_cents": 6172819,
+            "refund_cents": 0,
+            "policy_version": "budget-constrained-logit-v1.0.0",
+            "government_rebate_cents": 0
+          },
+          {
+            "group_id": "brand_sensitive::tail",
+            "settled_round": 1,
+            "demand_orders": 400,
+            "unit_budget_cents": 19209,
+            "voluntary_no_purchase_orders": 10,
+            "stockout_orders": 0,
+            "purchases_by_company": {
+              "company_A": 112,
+              "company_B": 88,
+              "company_C": 105,
+              "company_D": 85
+            },
+            "posted_prices_cents": {
+              "company_A": 9031,
+              "company_B": 9957,
+              "company_C": 9707,
+              "company_D": 10107
+            },
+            "spending_cents": 3766018,
+            "refund_cents": 0,
+            "policy_version": "budget-constrained-logit-v1.0.0",
+            "government_rebate_cents": 0
+          },
+          {
+            "group_id": "brand_sensitive::upper",
+            "settled_round": 1,
+            "demand_orders": 932,
+            "unit_budget_cents": 13709,
+            "voluntary_no_purchase_orders": 56,
+            "stockout_orders": 2,
+            "purchases_by_company": {
+              "company_A": 257,
+              "company_B": 197,
+              "company_C": 236,
+              "company_D": 184
+            },
+            "posted_prices_cents": {
+              "company_A": 9031,
+              "company_B": 9957,
+              "company_C": 9707,
+              "company_D": 10107
+            },
+            "spending_cents": 8433036,
+            "refund_cents": 0,
+            "policy_version": "budget-constrained-logit-v1.0.0",
+            "government_rebate_cents": 0
+          },
+          {
+            "group_id": "price_sensitive::budget",
+            "settled_round": 1,
+            "demand_orders": 727,
+            "unit_budget_cents": 8709,
+            "voluntary_no_purchase_orders": 727,
+            "stockout_orders": 0,
+            "purchases_by_company": {
+              "company_A": 0,
+              "company_B": 0,
+              "company_C": 0,
+              "company_D": 0
+            },
+            "posted_prices_cents": {
+              "company_A": 9031,
+              "company_B": 9957,
+              "company_C": 9707,
+              "company_D": 10107
+            },
+            "spending_cents": 0,
+            "refund_cents": 0,
+            "policy_version": "budget-constrained-logit-v1.0.0",
+            "government_rebate_cents": 0
+          },
+          {
+            "group_id": "price_sensitive::core",
+            "settled_round": 1,
+            "demand_orders": 2180,
+            "unit_budget_cents": 11209,
+            "voluntary_no_purchase_orders": 251,
+            "stockout_orders": 12,
+            "purchases_by_company": {
+              "company_A": 660,
+              "company_B": 397,
+              "company_C": 492,
+              "company_D": 368
+            },
+            "posted_prices_cents": {
+              "company_A": 9031,
+              "company_B": 9957,
+              "company_C": 9707,
+              "company_D": 10107
+            },
+            "spending_cents": 18408609,
+            "refund_cents": 0,
+            "policy_version": "budget-constrained-logit-v1.0.0",
+            "government_rebate_cents": 0
+          },
+          {
+            "group_id": "price_sensitive::premium",
+            "settled_round": 1,
+            "demand_orders": 1308,
+            "unit_budget_cents": 15409,
+            "voluntary_no_purchase_orders": 43,
+            "stockout_orders": 3,
+            "purchases_by_company": {
+              "company_A": 444,
+              "company_B": 261,
+              "company_C": 322,
+              "company_D": 235
+            },
+            "posted_prices_cents": {
+              "company_A": 9031,
+              "company_B": 9957,
+              "company_C": 9707,
+              "company_D": 10107
+            },
+            "spending_cents": 12109340,
+            "refund_cents": 0,
+            "policy_version": "budget-constrained-logit-v1.0.0",
+            "government_rebate_cents": 0
+          },
+          {
+            "group_id": "price_sensitive::tail",
+            "settled_round": 1,
+            "demand_orders": 509,
+            "unit_budget_cents": 18709,
+            "voluntary_no_purchase_orders": 6,
+            "stockout_orders": 0,
+            "purchases_by_company": {
+              "company_A": 175,
+              "company_B": 103,
+              "company_C": 126,
+              "company_D": 99
+            },
+            "posted_prices_cents": {
+              "company_A": 9031,
+              "company_B": 9957,
+              "company_C": 9707,
+              "company_D": 10107
+            },
+            "spending_cents": 4829671,
+            "refund_cents": 0,
+            "policy_version": "budget-constrained-logit-v1.0.0",
+            "government_rebate_cents": 0
+          },
+          {
+            "group_id": "price_sensitive::upper",
+            "settled_round": 1,
+            "demand_orders": 2543,
+            "unit_budget_cents": 12709,
+            "voluntary_no_purchase_orders": 184,
+            "stockout_orders": 10,
+            "purchases_by_company": {
+              "company_A": 837,
+              "company_B": 475,
+              "company_C": 585,
+              "company_D": 452
+            },
+            "posted_prices_cents": {
+              "company_A": 9031,
+              "company_B": 9957,
+              "company_C": 9707,
+              "company_D": 10107
+            },
+            "spending_cents": 22535481,
+            "refund_cents": 0,
+            "policy_version": "budget-constrained-logit-v1.0.0",
+            "government_rebate_cents": 0
+          },
+          {
+            "group_id": "service_sensitive::budget",
+            "settled_round": 1,
+            "demand_orders": 109,
+            "unit_budget_cents": 9509,
+            "voluntary_no_purchase_orders": 29,
+            "stockout_orders": 8,
+            "purchases_by_company": {
+              "company_A": 72,
+              "company_B": 0,
+              "company_C": 0,
+              "company_D": 0
+            },
+            "posted_prices_cents": {
+              "company_A": 9031,
+              "company_B": 9957,
+              "company_C": 9707,
+              "company_D": 10107
+            },
+            "spending_cents": 650232,
+            "refund_cents": 0,
+            "policy_version": "budget-constrained-logit-v1.0.0",
+            "government_rebate_cents": 0
+          },
+          {
+            "group_id": "service_sensitive::core",
+            "settled_round": 1,
+            "demand_orders": 436,
+            "unit_budget_cents": 11409,
+            "voluntary_no_purchase_orders": 34,
+            "stockout_orders": 1,
+            "purchases_by_company": {
+              "company_A": 112,
+              "company_B": 90,
+              "company_C": 105,
+              "company_D": 94
+            },
+            "posted_prices_cents": {
+              "company_A": 9031,
+              "company_B": 9957,
+              "company_C": 9707,
+              "company_D": 10107
+            },
+            "spending_cents": 3876895,
+            "refund_cents": 0,
+            "policy_version": "budget-constrained-logit-v1.0.0",
+            "government_rebate_cents": 0
+          },
+          {
+            "group_id": "service_sensitive::premium",
+            "settled_round": 1,
+            "demand_orders": 545,
+            "unit_budget_cents": 16009,
+            "voluntary_no_purchase_orders": 23,
+            "stockout_orders": 1,
+            "purchases_by_company": {
+              "company_A": 142,
+              "company_B": 123,
+              "company_C": 136,
+              "company_D": 120
+            },
+            "posted_prices_cents": {
+              "company_A": 9031,
+              "company_B": 9957,
+              "company_C": 9707,
+              "company_D": 10107
+            },
+            "spending_cents": 5040105,
+            "refund_cents": 0,
+            "policy_version": "budget-constrained-logit-v1.0.0",
+            "government_rebate_cents": 0
+          },
+          {
+            "group_id": "service_sensitive::tail",
+            "settled_round": 1,
+            "demand_orders": 327,
+            "unit_budget_cents": 19009,
+            "voluntary_no_purchase_orders": 9,
+            "stockout_orders": 0,
+            "purchases_by_company": {
+              "company_A": 89,
+              "company_B": 74,
+              "company_C": 83,
+              "company_D": 72
+            },
+            "posted_prices_cents": {
+              "company_A": 9031,
+              "company_B": 9957,
+              "company_C": 9707,
+              "company_D": 10107
+            },
+            "spending_cents": 3073962,
+            "refund_cents": 0,
+            "policy_version": "budget-constrained-logit-v1.0.0",
+            "government_rebate_cents": 0
+          },
+          {
+            "group_id": "service_sensitive::upper",
+            "settled_round": 1,
+            "demand_orders": 763,
+            "unit_budget_cents": 13509,
+            "voluntary_no_purchase_orders": 46,
+            "stockout_orders": 2,
+            "purchases_by_company": {
+              "company_A": 201,
+              "company_B": 171,
+              "company_C": 185,
+              "company_D": 158
+            },
+            "posted_prices_cents": {
+              "company_A": 9031,
+              "company_B": 9957,
+              "company_C": 9707,
+              "company_D": 10107
+            },
+            "spending_cents": 6910579,
+            "refund_cents": 0,
+            "policy_version": "budget-constrained-logit-v1.0.0",
+            "government_rebate_cents": 0
+          }
+        ]
+      },
+      "joint_action_hash": "sha256:1be9e389ba2c704e9f5eab37753b1dd839870cc07d5bd9e6ff223af5d4b248cf",
+      "random_draw_summary": {
+        "consumer_utility_noise:company_A|brand_sensitive::budget:0": 16640570311044935693,
+        "consumer_utility_noise:company_A|brand_sensitive::core:0": 5121061702940832153,
+        "consumer_utility_noise:company_A|brand_sensitive::premium:0": 8201569671074024283,
+        "consumer_utility_noise:company_A|brand_sensitive::tail:0": 17914969016372312665,
+        "consumer_utility_noise:company_A|brand_sensitive::upper:0": 13154180634827377970,
+        "consumer_utility_noise:company_A|price_sensitive::budget:0": 3618141809742428608,
+        "consumer_utility_noise:company_A|price_sensitive::core:0": 7408976810606472336,
+        "consumer_utility_noise:company_A|price_sensitive::premium:0": 6214841134649306352,
+        "consumer_utility_noise:company_A|price_sensitive::tail:0": 8120006510646623044,
+        "consumer_utility_noise:company_A|price_sensitive::upper:0": 2255189504855807601,
+        "consumer_utility_noise:company_A|service_sensitive::budget:0": 2234298199395422221,
+        "consumer_utility_noise:company_A|service_sensitive::core:0": 7273057838930944613,
+        "consumer_utility_noise:company_A|service_sensitive::premium:0": 8078370628586705234,
+        "consumer_utility_noise:company_A|service_sensitive::tail:0": 5669006927779143659,
+        "consumer_utility_noise:company_A|service_sensitive::upper:0": 10368767031049107858,
+        "consumer_utility_noise:company_B|brand_sensitive::budget:0": 9815820966085942335,
+        "consumer_utility_noise:company_B|brand_sensitive::core:0": 1206908607120617334,
+        "consumer_utility_noise:company_B|brand_sensitive::premium:0": 7601557422546387287,
+        "consumer_utility_noise:company_B|brand_sensitive::tail:0": 5924797509118620559,
+        "consumer_utility_noise:company_B|brand_sensitive::upper:0": 17261674326624838443,
+        "consumer_utility_noise:company_B|price_sensitive::budget:0": 6078236540258590171,
+        "consumer_utility_noise:company_B|price_sensitive::core:0": 10297430506149781499,
+        "consumer_utility_noise:company_B|price_sensitive::premium:0": 5883656573967015565,
+        "consumer_utility_noise:company_B|price_sensitive::tail:0": 15158955593707370478,
+        "consumer_utility_noise:company_B|price_sensitive::upper:0": 15193238881687986299,
+        "consumer_utility_noise:company_B|service_sensitive::budget:0": 7870464794144690351,
+        "consumer_utility_noise:company_B|service_sensitive::core:0": 13171792956311695895,
+        "consumer_utility_noise:company_B|service_sensitive::premium:0": 6217895912583769124,
+        "consumer_utility_noise:company_B|service_sensitive::tail:0": 9547221063466005174,
+        "consumer_utility_noise:company_B|service_sensitive::upper:0": 13364974485859831297,
+        "consumer_utility_noise:company_C|brand_sensitive::budget:0": 17011812302420334873,
+        "consumer_utility_noise:company_C|brand_sensitive::core:0": 1232892269352394405,
+        "consumer_utility_noise:company_C|brand_sensitive::premium:0": 3532917763683914786,
+        "consumer_utility_noise:company_C|brand_sensitive::tail:0": 1886588292178814472,
+        "consumer_utility_noise:company_C|brand_sensitive::upper:0": 18305023334249858310,
+        "consumer_utility_noise:company_C|price_sensitive::budget:0": 6567375598846469670,
+        "consumer_utility_noise:company_C|price_sensitive::core:0": 9300109574880332363,
+        "consumer_utility_noise:company_C|price_sensitive::premium:0": 898031265776233367,
+        "consumer_utility_noise:company_C|price_sensitive::tail:0": 13046719659727024670,
+        "consumer_utility_noise:company_C|price_sensitive::upper:0": 5892393346208583450,
+        "consumer_utility_noise:company_C|service_sensitive::budget:0": 18429998003048314524,
+        "consumer_utility_noise:company_C|service_sensitive::core:0": 2337709116304174241,
+        "consumer_utility_noise:company_C|service_sensitive::premium:0": 12324545700149289408,
+        "consumer_utility_noise:company_C|service_sensitive::tail:0": 1230219060741395767,
+        "consumer_utility_noise:company_C|service_sensitive::upper:0": 3779516476235664149,
+        "consumer_utility_noise:company_D|brand_sensitive::budget:0": 8753260077178016955,
+        "consumer_utility_noise:company_D|brand_sensitive::core:0": 4085211690200218306,
+        "consumer_utility_noise:company_D|brand_sensitive::premium:0": 2286005284918956246,
+        "consumer_utility_noise:company_D|brand_sensitive::tail:0": 14800268117348917815,
+        "consumer_utility_noise:company_D|brand_sensitive::upper:0": 17731966462153033164,
+        "consumer_utility_noise:company_D|price_sensitive::budget:0": 1323077753502544739,
+        "consumer_utility_noise:company_D|price_sensitive::core:0": 7184460334826487002,
+        "consumer_utility_noise:company_D|price_sensitive::premium:0": 10005543741920582869,
+        "consumer_utility_noise:company_D|price_sensitive::tail:0": 7136775943056789104,
+        "consumer_utility_noise:company_D|price_sensitive::upper:0": 3166260083701872986,
+        "consumer_utility_noise:company_D|service_sensitive::budget:0": 16383121917869204260,
+        "consumer_utility_noise:company_D|service_sensitive::core:0": 7080829589769813196,
+        "consumer_utility_noise:company_D|service_sensitive::premium:0": 1074428704977734776,
+        "consumer_utility_noise:company_D|service_sensitive::tail:0": 5751589175285381273,
+        "consumer_utility_noise:company_D|service_sensitive::upper:0": 15533994867685901579,
+        "demand_noise::0": 11891336620927419162,
+        "incident_generation:company_A:0": 5115056618493585920,
+        "incident_generation:company_B:0": 2191893568429597875,
+        "incident_generation:company_C:0": 1479583641606306816,
+        "incident_generation:company_D:0": 7306437751590671856,
+        "operational_capacity_noise:company_A:0": 5821022305091602996,
+        "operational_capacity_noise:company_B:0": 10510561196269174324,
+        "operational_capacity_noise:company_C:0": 17812584040137349949,
+        "operational_capacity_noise:company_D:0": 4913486452333515680,
+        "risk_signal_generation:extreme_weather:0": 6828095423002075058,
+        "risk_signal_generation:festival_demand_surge:0": 11209320882226461387,
+        "risk_signal_generation:regional_logistics_disruption:0": 61559274592928444,
+        "risk_signal_generation:supply_chain_shock:0": 2390775073953473349,
+        "sentiment_noise::0": 15732307399623116102,
+        "supplier_disruption:economy_supplier:0": 238486625242171249,
+        "supplier_disruption:resilient_supplier:0": 5901960433039004089,
+        "supply_cost_noise::0": 7517440135906786506
+      },
+      "invariant_results": [
+        "all_passed"
+      ],
+      "done": false
+    },
+    "state_after": {
+      "episode_id": "theory-real-common-340101",
+      "episode_seed": 340101,
+      "round": 2,
+      "rounds_remaining": 9,
+      "state_version": 1,
+      "terminal": false,
+      "max_rounds": 10,
+      "market": {
+        "base_demand_orders": 12000,
+        "realized_demand_orders": 12111,
+        "no_purchase_orders": 1511,
+        "lost_after_stockout_orders": 44,
+        "market_sentiment_ppm": 1023996,
+        "base_supply_cost_index_ppm": 980576,
+        "actual_supply_cost_index_ppm": 980576,
+        "average_paid_price_cents": 9617,
+        "market_model_id": "value_oriented",
+        "market_model_label": "价格敏感市场",
+        "market_model_description": "消费者更关注价格，整体需求略高，但高价更难维持份额。",
+        "demand_bias_ppm": 1037649,
+        "price_anchor_cents": 10209,
+        "price_band_cents": 900,
+        "utility_price_multiplier_ppm": 1450000,
+        "utility_awareness_multiplier_ppm": 700000,
+        "utility_service_multiplier_ppm": 700000,
+        "utility_reputation_multiplier_ppm": 650000,
+        "utility_prior_stockout_multiplier_ppm": 900000
+      },
+      "consumer_segments": {
+        "brand_sensitive": 220000,
+        "price_sensitive": 600000,
+        "service_sensitive": 180000
+      },
+      "risk_signals": [],
+      "active_market_events": [],
+      "company_order": [
+        "company_A",
+        "company_B",
+        "company_C",
+        "company_D"
+      ],
+      "companies": {
+        "company_A": {
+          "company_id": "company_A",
+          "persona": "none",
+          "financial": {
+            "cash_balance_cents": 32914708,
+            "round_revenue_cents": 31409818,
+            "round_variable_cost_cents": 19156800,
+            "round_fixed_spend_cents": 1664710,
+            "round_incident_cost_cents": 0,
+            "round_operating_cost_cents": 7673600,
+            "round_profit_cents": 2914708,
+            "cumulative_profit_cents": 2914708,
+            "capacity_book_value_cents": 0,
+            "round_material_payment_cents": 6636000,
+            "round_government_support_cents": 0
+          },
+          "commercial": {
+            "price_cents": 9031,
+            "market_share_ppm": 329481,
+            "potential_demand_orders": 3852,
+            "sales_orders": 3478,
+            "attempted_unfulfilled_orders": 374,
+            "orders_received_from_redistribution": 0,
+            "orders_lost_after_redistribution": 44
+          },
+          "operations": {
+            "base_capacity_orders": 3482,
+            "effective_capacity_orders": 3478,
+            "financial_capacity_orders": 2147483647,
+            "capacity_utilization_ppm": 1000000,
+            "base_unit_cost_cents": 6000,
+            "actual_unit_cost_cents": 3600,
+            "procurement_requested_orders": 3500,
+            "procurement_fulfilled_orders": 3500,
+            "procurement_unit_input_price_cents": 1896
+          },
+          "brand": {
+            "brand_awareness_ppm": 417996,
+            "service_quality_ppm": 584004,
+            "reputation_ppm": 515517,
+            "last_attempted_unfulfilled_rate_ppm": 97092
+          },
+          "risk": {
+            "resilience_ppm": 139500,
+            "active_incident": null
+          },
+          "history": {
+            "last_action_id": "portfolio:1:company_A:value",
+            "last_action": {
+              "action_id": "portfolio:1:company_A:value",
+              "episode_id": "theory-real-common-340101",
+              "agent_id": "company_A",
+              "round": 1,
+              "state_version": 0,
+              "price_cents": 9031,
+              "advertising_budget_cents": 939067,
+              "service_budget_cents": 725643,
+              "capacity_investment_cents": 0,
+              "resilience_budget_cents": 0,
+              "incident_response": {
+                "mode": "wait",
+                "repair_budget_cents": 0
+              },
+              "strategy_summary": "rule-opponent:value: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=8678250",
+              "primary_supplier_id": "economy_supplier",
+              "backup_supplier_id": "resilient_supplier",
+              "primary_supplier_share_ppm": 750000,
+              "contract_quantity_orders": 2625,
+              "contract_duration_rounds": 3,
+              "contract_bid_cents": 1746,
+              "procurement_quantity_orders": 3500
+            },
+            "recent_profit_cents": [
+              2914708
+            ],
+            "recent_market_share_ppm": [
+              329481
+            ]
+          }
+        },
+        "company_B": {
+          "company_id": "company_B",
+          "persona": "none",
+          "financial": {
+            "cash_balance_cents": 29925769,
+            "round_revenue_cents": 22214067,
+            "round_variable_cost_cents": 14667600,
+            "round_fixed_spend_cents": 1443498,
+            "round_incident_cost_cents": 0,
+            "round_operating_cost_cents": 6177200,
+            "round_profit_cents": -74231,
+            "cumulative_profit_cents": -74231,
+            "capacity_book_value_cents": 0,
+            "round_material_payment_cents": 6636000,
+            "round_government_support_cents": 0
+          },
+          "commercial": {
+            "price_cents": 9957,
+            "market_share_ppm": 211349,
+            "potential_demand_orders": 2127,
+            "sales_orders": 2231,
+            "attempted_unfulfilled_orders": 0,
+            "orders_received_from_redistribution": 104,
+            "orders_lost_after_redistribution": 0
+          },
+          "operations": {
+            "base_capacity_orders": 3482,
+            "effective_capacity_orders": 3500,
+            "financial_capacity_orders": 2147483647,
+            "capacity_utilization_ppm": 637429,
+            "base_unit_cost_cents": 6000,
+            "actual_unit_cost_cents": 3600,
+            "procurement_requested_orders": 3500,
+            "procurement_fulfilled_orders": 3500,
+            "procurement_unit_input_price_cents": 1896
+          },
+          "brand": {
+            "brand_awareness_ppm": 393079,
+            "service_quality_ppm": 591466,
+            "reputation_ppm": 519326,
+            "last_attempted_unfulfilled_rate_ppm": 0
+          },
+          "risk": {
+            "resilience_ppm": 139500,
+            "active_incident": null
+          },
+          "history": {
+            "last_action_id": "portfolio:1:company_B:balanced",
+            "last_action": {
+              "action_id": "portfolio:1:company_B:balanced",
+              "episode_id": "theory-real-common-340101",
+              "agent_id": "company_B",
+              "round": 1,
+              "state_version": 0,
+              "price_cents": 9957,
+              "advertising_budget_cents": 612393,
+              "service_budget_cents": 831105,
+              "capacity_investment_cents": 0,
+              "resilience_budget_cents": 0,
+              "incident_response": {
+                "mode": "wait",
+                "repair_budget_cents": 0
+              },
+              "strategy_summary": "rule-opponent:cautious: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=10253250",
+              "primary_supplier_id": "economy_supplier",
+              "backup_supplier_id": "resilient_supplier",
+              "primary_supplier_share_ppm": 750000,
+              "contract_quantity_orders": 2625,
+              "contract_duration_rounds": 3,
+              "contract_bid_cents": 1746,
+              "procurement_quantity_orders": 3500
+            },
+            "recent_profit_cents": [
+              -74231
+            ],
+            "recent_market_share_ppm": [
+              211349
+            ]
+          }
+        },
+        "company_C": {
+          "company_id": "company_C",
+          "persona": "none",
+          "financial": {
+            "cash_balance_cents": 31039008,
+            "round_revenue_cents": 26577766,
+            "round_variable_cost_cents": 16492800,
+            "round_fixed_spend_cents": 2260358,
+            "round_incident_cost_cents": 0,
+            "round_operating_cost_cents": 6785600,
+            "round_profit_cents": 1039008,
+            "cumulative_profit_cents": 1039008,
+            "capacity_book_value_cents": 0,
+            "round_material_payment_cents": 6636000,
+            "round_government_support_cents": 0
+          },
+          "commercial": {
+            "price_cents": 9707,
+            "market_share_ppm": 259378,
+            "potential_demand_orders": 2609,
+            "sales_orders": 2738,
+            "attempted_unfulfilled_orders": 0,
+            "orders_received_from_redistribution": 129,
+            "orders_lost_after_redistribution": 0
+          },
+          "operations": {
+            "base_capacity_orders": 3482,
+            "effective_capacity_orders": 3500,
+            "financial_capacity_orders": 2147483647,
+            "capacity_utilization_ppm": 782286,
+            "base_unit_cost_cents": 6000,
+            "actual_unit_cost_cents": 3600,
+            "procurement_requested_orders": 3500,
+            "procurement_fulfilled_orders": 3500,
+            "procurement_unit_input_price_cents": 1896
+          },
+          "brand": {
+            "brand_awareness_ppm": 435353,
+            "service_quality_ppm": 604255,
+            "reputation_ppm": 520029,
+            "last_attempted_unfulfilled_rate_ppm": 0
+          },
+          "risk": {
+            "resilience_ppm": 139500,
+            "active_incident": null
+          },
+          "history": {
+            "last_action_id": "portfolio:1:company_C:balanced",
+            "last_action": {
+              "action_id": "portfolio:1:company_C:balanced",
+              "episode_id": "theory-real-common-340101",
+              "agent_id": "company_C",
+              "round": 1,
+              "state_version": 0,
+              "price_cents": 9707,
+              "advertising_budget_cents": 1224361,
+              "service_budget_cents": 1035997,
+              "capacity_investment_cents": 0,
+              "resilience_budget_cents": 0,
+              "incident_response": {
+                "mode": "wait",
+                "repair_budget_cents": 0
+              },
+              "strategy_summary": "rule-opponent:growth: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=9378250",
+              "primary_supplier_id": "economy_supplier",
+              "backup_supplier_id": "resilient_supplier",
+              "primary_supplier_share_ppm": 750000,
+              "contract_quantity_orders": 2625,
+              "contract_duration_rounds": 3,
+              "contract_bid_cents": 1746,
+              "procurement_quantity_orders": 3500
+            },
+            "recent_profit_cents": [
+              1039008
+            ],
+            "recent_market_share_ppm": [
+              259378
+            ]
+          }
+        },
+        "company_D": {
+          "company_id": "company_D",
+          "persona": "none",
+          "financial": {
+            "cash_balance_cents": 29532033,
+            "round_revenue_cents": 21315663,
+            "round_variable_cost_cents": 14228400,
+            "round_fixed_spend_cents": 1524430,
+            "round_incident_cost_cents": 0,
+            "round_operating_cost_cents": 6030800,
+            "round_profit_cents": -467967,
+            "cumulative_profit_cents": -467967,
+            "capacity_book_value_cents": 0,
+            "round_material_payment_cents": 6636000,
+            "round_government_support_cents": 0
+          },
+          "commercial": {
+            "price_cents": 10107,
+            "market_share_ppm": 199792,
+            "potential_demand_orders": 2012,
+            "sales_orders": 2109,
+            "attempted_unfulfilled_orders": 0,
+            "orders_received_from_redistribution": 97,
+            "orders_lost_after_redistribution": 0
+          },
+          "operations": {
+            "base_capacity_orders": 3482,
+            "effective_capacity_orders": 3500,
+            "financial_capacity_orders": 2147483647,
+            "capacity_utilization_ppm": 602571,
+            "base_unit_cost_cents": 6000,
+            "actual_unit_cost_cents": 3600,
+            "procurement_requested_orders": 3500,
+            "procurement_fulfilled_orders": 3500,
+            "procurement_unit_input_price_cents": 1896
+          },
+          "brand": {
+            "brand_awareness_ppm": 396011,
+            "service_quality_ppm": 594560,
+            "reputation_ppm": 519496,
+            "last_attempted_unfulfilled_rate_ppm": 0
+          },
+          "risk": {
+            "resilience_ppm": 139500,
+            "active_incident": null
+          },
+          "history": {
+            "last_action_id": "portfolio:1:company_D:balanced",
+            "last_action": {
+              "action_id": "portfolio:1:company_D:balanced",
+              "episode_id": "theory-real-common-340101",
+              "agent_id": "company_D",
+              "round": 1,
+              "state_version": 0,
+              "price_cents": 10107,
+              "advertising_budget_cents": 646728,
+              "service_budget_cents": 877702,
+              "capacity_investment_cents": 0,
+              "resilience_budget_cents": 0,
+              "incident_response": {
+                "mode": "wait",
+                "repair_budget_cents": 0
+              },
+              "strategy_summary": "rule-opponent:cautious: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=10778250",
+              "primary_supplier_id": "economy_supplier",
+              "backup_supplier_id": "resilient_supplier",
+              "primary_supplier_share_ppm": 750000,
+              "contract_quantity_orders": 2625,
+              "contract_duration_rounds": 3,
+              "contract_bid_cents": 1746,
+              "procurement_quantity_orders": 3500
+            },
+            "recent_profit_cents": [
+              -467967
+            ],
+            "recent_market_share_ppm": [
+              199792
+            ]
+          }
+        }
+      },
+      "last_joint_action": {
+        "company_A": {
+          "action_id": "portfolio:1:company_A:value",
+          "episode_id": "theory-real-common-340101",
+          "agent_id": "company_A",
+          "round": 1,
+          "state_version": 0,
+          "price_cents": 9031,
+          "advertising_budget_cents": 939067,
+          "service_budget_cents": 725643,
+          "capacity_investment_cents": 0,
+          "resilience_budget_cents": 0,
+          "incident_response": {
+            "mode": "wait",
+            "repair_budget_cents": 0
+          },
+          "strategy_summary": "rule-opponent:value: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=8678250",
+          "primary_supplier_id": "economy_supplier",
+          "backup_supplier_id": "resilient_supplier",
+          "primary_supplier_share_ppm": 750000,
+          "contract_quantity_orders": 2625,
+          "contract_duration_rounds": 3,
+          "contract_bid_cents": 1746,
+          "procurement_quantity_orders": 3500
+        },
+        "company_B": {
+          "action_id": "portfolio:1:company_B:balanced",
+          "episode_id": "theory-real-common-340101",
+          "agent_id": "company_B",
+          "round": 1,
+          "state_version": 0,
+          "price_cents": 9957,
+          "advertising_budget_cents": 612393,
+          "service_budget_cents": 831105,
+          "capacity_investment_cents": 0,
+          "resilience_budget_cents": 0,
+          "incident_response": {
+            "mode": "wait",
+            "repair_budget_cents": 0
+          },
+          "strategy_summary": "rule-opponent:cautious: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=10253250",
+          "primary_supplier_id": "economy_supplier",
+          "backup_supplier_id": "resilient_supplier",
+          "primary_supplier_share_ppm": 750000,
+          "contract_quantity_orders": 2625,
+          "contract_duration_rounds": 3,
+          "contract_bid_cents": 1746,
+          "procurement_quantity_orders": 3500
+        },
+        "company_C": {
+          "action_id": "portfolio:1:company_C:balanced",
+          "episode_id": "theory-real-common-340101",
+          "agent_id": "company_C",
+          "round": 1,
+          "state_version": 0,
+          "price_cents": 9707,
+          "advertising_budget_cents": 1224361,
+          "service_budget_cents": 1035997,
+          "capacity_investment_cents": 0,
+          "resilience_budget_cents": 0,
+          "incident_response": {
+            "mode": "wait",
+            "repair_budget_cents": 0
+          },
+          "strategy_summary": "rule-opponent:growth: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=9378250",
+          "primary_supplier_id": "economy_supplier",
+          "backup_supplier_id": "resilient_supplier",
+          "primary_supplier_share_ppm": 750000,
+          "contract_quantity_orders": 2625,
+          "contract_duration_rounds": 3,
+          "contract_bid_cents": 1746,
+          "procurement_quantity_orders": 3500
+        },
+        "company_D": {
+          "action_id": "portfolio:1:company_D:balanced",
+          "episode_id": "theory-real-common-340101",
+          "agent_id": "company_D",
+          "round": 1,
+          "state_version": 0,
+          "price_cents": 10107,
+          "advertising_budget_cents": 646728,
+          "service_budget_cents": 877702,
+          "capacity_investment_cents": 0,
+          "resilience_budget_cents": 0,
+          "incident_response": {
+            "mode": "wait",
+            "repair_budget_cents": 0
+          },
+          "strategy_summary": "rule-opponent:cautious: seeded variation; liquidity, margin, capacity and warning aware; cash-material-procurement-v1: quantity=3500, share=750000, stress_contribution=10778250",
+          "primary_supplier_id": "economy_supplier",
+          "backup_supplier_id": "resilient_supplier",
+          "primary_supplier_share_ppm": 750000,
+          "contract_quantity_orders": 2625,
+          "contract_duration_rounds": 3,
+          "contract_bid_cents": 1746,
+          "procurement_quantity_orders": 3500
+        }
+      },
+      "terminal_enterprise_values_cents": {},
+      "state_hash": "sha256:bb1e380f5c0aa43a15e6081fe008f3fef3ed17575e2cc2d1aae7b9787f768e8e",
+      "strategic_market": {
+        "protocol_version": "strategic-market-v1.0.0",
+        "company_lifecycle": [
+          {
+            "company_id": "company_A",
+            "status": "operating",
+            "distress_streak": 0,
+            "first_distress_round": null,
+            "exit_round": null,
+            "exit_reason": null
+          },
+          {
+            "company_id": "company_B",
+            "status": "operating",
+            "distress_streak": 0,
+            "first_distress_round": null,
+            "exit_round": null,
+            "exit_reason": null
+          },
+          {
+            "company_id": "company_C",
+            "status": "operating",
+            "distress_streak": 0,
+            "first_distress_round": null,
+            "exit_round": null,
+            "exit_reason": null
+          },
+          {
+            "company_id": "company_D",
+            "status": "operating",
+            "distress_streak": 0,
+            "first_distress_round": null,
+            "exit_round": null,
+            "exit_reason": null
+          }
+        ],
+        "active_company_count": 4,
+        "hhi_ppm": 260420,
+        "concentration_regime": "competitive",
+        "dominant_company_id": "company_A",
+        "dominant_share_ppm": 329481,
+        "predatory_pricing_company_ids": [],
+        "price_war_intensity_ppm": 0,
+        "market_power_markup_ppm": 0,
+        "regulatory_pressure_ppm": 0,
+        "consumer_surplus_proxy_cents": 6248890,
+        "producer_welfare_cents": 3411518,
+        "social_welfare_proxy_cents": 9550408,
+        "cumulative_consumer_surplus_proxy_cents": 6248890,
+        "cumulative_producer_welfare_cents": 3411518,
+        "cumulative_social_welfare_proxy_cents": 9550408
+      },
+      "supply_chain": {
+        "protocol_version": "supply-chain-v3.0.0",
+        "supplier_order": [
+          "economy_supplier",
+          "resilient_supplier"
+        ],
+        "suppliers": {
+          "economy_supplier": {
+            "supplier_id": "economy_supplier",
+            "label": "低价波动型供应商",
+            "unit_price_cents": 1890,
+            "unit_cost_cents": 1400,
+            "base_capacity_orders": 11000,
+            "available_capacity_orders": 11000,
+            "reliability_ppm": 780000,
+            "disrupted": false,
+            "round_sales_orders": 10500,
+            "round_profit_cents": 3344000,
+            "cumulative_profit_cents": 3344000,
+            "strategic_ledger": {
+              "audit": {
+                "borrowed_cents": 0,
+                "contract_outcomes": [
+                  {
+                    "buyer_shortfall": false,
+                    "company_id": "company_A",
+                    "delivered_orders": 2625,
+                    "requested_orders": 2625,
+                    "reserved_orders": 2625,
+                    "supplier_shortfall_orders": 0
+                  },
+                  {
+                    "buyer_shortfall": false,
+                    "company_id": "company_B",
+                    "delivered_orders": 2625,
+                    "requested_orders": 2625,
+                    "reserved_orders": 2625,
+                    "supplier_shortfall_orders": 0
+                  },
+                  {
+                    "buyer_shortfall": false,
+                    "company_id": "company_C",
+                    "delivered_orders": 2625,
+                    "requested_orders": 2625,
+                    "reserved_orders": 2625,
+                    "supplier_shortfall_orders": 0
+                  },
+                  {
+                    "buyer_shortfall": false,
+                    "company_id": "company_D",
+                    "delivered_orders": 2625,
+                    "requested_orders": 2625,
+                    "reserved_orders": 2625,
+                    "supplier_shortfall_orders": 0
+                  }
+                ],
+                "defaulted_cents": 0,
+                "hash": "sha256:ad2d87c55cedf7b0e4b44341b49f4e36f9e0ee782d1390611ed753d559213281",
+                "interest_cents": 0,
+                "lender_profit_cents": 0,
+                "liquidated_orders": 0,
+                "liquidation_loss_cents": 0,
+                "liquidation_receipts_cents": 0,
+                "negotiations": [
+                  {
+                    "accepted": true,
+                    "agreed_unit_price_cents": 1728,
+                    "bid_cents": 1746,
+                    "company_id": "company_A",
+                    "counter_offer_cents": 1710,
+                    "quantity_orders": 2625
+                  },
+                  {
+                    "accepted": true,
+                    "agreed_unit_price_cents": 1728,
+                    "bid_cents": 1746,
+                    "company_id": "company_B",
+                    "counter_offer_cents": 1710,
+                    "quantity_orders": 2625
+                  },
+                  {
+                    "accepted": true,
+                    "agreed_unit_price_cents": 1728,
+                    "bid_cents": 1746,
+                    "company_id": "company_C",
+                    "counter_offer_cents": 1710,
+                    "quantity_orders": 2625
+                  },
+                  {
+                    "accepted": true,
+                    "agreed_unit_price_cents": 1728,
+                    "bid_cents": 1746,
+                    "company_id": "company_D",
+                    "counter_offer_cents": 1710,
+                    "quantity_orders": 2625
+                  }
+                ],
+                "opening_cash_cents": 20000000,
+                "opening_debt_cents": 0,
+                "opening_inventory_orders": 0,
+                "opening_lender_cash_cents": 5000000,
+                "option": "balanced",
+                "overhead_cents": 100000,
+                "policy": "reserve_inventory_improve_reliability_bounded_credit",
+                "produced_orders": 10500,
+                "production_capacity_orders": 11000,
+                "production_cost_cents": 14700000,
+                "receipts_cents": 18144000,
+                "reliability_gain_ppm": 0,
+                "reliability_spend_cents": 0,
+                "repaid_cents": 0,
+                "round": 1,
+                "settlement_prices_cents": {
+                  "company_A": 1728,
+                  "company_B": 1728,
+                  "company_C": 1728,
+                  "company_D": 1728
+                },
+                "sold_orders": 10500,
+                "spoilage_orders": 0,
+                "unit_cost_cents": 1400
+              },
+              "bankrupt": false,
+              "contracts": [
+                {
+                  "company_id": "company_A",
+                  "end_round": 3,
+                  "quantity_orders": 2625,
+                  "start_round": 1,
+                  "terms": "prepaid_priority_reservation_v1",
+                  "unit_price_cents": 1728
+                },
+                {
+                  "company_id": "company_B",
+                  "end_round": 3,
+                  "quantity_orders": 2625,
+                  "start_round": 1,
+                  "terms": "prepaid_priority_reservation_v1",
+                  "unit_price_cents": 1728
+                },
+                {
+                  "company_id": "company_C",
+                  "end_round": 3,
+                  "quantity_orders": 2625,
+                  "start_round": 1,
+                  "terms": "prepaid_priority_reservation_v1",
+                  "unit_price_cents": 1728
+                },
+                {
+                  "company_id": "company_D",
+                  "end_round": 3,
+                  "quantity_orders": 2625,
+                  "start_round": 1,
+                  "terms": "prepaid_priority_reservation_v1",
+                  "unit_price_cents": 1728
+                }
+              ],
+              "cumulative_lender_profit_cents": 0,
+              "debt_cents": 0,
+              "debt_due_round": 0,
+              "inventory_orders": 0,
+              "lender_cash_cents": 5000000,
+              "version": "supplier-contract-inventory-credit-v1.0.0"
+            },
+            "round_requested_orders": 10500,
+            "investment_decision": {
+              "observed_round": 1,
+              "applies_round": 2,
+              "observed_sales_orders": 10500,
+              "observed_capacity_orders": 11000,
+              "observed_cash_cents": 23344000,
+              "previous_base_capacity_orders": 11000,
+              "added_capacity_orders": 0,
+              "investment_cents": 0,
+              "reason": "no_excess_orders",
+              "policy_version": "demand-payback-investment-v1.0.0",
+              "observed_requested_orders": 10500,
+              "observed_unit_margin_cents": 400,
+              "remaining_rounds": 9
+            },
+            "account": {
+              "opening_cash_cents": 20000000,
+              "cash_cents": 23344000,
+              "receipts_cents": 18144000,
+              "production_cost_cents": 14700000,
+              "settlement_price_cents": 1800,
+              "investment_cents": 0
+            },
+            "last_settled_unit_price_cents": 1800,
+            "quote_decision": {
+              "policy_version": "bounded-utilization-pricing-v1.0.0",
+              "observed_round": 1,
+              "applies_round": 2,
+              "previous_price_cents": 1800,
+              "quoted_price_cents": 1890,
+              "observed_sales_orders": 10500,
+              "observed_capacity_orders": 11000,
+              "utilization_ppm": 954545,
+              "reason": "high_utilization"
+            }
+          },
+          "resilient_supplier": {
+            "supplier_id": "resilient_supplier",
+            "label": "稳健保障型供应商",
+            "unit_price_cents": 2280,
+            "unit_cost_cents": 1700,
+            "base_capacity_orders": 11000,
+            "available_capacity_orders": 11000,
+            "reliability_ppm": 960000,
+            "disrupted": false,
+            "round_sales_orders": 3500,
+            "round_profit_cents": 2350000,
+            "cumulative_profit_cents": 2350000,
+            "strategic_ledger": {
+              "audit": {
+                "borrowed_cents": 0,
+                "contract_outcomes": [],
+                "defaulted_cents": 0,
+                "hash": "sha256:3ce32065391628eeb7a2743b7c2ac94ec822c6bec31aaee65a4039f5430780aa",
+                "interest_cents": 0,
+                "lender_profit_cents": 0,
+                "liquidated_orders": 0,
+                "liquidation_loss_cents": 0,
+                "liquidation_receipts_cents": 0,
+                "negotiations": [],
+                "opening_cash_cents": 20000000,
+                "opening_debt_cents": 0,
+                "opening_inventory_orders": 0,
+                "opening_lender_cash_cents": 5000000,
+                "option": "balanced",
+                "overhead_cents": 100000,
+                "policy": "reserve_inventory_improve_reliability_bounded_credit",
+                "produced_orders": 3500,
+                "production_capacity_orders": 11000,
+                "production_cost_cents": 5950000,
+                "receipts_cents": 8400000,
+                "reliability_gain_ppm": 0,
+                "reliability_spend_cents": 0,
+                "repaid_cents": 0,
+                "round": 1,
+                "settlement_prices_cents": {
+                  "company_A": 2400,
+                  "company_B": 2400,
+                  "company_C": 2400,
+                  "company_D": 2400
+                },
+                "sold_orders": 3500,
+                "spoilage_orders": 0,
+                "unit_cost_cents": 1700
+              },
+              "bankrupt": false,
+              "contracts": [],
+              "cumulative_lender_profit_cents": 0,
+              "debt_cents": 0,
+              "debt_due_round": 0,
+              "inventory_orders": 0,
+              "lender_cash_cents": 5000000,
+              "version": "supplier-contract-inventory-credit-v1.0.0"
+            },
+            "round_requested_orders": 3500,
+            "investment_decision": {
+              "observed_round": 1,
+              "applies_round": 2,
+              "observed_sales_orders": 3500,
+              "observed_capacity_orders": 11000,
+              "observed_cash_cents": 22350000,
+              "previous_base_capacity_orders": 11000,
+              "added_capacity_orders": 0,
+              "investment_cents": 0,
+              "reason": "preserve_capacity",
+              "policy_version": "demand-payback-investment-v1.0.0",
+              "observed_requested_orders": 3500,
+              "observed_unit_margin_cents": 700,
+              "remaining_rounds": 9
+            },
+            "account": {
+              "opening_cash_cents": 20000000,
+              "cash_cents": 22350000,
+              "receipts_cents": 8400000,
+              "production_cost_cents": 5950000,
+              "settlement_price_cents": 2400,
+              "investment_cents": 0
+            },
+            "last_settled_unit_price_cents": 2400,
+            "quote_decision": {
+              "policy_version": "bounded-utilization-pricing-v1.0.0",
+              "observed_round": 1,
+              "applies_round": 2,
+              "previous_price_cents": 2400,
+              "quoted_price_cents": 2280,
+              "observed_sales_orders": 3500,
+              "observed_capacity_orders": 11000,
+              "utilization_ppm": 318181,
+              "reason": "low_utilization"
+            }
+          }
+        },
+        "last_procurement_outcomes": {
+          "company_A": {
+            "company_id": "company_A",
+            "material": {
+              "budget_cents": 24835290,
+              "payment_cents": 6636000,
+              "payments_by_supplier": {
+                "economy_supplier": 4536000,
+                "resilient_supplier": 2100000
+              },
+              "used_orders": 3478,
+              "wasted_orders": 22
+            },
+            "primary_supplier_id": "economy_supplier",
+            "backup_supplier_id": "resilient_supplier",
+            "primary_supplier_share_ppm": 750000,
+            "requested_orders": 3500,
+            "fulfilled_orders": 3500,
+            "unfulfilled_orders": 0,
+            "weighted_unit_input_price_cents": 1896,
+            "supplier_allocation_orders": {
+              "economy_supplier": 2625,
+              "resilient_supplier": 875
+            }
+          },
+          "company_B": {
+            "company_id": "company_B",
+            "material": {
+              "budget_cents": 25056502,
+              "payment_cents": 6636000,
+              "payments_by_supplier": {
+                "economy_supplier": 4536000,
+                "resilient_supplier": 2100000
+              },
+              "used_orders": 2231,
+              "wasted_orders": 1269
+            },
+            "primary_supplier_id": "economy_supplier",
+            "backup_supplier_id": "resilient_supplier",
+            "primary_supplier_share_ppm": 750000,
+            "requested_orders": 3500,
+            "fulfilled_orders": 3500,
+            "unfulfilled_orders": 0,
+            "weighted_unit_input_price_cents": 1896,
+            "supplier_allocation_orders": {
+              "economy_supplier": 2625,
+              "resilient_supplier": 875
+            }
+          },
+          "company_C": {
+            "company_id": "company_C",
+            "material": {
+              "budget_cents": 24239642,
+              "payment_cents": 6636000,
+              "payments_by_supplier": {
+                "economy_supplier": 4536000,
+                "resilient_supplier": 2100000
+              },
+              "used_orders": 2738,
+              "wasted_orders": 762
+            },
+            "primary_supplier_id": "economy_supplier",
+            "backup_supplier_id": "resilient_supplier",
+            "primary_supplier_share_ppm": 750000,
+            "requested_orders": 3500,
+            "fulfilled_orders": 3500,
+            "unfulfilled_orders": 0,
+            "weighted_unit_input_price_cents": 1896,
+            "supplier_allocation_orders": {
+              "economy_supplier": 2625,
+              "resilient_supplier": 875
+            }
+          },
+          "company_D": {
+            "company_id": "company_D",
+            "material": {
+              "budget_cents": 24975570,
+              "payment_cents": 6636000,
+              "payments_by_supplier": {
+                "economy_supplier": 4536000,
+                "resilient_supplier": 2100000
+              },
+              "used_orders": 2109,
+              "wasted_orders": 1391
+            },
+            "primary_supplier_id": "economy_supplier",
+            "backup_supplier_id": "resilient_supplier",
+            "primary_supplier_share_ppm": 750000,
+            "requested_orders": 3500,
+            "fulfilled_orders": 3500,
+            "unfulfilled_orders": 0,
+            "weighted_unit_input_price_cents": 1896,
+            "supplier_allocation_orders": {
+              "economy_supplier": 2625,
+              "resilient_supplier": 875
+            }
+          }
+        },
+        "round_upstream_producer_surplus_cents": 5694000,
+        "cumulative_upstream_producer_surplus_cents": 5694000
+      },
+      "welfare_accounting": {
+        "protocol_version": "welfare-accounting-v2.0.0",
+        "valuation_source": "explicit_synthetic_wtp_cohorts_v1",
+        "round_consumer_surplus_cents": 44568290,
+        "round_downstream_producer_surplus_cents": 3411518,
+        "round_upstream_producer_surplus_cents": 5694000,
+        "round_government_fine_revenue_cents": 0,
+        "round_government_enforcement_cost_cents": 0,
+        "round_government_net_budget_cents": 0,
+        "round_stockout_externality_cents": 110000,
+        "round_business_exit_externality_cents": 0,
+        "round_total_economic_welfare_cents": 53563808,
+        "round_service_continuity_orders": 10556,
+        "round_voluntary_no_purchase_orders": 1511,
+        "cumulative_consumer_surplus_cents": 44568290,
+        "cumulative_downstream_producer_surplus_cents": 3411518,
+        "cumulative_upstream_producer_surplus_cents": 5694000,
+        "cumulative_government_net_budget_cents": 0,
+        "cumulative_externality_cost_cents": 110000,
+        "cumulative_total_economic_welfare_cents": 53563808
+      },
+      "government": {
+        "cash_cents": 50000000,
+        "cumulative_net_cents": 0,
+        "round_fines_cents": 0,
+        "last_decision": {
+          "observed_round": 0,
+          "applies_round": 1,
+          "opening_cash_cents": 50000000,
+          "observed_stockout_orders": 0,
+          "observed_demand_orders": 0,
+          "observed_hhi_ppm": 250000,
+          "active_company_ids": [
+            "company_A",
+            "company_B",
+            "company_C",
+            "company_D"
+          ],
+          "inspection_cases": 0,
+          "inspection_cost_cents": 0,
+          "detection_boost_ppm": 0,
+          "support_by_company_cents": {
+            "company_A": 0,
+            "company_B": 0,
+            "company_C": 0,
+            "company_D": 0
+          },
+          "reason": "reserve",
+          "policy_version": "budgeted-policy-learning-v1",
+          "strategic_policy": "{\"consumer_budget_cents\":0,\"consumer_contract\":\"post_purchase_rebate_no_intrinsic_valuation_change\",\"fine_multiplier_ppm\":1000000,\"grant_contract\":\"reimburse_verified_current_resilience_expense\",\"observed_resilience\":{\"company_A\":150000,\"company_B\":150000,\"company_C\":150000,\"company_D\":150000},\"opening_memory\":{},\"option\":\"reserve\",\"rebate_share_ppm\":50000,\"remaining_rounds\":10,\"selection\":\"ucb_public_welfare\",\"version\":\"budgeted-policy-learning-v1\"}"
+        },
+        "policy_memory": "{\"counts\":{\"reserve\":1},\"last_reward_cents\":53563808,\"means\":{\"reserve\":0.3488048954868324},\"observations\":1}",
+        "round_consumer_rebate_cents": 0,
+        "round_matched_support_cents": 0
+      },
+      "consumer_decisions": [
+        {
+          "group_id": "brand_sensitive::budget",
+          "settled_round": 1,
+          "demand_orders": 133,
+          "unit_budget_cents": 9709,
+          "voluntary_no_purchase_orders": 24,
+          "stockout_orders": 2,
+          "purchases_by_company": {
+            "company_A": 54,
+            "company_B": 0,
+            "company_C": 53,
+            "company_D": 0
+          },
+          "posted_prices_cents": {
+            "company_A": 9031,
+            "company_B": 9957,
+            "company_C": 9707,
+            "company_D": 10107
+          },
+          "spending_cents": 1002145,
+          "refund_cents": 0,
+          "policy_version": "budget-constrained-logit-v1.0.0",
+          "government_rebate_cents": 0
+        },
+        {
+          "group_id": "brand_sensitive::core",
+          "settled_round": 1,
+          "demand_orders": 533,
+          "unit_budget_cents": 11709,
+          "voluntary_no_purchase_orders": 43,
+          "stockout_orders": 2,
+          "purchases_by_company": {
+            "company_A": 144,
+            "company_B": 107,
+            "company_C": 132,
+            "company_D": 105
+          },
+          "posted_prices_cents": {
+            "company_A": 9031,
+            "company_B": 9957,
+            "company_C": 9707,
+            "company_D": 10107
+          },
+          "spending_cents": 4708422,
+          "refund_cents": 0,
+          "policy_version": "budget-constrained-logit-v1.0.0",
+          "government_rebate_cents": 0
+        },
+        {
+          "group_id": "brand_sensitive::premium",
+          "settled_round": 1,
+          "demand_orders": 666,
+          "unit_budget_cents": 16209,
+          "voluntary_no_purchase_orders": 26,
+          "stockout_orders": 1,
+          "purchases_by_company": {
+            "company_A": 179,
+            "company_B": 145,
+            "company_C": 178,
+            "company_D": 137
+          },
+          "posted_prices_cents": {
+            "company_A": 9031,
+            "company_B": 9957,
+            "company_C": 9707,
+            "company_D": 10107
+          },
+          "spending_cents": 6172819,
+          "refund_cents": 0,
+          "policy_version": "budget-constrained-logit-v1.0.0",
+          "government_rebate_cents": 0
+        },
+        {
+          "group_id": "brand_sensitive::tail",
+          "settled_round": 1,
+          "demand_orders": 400,
+          "unit_budget_cents": 19209,
+          "voluntary_no_purchase_orders": 10,
+          "stockout_orders": 0,
+          "purchases_by_company": {
+            "company_A": 112,
+            "company_B": 88,
+            "company_C": 105,
+            "company_D": 85
+          },
+          "posted_prices_cents": {
+            "company_A": 9031,
+            "company_B": 9957,
+            "company_C": 9707,
+            "company_D": 10107
+          },
+          "spending_cents": 3766018,
+          "refund_cents": 0,
+          "policy_version": "budget-constrained-logit-v1.0.0",
+          "government_rebate_cents": 0
+        },
+        {
+          "group_id": "brand_sensitive::upper",
+          "settled_round": 1,
+          "demand_orders": 932,
+          "unit_budget_cents": 13709,
+          "voluntary_no_purchase_orders": 56,
+          "stockout_orders": 2,
+          "purchases_by_company": {
+            "company_A": 257,
+            "company_B": 197,
+            "company_C": 236,
+            "company_D": 184
+          },
+          "posted_prices_cents": {
+            "company_A": 9031,
+            "company_B": 9957,
+            "company_C": 9707,
+            "company_D": 10107
+          },
+          "spending_cents": 8433036,
+          "refund_cents": 0,
+          "policy_version": "budget-constrained-logit-v1.0.0",
+          "government_rebate_cents": 0
+        },
+        {
+          "group_id": "price_sensitive::budget",
+          "settled_round": 1,
+          "demand_orders": 727,
+          "unit_budget_cents": 8709,
+          "voluntary_no_purchase_orders": 727,
+          "stockout_orders": 0,
+          "purchases_by_company": {
+            "company_A": 0,
+            "company_B": 0,
+            "company_C": 0,
+            "company_D": 0
+          },
+          "posted_prices_cents": {
+            "company_A": 9031,
+            "company_B": 9957,
+            "company_C": 9707,
+            "company_D": 10107
+          },
+          "spending_cents": 0,
+          "refund_cents": 0,
+          "policy_version": "budget-constrained-logit-v1.0.0",
+          "government_rebate_cents": 0
+        },
+        {
+          "group_id": "price_sensitive::core",
+          "settled_round": 1,
+          "demand_orders": 2180,
+          "unit_budget_cents": 11209,
+          "voluntary_no_purchase_orders": 251,
+          "stockout_orders": 12,
+          "purchases_by_company": {
+            "company_A": 660,
+            "company_B": 397,
+            "company_C": 492,
+            "company_D": 368
+          },
+          "posted_prices_cents": {
+            "company_A": 9031,
+            "company_B": 9957,
+            "company_C": 9707,
+            "company_D": 10107
+          },
+          "spending_cents": 18408609,
+          "refund_cents": 0,
+          "policy_version": "budget-constrained-logit-v1.0.0",
+          "government_rebate_cents": 0
+        },
+        {
+          "group_id": "price_sensitive::premium",
+          "settled_round": 1,
+          "demand_orders": 1308,
+          "unit_budget_cents": 15409,
+          "voluntary_no_purchase_orders": 43,
+          "stockout_orders": 3,
+          "purchases_by_company": {
+            "company_A": 444,
+            "company_B": 261,
+            "company_C": 322,
+            "company_D": 235
+          },
+          "posted_prices_cents": {
+            "company_A": 9031,
+            "company_B": 9957,
+            "company_C": 9707,
+            "company_D": 10107
+          },
+          "spending_cents": 12109340,
+          "refund_cents": 0,
+          "policy_version": "budget-constrained-logit-v1.0.0",
+          "government_rebate_cents": 0
+        },
+        {
+          "group_id": "price_sensitive::tail",
+          "settled_round": 1,
+          "demand_orders": 509,
+          "unit_budget_cents": 18709,
+          "voluntary_no_purchase_orders": 6,
+          "stockout_orders": 0,
+          "purchases_by_company": {
+            "company_A": 175,
+            "company_B": 103,
+            "company_C": 126,
+            "company_D": 99
+          },
+          "posted_prices_cents": {
+            "company_A": 9031,
+            "company_B": 9957,
+            "company_C": 9707,
+            "company_D": 10107
+          },
+          "spending_cents": 4829671,
+          "refund_cents": 0,
+          "policy_version": "budget-constrained-logit-v1.0.0",
+          "government_rebate_cents": 0
+        },
+        {
+          "group_id": "price_sensitive::upper",
+          "settled_round": 1,
+          "demand_orders": 2543,
+          "unit_budget_cents": 12709,
+          "voluntary_no_purchase_orders": 184,
+          "stockout_orders": 10,
+          "purchases_by_company": {
+            "company_A": 837,
+            "company_B": 475,
+            "company_C": 585,
+            "company_D": 452
+          },
+          "posted_prices_cents": {
+            "company_A": 9031,
+            "company_B": 9957,
+            "company_C": 9707,
+            "company_D": 10107
+          },
+          "spending_cents": 22535481,
+          "refund_cents": 0,
+          "policy_version": "budget-constrained-logit-v1.0.0",
+          "government_rebate_cents": 0
+        },
+        {
+          "group_id": "service_sensitive::budget",
+          "settled_round": 1,
+          "demand_orders": 109,
+          "unit_budget_cents": 9509,
+          "voluntary_no_purchase_orders": 29,
+          "stockout_orders": 8,
+          "purchases_by_company": {
+            "company_A": 72,
+            "company_B": 0,
+            "company_C": 0,
+            "company_D": 0
+          },
+          "posted_prices_cents": {
+            "company_A": 9031,
+            "company_B": 9957,
+            "company_C": 9707,
+            "company_D": 10107
+          },
+          "spending_cents": 650232,
+          "refund_cents": 0,
+          "policy_version": "budget-constrained-logit-v1.0.0",
+          "government_rebate_cents": 0
+        },
+        {
+          "group_id": "service_sensitive::core",
+          "settled_round": 1,
+          "demand_orders": 436,
+          "unit_budget_cents": 11409,
+          "voluntary_no_purchase_orders": 34,
+          "stockout_orders": 1,
+          "purchases_by_company": {
+            "company_A": 112,
+            "company_B": 90,
+            "company_C": 105,
+            "company_D": 94
+          },
+          "posted_prices_cents": {
+            "company_A": 9031,
+            "company_B": 9957,
+            "company_C": 9707,
+            "company_D": 10107
+          },
+          "spending_cents": 3876895,
+          "refund_cents": 0,
+          "policy_version": "budget-constrained-logit-v1.0.0",
+          "government_rebate_cents": 0
+        },
+        {
+          "group_id": "service_sensitive::premium",
+          "settled_round": 1,
+          "demand_orders": 545,
+          "unit_budget_cents": 16009,
+          "voluntary_no_purchase_orders": 23,
+          "stockout_orders": 1,
+          "purchases_by_company": {
+            "company_A": 142,
+            "company_B": 123,
+            "company_C": 136,
+            "company_D": 120
+          },
+          "posted_prices_cents": {
+            "company_A": 9031,
+            "company_B": 9957,
+            "company_C": 9707,
+            "company_D": 10107
+          },
+          "spending_cents": 5040105,
+          "refund_cents": 0,
+          "policy_version": "budget-constrained-logit-v1.0.0",
+          "government_rebate_cents": 0
+        },
+        {
+          "group_id": "service_sensitive::tail",
+          "settled_round": 1,
+          "demand_orders": 327,
+          "unit_budget_cents": 19009,
+          "voluntary_no_purchase_orders": 9,
+          "stockout_orders": 0,
+          "purchases_by_company": {
+            "company_A": 89,
+            "company_B": 74,
+            "company_C": 83,
+            "company_D": 72
+          },
+          "posted_prices_cents": {
+            "company_A": 9031,
+            "company_B": 9957,
+            "company_C": 9707,
+            "company_D": 10107
+          },
+          "spending_cents": 3073962,
+          "refund_cents": 0,
+          "policy_version": "budget-constrained-logit-v1.0.0",
+          "government_rebate_cents": 0
+        },
+        {
+          "group_id": "service_sensitive::upper",
+          "settled_round": 1,
+          "demand_orders": 763,
+          "unit_budget_cents": 13509,
+          "voluntary_no_purchase_orders": 46,
+          "stockout_orders": 2,
+          "purchases_by_company": {
+            "company_A": 201,
+            "company_B": 171,
+            "company_C": 185,
+            "company_D": 158
+          },
+          "posted_prices_cents": {
+            "company_A": 9031,
+            "company_B": 9957,
+            "company_C": 9707,
+            "company_D": 10107
+          },
+          "spending_cents": 6910579,
+          "refund_cents": 0,
+          "policy_version": "budget-constrained-logit-v1.0.0",
+          "government_rebate_cents": 0
+        }
+      ]
+    },
+    "state_after_hash": "sha256:bb1e380f5c0aa43a15e6081fe008f3fef3ed17575e2cc2d1aae7b9787f768e8e",
+    "invariant_results": [
+      "all_passed"
+    ]
+  },
+  "replay_passed": true
+}

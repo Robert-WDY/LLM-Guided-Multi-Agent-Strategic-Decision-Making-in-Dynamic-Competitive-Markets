@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "browser_qa": true,
+  "backup_restore": true,
+  "frontend": {
+    "build": true,
+    "typecheck": true,
+    "lint": true,
+    "tests": 11
+  },
+  "backend_tests": 452,
+  "concept_topics": 8,
+  "market_policy_modes": 5,
+  "checks": [
+    "all eight browser calculations",
+    "invalid cost rejected",
+    "exact JSON download",
+    "two-case strategy queue",
+    "recorded public scenario decision basis",
+    "six stage findings displayed",
+    "current episode pre-terminal round 5 counterfactual",
+    "ten concept records restored with checksums",
+    "eight completed queue jobs restored",
+    "456 JSON file hashes unchanged",
+    "budget ledger unchanged",
+    "restored concept parameters and strategy controls match saved request"
+  ],
+  "budget_reserved_cny": 9.993565
+}

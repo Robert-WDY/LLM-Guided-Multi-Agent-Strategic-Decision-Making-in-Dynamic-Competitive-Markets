@@ -393,7 +393,7 @@ class RoundCoordinator:
                 company_ids=state_before.company_ids,
                 mode="off",
             ).close()
-            if cooperation_mode == "shared_resilience_v1":
+            if cooperation_mode in {"shared_resilience_v1", "combined_v1"}:
                 close_payload = await self.controller.close_communication(
                     episode_id,
                     state_before.round,
@@ -469,7 +469,7 @@ class RoundCoordinator:
                 state_before.state_hash,
             )
             communication_closure = self._closure_from_api(close_payload)
-            if cooperation_mode == "shared_resilience_v1":
+            if cooperation_mode in {"shared_resilience_v1", "combined_v1"}:
                 raw_cooperation_close = close_payload.get("cooperation_close")
                 if raw_cooperation_close is None:
                     raise StaleRoundError(
@@ -681,7 +681,7 @@ class RoundCoordinator:
         )
         state_after = MarketState.from_dict(settlement["state"])
         cooperation_round = None
-        if cooperation_mode == "shared_resilience_v1":
+        if cooperation_mode in {"shared_resilience_v1", "combined_v1"}:
             raw_cooperation_round = settlement.get("cooperation_round")
             if raw_cooperation_round is None:
                 raise RuntimeError("cooperation settlement record is missing")
@@ -1135,7 +1135,7 @@ class RoundCoordinator:
                         "FEEDBACK_DISTRIBUTED",
                         "ROUND_LOGGED",
                     ]
-                    if cooperation_mode == "shared_resilience_v1"
+                    if cooperation_mode in {"shared_resilience_v1", "combined_v1"}
                     else [
                     "ROUND_OPEN",
                     "OBSERVATION_FROZEN",
@@ -1172,7 +1172,7 @@ class RoundCoordinator:
                         "FEEDBACK_DISTRIBUTED",
                         "ROUND_LOGGED",
                     ]
-                    if cooperation_mode == "shared_resilience_v1"
+                    if cooperation_mode in {"shared_resilience_v1", "combined_v1"}
                     else [
                     "ROUND_OPEN",
                     "OBSERVATION_FROZEN",

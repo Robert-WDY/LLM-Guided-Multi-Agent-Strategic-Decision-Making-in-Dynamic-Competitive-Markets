@@ -1,0 +1,83 @@
+{
+  "experiment_schema_version": "final-market-v9-real-llm-smoke-preregistration-v1.0.0",
+  "evidence_level": "EXPLORATORY_REAL_LLM_PAIRED_SMOKE",
+  "authorization": "user_explicitly_authorized_real_llm_experiments",
+  "provider": "doubao",
+  "model": "doubao-seed-2-0-lite-260215",
+  "temperature": 0.0,
+  "top_p": 0.1,
+  "maximum_provider_calls": 6,
+  "reserved_prompt_tokens_per_call": 32000,
+  "reserved_completion_tokens_per_call": 4000,
+  "maximum_prompt_tokens": 192000,
+  "maximum_completion_tokens": 24000,
+  "price_snapshot": {
+    "status": "conservative_project_estimate_not_provider_invoice",
+    "input_price_microunits_per_token": 2,
+    "output_price_microunits_per_token": 4,
+    "currency": "CNY"
+  },
+  "maximum_estimated_cost_microunits": 480000,
+  "conditions": [
+    "baseline_without_advice",
+    "treatment_with_v9_advice"
+  ],
+  "paired_cells": [
+    {
+      "seed": 94003,
+      "window": "mature_shortage",
+      "persona_id": "balanced_v1",
+      "expected_disposition": "recommend",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ]
+    },
+    {
+      "seed": 94005,
+      "window": "mature_shortage",
+      "persona_id": "risk_guarded_v1",
+      "expected_disposition": "recommend",
+      "call_order": [
+        "treatment_with_v9_advice",
+        "baseline_without_advice"
+      ]
+    },
+    {
+      "seed": 94001,
+      "window": "pivotal_project",
+      "persona_id": "aggressive_v1_extreme",
+      "expected_disposition": "defer_to_agent",
+      "call_order": [
+        "baseline_without_advice",
+        "treatment_with_v9_advice"
+      ]
+    }
+  ],
+  "frozen_controls": [
+    "market_state",
+    "observation_visibility",
+    "belief",
+    "opponent_model",
+    "persona",
+    "provider",
+    "model",
+    "opponent_continuation_policy",
+    "market_seed"
+  ],
+  "primary_metrics": [
+    "advisor_adoption",
+    "action_change",
+    "enterprise_value_delta_cents",
+    "candidate_regret_reduction_cents"
+  ],
+  "safety_metrics": [
+    "research_only_price_coordination_action_count",
+    "failed_call_count",
+    "token_usage",
+    "estimated_cost"
+  ],
+  "continuation_policy": "three-round closed-loop; first focal action is evaluated against responsive deterministic opponents, later actions use deterministic rules",
+  "success_interpretation": "Directional integration evidence only. Three pairs cannot establish statistical stability or provider generalization.",
+  "failure_policy": "At most six logical calls. The client may make one schema-repair request; preserve failures and do not add replacement samples."
+}

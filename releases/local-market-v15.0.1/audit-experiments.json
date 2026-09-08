@@ -1,0 +1,92 @@
+{
+  "passed": true,
+  "learning_runs": 48,
+  "learning_rounds": 99216,
+  "market_episodes": 6,
+  "market_rounds": 120,
+  "market": [
+    {
+      "mode": "rule",
+      "state_hash": "sha256:9826d55f21a3e146b32461caa3fd7a50da8dbfc915af4c9e408e88e919e9d463",
+      "matches_v15": true,
+      "replay_passed": true
+    },
+    {
+      "mode": "theory_best_response",
+      "state_hash": "sha256:a08963f53b45341a8d30449874e5ca72c2dde52eb913194393764a7cecac3471",
+      "matches_v15": true,
+      "replay_passed": true
+    },
+    {
+      "mode": "theory_maximin",
+      "state_hash": "sha256:9da63aa660002ed46372f7c592a7bc8a2486b4e907183e3efec5e46019059621",
+      "matches_v15": true,
+      "replay_passed": true
+    },
+    {
+      "mode": "theory_tft",
+      "state_hash": "sha256:b6ee74f10e93832ccb7ed322160f3d410bff4d5d58dd706ec3fc3a6abc51e2aa",
+      "matches_v15": true,
+      "replay_passed": true
+    },
+    {
+      "mode": "theory_grim",
+      "state_hash": "sha256:a46b20e15ee7125bdcf6e0bd4989dfdcaa5006b907e790671f071e92a8d3469e",
+      "matches_v15": true,
+      "replay_passed": true
+    },
+    {
+      "mode": "theory_wsls",
+      "state_hash": "sha256:8d9d08bea101cf73e4502481741215a8a675a7e0a18216c5d1803d73fd0242bd",
+      "matches_v15": true,
+      "replay_passed": true
+    }
+  ],
+  "historical_real_records_verified": [
+    {
+      "case": "dominance",
+      "option": "defect",
+      "loss": 0
+    },
+    {
+      "case": "mixed_security",
+      "option": "half",
+      "loss": 0
+    },
+    {
+      "case": "belief_response",
+      "option": "hare",
+      "loss": 0
+    },
+    {
+      "case": "terminal_reciprocity",
+      "option": "defect",
+      "loss": 0
+    },
+    {
+      "case": "bayesian_signal",
+      "option": "enter",
+      "loss": 0.0
+    },
+    {
+      "case": "market_response",
+      "option": "value",
+      "loss": 0.0
+    }
+  ],
+  "new_real_calls": 0,
+  "budget_unchanged": {
+    "ready": false,
+    "total_cny": 10,
+    "reserved_cny": 9.993565,
+    "remaining_cny": 0.006435,
+    "historical_estimate_cny": 1.093593,
+    "maximum_call_cny": 0.42,
+    "new_calls": 186,
+    "model": "deepseek-v4-flash",
+    "price_valid_through": "2026-09-08",
+    "message": "已保留失败及未知调用的额度。"
+  },
+  "old_v15_sha256": "a8296155943e5f190f95b57dd80f8c3fa0ed10b80cc5f581c02a05de6a50dbca",
+  "conclusion": "Final-round traces match certificates at non-grid horizons; six market replays match frozen evidence exactly. No new strategy superiority claim."
+}

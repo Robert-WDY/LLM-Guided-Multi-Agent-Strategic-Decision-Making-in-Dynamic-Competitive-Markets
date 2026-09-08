@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "browser_qa": true,
+  "backup_restore": true,
+  "frontend": {
+    "build": true,
+    "typecheck": true,
+    "lint": true,
+    "tests": 12
+  },
+  "backend_tests": 455,
+  "checks": [
+    "105 history records with 2 damaged: 103 preserved and accessible",
+    "48 learning experiments final trace matches certificate",
+    "6 market episodes match prior v15 hash",
+    "browser loads older than 30th experiment",
+    "saved API default parameters restored",
+    "strict numeric bounds",
+    "58 concepts and 504 JSON files survive actual backup and restore"
+  ],
+  "new_real_calls": 0
+}

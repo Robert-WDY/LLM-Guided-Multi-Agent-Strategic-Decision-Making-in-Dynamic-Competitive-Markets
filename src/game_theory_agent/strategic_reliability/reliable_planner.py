@@ -18,6 +18,17 @@ from .pareto_planner import ParetoPlannerDecision
 
 PPM = 1_000_000
 MIN_OPPONENT_CONFIDENCE_PPM = 700_000
+FINAL_MARKET_GATE_POLICY = {
+    "policy_version": "final-market-reliability-gate-v1.0.0",
+    "eligible_candidate_ids": ["mutual_aid_request", "mutual_aid_offer"],
+    "minimum_opponent_confidence_ppm": 700_000,
+    "minimum_expected_enterprise_value_gain_cents": 250_000,
+    "minimum_worst_case_risk_adjusted_gain_cents": 0,
+    "allowed_overridden_reason_codes": [
+        "top_candidates_overlap_forecast_uncertainty"
+    ],
+    "price_coordination_is_research_only": True,
+}
 
 
 class ExcludedCandidate(StrictModel):
@@ -177,6 +188,73 @@ def compute_abstention_gate_hash(
             "gate": payload,
         }
     )
+
+
+def build_final_market_gate(
+    *,
+    plan: StrategicReliabilityPlan,
+    decision: ParetoPlannerDecision,
+    diagnostic_fallback_candidate_id: str,
+    public_decision_input_hash: str,
+    observation: Mapping[str, Any],
+    opponent_model: OpponentModelState,
+    marginal_investment_plan_hash: str,
+) -> ParetoAbstentionGate:
+    """Apply a narrow, versioned release rule for bilateral capacity aid."""
+
+    base = build_abstention_gate(
+        plan=plan,
+        decision=decision,
+        diagnostic_fallback_candidate_id=diagnostic_fallback_candidate_id,
+        public_decision_input_hash=public_decision_input_hash,
+        observation=observation,
+        opponent_model=opponent_model,
+        marginal_investment_plan_hash=marginal_investment_plan_hash,
+    )
+    policy = FINAL_MARKET_GATE_POLICY
+    allowed_reasons = set(policy["allowed_overridden_reason_codes"])
+    reasons = set(base.abstain_reason_codes)
+    selected = next(
+        item
+        for item in plan.evaluations
+        if item.candidate.candidate_id == decision.recommended_candidate_id
+    )
+    baseline = next(
+        item
+        for item in plan.evaluations
+        if item.candidate.candidate_id == plan.baseline_candidate_id
+    )
+    can_release_mutual_aid = (
+        base.should_abstain
+        and bool(reasons)
+        and reasons <= allowed_reasons
+        and decision.recommended_candidate_id
+        in set(policy["eligible_candidate_ids"])
+        and decision.recommended_candidate_id in base.safe_candidate_ids
+        and base.opponent_model_confidence_ppm
+        >= int(policy["minimum_opponent_confidence_ppm"])
+        and selected.expected_enterprise_value_cents
+        - baseline.expected_enterprise_value_cents
+        >= int(policy["minimum_expected_enterprise_value_gain_cents"])
+        and selected.worst_case_risk_adjusted_value_cents
+        - baseline.worst_case_risk_adjusted_value_cents
+        >= int(policy["minimum_worst_case_risk_adjusted_gain_cents"])
+    )
+    if not can_release_mutual_aid:
+        return base
+    payload = base.model_dump(mode="json")
+    payload.update(
+        {
+            "effective_candidate_id": decision.recommended_candidate_id,
+            "withheld_candidate_id": None,
+            "execution_disposition": "recommend",
+            "should_abstain": False,
+            "abstain_reason_codes": [],
+            "gate_hash": "pending",
+        }
+    )
+    payload["gate_hash"] = compute_abstention_gate_hash(payload)
+    return ParetoAbstentionGate.model_validate(payload)
 
 
 def build_reliability_gate(

@@ -203,7 +203,9 @@ class CurrentAgentVersionBuilder:
             ),
             advisor_mode=advisor_mode,
             advisor_version=(
-                "public-pareto-abstention-market-rollout-v3.0.0"
+                "public-final-strategic-market-rollout-v1.0.0"
+                if advisor_mode == "strategic_market_v9"
+                else "public-pareto-abstention-market-rollout-v3.0.0"
                 if advisor_mode == "pareto_reliable_v7"
                 else "public-pareto-marginal-market-rollout-v2.0.0"
                 if advisor_mode == "pareto_reliable_v6"
@@ -213,8 +215,14 @@ class CurrentAgentVersionBuilder:
             ),
             repeated_game_mode="off",
             repeated_game_version="none",
-            cooperation_mode="off",
-            cooperation_version="none",
+            cooperation_mode=(
+                "combined_v1" if advisor_mode == "strategic_market_v9" else "off"
+            ),
+            cooperation_version=(
+                "final-strategic-market-v1.0.0"
+                if advisor_mode == "strategic_market_v9"
+                else "none"
+            ),
         )
 
     def register(
@@ -231,6 +239,7 @@ class CurrentAgentVersionBuilder:
             "pareto_reliable_v5",
             "pareto_reliable_v6",
             "pareto_reliable_v7",
+            "strategic_market_v9",
         ] = "pareto_reliable_v7",
         policy_parameters: dict[str, int | str | bool | None] | None = None,
         reproducibility_tier: ReproducibilityTier | None = None,
@@ -305,7 +314,9 @@ class CurrentAgentVersionBuilder:
             strategic_stack=self._strategic_stack(advisor_mode),
             action_stack=ActionStackSpec(
                 candidate_generator_version=(
-                    "public-marginal-candidates-v3.0.0"
+                    "final-strategic-market-candidates-v1.0.0"
+                    if advisor_mode == "strategic_market_v9"
+                    else "public-marginal-candidates-v3.0.0"
                     if advisor_mode in {
                         "pareto_reliable_v6",
                         "pareto_reliable_v7",
@@ -316,10 +327,14 @@ class CurrentAgentVersionBuilder:
                 ),
                 adoption_contract_version=(
                     "advisor-adoption-trace-v2.0.0"
-                    if advisor_mode == "pareto_reliable_v7"
+                    if advisor_mode in {"pareto_reliable_v7", "strategic_market_v9"}
                     else "advisor-adoption-trace-v1.0.0"
                 ),
-                action_schema_version="company-action-v4.0.0",
+                action_schema_version=(
+                    "company-action-v6.3.0"
+                    if advisor_mode == "strategic_market_v9"
+                    else "company-action-v4.0.0"
+                ),
                 parser_version="pydantic-agent-decision-parser-v1.0.0",
                 resolver_version="action-resolution-policy-v1.0.0",
                 safety_policy_version="market-action-guardrails-v4.2.0",

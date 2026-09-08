@@ -1,0 +1,7 @@
+{
+  "build": true,
+  "typecheck": true,
+  "lint": true,
+  "tests": 11,
+  "browser_qa": false
+}

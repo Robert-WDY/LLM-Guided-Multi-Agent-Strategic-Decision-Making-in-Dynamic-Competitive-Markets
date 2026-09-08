@@ -1,0 +1,38 @@
+{
+  "acceptance": [
+    "all_engineering_and_replay",
+    "same_paired_supplier_shocks",
+    "autonomous_quote_changes_present",
+    "disabled_quotes_fixed"
+  ],
+  "base_config_hash": "sha256:05c11bc55d717fb5be30d175d505b59c8ead7a09839ac954ac445e4284e7af7f",
+  "buyers": [
+    "fixed_economy",
+    "cheapest_quote",
+    "diverse"
+  ],
+  "conditions": [
+    false,
+    true
+  ],
+  "design": "8 seeds base plus first4 seeds per3 stress variants; paired exogenous disruptions, rule buyer operating actions, either fixed economy/all cheapest published/diverse50:50 procurement. No advisor/LLM. Preserve quote/profit/welfare/shortage paths; no requirement that autonomous prices increase welfare or all supplier profits.",
+  "hash": "sha256:e892d3a4bd0d49c065c5e12fdaf7cfea7e5fc65b685b005b13cf41b835732c66",
+  "model_calls": 0,
+  "rounds": 20,
+  "seeds": [
+    140101,
+    140102,
+    140103,
+    140104,
+    140105,
+    140106,
+    140107,
+    140108
+  ],
+  "variants": [
+    "base",
+    "fast_price_step",
+    "capacity_half",
+    "low_reliability"
+  ]
+}

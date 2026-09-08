@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "model_calls": 0,
+  "production_http": true,
+  "windows_powershell": true,
+  "port_collision_refused": true,
+  "wrong_owner_not_killed": true,
+  "backup_restore": true,
+  "budget_not_rolled_back": true,
+  "repeat_idempotent": true,
+  "terminal_hash": "sha256:a4fc9233d46dcfaf606ae2ee6f1a8f6b7b63626a844d18bf92ba765860a73d9e"
+}

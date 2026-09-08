@@ -5,6 +5,37 @@ from game_theory_agent.experiments.stage66_failure_forensics import (
 )
 
 
+def test_migrated_source_summary_resolves_without_rewriting_evidence(tmp_path, monkeypatch):
+    from game_theory_agent.experiments import stage66_failure_forensics as forensic
+
+    monkeypatch.setattr(forensic, "PROJECT_ROOT", tmp_path)
+    local = tmp_path / "runs" / "recorded-pilot" / "summary.json"
+    local.parent.mkdir(parents=True)
+    local.write_text('{"frozen":true}\n', encoding="utf-8")
+    original = local.read_bytes()
+    for source in (
+        "C:/Users/12204/Desktop/game-theory-agent/runs/recorded-pilot/summary.json",
+        r"C:\Users\12204\Desktop\game-theory-agent\runs\recorded-pilot\summary.json",
+    ):
+        assert forensic._resolve_source_summary(source) == local
+    assert local.read_bytes() == original
+
+
+def test_source_summary_keeps_existing_paths_and_rejects_unrelated_relocation(tmp_path, monkeypatch):
+    from pathlib import Path
+    from game_theory_agent.experiments import stage66_failure_forensics as forensic
+
+    monkeypatch.setattr(forensic, "PROJECT_ROOT", tmp_path)
+    existing = tmp_path / "summary.json"
+    existing.write_text("{}", encoding="utf-8")
+    assert forensic._resolve_source_summary(str(existing)) == existing
+    for source in (
+        "C:/unrelated/runs/pilot/summary.json",
+        "C:/Users/12204/Desktop/game-theory-agent/runs/../summary.json",
+    ):
+        assert forensic._resolve_source_summary(source) == Path(source)
+
+
 def test_forensic_regret_decomposition_is_additive():
     result = decompose_regret(
         oracle_value=1_000,

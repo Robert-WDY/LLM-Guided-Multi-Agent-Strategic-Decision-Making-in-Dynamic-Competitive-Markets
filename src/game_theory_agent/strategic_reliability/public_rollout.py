@@ -24,8 +24,10 @@ from game_theory_agent.market import (
     Persona,
     RiskSignal,
     SharedResilienceState,
+    StrategicMarketState,
 )
 from game_theory_agent.market.protocols import sha256_hash, state_hash
+from game_theory_agent.market.models import SupplyChainState, WelfareAccountingState, GovernmentState, ConsumerDecisionAudit
 from game_theory_agent.opponent import (
     OpponentModelState,
     compute_opponent_model_hash,
@@ -37,18 +39,33 @@ from .public_contracts import (
     PublicStrategicAdvice,
     compute_public_advice_hash,
 )
-from .contracts import CandidateEconomicAction, StrategicActionCandidate
+from .contracts import (
+    CandidateEconomicAction,
+    StrategicActionCandidate,
+    StrategicReliabilityPlan,
+    compute_reliability_plan_hash,
+)
 from .rollout import AuthoritativeMarketRolloutEvaluator, generate_candidate_actions
 from .pareto_planner import (
     PROMOTED_PARETO_SPEC,
     PROMOTION_EVIDENCE_SHA256,
     select_pareto_decision,
 )
-from .reliable_planner import build_abstention_gate, build_reliability_gate
+from .reliable_planner import (
+    FINAL_MARKET_GATE_POLICY,
+    build_abstention_gate,
+    build_final_market_gate,
+    build_reliability_gate,
+)
 from .marginal_investment import (
     MarginalInvestmentPlan,
     build_marginal_investment_plan,
 )
+from .paired_gate import PAIRED_MARKET_GATE_POLICY, build_paired_market_gate
+
+
+def _clip(value: int, low: int, high: int) -> int:
+    return min(max(value, low), high)
 
 
 def _public_decision_payload(
@@ -141,7 +158,12 @@ def _event_from_public(
 
 
 def _estimated_opponent(
-    base: CompanyState, public: Mapping[str, Any]
+    base: CompanyState,
+    public: Mapping[str, Any],
+    *,
+    mutual_aid_received_orders: int | None = None,
+    mutual_aid_provided_orders: int | None = None,
+    regulatory_fine_cents: int | None = None,
 ) -> CompanyState:
     sales = int(public["sales_orders"])
     capacity = max(1, base.operations.effective_capacity_orders, sales)
@@ -150,6 +172,8 @@ def _estimated_opponent(
         market_share_ppm=int(public["market_share_ppm"]),
         potential_demand_orders=sales,
         sales_orders=sales,
+        mutual_aid_fulfilled_orders=mutual_aid_received_orders,
+        mutual_aid_provided_orders=mutual_aid_provided_orders,
     )
     brand = BrandState(
         brand_awareness_ppm=base.brand.brand_awareness_ppm,
@@ -165,6 +189,10 @@ def _estimated_opponent(
     return replace(
         base,
         persona=Persona.NONE,
+        financial=replace(
+            base.financial,
+            round_regulatory_fine_cents=regulatory_fine_cents,
+        ),
         commercial=commercial,
         operations=operations,
         brand=brand,
@@ -271,18 +299,26 @@ def build_public_forecast_state(
     market_public = public_state.get("market")
     if not isinstance(market_public, Mapping):
         raise ValueError("public market state is missing")
-    cooperation_mode = (
-        "shared_resilience_v1"
-        if public_state.get("shared_resilience") is not None
-        else "off"
-    )
+    strategic_public = market_public.get("strategic_market")
+    cooperation_modes: list[str] = []
+    if public_state.get("shared_resilience") is not None:
+        cooperation_modes.append("shared_resilience_v1")
+    if isinstance(strategic_public, Mapping):
+        if strategic_public.get("threshold_project") is not None:
+            cooperation_modes.append("threshold_project_v1")
+        if bool(strategic_public.get("mutual_aid", {}).get("enabled", False)):
+            cooperation_modes.append("mutual_aid_v1")
+        if bool(
+            strategic_public.get("price_coordination", {}).get("enabled", False)
+        ):
+            cooperation_modes.append("price_coordination_v1")
     base = MarketEnv(config).reset(
         company_ids,
         episode_id=episode_id,
         episode_seed=forecast_seed,
         market_model=str(market_public["market_model_id"]),
         max_rounds=max_rounds,
-        cooperation_mode=cooperation_mode,
+        cooperation_modes=tuple(cooperation_modes),
     )
     market_fields = {item.name for item in fields(base.market)}
     projected_market = replace(
@@ -293,6 +329,21 @@ def build_public_forecast_state(
             if key in market_fields
         },
     )
+    strategic_market = (
+        StrategicMarketState.from_dict(strategic_public)
+        if isinstance(strategic_public, Mapping)
+        else None
+    )
+    mutual_received = {item: 0 for item in company_ids}
+    mutual_provided = {item: 0 for item in company_ids}
+    regulatory_fines = {item: 0 for item in company_ids}
+    if strategic_market is not None:
+        for transfer in strategic_market.last_mutual_aid_transfers:
+            mutual_received[transfer.recipient_company_id] += transfer.fulfilled_orders
+            mutual_provided[transfer.donor_company_id] += transfer.fulfilled_orders
+        for outcome in strategic_market.last_price_coordination_outcomes:
+            for item, value in outcome.fine_by_company_cents:
+                regulatory_fines[item] += value
     public_by_id = {
         str(item["company_id"]): item for item in public_companies
     }
@@ -300,7 +351,31 @@ def build_public_forecast_state(
     companies = tuple(
         own_company
         if item == company_id
-        else _estimated_opponent(base_by_id[item], public_by_id[item])
+        else _estimated_opponent(
+            base_by_id[item],
+            public_by_id[item],
+            mutual_aid_received_orders=(
+                mutual_received[item]
+                if strategic_market is not None
+                and strategic_market.mutual_aid_enabled
+                and state_version > 0
+                else None
+            ),
+            mutual_aid_provided_orders=(
+                mutual_provided[item]
+                if strategic_market is not None
+                and strategic_market.mutual_aid_enabled
+                and state_version > 0
+                else None
+            ),
+            regulatory_fine_cents=(
+                regulatory_fines[item]
+                if strategic_market is not None
+                and strategic_market.price_coordination_enabled
+                and state_version > 0
+                else None
+            ),
+        )
         for item in company_ids
     )
     events = tuple(
@@ -315,6 +390,35 @@ def build_public_forecast_state(
         if public_state.get("shared_resilience") is not None
         else None
     )
+    projected_government = GovernmentState.from_dict(market_public["government"]) if market_public.get("government") else None
+    projected_consumers=tuple(ConsumerDecisionAudit.from_dict(d) for d in market_public.get("consumer_decisions",()))
+    if config.data.get("supply_chain",{}).get("transaction_accounting"):
+        from .forecast_accounting import forecast_accounting
+        projected_supply, companies = forecast_accounting(config=config, public_supply=market_public["supply_chain"],
+            companies=companies,company_id=company_id,strategic=strategic_market,state_version=state_version,terminal=bool(public_state["terminal"]),remaining_rounds=rounds_remaining)
+        if projected_government and projected_government.last_decision:
+            support=dict(projected_government.last_decision.support_by_company_cents)
+            if projected_government.last_decision.strategic_policy:
+                support={cid:min(cap,projected_government.round_matched_support_cents or 0) for cid,cap in support.items()}
+            companies=tuple(replace(c,financial=replace(c.financial,round_government_support_cents=support.get(c.company_id,0))) if c.company_id!=company_id else c for c in companies)
+        if projected_consumers:
+            # Only aggregate refunds are public. Allocate the unobserved
+            # remainder by opponent sales as an explicit historical prior.
+            residual_refunds=sum(d.refund_cents for d in projected_consumers)-own_company.financial.round_incident_cost_cents
+            weights={c.company_id:c.commercial.sales_orders for c in companies if c.company_id!=company_id}
+            total=sum(weights.values()); refund_est={cid:residual_refunds*q//total if total else 0 for cid,q in weights.items()}
+            remaining=residual_refunds-sum(refund_est.values())
+            for cid in sorted(refund_est)[:remaining]:refund_est[cid]+=1
+            estimated=[]
+            for c in companies:
+                if c.company_id!=company_id:
+                    revenue=sum(dict(d.purchases_by_company).get(c.company_id,0)*dict(d.posted_prices_cents)[c.company_id] for d in projected_consumers)
+                    revenue+=sum(t.total_transfer_fee_cents for t in strategic_market.last_mutual_aid_transfers if t.donor_company_id==c.company_id) if strategic_market else 0
+                    c=replace(c,financial=replace(c.financial,round_revenue_cents=revenue,round_incident_cost_cents=refund_est[c.company_id]))
+                estimated.append(c)
+            companies=tuple(estimated)
+    else:
+        projected_supply=SupplyChainState.from_dict(market_public["supply_chain"]) if market_public.get("supply_chain") is not None else base.supply_chain
     unsealed = replace(
         base,
         round=round_number,
@@ -327,6 +431,11 @@ def build_public_forecast_state(
         active_market_events=events,
         companies=companies,
         shared_resilience=shared,
+        strategic_market=strategic_market,
+        supply_chain=projected_supply,
+        government=projected_government,
+        consumer_decisions=projected_consumers,
+        welfare_accounting=(WelfareAccountingState.from_dict(market_public["welfare_accounting"]) if market_public.get("welfare_accounting") is not None else base.welfare_accounting),
         last_joint_action=(),
         terminal_enterprise_values_cents=(),
         state_hash="",
@@ -348,6 +457,9 @@ def build_public_forecast_state(
             "forecast randomness is derived from legal decision inputs, not TrueState hash",
             "belief, opponent model and Persona treatments share common random forecast scenarios on the same observation",
             "the observing company's complete private state is used only for its own planning",
+            *(["supplier costs and initial cash use declared config priors; invoices use public deliveries/quotes; hidden historical buyer budgets equal invoices; processing costs use config priors; aggregate refunds minus own known refunds are allocated by opponent sales"] if config.data.get("supply_chain",{}).get("transaction_accounting") else []),
+            *(["private supplier requested quantities use the minimum excess consistent with realized investment, not the true hidden order book"] if config.data.get("supply_chain",{}).get("track_supplier_demand") else []),
+            *(["v14 disclosed settled contracts, inventory and creditor reports are public; supplier cash/cost use declared initial/unit-cost priors; rejected bids and private order book are not reconstructed as facts"] if config.data.get("supply_chain",{}).get("strategic_policy") else []),
         ],
     )
     return forecast, record
@@ -459,6 +571,10 @@ def generate_public_overlay_candidates(
             resilience_budget_cents=resilience,
             shared_resilience_contribution_cents=shared,
             incident_response=incident_response,
+            primary_supplier_id=source.primary_supplier_id if template.label.startswith("sourcing_") else baseline.primary_supplier_id,
+            backup_supplier_id=source.backup_supplier_id if template.label.startswith("sourcing_") else baseline.backup_supplier_id,
+            primary_supplier_share_ppm=source.primary_supplier_share_ppm if template.label.startswith("sourcing_") else baseline.primary_supplier_share_ppm,
+            procurement_quantity_orders=baseline.procurement_quantity_orders,
             strategy_summary=(
                 f"公开运营基线 + 战略增量：{template.candidate_id}"
             ),
@@ -469,6 +585,10 @@ def generate_public_overlay_candidates(
         normalized = validated.action
         payload = CandidateEconomicAction(
             price_cents=normalized.price_cents,
+            primary_supplier_id=normalized.primary_supplier_id,
+            backup_supplier_id=normalized.backup_supplier_id,
+            primary_supplier_share_ppm=normalized.primary_supplier_share_ppm,
+            procurement_quantity_orders=normalized.procurement_quantity_orders,
             advertising_budget_cents=normalized.advertising_budget_cents,
             service_budget_cents=normalized.service_budget_cents,
             capacity_investment_cents=normalized.capacity_investment_cents,
@@ -727,6 +847,266 @@ def generate_public_marginal_candidates(
     return tuple(candidates)
 
 
+def generate_final_market_candidates(
+    config: MarketConfig,
+    state: MarketState,
+    company_id: str,
+    decision_support: Mapping[str, Any],
+    marginal_plan: MarginalInvestmentPlan,
+) -> tuple[StrategicActionCandidate, ...]:
+    """Add bounded final-market strategic choices to the safe v7 set.
+
+    Every candidate changes one strategic relationship on top of the screened
+    operating portfolio.  Bilateral actions are evaluated against explicit
+    accept/reject or honor/undercut response scenarios; a declaration alone
+    never creates a transfer or an agreement in ``MarketEnv``.
+    """
+
+    candidates = list(
+        generate_public_marginal_candidates(
+            config,
+            state,
+            company_id,
+            decision_support,
+            marginal_plan,
+        )
+    )
+    strategic = state.strategic_market
+    if strategic is None:
+        return tuple(candidates)
+    env = MarketEnv(config)
+    env.load_state(state)
+    constraints = env.get_action_constraints(company_id, state.state_version)
+    company = state.company(company_id)
+    base = marginal_plan.selected_action
+    price_bounds = constraints["bounds"]["price_cents"]
+    remaining_cash = max(
+        0,
+        company.financial.cash_balance_cents
+        - sum(
+            (
+                base.advertising_budget_cents,
+                base.service_budget_cents,
+                base.capacity_investment_cents,
+                base.resilience_budget_cents,
+                base.shared_resilience_contribution_cents or 0,
+                base.repair_budget_cents,
+            )
+        ),
+    )
+    specs: list[tuple[str, str, dict[str, Any], list[str], str]] = []
+
+    project = strategic.threshold_project
+    if (
+        project is not None
+        and constraints["threshold_project_contribution_enabled"]
+    ):
+        project_bounds = constraints["bounds"][
+            "threshold_project_contribution_cents"
+        ]
+        gap = max(
+            0,
+            project.required_total_contribution_cents
+            - project.accumulated_total_contribution_cents,
+        )
+        contribution = min(
+            gap,
+            remaining_cash,
+            int(project_bounds["max"]),
+        )
+        if contribution > 0:
+            specs.append(
+                (
+                    "threshold_project_contribution",
+                    "threshold_project_contribution",
+                    {"threshold_project_contribution_cents": contribution},
+                    ["threshold_project_contribution"],
+                    "为有截止期和成功门槛的公共项目出资；只有总额达标才产生公共收益。",
+                )
+            )
+
+    partners = list(constraints.get("mutual_aid_eligible_partners", ()))
+    if constraints.get("mutual_aid_enabled") and partners:
+        partner = min(partners)
+        demand_reference = (
+            company.commercial.potential_demand_orders
+            or company.commercial.sales_orders
+            or state.market.base_demand_orders
+            * max(1, company.commercial.market_share_ppm)
+            // 1_000_000
+        )
+        capacity = company.operations.effective_capacity_orders
+        max_orders = int(
+            constraints["bounds"]["mutual_aid_capacity_request_orders"]["max"]
+        )
+        request = min(max_orders, max(0, demand_reference - capacity))
+        offer = min(max_orders, max(0, capacity - demand_reference))
+        if request > 0:
+            specs.append(
+                (
+                    "mutual_aid_request",
+                    "mutual_aid_request",
+                    {
+                        "mutual_aid_partner_company_id": partner,
+                        "mutual_aid_capacity_offer_orders": 0,
+                        "mutual_aid_capacity_request_orders": request,
+                    },
+                    ["mutual_aid_request"],
+                    "向一个公开可见的伙伴请求应急履约；仅在对方匹配报价且确有余量时成交。",
+                )
+            )
+        if offer > 0:
+            specs.append(
+                (
+                    "mutual_aid_offer",
+                    "mutual_aid_offer",
+                    {
+                        "mutual_aid_partner_company_id": partner,
+                        "mutual_aid_capacity_offer_orders": offer,
+                        "mutual_aid_capacity_request_orders": 0,
+                    },
+                    ["mutual_aid_offer"],
+                    "向一个公开可见的伙伴出售闲置履约能力；仅在对方匹配请求时成交。",
+                )
+            )
+
+    coordination_partners = list(
+        constraints.get("price_coordination_eligible_partners", ())
+    )
+    if constraints.get("price_coordination_enabled") and coordination_partners:
+        credibility = dict(strategic.coordination_credibility_by_company_ppm)
+        partner = min(
+            coordination_partners,
+            key=lambda item: (-credibility.get(item, 0), item),
+        )
+        target = _clip(
+            company.commercial.price_cents + 1_000,
+            int(price_bounds["min"]),
+            int(price_bounds["max"]),
+        )
+        undercut = max(int(price_bounds["min"]), target - 500)
+        specs.extend(
+            (
+                (
+                    "price_coordination_honor",
+                    "price_coordination_honor",
+                    {
+                        "price_cents": target,
+                        "price_coordination_partner_company_id": partner,
+                        "price_coordination_target_cents": target,
+                    },
+                    ["price", "price_coordination_target"],
+                    "提出并遵守目标价格；可能提高利润，也会损害消费者并产生可审计监管风险。",
+                ),
+                (
+                    "price_coordination_undercut",
+                    "price_coordination_undercut",
+                    {
+                        "price_cents": undercut,
+                        "price_coordination_partner_company_id": partner,
+                        "price_coordination_target_cents": target,
+                    },
+                    ["price", "price_coordination_target"],
+                    "提出目标价格后低价背叛，换取短期份额但损失公开协调信誉。",
+                ),
+            )
+        )
+
+    seen = {sha256_hash(item.action.model_dump(mode="json")) for item in candidates}
+    for candidate_id, label, changes, dimensions, rationale in specs:
+        raw = CompanyAction(
+            action_id=(
+                f"strategic-v9:{state.episode_id}:{state.round}:"
+                f"{company_id}:{candidate_id}"
+            ),
+            episode_id=state.episode_id,
+            agent_id=company_id,
+            round=state.round,
+            state_version=state.state_version,
+            price_cents=int(changes.get("price_cents", base.price_cents)),
+            advertising_budget_cents=base.advertising_budget_cents,
+            service_budget_cents=base.service_budget_cents,
+            capacity_investment_cents=base.capacity_investment_cents,
+            resilience_budget_cents=base.resilience_budget_cents,
+            shared_resilience_contribution_cents=(
+                base.shared_resilience_contribution_cents
+            ),
+            threshold_project_contribution_cents=changes.get(
+                "threshold_project_contribution_cents"
+            ),
+            mutual_aid_partner_company_id=changes.get(
+                "mutual_aid_partner_company_id"
+            ),
+            mutual_aid_capacity_offer_orders=changes.get(
+                "mutual_aid_capacity_offer_orders"
+            ),
+            mutual_aid_capacity_request_orders=changes.get(
+                "mutual_aid_capacity_request_orders"
+            ),
+            price_coordination_partner_company_id=changes.get(
+                "price_coordination_partner_company_id"
+            ),
+            price_coordination_target_cents=changes.get(
+                "price_coordination_target_cents"
+            ),
+            incident_response=IncidentResponse(
+                IncidentResponseMode(base.incident_response_mode),
+                base.repair_budget_cents,
+            ),
+            strategy_summary=f"最终市场建议候选：{candidate_id}",
+        )
+        validated = env.validate_action(raw, company_id)
+        if not validated.valid or validated.action is None:
+            continue
+        normalized = validated.action
+        payload = CandidateEconomicAction(
+            price_cents=normalized.price_cents,
+            advertising_budget_cents=normalized.advertising_budget_cents,
+            service_budget_cents=normalized.service_budget_cents,
+            capacity_investment_cents=normalized.capacity_investment_cents,
+            resilience_budget_cents=normalized.resilience_budget_cents,
+            shared_resilience_contribution_cents=(
+                normalized.shared_resilience_contribution_cents
+            ),
+            threshold_project_contribution_cents=(
+                normalized.threshold_project_contribution_cents
+            ),
+            mutual_aid_partner_company_id=(
+                normalized.mutual_aid_partner_company_id
+            ),
+            mutual_aid_capacity_offer_orders=(
+                normalized.mutual_aid_capacity_offer_orders
+            ),
+            mutual_aid_capacity_request_orders=(
+                normalized.mutual_aid_capacity_request_orders
+            ),
+            price_coordination_partner_company_id=(
+                normalized.price_coordination_partner_company_id
+            ),
+            price_coordination_target_cents=(
+                normalized.price_coordination_target_cents
+            ),
+            incident_response_mode=normalized.incident_response.mode.value,
+            repair_budget_cents=(
+                normalized.incident_response.repair_budget_cents
+            ),
+        )
+        key = sha256_hash(payload.model_dump(mode="json"))
+        if key in seen:
+            continue
+        seen.add(key)
+        candidates.append(
+            StrategicActionCandidate(
+                candidate_id=candidate_id,
+                label=label,
+                action=payload,
+                changed_dimensions=dimensions,
+                rationale=rationale,
+            )
+        )
+    return tuple(candidates)
+
+
 def _reliability_fallback_candidate_id(
     *,
     candidates: tuple[StrategicActionCandidate, ...],
@@ -753,11 +1133,58 @@ def _reliability_fallback_candidate_id(
     return "maintain"
 
 
+def _without_research_only_candidates(
+    plan: StrategicReliabilityPlan,
+) -> StrategicReliabilityPlan:
+    """Keep strategic counterfactuals visible without recommending collusion."""
+
+    blocked = {
+        "price_coordination_honor",
+        "price_coordination_undercut",
+    }
+    evaluations = [
+        item
+        for item in plan.evaluations
+        if item.candidate.candidate_id not in blocked
+    ]
+    ranked = max(
+        evaluations,
+        key=lambda item: (
+            item.certainty_equivalent_value_cents,
+            item.expected_enterprise_value_cents,
+            item.worst_case_risk_adjusted_value_cents,
+            item.candidate.candidate_id,
+        ),
+    )
+    baseline = next(
+        item for item in evaluations if item.candidate.candidate_id == "maintain"
+    )
+    gain = (
+        ranked.certainty_equivalent_value_cents
+        - baseline.certainty_equivalent_value_cents
+    )
+    payload = plan.model_dump(mode="json")
+    payload.update(
+        {
+            "evaluations": [item.model_dump(mode="json") for item in evaluations],
+            "recommended_candidate_id": ranked.candidate.candidate_id,
+            "expected_gain_over_baseline_cents": gain,
+            "baseline_regret_cents": max(0, gain),
+            "plan_hash": "pending",
+        }
+    )
+    payload["plan_hash"] = compute_reliability_plan_hash(payload)
+    return StrategicReliabilityPlan.model_validate(payload)
+
+
 class PublicMarketRolloutAdvisor:
     """Finite-horizon Advisor safe for a public-information Agent context."""
 
-    def __init__(self, config: MarketConfig) -> None:
+    def __init__(self, config: MarketConfig, *, gate_policy: str | None = None) -> None:
         self.config = config
+        self.gate_policy = gate_policy or str(config.data.get("public_advisor_gate", "legacy"))
+        if self.gate_policy not in {"legacy", PAIRED_MARKET_GATE_POLICY["policy_version"]}:
+            raise ValueError("unsupported public advisor gate policy")
         self._rollout = AuthoritativeMarketRolloutEvaluator(config)
 
     def advise(
@@ -776,6 +1203,7 @@ class PublicMarketRolloutAdvisor:
             "pareto_reliable_v5",
             "pareto_reliable_v6",
             "pareto_reliable_v7",
+            "strategic_market_v9",
         ] = "public_rollout_v3",
     ) -> PublicStrategicAdvice:
         parsed_belief = (
@@ -823,11 +1251,23 @@ class PublicMarketRolloutAdvisor:
                 horizon_rounds=horizon_rounds,
                 scenario_count=scenario_count,
             )
-            if advisor_mode in {"pareto_reliable_v6", "pareto_reliable_v7"}
+            if advisor_mode in {
+                "pareto_reliable_v6",
+                "pareto_reliable_v7",
+                "strategic_market_v9",
+            }
             else None
         )
         candidates = (
-            generate_public_marginal_candidates(
+            generate_final_market_candidates(
+                self.config,
+                forecast,
+                company_id,
+                observation.get("decision_support", {}),
+                marginal_plan,
+            )
+            if advisor_mode == "strategic_market_v9"
+            else generate_public_marginal_candidates(
                 self.config,
                 forecast,
                 company_id,
@@ -879,11 +1319,17 @@ class PublicMarketRolloutAdvisor:
         ]
         pareto_decision = None
         reliability_gate = None
+        selection_oracle = (
+            _without_research_only_candidates(oracle)
+            if advisor_mode == "strategic_market_v9"
+            else oracle
+        )
         if advisor_mode in {
             "pareto_rollout_v4",
             "pareto_reliable_v5",
             "pareto_reliable_v6",
             "pareto_reliable_v7",
+            "strategic_market_v9",
         }:
             values = {
                 str(item["company_id"]): int(item["value_cents"])
@@ -899,7 +1345,7 @@ class PublicMarketRolloutAdvisor:
                 value > own_value for value in values.values()
             )
             pareto_decision = select_pareto_decision(
-                oracle,
+                selection_oracle,
                 PROMOTED_PARETO_SPEC,
                 current_rank=current_rank,
                 current_competitive_margin_cents=(
@@ -912,6 +1358,7 @@ class PublicMarketRolloutAdvisor:
                 "pareto_reliable_v5",
                 "pareto_reliable_v6",
                 "pareto_reliable_v7",
+                "strategic_market_v9",
             }:
                 if parsed_model is None:
                     raise ValueError("reliable Pareto advice requires opponent model")
@@ -921,8 +1368,20 @@ class PublicMarketRolloutAdvisor:
                     persona_profile=persona_profile,
                 )
                 reliability_gate = (
-                    build_abstention_gate(
-                        plan=oracle,
+                    (build_paired_market_gate if self.gate_policy == PAIRED_MARKET_GATE_POLICY["policy_version"] else build_final_market_gate)(
+                        plan=selection_oracle,
+                        decision=pareto_decision,
+                        diagnostic_fallback_candidate_id=fallback_id,
+                        public_decision_input_hash=(
+                            record.public_decision_input_hash
+                        ),
+                        observation=observation,
+                        opponent_model=parsed_model,
+                        marginal_investment_plan_hash=marginal_plan.plan_hash,
+                    )
+                    if advisor_mode == "strategic_market_v9"
+                    else build_abstention_gate(
+                        plan=selection_oracle,
                         decision=pareto_decision,
                         diagnostic_fallback_candidate_id=fallback_id,
                         public_decision_input_hash=(
@@ -934,7 +1393,7 @@ class PublicMarketRolloutAdvisor:
                     )
                     if advisor_mode == "pareto_reliable_v7"
                     else build_reliability_gate(
-                        plan=oracle,
+                        plan=selection_oracle,
                         decision=pareto_decision,
                         fallback_candidate_id=fallback_id,
                         public_decision_input_hash=(
@@ -975,20 +1434,26 @@ class PublicMarketRolloutAdvisor:
             "pareto_reliable_v5",
             "pareto_reliable_v6",
             "pareto_reliable_v7",
+            "strategic_market_v9",
         }
         is_reliable = advisor_mode in {
             "pareto_reliable_v5",
             "pareto_reliable_v6",
             "pareto_reliable_v7",
+            "strategic_market_v9",
         }
         is_marginal = advisor_mode in {
             "pareto_reliable_v6",
             "pareto_reliable_v7",
+            "strategic_market_v9",
         }
-        is_abstention = advisor_mode == "pareto_reliable_v7"
+        is_abstention = advisor_mode in {"pareto_reliable_v7", "strategic_market_v9"}
+        is_strategic_market = advisor_mode == "strategic_market_v9"
         payload: dict[str, Any] = {
             "advice_schema_version": (
-                "public-pareto-abstention-advice-v7.0.0"
+                "public-strategic-market-advice-v9.0.0"
+                if is_strategic_market
+                else "public-pareto-abstention-advice-v7.0.0"
                 if is_abstention
                 else "public-pareto-marginal-advice-v6.0.0"
                 if is_marginal
@@ -1000,7 +1465,9 @@ class PublicMarketRolloutAdvisor:
             ),
             "advisor_mode": advisor_mode,
             "advisor_model_version": (
-                "public-pareto-abstention-market-rollout-v3.0.0"
+                "public-final-strategic-market-rollout-v1.0.0"
+                if is_strategic_market
+                else "public-pareto-abstention-market-rollout-v3.0.0"
                 if is_abstention
                 else "public-pareto-marginal-market-rollout-v2.0.0"
                 if is_marginal
@@ -1070,7 +1537,11 @@ class PublicMarketRolloutAdvisor:
                 else None
             ),
             "promotion_evidence_sha256": (
-                PROMOTION_EVIDENCE_SHA256 if is_pareto else None
+                None
+                if is_strategic_market
+                else PROMOTION_EVIDENCE_SHA256
+                if is_pareto
+                else None
             ),
             "planner_recommended_candidate_id": (
                 pareto_decision.recommended_candidate_id
@@ -1110,6 +1581,22 @@ class PublicMarketRolloutAdvisor:
                 if is_abstention and reliability_gate is not None
                 else None
             ),
+            "research_only_candidate_ids": (
+                [
+                    item.candidate.candidate_id
+                    for item in summaries
+                    if item.candidate.candidate_id
+                    in {
+                        "price_coordination_honor",
+                        "price_coordination_undercut",
+                    }
+                ]
+                if is_strategic_market
+                else None
+            ),
+            "final_market_gate_policy": (
+                (PAIRED_MARKET_GATE_POLICY if self.gate_policy == PAIRED_MARKET_GATE_POLICY["policy_version"] else FINAL_MARKET_GATE_POLICY) if is_strategic_market else None
+            ),
             "limitations": [
                 *record.assumptions,
                 "finite candidate set and bounded horizon do not establish equilibrium",
@@ -1140,6 +1627,14 @@ class PublicMarketRolloutAdvisor:
                         "Stage 6.9 fail-closed abstention emits no executable fallback; the Agent retains its independently generated legal action"
                     ]
                     if is_abstention
+                    else []
+                ),
+                *(
+                    [
+                        "Stage 8 v9 evaluates threshold cooperation, bilateral mutual aid and price coordination against explicit opponent-response scenarios",
+                        "price coordination can trigger fines and consumer harm; it is modeled for research and is not normative business advice",
+                    ]
+                    if is_strategic_market
                     else []
                 ),
             ],

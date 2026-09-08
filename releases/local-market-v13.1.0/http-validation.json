@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "model_calls": 0,
+  "episodes": [
+    {
+      "episode": "local-ui-rules",
+      "rounds": 5,
+      "advice": false,
+      "cold_restart": true,
+      "repeat_idempotent": true,
+      "terminal_hash": "sha256:b4c3ce126b0db365fac098da705969d06a3324d70e6e0e7757388b0eb6de2991"
+    },
+    {
+      "episode": "local-ui-advice",
+      "rounds": 5,
+      "advice": true,
+      "cold_restart": true,
+      "repeat_idempotent": true,
+      "terminal_hash": "sha256:ef2dc11fd4bb6b56353681c52ccd77ae271f4c7def6d8e89e1580d517eb5cf61"
+    }
+  ],
+  "long_creation_accepted": true,
+  "long_http_rounds": 60,
+  "long_http_seconds": 180.783,
+  "long_terminal_restore": true,
+  "database_bytes": 44994560,
+  "browser_qa": false
+}
