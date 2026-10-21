@@ -22,6 +22,16 @@ const reliablePath=new URL(`./.reliable-render-${process.pid}.mjs`,import.meta.u
 await writeFile(reliablePath,ts.transpileModule(reliableSource,{compilerOptions:{jsx:ts.JsxEmit.ReactJSX,target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext}}).outputText);
 const {ReliableAdvisorResult}=await import(reliablePath.href);await unlink(reliablePath);
 const reliableFixture=JSON.parse(await readFile(new URL('./fixtures/advisor-reliable.json',import.meta.url),'utf8'));
+const calibratedFixture=JSON.parse(await readFile(new URL('./fixtures/advisor-calibrated.json',import.meta.url),'utf8'));
+
+test('calibrated actual experiment explains empirical risk veto and preserves draft',()=>{
+ const html=renderToStaticMarkup(React.createElement(ReliableAdvisorResult,{value:calibratedFixture}));
+ for(const text of ['历史高估误差与放行判断','调整后余量','保留原计划','均不保证单次结果'])assert.ok(html.includes(text),text);
+ assert.deepEqual(calibratedFixture.action,calibratedFixture.draft_action);
+ assert.ok(!calibratedFixture.empirical_calibration.passed);
+ const restored=restoreTheoryParameters('advisor',{advisor_version:'calibrated',draft_action:calibratedFixture.draft_action,mode:'research',goal:'profit'});
+ assert.equal(restored.advisor_version,'calibrated');assert.deepEqual(restored.draft_action,calibratedFixture.draft_action);
+});
 
 test('reliable actual API response explains draft change and model limits',()=>{
  const html=renderToStaticMarkup(React.createElement(ReliableAdvisorResult,{value:reliableFixture}));

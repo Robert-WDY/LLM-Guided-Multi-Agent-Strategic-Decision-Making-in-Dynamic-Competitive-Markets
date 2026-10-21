@@ -46,7 +46,9 @@ def test_directed_credibility_uses_only_accepted_verified_promises():
     before=x.export();x.verify('C','A',100,0,1,accepted=False);assert x.export()==before
     assert DirectedCredibility.restore(before).export()==before and x.accepts('B','A',5)
 
-def test_budget_increase_keeps_old_calls_and_detects_unauthorized_total(tmp_path):
+def test_budget_increase_keeps_old_calls_and_detects_unauthorized_total(tmp_path,monkeypatch):
+    # Budget authorization is independent of the wall-clock price expiry guard.
+    monkeypatch.setattr(local_budget,'PRICE_VALID_THROUGH','2099-01-01')
     p=tmp_path/'ledger.sqlite3';local_budget.initialize(p);local_budget.reserve(p);before=local_budget.status(p)
     result=local_budget.authorize_increase(30,'owner explicitly approved cumulative 30 CNY',p)
     assert result['total_cny']==30 and result['reserved_cny']==before['reserved_cny'] and result['new_calls']==before['new_calls']

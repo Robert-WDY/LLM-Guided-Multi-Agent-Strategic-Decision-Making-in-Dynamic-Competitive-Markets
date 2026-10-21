@@ -5,7 +5,8 @@ import pytest
 from game_theory_agent import local_budget as budget
 
 @pytest.fixture
-def ledger(tmp_path):
+def ledger(tmp_path,monkeypatch):
+    monkeypatch.setattr(budget,'PRICE_VALID_THROUGH','2099-01-01')
     path = tmp_path/'budget.sqlite3'
     budget.initialize(path)
     return path
@@ -59,3 +60,12 @@ def test_unexpected_provider_overage_blocks_future_calls(ledger):
         async def create(self,**kwargs): return SimpleNamespace(usage=SimpleNamespace(prompt_tokens=200000,completion_tokens=20))
     with pytest.raises(budget.LocalBudgetError): asyncio.run(budget.GuardedCompletions(Provider(),ledger).create(**request()))
     with pytest.raises(budget.LocalBudgetError): budget.reserve(ledger)
+
+
+def test_expired_prices_block_before_network_and_reservation(ledger,monkeypatch):
+    monkeypatch.setattr(budget,'PRICE_VALID_THROUGH','2000-01-01')
+    before=budget.status(ledger)
+    class MustNotCall:
+        async def create(self,**kwargs):raise AssertionError('network reached after expiry')
+    with pytest.raises(budget.LocalBudgetError):asyncio.run(budget.GuardedCompletions(MustNotCall(),ledger).create(**request()))
+    assert budget.status(ledger)==before

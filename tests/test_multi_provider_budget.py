@@ -4,6 +4,10 @@ import pytest
 from game_theory_agent import local_budget as b
 from game_theory_agent.market.actor_model import choose_option
 
+@pytest.fixture(autouse=True)
+def valid_test_prices(monkeypatch):
+    monkeypatch.setattr(b,'PRICE_VALID_THROUGH','2099-01-01')
+
 
 def test_second_provider_compact_and_responses_share_durable_ledger(tmp_path):
     path=tmp_path/"budget.sqlite3";b.initialize(path)

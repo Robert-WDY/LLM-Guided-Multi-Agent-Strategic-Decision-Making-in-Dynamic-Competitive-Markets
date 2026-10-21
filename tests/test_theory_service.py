@@ -54,3 +54,13 @@ def test_reliable_draft_modes_persist_and_reject_missing_plan(tmp_path):
     assert client.get(base+'/'+row['id']).json()==row and client.post(base,json=payload).json()==row
     payload['request_id']='missing';payload['parameters']['draft_action']={}
     assert client.post(base,json=payload).status_code==422
+
+
+@pytest.mark.parametrize('algorithm,version',[('calibrated','calibrated-draft-v20.0.0'),('empirical','empirical-draft-v20.1.0')])
+def test_calibrated_draft_persists_explicit_unsupported_abstention(tmp_path,algorithm,version):
+    service=TheoryService(tmp_path,CONFIG)
+    request=ExperimentRequest(request_id='calibrated-api',kind='advisor',parameters=dict(advisor_version=algorithm,company_count=2,mode='interactive',draft_action={'price_cents':12000},step_budget=1))
+    row=service.execute(request);r=row['result']
+    assert r['version']==version and r['action']==r['draft_action']
+    assert not r['empirical_calibration']['passed'] and r['empirical_calibration']['reasons']
+    assert TheoryService(tmp_path,CONFIG).get(row['id'])==row

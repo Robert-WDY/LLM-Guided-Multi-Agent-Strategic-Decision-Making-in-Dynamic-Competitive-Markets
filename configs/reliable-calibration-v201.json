@@ -1,0 +1,109 @@
+{
+  "policy": "empirical-draft-v20.1.0",
+  "goals": {
+    "profit": {
+      "selected_cases": 67,
+      "seed_clusters": 29,
+      "overprediction_budget": {
+        "3": 0.06032342863290928,
+        "5": 0.09055981207650972
+      }
+    },
+    "welfare": {
+      "selected_cases": 25,
+      "seed_clusters": 19,
+      "overprediction_budget": {
+        "3": 0.2601876873857604,
+        "5": 0.2772462342035279
+      }
+    }
+  },
+  "support": {
+    "company_count": [
+      2,
+      10
+    ],
+    "round": [
+      5,
+      10
+    ],
+    "remaining": [
+      11,
+      16
+    ],
+    "own_cash": [
+      5169590,
+      72348424
+    ],
+    "own_sales": [
+      471,
+      3728
+    ],
+    "own_capacity": [
+      3508,
+      3910
+    ],
+    "own_price": [
+      9077,
+      12307
+    ],
+    "own_service": [
+      12384,
+      877623
+    ],
+    "own_awareness": [
+      442493,
+      718506
+    ],
+    "demand": [
+      4886,
+      29960
+    ]
+  },
+  "config_sha256": [
+    "sha256:143a0ef8b458ec80796f474fbac29c0fb99d858af46d3289387ee21a6e4b42fe",
+    "sha256:154522b7b1041de1890ccb0849e37f1e93e0793c760010d0655438e4f6f8f879",
+    "sha256:3995415cb58e820462c6d72a4af7a6b863a91b0f02921fee281c298d6610cb01",
+    "sha256:5f7438e7bc5a4562e1ac925a51b8461f116efa8b6bd842ffd1edf157a468f97c",
+    "sha256:65df009470efb51abb11c1ae622d223c378a57133b9e716605516f3481262d56",
+    "sha256:9c450dac3150d835911ee15ecdeaa27f5485dccc5bad062da45481a13c39f4aa",
+    "sha256:ab6c0af64fe315a860871cde1f13d55a86f58eb142b9adf3e85c42a8eef6a4aa",
+    "sha256:d8749cb6c49b7e7821957cd102d55ed3d63fedde504484e595d343462bee37f1",
+    "sha256:e89e924f2305ad6a85a60123af4cf283b48feb5c843ce83b685884985a623f73",
+    "sha256:f1b12aeae744e10a10a995521d876cd1390a9566eb511e08b8ff69636a57a2a9"
+  ],
+  "seeds": [
+    640001,
+    640002,
+    640003,
+    640004,
+    640005,
+    640006,
+    640007,
+    640008,
+    640009,
+    640010,
+    640011,
+    640012,
+    640013,
+    640014,
+    640015,
+    640016,
+    640017,
+    640018,
+    640019,
+    640020,
+    640021,
+    640022,
+    640023,
+    640024,
+    640025,
+    640026,
+    640027,
+    640028,
+    640029,
+    640030
+  ],
+  "quantile": 0.9,
+  "cases": 180
+}

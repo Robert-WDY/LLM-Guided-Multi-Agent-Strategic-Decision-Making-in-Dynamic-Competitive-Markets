@@ -3,6 +3,10 @@ from types import SimpleNamespace
 import pytest
 from game_theory_agent import local_budget as b
 
+@pytest.fixture(autouse=True)
+def valid_test_prices(monkeypatch):
+    monkeypatch.setattr(b,'PRICE_VALID_THROUGH','2099-01-01')
+
 def test_compact_reserves_request_bound_without_refunding(tmp_path):
     p=tmp_path/"budget";b.initialize(p)
     class Provider:
