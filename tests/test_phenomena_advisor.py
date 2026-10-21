@@ -10,9 +10,13 @@ from game_theory_agent.market import MarketEnv, MarketConfig, load_market_config
 from game_theory_agent.game_theory.phenomena import (
     advise,
     classify_2x2,
+    phenomena_aware_advise,
+    price_sensitive,
     shared_resilience_report,
     threshold_project_report,
+    _increased_cooperation,
 )
+from game_theory_agent.game_theory.reliable_advisor import ReliableRequest
 
 CFG = "configs/market_v14_local.yaml"
 
@@ -95,3 +99,39 @@ def test_advise_returns_phenomenon_organized_report():
     ]
     for p in r["phenomena"]:
         assert p["advice"] and p["parameters"] and p["payoffs"]
+
+
+def test_increased_cooperation_detects_contribution_raise():
+    draft = {"price_cents": 10000, "shared_resilience_contribution_cents": 0}
+    assert not _increased_cooperation(draft, draft)
+    assert _increased_cooperation({**draft, "shared_resilience_contribution_cents": 30000}, draft)
+    assert _increased_cooperation({**draft, "threshold_project_contribution_cents": 1}, draft)
+
+
+def test_phenomena_aware_advise_vetoes_deadlock_cooperation():
+    c, s = _state()
+    draft = {"price_cents": 10000, "shared_resilience_contribution_cents": 0,
+             "threshold_project_contribution_cents": 0}
+
+    def fake_base(config, state, request):
+        return dict(
+            disposition="recommend", recommended_id="cooperation_adjust",
+            recommended_label="合作调整",
+            action={**draft, "shared_resilience_contribution_cents": 30000},
+            draft_action=draft, rationale="x",
+        )
+
+    request = ReliableRequest(draft_action=draft, goal="profit", mode="research", seed=1, step_budget=1)
+    result = phenomena_aware_advise(c, s, request, base_advise=fake_base)
+    # Default config: shared resilience is a deadlock -> the cooperation raise is vetoed.
+    assert result["disposition"] == "abstain"
+    assert result["action"] == result["draft_action"]
+    assert result.get("game_theory_veto")
+    assert result["game_theory_phenomena"] is not None
+
+
+def test_price_sensitive_detection():
+    base = load_market_config(CFG).to_dict()
+    assert not price_sensitive(MarketConfig.from_mapping(base))
+    base["consumer_choice"]["segments"]["price_sensitive"]["coefficients_ppm"]["price"] *= 2
+    assert price_sensitive(MarketConfig.from_mapping(base))

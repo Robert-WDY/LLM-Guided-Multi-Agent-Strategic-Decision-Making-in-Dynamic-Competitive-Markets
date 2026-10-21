@@ -205,3 +205,89 @@ def advise(config, state, cid, opponent, *, horizon=3):
             "识别的是激励结构，不是已验证的现实行为预测，也不替代经济可靠性门槛。"
         ),
     )
+
+
+def _increased_cooperation(action, draft):
+    """Whether the advisor raised a public-good contribution above the draft."""
+    a = action or {}
+    d = draft or {}
+    return (
+        (a.get("shared_resilience_contribution_cents") or 0)
+        > (d.get("shared_resilience_contribution_cents") or 0)
+        or (a.get("threshold_project_contribution_cents") or 0)
+        > (d.get("threshold_project_contribution_cents") or 0)
+    )
+
+
+def price_sensitive(config):
+    """Detect a price-sensitive market (roughly 2x the base price coefficient).
+
+    In such markets the v20.1 holdout shows ``price_up`` recommendations have a
+    short-term (3-round) gain but a longer-term (5-round) loss, so price hikes
+    are flagged for caution rather than passed silently.
+    """
+    d = getattr(config, "data", {}) or {}
+    segments = (d.get("consumer_choice") or {}).get("segments") or {}
+    price_segment = segments.get("price_sensitive") or {}
+    coeff = (price_segment.get("coefficients_ppm") or {}).get("price", 0)
+    return int(coeff or 0) >= 2_000_000
+
+
+def phenomena_aware_advise(config, state, request, *, horizon=3, base_advise=None):
+    """Run the advisor, attach the game-theory diagnosis, and veto cooperation
+    recommendations when the relevant public-good game is a deadlock.
+
+    The veto is the decision-level use of the diagnosis: if the advisor raises
+    a shared-resilience or threshold-project contribution while that public
+    good is a deadlock (defection strictly dominates and cooperation is not
+    worth it), revert to the agent's own draft and explain why.
+    """
+    from .empirical_advisor import advise as empirical_advise
+
+    result = (base_advise or empirical_advise)(config, state, request)
+    cid = getattr(request, "company_id", "company_A")
+    opponent = None
+    if len(state.company_ids) >= 2:
+        opponent = state.company_ids[1] if state.company_ids[0] == cid else state.company_ids[0]
+    if opponent is None:
+        result["game_theory_phenomena"] = None
+        return result
+
+    report = advise(config, state, cid, opponent, horizon=horizon)
+    result["game_theory_phenomena"] = report
+
+    if result.get("disposition") == "recommend" and _increased_cooperation(
+        result.get("action"), result.get("draft_action")
+    ):
+        for p in report["phenomena"]:
+            if p["kind"] == "deadlock":
+                result.update(
+                    action=result["draft_action"],
+                    recommended_id="agent_draft",
+                    recommended_label="Agent原计划",
+                    disposition="abstain",
+                    rationale=(
+                        f"博弈诊断：{p['title']}为僵局博弈（背叛严格占优且合作不划算），"
+                        "已否决合作类建议，保留原计划。"
+                    ),
+                    game_theory_veto=dict(
+                        phenomenon=p["phenomenon"],
+                        kind=p["kind"],
+                        reason="deadlock: cooperation is not game-theoretically justified",
+                    ),
+                )
+                break
+
+    # Price-sensitivity caution: a price hike in a price-elastic market is
+    # short-term-profitable but long-term self-defeating (observed 3-round gain,
+    # 5-round loss in the v20.1 holdout). Flag it for the caller; this is an
+    # experimental signal, not a validated release gate.
+    if price_sensitive(config) and result.get("recommended_id") == "price_up":
+        result["price_sensitivity_caution"] = dict(
+            market="price_sensitive",
+            reason=(
+                "价格敏感市场：提价在3轮内有利、5轮内丢份额转亏；"
+                "建议谨慎采纳或优先考虑降价/保份额。"
+            ),
+        )
+    return result
