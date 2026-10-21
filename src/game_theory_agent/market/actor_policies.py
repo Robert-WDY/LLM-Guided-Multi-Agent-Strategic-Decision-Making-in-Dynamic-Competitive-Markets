@@ -5,7 +5,11 @@ from game_theory_agent.decisioning import resolve_action_request
 from .government_strategy import OPTIONS as GOVERNMENT_OPTIONS
 from .supplier_strategy import decode
 
+# COMPANY_OPTIONS is the trained-policy selector domain and must stay frozen.
+# COMPANY_PORTFOLIOS extends it with behavioral strategies that are invokable
+# through company_action but are not part of the learned operating selector.
 COMPANY_OPTIONS=("balanced","value","margin","resilience")
+COMPANY_PORTFOLIOS=("balanced","value","margin","resilience","undercutter","cooperator")
 CONSUMER_OPTIONS=("balanced","value","service","cautious")
 SUPPLIER_OPTIONS=("balanced","inventory","reliability","no_credit")
 
@@ -19,7 +23,7 @@ def options(actor):
 
 
 def company_action(config,state,cid,option):
-    if option not in COMPANY_OPTIONS:raise ValueError("unknown company portfolio")
+    if option not in COMPANY_PORTFOLIOS:raise ValueError("unknown company portfolio")
     base=build_rule_action(config,state,cid);request=base.to_dict()
     if cid not in state.strategic_market.active_company_ids:
         return base
@@ -27,6 +31,21 @@ def company_action(config,state,cid,option):
     elif option=="margin":request["price_cents"]=base.price_cents*1050000//1000000
     elif option=="resilience":
         request["resilience_budget_cents"]=min(200000,max(0,state.company(cid).financial.cash_balance_cents//20)) if state.rounds_remaining>1 else 0
+    elif option=="undercutter":
+        # Aggressive price competition: undercut toward the lower price bound.
+        low=int(config.mapping("action","bounds")["price_cents"]["min"])
+        request["price_cents"]=max(low,base.price_cents*900000//1000000)
+    elif option=="cooperator":
+        # Voluntary contributions to the two public-good mechanisms, bounded by
+        # own cash and by the threshold project's status/deadline. This is a
+        # portfolio choice, not a hidden model or an Agent.
+        cash=state.company(cid).financial.cash_balance_cents
+        if state.rounds_remaining>1:
+            tp=state.strategic_market.threshold_project
+            if tp is not None and tp.status.value=="active" and state.round<=tp.deadline_round:
+                request["threshold_project_contribution_cents"]=min(2000000,max(0,cash//10))
+            if state.shared_resilience is not None:
+                request["shared_resilience_contribution_cents"]=min(1000000,max(0,cash//20))
     return resolve_action_request(config,state,cid,request,source="four-actor-portfolio",
                                   action_id=f"portfolio:{state.round}:{cid}:{option}").action
 
@@ -61,6 +80,7 @@ def observation(state,actor):
 def descriptions(actor):
     descriptions={"balanced":"baseline portfolio","value":"prioritize lower prices","margin":"raise own sale price 5%",
         "resilience":"invest in resilience (company) or reimburse actual investment (government)",
+        "undercutter":"cut price aggressively to win share","cooperator":"contribute to threshold project and shared resilience",
         "service":"prioritize service quality","cautious":"increase outside-option preference; budget unchanged",
         "inventory":"double target inventory","reliability":"double conditional reliability budget",
         "no_credit":"refuse new borrowing","reserve":"preserve fiscal budget","enforce":"fund inspections and double assessed fines",
