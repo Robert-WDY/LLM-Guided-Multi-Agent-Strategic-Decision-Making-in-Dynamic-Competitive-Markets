@@ -111,6 +111,7 @@ def binary_game(config, state, cid, opponent, mutator, *, horizon=3, seed=42):
     focal payoff is its cumulative round profit over ``horizon`` rounds.
     """
     matrix = {}
+    abbr = {"cooperate": "C", "defect": "D"}
     for focal in ("cooperate", "defect"):
         for opp in ("cooperate", "defect"):
             e = MarketEnv(config)
@@ -133,11 +134,11 @@ def binary_game(config, state, cid, opponent, mutator, *, horizon=3, seed=42):
                     ).action
                 s = e.step(f"{s.episode_id}:{s.round}:{s.state_version}", aa).state_after
                 payoff += s.company(cid).financial.round_profit_cents
-            matrix[(focal, opp)] = payoff
-    R = matrix[("cooperate", "cooperate")]
-    S = matrix[("cooperate", "defect")]
-    T = matrix[("defect", "cooperate")]
-    P = matrix[("defect", "defect")]
+            matrix[f"{abbr[focal]}/{abbr[opp]}"] = payoff
+    R = matrix["C/C"]
+    S = matrix["C/D"]
+    T = matrix["D/C"]
+    P = matrix["D/D"]
     return R, S, T, P, matrix
 
 

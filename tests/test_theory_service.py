@@ -64,3 +64,15 @@ def test_calibrated_draft_persists_explicit_unsupported_abstention(tmp_path,algo
     assert r['version']==version and r['action']==r['draft_action']
     assert not r['empirical_calibration']['passed'] and r['empirical_calibration']['reasons']
     assert TheoryService(tmp_path,CONFIG).get(row['id'])==row
+
+
+def test_market_phenomena_kind_reports_game_classification(tmp_path):
+    service=TheoryService(tmp_path,CONFIG)
+    request=ExperimentRequest(request_id='phenomena-api',kind='market_phenomena',parameters=dict(company_id='company_A',opponent_id='company_B',horizon=3,seed=330101,company_count=2))
+    row=service.execute(request);r=row['result']
+    assert r['kind']=='market_phenomena'
+    assert [p['phenomenon'] for p in r['phenomena']]==['shared_resilience','threshold_project']
+    for p in r['phenomena']:
+        assert p['kind'] in ('prisoners_dilemma','stag_hunt','chicken','harmony','deadlock','undefined')
+        assert p['advice'] and p['recommended_action'] and p['payoffs']
+    assert TheoryService(tmp_path,CONFIG).get(row['id'])==row

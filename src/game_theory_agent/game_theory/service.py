@@ -12,13 +12,13 @@ from game_theory_agent.market.actor_experiments import write_json,read_json
 from . import lab
 from .market_strategies import MODES,market_matrix
 
-KINDS={"advisor":"目标驱动博弈建议","matrix":"收益矩阵与均衡","repeated":"重复博弈与互惠","learning":"策略学习与遗憾","sequential":"序贯行动与承诺","information":"贝叶斯信息价值","bargaining":"议价与分歧点","public_goods":"公共品与搭便车","market_matrix":"当前市场反事实"}
+KINDS={"advisor":"目标驱动博弈建议","matrix":"收益矩阵与均衡","repeated":"重复博弈与互惠","learning":"策略学习与遗憾","sequential":"序贯行动与承诺","information":"贝叶斯信息价值","bargaining":"议价与分歧点","public_goods":"公共品与搭便车","market_matrix":"当前市场反事实","market_phenomena":"市场博弈现象诊断"}
 
 
 class ExperimentRequest(BaseModel):
     model_config=ConfigDict(extra='forbid')
     request_id:str=Field(min_length=1,max_length=100)
-    kind:Literal['matrix','repeated','learning','sequential','information','bargaining','public_goods','market_matrix','advisor']
+    kind:Literal['matrix','repeated','learning','sequential','information','bargaining','public_goods','market_matrix','market_phenomena','advisor']
     parameters:dict[str,Any]=Field(default_factory=dict)
 
 
@@ -78,6 +78,21 @@ class TheoryService:
                     state=self.state_provider(episode)
                 else:state=MarketEnv(self.config).reset(episode_id=f'theory-matrix-{seed}',episode_seed=seed,max_rounds=10)
                 result=dict(kind='market_matrix',source_round=state.round,**market_matrix(self.config,state,**p))
+            elif request.kind=='market_phenomena':
+                from .phenomena import advise as phenomena_advise
+                episode=p.pop('episode_id',None);cid=p.pop('company_id','company_A');opponent=p.pop('opponent_id','company_B');horizon=p.pop('horizon',3)
+                if not isinstance(cid,str) or not isinstance(opponent,str) or cid==opponent:raise ValueError('invalid company or opponent')
+                if type(horizon)!=int or not 1<=horizon<=10:raise ValueError('invalid horizon')
+                if episode:
+                    if not self.state_provider:raise ValueError('no current market session')
+                    state=self.state_provider(episode)
+                else:
+                    seed=p.pop('seed',330101);count=p.pop('company_count',2)
+                    if type(seed)!=int or not 0<=seed<=2**31-1:raise ValueError('invalid market seed')
+                    if type(count)!=int or not 2<=count<=10:raise ValueError('company_count must be between 2 and 10')
+                    state=MarketEnv(self.config).reset(company_ids=[f'company_{chr(65+i)}' for i in range(count)],episode_id=f'phenomena-{seed}',episode_seed=seed,max_rounds=10,cooperation_mode='combined_v1')
+                if p:raise ValueError('unknown market_phenomena inputs')
+                result=dict(kind='market_phenomena',source_round=state.round,**phenomena_advise(self.config,state,cid,opponent,horizon=horizon))
             else:result=getattr(lab,request.kind)(**p)
             value=dict(id=key,identity=identity,created=datetime.now(UTC).isoformat(),request=payload,config_hash=self.config.config_sha256,result=result)
             value['sha256']=checksum(value);write_json(path,value);return value
