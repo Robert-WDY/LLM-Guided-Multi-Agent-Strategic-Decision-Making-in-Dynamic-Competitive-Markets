@@ -1,6 +1,6 @@
 """CPU confirmation of a single four-round contract under three paired actions."""
+
 from concurrent.futures import ProcessPoolExecutor
-from pathlib import Path
 
 from cause_trials import ARMS, MARKETS
 from guard_study import design
@@ -13,8 +13,13 @@ OUT = ROOT / "experiment-results/renewal-risk-v1"
 def profile(market, group, i):
     seed = 250000 + 1000 * MARKETS.index(market) + 40 * GROUPS.index(group) + i
     _, masks, _, _, _, _ = design("menu", market, group, i % 12)
-    roles = ([0] * 4 if group == "balanced" else [4] * 4 if group == "unseen"
-             else [number("renewal-role", seed, j) % 5 for j in range(4)])
+    roles = (
+        [0] * 4
+        if group == "balanced"
+        else [4] * 4
+        if group == "unseen"
+        else [number("renewal-role", seed, j) % 5 for j in range(4)]
+    )
     t = 23 + 4 * (number(seed, "audit-time") % 6)
     return seed, masks, {k: v[0] for k, v in masks.items()}, roles, t, True
 
@@ -38,9 +43,7 @@ def collect(task):
             raise ValueError(f"Wrong archive {dest}")
         return
     dest.parent.mkdir(parents=True, exist_ok=True)
-    temporary = dest.with_name(dest.stem + ".partial.gz")
-    save(temporary, simulate(task))
-    Path(temporary).replace(dest)
+    save(dest, simulate(task))
 
 
 if __name__ == "__main__":
