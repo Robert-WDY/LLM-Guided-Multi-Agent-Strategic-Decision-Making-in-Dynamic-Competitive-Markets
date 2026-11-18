@@ -1,0 +1,26 @@
+{
+  "econ": {
+    "effective": 35,
+    "losing": 3,
+    "up_at_four_then_lost": 3,
+    "up_at_twelve_then_lost": 3,
+    "most_loss_after_twelve": 3,
+    "mean_losing_parts": [
+      7.381680793333338,
+      3.0498593061404393,
+      -29.039983920309442
+    ]
+  },
+  "native": {
+    "effective": 75,
+    "losing": 23,
+    "up_at_four_then_lost": 10,
+    "up_at_twelve_then_lost": 6,
+    "most_loss_after_twelve": 16,
+    "mean_losing_parts": [
+      799.2508189017414,
+      -38405.634140517985,
+      -296730.0712241083
+    ]
+  }
+}
