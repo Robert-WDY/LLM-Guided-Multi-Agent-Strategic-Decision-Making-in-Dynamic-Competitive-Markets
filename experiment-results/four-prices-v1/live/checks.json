@@ -1,0 +1,45 @@
+{
+  "seeds": 360,
+  "terminal_policy_paths": 4680,
+  "backend_decodes": 43078,
+  "max_backend_probability_drift": 0.15009047091007233,
+  "role_seat_counts": {
+    "econ-balanced": {
+      "0": 192
+    },
+    "econ-unseen": {
+      "1": 192
+    },
+    "econ-random": {
+      "1": 54,
+      "0": 43,
+      "3": 48,
+      "2": 47
+    },
+    "native-balanced": {
+      "0": 192
+    },
+    "native-unseen": {
+      "1": 192
+    },
+    "native-random": {
+      "3": 43,
+      "2": 50,
+      "0": 43,
+      "1": 56
+    },
+    "appointments-balanced": {
+      "0": 96
+    },
+    "appointments-unseen": {
+      "1": 96
+    },
+    "appointments-random": {
+      "3": 27,
+      "2": 23,
+      "1": 18,
+      "0": 28
+    }
+  },
+  "offline_regenerated_market_seeds": 18
+}

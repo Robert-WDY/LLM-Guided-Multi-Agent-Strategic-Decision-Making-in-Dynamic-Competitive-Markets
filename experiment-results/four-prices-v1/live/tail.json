@@ -1,0 +1,3440 @@
+{
+  "econ-rolling-1": [
+    {
+      "seed": 180001,
+      "group": "balanced",
+      "seat": 0,
+      "policy": "inf1",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -428.2674269823832,
+      "first_four": -18.63808727,
+      "rest": -409.6293397123832,
+      "parts": {
+        "price": 154.02904016349467,
+        "volume": -1300.292623699741,
+        "other_revenue": -3.005918036459886e-14,
+        "cost_effect": 717.9961565538629
+      },
+      "worst_rounds": [
+        {
+          "round": 35,
+          "delta": -18.52772109902449,
+          "p": 7.91,
+          "base_p": 6.62,
+          "q": 7.01,
+          "base_q": 30.02,
+          "profit": 10.32,
+          "base_profit": 32.08
+        },
+        {
+          "round": 36,
+          "delta": -18.342443888034243,
+          "p": 7.91,
+          "base_p": 6.62,
+          "q": 7.01,
+          "base_q": 30.02,
+          "profit": 10.32,
+          "base_profit": 32.08
+        },
+        {
+          "round": 37,
+          "delta": -18.159019449153902,
+          "p": 7.91,
+          "base_p": 6.62,
+          "q": 7.01,
+          "base_q": 30.02,
+          "profit": 10.32,
+          "base_profit": 32.08
+        },
+        {
+          "round": 38,
+          "delta": -17.977429254662365,
+          "p": 7.91,
+          "base_p": 6.62,
+          "q": 7.01,
+          "base_q": 30.02,
+          "profit": 10.32,
+          "base_profit": 32.08
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 180088,
+      "group": "unseen",
+      "seat": 3,
+      "policy": "inf1",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -397.12886690291816,
+      "first_four": 0.0,
+      "rest": -397.12886690291816,
+      "parts": {
+        "price": 183.54598924531945,
+        "volume": -1270.9156908405953,
+        "other_revenue": 1.0727024084093909e-13,
+        "cost_effect": 690.2408346923575
+      },
+      "worst_rounds": [
+        {
+          "round": 31,
+          "delta": -20.954138367369293,
+          "p": 7.6,
+          "base_p": 6.11,
+          "q": 7.83,
+          "base_q": 37.84,
+          "profit": 10.77,
+          "base_profit": 34.41
+        },
+        {
+          "round": 32,
+          "delta": -20.744596983695597,
+          "p": 7.6,
+          "base_p": 6.11,
+          "q": 7.83,
+          "base_q": 37.84,
+          "profit": 10.77,
+          "base_profit": 34.41
+        },
+        {
+          "round": 33,
+          "delta": -20.537151013858644,
+          "p": 7.6,
+          "base_p": 6.11,
+          "q": 7.83,
+          "base_q": 37.84,
+          "profit": 10.77,
+          "base_profit": 34.41
+        },
+        {
+          "round": 34,
+          "delta": -20.331779503720057,
+          "p": 7.6,
+          "base_p": 6.11,
+          "q": 7.83,
+          "base_q": 37.84,
+          "profit": 10.77,
+          "base_profit": 34.41
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 180035,
+      "group": "balanced",
+      "seat": 1,
+      "policy": "inf1",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -367.1099758601326,
+      "first_four": -13.476164579999992,
+      "rest": -353.63381128013265,
+      "parts": {
+        "price": 184.2346226077242,
+        "volume": -1192.7732708882854,
+        "other_revenue": -5.332224423982279e-14,
+        "cost_effect": 641.4286724204286
+      },
+      "worst_rounds": [
+        {
+          "round": 27,
+          "delta": -14.247178081967087,
+          "p": 21.9,
+          "base_p": 17.6,
+          "q": 19.65,
+          "base_q": 51.07,
+          "profit": 23.38,
+          "base_profit": 38.82
+        },
+        {
+          "round": 28,
+          "delta": -14.104706301147415,
+          "p": 21.9,
+          "base_p": 17.6,
+          "q": 19.65,
+          "base_q": 51.07,
+          "profit": 23.38,
+          "base_profit": 38.82
+        },
+        {
+          "round": 29,
+          "delta": -13.963659238135941,
+          "p": 21.9,
+          "base_p": 17.6,
+          "q": 19.65,
+          "base_q": 51.07,
+          "profit": 23.38,
+          "base_profit": 38.82
+        },
+        {
+          "round": 30,
+          "delta": -13.824022645754582,
+          "p": 21.9,
+          "base_p": 17.6,
+          "q": 19.65,
+          "base_q": 51.07,
+          "profit": 23.38,
+          "base_profit": 38.82
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "econ-single-switch-1": [
+    {
+      "seed": 180088,
+      "group": "unseen",
+      "seat": 3,
+      "policy": "inf1",
+      "baseline": "skip1",
+      "start": 23,
+      "gain": -274.48369595538395,
+      "first_four": -16.195039889999997,
+      "rest": -258.2886560653839,
+      "parts": {
+        "price": 132.98331710562485,
+        "volume": -838.7768490786523,
+        "other_revenue": -7.071093206126196e-14,
+        "cost_effect": 431.3098360176436
+      },
+      "worst_rounds": [
+        {
+          "round": 31,
+          "delta": -14.22872318807853,
+          "p": 7.6,
+          "base_p": 6.61,
+          "q": 7.83,
+          "base_q": 24.58,
+          "profit": 10.77,
+          "base_profit": 26.19
+        },
+        {
+          "round": 32,
+          "delta": -14.086435956197743,
+          "p": 7.6,
+          "base_p": 6.61,
+          "q": 7.83,
+          "base_q": 24.58,
+          "profit": 10.77,
+          "base_profit": 26.19
+        },
+        {
+          "round": 33,
+          "delta": -13.945571596635766,
+          "p": 7.6,
+          "base_p": 6.61,
+          "q": 7.83,
+          "base_q": 24.58,
+          "profit": 10.77,
+          "base_profit": 26.19
+        },
+        {
+          "round": 34,
+          "delta": -13.806115880669408,
+          "p": 7.6,
+          "base_p": 6.61,
+          "q": 7.83,
+          "base_q": 24.58,
+          "profit": 10.77,
+          "base_profit": 26.19
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 180005,
+      "group": "balanced",
+      "seat": 0,
+      "policy": "inf1",
+      "baseline": "skip1",
+      "start": 23,
+      "gain": -241.63466527080027,
+      "first_four": -11.978812959999996,
+      "rest": -229.65585231080027,
+      "parts": {
+        "price": 2.95872234094049,
+        "volume": -497.794942251068,
+        "other_revenue": -2.4795882563345413e-17,
+        "cost_effect": 253.20155463932724
+      },
+      "worst_rounds": [
+        {
+          "round": 39,
+          "delta": -12.014069150148693,
+          "p": 21.12,
+          "base_p": 20.31,
+          "q": 9.83,
+          "base_q": 24.29,
+          "profit": 10.93,
+          "base_profit": 25.04
+        },
+        {
+          "round": 35,
+          "delta": -12.00165116303639,
+          "p": 21.04,
+          "base_p": 20.24,
+          "q": 12.1,
+          "base_q": 26.26,
+          "profit": 13.35,
+          "base_profit": 26.89
+        },
+        {
+          "round": 40,
+          "delta": -11.893928458647206,
+          "p": 21.12,
+          "base_p": 20.31,
+          "q": 9.83,
+          "base_q": 24.29,
+          "profit": 10.93,
+          "base_profit": 25.04
+        },
+        {
+          "round": 36,
+          "delta": -11.881634651406026,
+          "p": 21.04,
+          "base_p": 20.24,
+          "q": 12.1,
+          "base_q": 26.26,
+          "profit": 13.35,
+          "base_profit": 26.89
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 180109,
+      "group": "random",
+      "seat": 2,
+      "policy": "inf1",
+      "baseline": "skip1",
+      "start": 39,
+      "gain": -105.0345146147085,
+      "first_four": -8.274837900000005,
+      "rest": -96.75967671470849,
+      "parts": {
+        "price": 62.384575890931195,
+        "volume": -400.01542081187074,
+        "other_revenue": -2.1942290336406635e-14,
+        "cost_effect": 232.59633030623107
+      },
+      "worst_rounds": [
+        {
+          "round": 43,
+          "delta": -11.632817681100002,
+          "p": 6.04,
+          "base_p": 5.42,
+          "q": 35.24,
+          "base_q": 62.52,
+          "profit": 31.27,
+          "base_profit": 43.38
+        },
+        {
+          "round": 44,
+          "delta": -11.516489504289002,
+          "p": 6.04,
+          "base_p": 5.42,
+          "q": 35.24,
+          "base_q": 62.52,
+          "profit": 31.27,
+          "base_profit": 43.38
+        },
+        {
+          "round": 45,
+          "delta": -11.401324609246112,
+          "p": 6.04,
+          "base_p": 5.42,
+          "q": 35.24,
+          "base_q": 62.52,
+          "profit": 31.27,
+          "base_profit": 43.38
+        },
+        {
+          "round": 46,
+          "delta": -11.28731136315365,
+          "p": 6.04,
+          "base_p": 5.42,
+          "q": 35.24,
+          "base_q": 62.52,
+          "profit": 31.27,
+          "base_profit": 43.38
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "econ-rolling-2": [
+    {
+      "seed": 180105,
+      "group": "random",
+      "seat": 0,
+      "policy": "inf2",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -598.8055478072235,
+      "first_four": -4.92549875,
+      "rest": -593.8800490572236,
+      "parts": {
+        "price": 71.86850952495709,
+        "volume": -1292.3105336673732,
+        "other_revenue": -7.496459404448826e-14,
+        "cost_effect": 621.6364763351926
+      },
+      "worst_rounds": [
+        {
+          "round": 55,
+          "delta": -35.13404685060098,
+          "p": 2.86,
+          "base_p": 2.02,
+          "q": 3.49,
+          "base_q": 55.82,
+          "profit": 6.49,
+          "base_profit": 56.94
+        },
+        {
+          "round": 56,
+          "delta": -34.782706382094965,
+          "p": 2.86,
+          "base_p": 2.02,
+          "q": 3.49,
+          "base_q": 55.82,
+          "profit": 6.49,
+          "base_profit": 56.94
+        },
+        {
+          "round": 57,
+          "delta": -34.43487931827402,
+          "p": 2.86,
+          "base_p": 2.02,
+          "q": 3.49,
+          "base_q": 55.82,
+          "profit": 6.49,
+          "base_profit": 56.94
+        },
+        {
+          "round": 58,
+          "delta": -34.09053052509128,
+          "p": 2.86,
+          "base_p": 2.02,
+          "q": 3.49,
+          "base_q": 55.82,
+          "profit": 6.49,
+          "base_profit": 56.94
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 180121,
+      "group": "random",
+      "seat": 1,
+      "policy": "inf2",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -445.93117532877125,
+      "first_four": 0.0,
+      "rest": -445.93117532877125,
+      "parts": {
+        "price": 132.60172481949712,
+        "volume": -1137.8077356315596,
+        "other_revenue": 6.460448006453694e-14,
+        "cost_effect": 559.2748354832908
+      },
+      "worst_rounds": [
+        {
+          "round": 55,
+          "delta": -19.24886134689021,
+          "p": 7.88,
+          "base_p": 6.63,
+          "q": 16.99,
+          "base_q": 48.96,
+          "profit": 24.84,
+          "base_profit": 52.48
+        },
+        {
+          "round": 59,
+          "delta": -19.152661447849944,
+          "p": 8.32,
+          "base_p": 7.0,
+          "q": 11.19,
+          "base_q": 39.2,
+          "profit": 17.91,
+          "base_profit": 46.54
+        },
+        {
+          "round": 56,
+          "delta": -19.056372733421306,
+          "p": 7.88,
+          "base_p": 6.63,
+          "q": 16.99,
+          "base_q": 48.96,
+          "profit": 24.84,
+          "base_profit": 52.48
+        },
+        {
+          "round": 60,
+          "delta": -18.961134833371446,
+          "p": 8.32,
+          "base_p": 7.0,
+          "q": 11.19,
+          "base_q": 39.2,
+          "profit": 17.91,
+          "base_profit": 46.54
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 180084,
+      "group": "unseen",
+      "seat": 1,
+      "policy": "inf2",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -444.2432958870202,
+      "first_four": -17.574179540000003,
+      "rest": -426.6691163470202,
+      "parts": {
+        "price": 124.5742995264522,
+        "volume": -1286.3385288786233,
+        "other_revenue": 2.3267832462570434e-14,
+        "cost_effect": 717.5209334651506
+      },
+      "worst_rounds": [
+        {
+          "round": 51,
+          "delta": -17.928763708237717,
+          "p": 2.05,
+          "base_p": 1.72,
+          "q": 12.76,
+          "base_q": 52.96,
+          "profit": 13.4,
+          "base_profit": 38.13
+        },
+        {
+          "round": 55,
+          "delta": -17.779429456805612,
+          "p": 2.04,
+          "base_p": 1.59,
+          "q": 14.45,
+          "base_q": 68.75,
+          "profit": 15.03,
+          "base_profit": 40.56
+        },
+        {
+          "round": 52,
+          "delta": -17.749476071155343,
+          "p": 2.05,
+          "base_p": 1.72,
+          "q": 12.76,
+          "base_q": 52.96,
+          "profit": 13.4,
+          "base_profit": 38.13
+        },
+        {
+          "round": 56,
+          "delta": -17.601635162237557,
+          "p": 2.04,
+          "base_p": 1.59,
+          "q": 14.45,
+          "base_q": 68.75,
+          "profit": 15.03,
+          "base_profit": 40.56
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "econ-single-switch-2": [
+    {
+      "seed": 180065,
+      "group": "unseen",
+      "seat": 3,
+      "policy": "inf2",
+      "baseline": "skip2",
+      "start": 27,
+      "gain": -211.10486709160656,
+      "first_four": -8.944705730000011,
+      "rest": -202.16016136160658,
+      "parts": {
+        "price": -24.901876025893987,
+        "volume": -409.16494091124935,
+        "other_revenue": 2.0319680661997367e-14,
+        "cost_effect": 222.96194984553676
+      },
+      "worst_rounds": [
+        {
+          "round": 39,
+          "delta": -12.373932809157164,
+          "p": 19.13,
+          "base_p": 17.84,
+          "q": 19.27,
+          "base_q": 40.24,
+          "profit": 17.59,
+          "base_profit": 31.55
+        },
+        {
+          "round": 40,
+          "delta": -12.250193481065592,
+          "p": 19.13,
+          "base_p": 17.84,
+          "q": 19.27,
+          "base_q": 40.24,
+          "profit": 17.59,
+          "base_profit": 31.55
+        },
+        {
+          "round": 41,
+          "delta": -12.127691546254937,
+          "p": 19.13,
+          "base_p": 17.84,
+          "q": 19.27,
+          "base_q": 40.24,
+          "profit": 17.59,
+          "base_profit": 31.55
+        },
+        {
+          "round": 42,
+          "delta": -12.006414630792387,
+          "p": 19.13,
+          "base_p": 17.84,
+          "q": 19.27,
+          "base_q": 40.24,
+          "profit": 17.59,
+          "base_profit": 31.55
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 180077,
+      "group": "unseen",
+      "seat": 1,
+      "policy": "inf2",
+      "baseline": "skip2",
+      "start": 35,
+      "gain": -182.04885956904627,
+      "first_four": -15.919211959999997,
+      "rest": -166.1296476090463,
+      "parts": {
+        "price": 110.17215098445078,
+        "volume": -659.6127557576966,
+        "other_revenue": -1.3609896268785692e-13,
+        "cost_effect": 367.3917452041996
+      },
+      "worst_rounds": [
+        {
+          "round": 59,
+          "delta": -12.295862903632974,
+          "p": 22.61,
+          "base_p": 18.54,
+          "q": 8.5,
+          "base_q": 30.88,
+          "profit": 10.72,
+          "base_profit": 26.37
+        },
+        {
+          "round": 60,
+          "delta": -12.172904274596645,
+          "p": 22.61,
+          "base_p": 18.54,
+          "q": 8.5,
+          "base_q": 30.88,
+          "profit": 10.72,
+          "base_profit": 26.37
+        },
+        {
+          "round": 55,
+          "delta": -12.113201745814989,
+          "p": 22.53,
+          "base_p": 17.56,
+          "q": 11.25,
+          "base_q": 38.25,
+          "profit": 14.1,
+          "base_profit": 28.91
+        },
+        {
+          "round": 56,
+          "delta": -11.992069728356837,
+          "p": 22.53,
+          "base_p": 17.56,
+          "q": 11.25,
+          "base_q": 38.25,
+          "profit": 14.1,
+          "base_profit": 28.91
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 180037,
+      "group": "balanced",
+      "seat": 0,
+      "policy": "inf2",
+      "baseline": "skip2",
+      "start": 27,
+      "gain": -177.60018148404276,
+      "first_four": -17.272433300000003,
+      "rest": -160.32774818404275,
+      "parts": {
+        "price": 31.835891089428706,
+        "volume": -403.52601270477265,
+        "other_revenue": -4.662848735351259e-14,
+        "cost_effect": 194.08994013130123
+      },
+      "worst_rounds": [
+        {
+          "round": 43,
+          "delta": -9.50226872541881,
+          "p": 7.5,
+          "base_p": 6.59,
+          "q": 4.2,
+          "base_q": 15.86,
+          "profit": 5.64,
+          "base_profit": 16.8
+        },
+        {
+          "round": 44,
+          "delta": -9.407246038164622,
+          "p": 7.5,
+          "base_p": 6.59,
+          "q": 4.2,
+          "base_q": 15.86,
+          "profit": 5.64,
+          "base_profit": 16.8
+        },
+        {
+          "round": 45,
+          "delta": -9.313173577782976,
+          "p": 7.5,
+          "base_p": 6.59,
+          "q": 4.2,
+          "base_q": 15.86,
+          "profit": 5.64,
+          "base_profit": 16.8
+        },
+        {
+          "round": 46,
+          "delta": -9.220041842005147,
+          "p": 7.5,
+          "base_p": 6.59,
+          "q": 4.2,
+          "base_q": 15.86,
+          "profit": 5.64,
+          "base_profit": 16.8
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "econ-rolling-4": [
+    {
+      "seed": 180045,
+      "group": "balanced",
+      "seat": 2,
+      "policy": "inf4",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -414.8846807648774,
+      "first_four": 5.1619226899999955,
+      "rest": -420.0466034548773,
+      "parts": {
+        "price": 156.58122632132307,
+        "volume": -1233.7684161033094,
+        "other_revenue": 2.5966684639441296e-14,
+        "cost_effect": 662.3025090171091
+      },
+      "worst_rounds": [
+        {
+          "round": 51,
+          "delta": -18.987234998736177,
+          "p": 2.95,
+          "base_p": 1.83,
+          "q": 3.57,
+          "base_q": 39.95,
+          "profit": 6.97,
+          "base_profit": 33.16
+        },
+        {
+          "round": 52,
+          "delta": -18.79736264874882,
+          "p": 2.95,
+          "base_p": 1.83,
+          "q": 3.57,
+          "base_q": 39.95,
+          "profit": 6.97,
+          "base_profit": 33.16
+        },
+        {
+          "round": 53,
+          "delta": -18.60938902226133,
+          "p": 2.95,
+          "base_p": 1.83,
+          "q": 3.57,
+          "base_q": 39.95,
+          "profit": 6.97,
+          "base_profit": 33.16
+        },
+        {
+          "round": 54,
+          "delta": -18.423295132038714,
+          "p": 2.95,
+          "base_p": 1.83,
+          "q": 3.57,
+          "base_q": 39.95,
+          "profit": 6.97,
+          "base_profit": 33.16
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 180095,
+      "group": "unseen",
+      "seat": 1,
+      "policy": "inf4",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -342.1562962053267,
+      "first_four": 2.0884114699999974,
+      "rest": -344.24470767532665,
+      "parts": {
+        "price": 90.34957343621494,
+        "volume": -985.3425155966492,
+        "other_revenue": -7.620710007640947e-14,
+        "cost_effect": 552.8366459551073
+      },
+      "worst_rounds": [
+        {
+          "round": 39,
+          "delta": -18.721889801600614,
+          "p": 23.53,
+          "base_p": 18.03,
+          "q": 4.99,
+          "base_q": 36.92,
+          "profit": 6.75,
+          "base_profit": 29.64
+        },
+        {
+          "round": 40,
+          "delta": -18.534670903584605,
+          "p": 23.53,
+          "base_p": 18.03,
+          "q": 4.99,
+          "base_q": 36.92,
+          "profit": 6.75,
+          "base_profit": 29.64
+        },
+        {
+          "round": 41,
+          "delta": -18.34932419454876,
+          "p": 23.53,
+          "base_p": 18.03,
+          "q": 4.99,
+          "base_q": 36.92,
+          "profit": 6.75,
+          "base_profit": 29.64
+        },
+        {
+          "round": 42,
+          "delta": -18.165830952603272,
+          "p": 23.53,
+          "base_p": 18.03,
+          "q": 4.99,
+          "base_q": 36.92,
+          "profit": 6.75,
+          "base_profit": 29.64
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 180021,
+      "group": "balanced",
+      "seat": 0,
+      "policy": "inf4",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -338.8184293041809,
+      "first_four": -5.713578549999998,
+      "rest": -333.10485075418086,
+      "parts": {
+        "price": 58.675523769559774,
+        "volume": -767.3495725667984,
+        "other_revenue": 7.107125048022595e-15,
+        "cost_effect": 369.8556194930577
+      },
+      "worst_rounds": [
+        {
+          "round": 43,
+          "delta": -18.05488367574989,
+          "p": 2.32,
+          "base_p": 2.04,
+          "q": 11.02,
+          "base_q": 36.09,
+          "profit": 14.55,
+          "base_profit": 37.53
+        },
+        {
+          "round": 44,
+          "delta": -17.87433483899239,
+          "p": 2.32,
+          "base_p": 2.04,
+          "q": 11.02,
+          "base_q": 36.09,
+          "profit": 14.55,
+          "base_profit": 37.53
+        },
+        {
+          "round": 45,
+          "delta": -17.695591490602464,
+          "p": 2.32,
+          "base_p": 2.04,
+          "q": 11.02,
+          "base_q": 36.09,
+          "profit": 14.55,
+          "base_profit": 37.53
+        },
+        {
+          "round": 46,
+          "delta": -17.51863557569644,
+          "p": 2.32,
+          "base_p": 2.04,
+          "q": 11.02,
+          "base_q": 36.09,
+          "profit": 14.55,
+          "base_profit": 37.53
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "econ-single-switch-4": [
+    {
+      "seed": 180121,
+      "group": "random",
+      "seat": 1,
+      "policy": "inf4",
+      "baseline": "skip4",
+      "start": 23,
+      "gain": -246.17255636517248,
+      "first_four": -16.03742393,
+      "rest": -230.13513243517247,
+      "parts": {
+        "price": 94.95351874674556,
+        "volume": -615.837617309986,
+        "other_revenue": 9.734395838001875e-16,
+        "cost_effect": 274.71154219806795
+      },
+      "worst_rounds": [
+        {
+          "round": 55,
+          "delta": -9.25799889018179,
+          "p": 8.45,
+          "base_p": 7.93,
+          "q": 18.66,
+          "base_q": 29.35,
+          "profit": 30.61,
+          "base_profit": 43.38
+        },
+        {
+          "round": 56,
+          "delta": -9.165418901279972,
+          "p": 8.45,
+          "base_p": 7.93,
+          "q": 18.66,
+          "base_q": 29.35,
+          "profit": 30.61,
+          "base_profit": 43.38
+        },
+        {
+          "round": 57,
+          "delta": -9.073764712267172,
+          "p": 8.45,
+          "base_p": 7.93,
+          "q": 18.66,
+          "base_q": 29.35,
+          "profit": 30.61,
+          "base_profit": 43.38
+        },
+        {
+          "round": 58,
+          "delta": -8.983027065144501,
+          "p": 8.45,
+          "base_p": 7.93,
+          "q": 18.66,
+          "base_q": 29.35,
+          "profit": 30.61,
+          "base_profit": 43.38
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 180139,
+      "group": "random",
+      "seat": 2,
+      "policy": "inf4",
+      "baseline": "skip4",
+      "start": 35,
+      "gain": -158.89597090388037,
+      "first_four": -15.879807969999998,
+      "rest": -143.01616293388037,
+      "parts": {
+        "price": 32.978035497533845,
+        "volume": -356.3141489937055,
+        "other_revenue": -9.667413274086658e-15,
+        "cost_effect": 164.44014259229138
+      },
+      "worst_rounds": [
+        {
+          "round": 47,
+          "delta": -9.324768850453681,
+          "p": 8.22,
+          "base_p": 7.23,
+          "q": 4.3,
+          "base_q": 13.7,
+          "profit": 6.74,
+          "base_profit": 17.26
+        },
+        {
+          "round": 48,
+          "delta": -9.231521161949143,
+          "p": 8.22,
+          "base_p": 7.23,
+          "q": 4.3,
+          "base_q": 13.7,
+          "profit": 6.74,
+          "base_profit": 17.26
+        },
+        {
+          "round": 49,
+          "delta": -9.139205950329652,
+          "p": 8.22,
+          "base_p": 7.23,
+          "q": 4.3,
+          "base_q": 13.7,
+          "profit": 6.74,
+          "base_profit": 17.26
+        },
+        {
+          "round": 50,
+          "delta": -9.047813890826356,
+          "p": 8.22,
+          "base_p": 7.23,
+          "q": 4.3,
+          "base_q": 13.7,
+          "profit": 6.74,
+          "base_profit": 17.26
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 180044,
+      "group": "balanced",
+      "seat": 3,
+      "policy": "inf4",
+      "baseline": "skip4",
+      "start": 27,
+      "gain": -142.1229085992021,
+      "first_four": -6.501658349999995,
+      "rest": -135.62125024920212,
+      "parts": {
+        "price": 42.093596254899815,
+        "volume": -449.3305174121059,
+        "other_revenue": -2.487917348070417e-14,
+        "cost_effect": 265.114012558004
+      },
+      "worst_rounds": [
+        {
+          "round": 55,
+          "delta": -5.615111496795026,
+          "p": 20.21,
+          "base_p": 17.76,
+          "q": 5.93,
+          "base_q": 17.4,
+          "profit": 6.06,
+          "base_profit": 13.5
+        },
+        {
+          "round": 56,
+          "delta": -5.558960381827076,
+          "p": 20.21,
+          "base_p": 17.76,
+          "q": 5.93,
+          "base_q": 17.4,
+          "profit": 6.06,
+          "base_profit": 13.5
+        },
+        {
+          "round": 39,
+          "delta": -5.522177750791487,
+          "p": 18.23,
+          "base_p": 17.53,
+          "q": 13.59,
+          "base_q": 23.13,
+          "profit": 11.19,
+          "base_profit": 17.42
+        },
+        {
+          "round": 57,
+          "delta": -5.503370778008805,
+          "p": 20.21,
+          "base_p": 17.76,
+          "q": 5.93,
+          "base_q": 17.4,
+          "profit": 6.06,
+          "base_profit": 13.5
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "native-rolling-1": [
+    {
+      "seed": 181063,
+      "group": "unseen",
+      "seat": 0,
+      "policy": "inf1",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -4068536.192974906,
+      "first_four": 596.8723079400138,
+      "rest": -4069133.0652828463,
+      "parts": {
+        "price": 297538.83471486846,
+        "volume": -12588822.739590393,
+        "other_revenue": -1.9413155557295348e-10,
+        "cost_effect": 8222747.711900619
+      },
+      "worst_rounds": [
+        {
+          "round": 38,
+          "delta": -141162.83099555192,
+          "p": 14553.0,
+          "base_p": 10542.0,
+          "q": 319.0,
+          "base_q": 4667.0,
+          "profit": -27815.17,
+          "base_profit": 143049.26
+        },
+        {
+          "round": 39,
+          "delta": -136199.94073231236,
+          "p": 14749.0,
+          "base_p": 10376.0,
+          "q": 346.0,
+          "base_q": 4858.0,
+          "profit": -24929.21,
+          "base_profit": 141593.33
+        },
+        {
+          "round": 40,
+          "delta": -134646.59453244988,
+          "p": 14749.0,
+          "base_p": 10376.0,
+          "q": 396.0,
+          "base_q": 5058.0,
+          "profit": -15811.22,
+          "base_profit": 150475.01
+        },
+        {
+          "round": 37,
+          "delta": -128523.37260441422,
+          "p": 14553.0,
+          "base_p": 10542.0,
+          "q": 319.0,
+          "base_q": 4291.0,
+          "profit": -28560.76,
+          "base_profit": 125449.13
+        }
+      ],
+      "exit": [
+        47,
+        null
+      ]
+    },
+    {
+      "seed": 181114,
+      "group": "random",
+      "seat": 1,
+      "policy": "inf1",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -3551449.459603037,
+      "first_four": -95326.38325325,
+      "rest": -3456123.0763497865,
+      "parts": {
+        "price": 673280.4397189716,
+        "volume": -9989405.490955412,
+        "other_revenue": -2.9559566821015485e-10,
+        "cost_effect": 5764675.591633405
+      },
+      "worst_rounds": [
+        {
+          "round": 47,
+          "delta": -136813.04445220533,
+          "p": 15338.0,
+          "base_p": 11336.0,
+          "q": 836.0,
+          "base_q": 5221.0,
+          "profit": 20905.13,
+          "base_profit": 202181.86
+        },
+        {
+          "round": 55,
+          "delta": -136590.9020601704,
+          "p": 15470.0,
+          "base_p": 11317.0,
+          "q": 825.0,
+          "base_q": 5810.0,
+          "profit": 19604.52,
+          "base_profit": 215739.37
+        },
+        {
+          "round": 53,
+          "delta": -126859.84258260958,
+          "p": 15112.0,
+          "base_p": 10720.0,
+          "q": 491.0,
+          "base_q": 4929.0,
+          "profit": -18860.81,
+          "base_profit": 159675.91
+        },
+        {
+          "round": 52,
+          "delta": -125094.1301578031,
+          "p": 15112.0,
+          "base_p": 10720.0,
+          "q": 507.0,
+          "base_q": 4933.0,
+          "profit": -8832.38,
+          "base_profit": 165458.84
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 181086,
+      "group": "unseen",
+      "seat": 2,
+      "policy": "inf1",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -3371485.939167709,
+      "first_four": 34399.511256729995,
+      "rest": -3405885.4504244393,
+      "parts": {
+        "price": 760785.0759155812,
+        "volume": -9043810.207197346,
+        "other_revenue": 5.773557245402372e-11,
+        "cost_effect": 4911539.192114054
+      },
+      "worst_rounds": [
+        {
+          "round": 54,
+          "delta": -202516.19705082843,
+          "p": 15292.0,
+          "base_p": 13097.0,
+          "q": 920.0,
+          "base_q": 5678.0,
+          "profit": 19626.98,
+          "base_profit": 307517.89
+        },
+        {
+          "round": 52,
+          "delta": -185422.8624157712,
+          "p": 15292.0,
+          "base_p": 13097.0,
+          "q": 868.0,
+          "base_q": 5320.0,
+          "profit": 21212.16,
+          "base_profit": 279558.23
+        },
+        {
+          "round": 53,
+          "delta": -185141.79863679432,
+          "p": 15292.0,
+          "base_p": 13097.0,
+          "q": 829.0,
+          "base_q": 5183.0,
+          "profit": 19213.48,
+          "base_profit": 279773.55
+        },
+        {
+          "round": 60,
+          "delta": -172822.9621921992,
+          "p": 16513.0,
+          "base_p": 13605.0,
+          "q": 625.0,
+          "base_q": 4564.0,
+          "profit": 16388.5,
+          "base_profit": 277339.2
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "native-single-switch-1": [
+    {
+      "seed": 181043,
+      "group": "balanced",
+      "seat": 0,
+      "policy": "inf1",
+      "baseline": "skip1",
+      "start": 27,
+      "gain": -1414148.6996098773,
+      "first_four": 12000.835273130011,
+      "rest": -1426149.5348830074,
+      "parts": {
+        "price": 382695.6313173231,
+        "volume": -3822313.3296915945,
+        "other_revenue": -2.4755814290467606e-10,
+        "cost_effect": 2025468.9987643939
+      },
+      "worst_rounds": [
+        {
+          "round": 35,
+          "delta": -125100.87203344473,
+          "p": 14266.0,
+          "base_p": 11925.0,
+          "q": 1178.0,
+          "base_q": 3923.0,
+          "profit": 6151.96,
+          "base_profit": 141726.7
+        },
+        {
+          "round": 36,
+          "delta": -92725.70949961433,
+          "p": 14266.0,
+          "base_p": 11925.0,
+          "q": 1150.0,
+          "base_q": 3927.0,
+          "profit": 40882.18,
+          "base_profit": 142386.24
+        },
+        {
+          "round": 37,
+          "delta": -84628.63792743887,
+          "p": 14266.0,
+          "base_p": 11925.0,
+          "q": 1074.0,
+          "base_q": 3541.0,
+          "profit": 25852.36,
+          "base_profit": 119428.56
+        },
+        {
+          "round": 38,
+          "delta": -83096.44186495943,
+          "p": 14266.0,
+          "base_p": 11925.0,
+          "q": 1074.0,
+          "base_q": 3541.0,
+          "profit": 27285.23,
+          "base_profit": 120095.34
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 181065,
+      "group": "unseen",
+      "seat": 1,
+      "policy": "inf1",
+      "baseline": "skip1",
+      "start": 39,
+      "gain": -946416.0511576736,
+      "first_four": 5653.088458480001,
+      "rest": -952069.1396161537,
+      "parts": {
+        "price": 185874.03094346952,
+        "volume": -2168114.3902649204,
+        "other_revenue": 1.0672277161890329e-11,
+        "cost_effect": 1035824.308163777
+      },
+      "worst_rounds": [
+        {
+          "round": 45,
+          "delta": -110386.09966887881,
+          "p": 14268.0,
+          "base_p": 12791.0,
+          "q": 842.0,
+          "base_q": 2846.0,
+          "profit": 1675.09,
+          "base_profit": 118922.49
+        },
+        {
+          "round": 46,
+          "delta": -107620.29159164403,
+          "p": 14268.0,
+          "base_p": 12791.0,
+          "q": 779.0,
+          "base_q": 2796.0,
+          "profit": 6339.43,
+          "base_profit": 121803.75
+        },
+        {
+          "round": 44,
+          "delta": -101730.89577128613,
+          "p": 14268.0,
+          "base_p": 12791.0,
+          "q": 829.0,
+          "base_q": 2779.0,
+          "profit": 19890.68,
+          "base_profit": 126864.35
+        },
+        {
+          "round": 47,
+          "delta": -92303.07452831927,
+          "p": 15179.0,
+          "base_p": 13607.0,
+          "q": 835.0,
+          "base_q": 2477.0,
+          "profit": 17689.04,
+          "base_profit": 117720.04
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 181094,
+      "group": "unseen",
+      "seat": 2,
+      "policy": "inf1",
+      "baseline": "skip1",
+      "start": 27,
+      "gain": -726389.2697656294,
+      "first_four": -5027.2276243799915,
+      "rest": -721362.0421412494,
+      "parts": {
+        "price": 296477.24241383723,
+        "volume": -2398513.170730527,
+        "other_revenue": -3.961582811811319e-11,
+        "cost_effect": 1375646.6585510601
+      },
+      "worst_rounds": [
+        {
+          "round": 46,
+          "delta": -56593.06295728446,
+          "p": 14669.0,
+          "base_p": 13135.0,
+          "q": 834.0,
+          "base_q": 2143.0,
+          "profit": 14563.56,
+          "base_profit": 83064.18
+        },
+        {
+          "round": 36,
+          "delta": -54565.37179082515,
+          "p": 14145.0,
+          "base_p": 12681.0,
+          "q": 930.0,
+          "base_q": 2498.0,
+          "profit": 13399.48,
+          "base_profit": 73130.56
+        },
+        {
+          "round": 48,
+          "delta": -50017.943066255815,
+          "p": 13318.0,
+          "base_p": 13856.0,
+          "q": 1450.0,
+          "base_q": 2053.0,
+          "profit": 32649.71,
+          "base_profit": 94421.01
+        },
+        {
+          "round": 38,
+          "delta": -45071.64108777277,
+          "p": 14145.0,
+          "base_p": 12681.0,
+          "q": 865.0,
+          "base_q": 2175.0,
+          "profit": 10174.71,
+          "base_profit": 60515.06
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "native-rolling-2": [
+    {
+      "seed": 181014,
+      "group": "balanced",
+      "seat": 1,
+      "policy": "inf2",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -5653991.539629687,
+      "first_four": -14225.371281000022,
+      "rest": -5639766.168348687,
+      "parts": {
+        "price": 490002.00158975227,
+        "volume": -13626011.812313223,
+        "other_revenue": 8.784819422059018e-11,
+        "cost_effect": 7482018.271093785
+      },
+      "worst_rounds": [
+        {
+          "round": 32,
+          "delta": -199955.2485548015,
+          "p": 14034.0,
+          "base_p": 11799.0,
+          "q": 488.0,
+          "base_q": 4931.0,
+          "profit": -20398.66,
+          "base_profit": 207465.11
+        },
+        {
+          "round": 34,
+          "delta": -197712.46791782853,
+          "p": 14034.0,
+          "base_p": 11799.0,
+          "q": 490.0,
+          "base_q": 4972.0,
+          "profit": -15433.91,
+          "base_profit": 214448.71
+        },
+        {
+          "round": 27,
+          "delta": -191928.82949289188,
+          "p": 14034.0,
+          "base_p": 12477.0,
+          "q": 909.0,
+          "base_q": 4328.0,
+          "profit": -4396.45,
+          "base_profit": 203601.31
+        },
+        {
+          "round": 33,
+          "delta": -190452.56435827917,
+          "p": 14034.0,
+          "base_p": 11799.0,
+          "q": 549.0,
+          "base_q": 4772.0,
+          "profit": -22499.1,
+          "base_profit": 196727.93
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 181020,
+      "group": "balanced",
+      "seat": 2,
+      "policy": "inf2",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -5195507.610783057,
+      "first_four": -37690.589769089995,
+      "rest": -5157817.021013968,
+      "parts": {
+        "price": 634311.4029405422,
+        "volume": -13087024.773421777,
+        "other_revenue": -1.795153495360004e-11,
+        "cost_effect": 7257205.759698177
+      },
+      "worst_rounds": [
+        {
+          "round": 51,
+          "delta": -202870.18168999229,
+          "p": 17525.0,
+          "base_p": 11836.0,
+          "q": 253.0,
+          "base_q": 5453.0,
+          "profit": -51093.14,
+          "base_profit": 228735.39
+        },
+        {
+          "round": 53,
+          "delta": -197027.1940472489,
+          "p": 17525.0,
+          "base_p": 11836.0,
+          "q": 243.0,
+          "base_q": 5583.0,
+          "profit": -24814.09,
+          "base_profit": 252472.94
+        },
+        {
+          "round": 58,
+          "delta": -194308.65178909505,
+          "p": 17926.0,
+          "base_p": 12107.0,
+          "q": 247.0,
+          "base_q": 5731.0,
+          "profit": -24932.8,
+          "base_profit": 262621.29
+        },
+        {
+          "round": 52,
+          "delta": -185093.3953920873,
+          "p": 17525.0,
+          "base_p": 11836.0,
+          "q": 253.0,
+          "base_q": 5453.0,
+          "profit": -15876.44,
+          "base_profit": 242010.59
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 181133,
+      "group": "random",
+      "seat": 0,
+      "policy": "inf2",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -4295914.5960376365,
+      "first_four": -39063.904596600005,
+      "rest": -4256850.691441036,
+      "parts": {
+        "price": 539554.2512584536,
+        "volume": -11234473.692066742,
+        "other_revenue": -4.515368398164056e-10,
+        "cost_effect": 6399004.844770652
+      },
+      "worst_rounds": [
+        {
+          "round": 49,
+          "delta": -194874.3000732619,
+          "p": 17001.0,
+          "base_p": 12189.0,
+          "q": 239.0,
+          "base_q": 5219.0,
+          "profit": -28236.95,
+          "base_profit": 235213.37
+        },
+        {
+          "round": 57,
+          "delta": -169127.11795085436,
+          "p": 17062.0,
+          "base_p": 12154.0,
+          "q": 236.0,
+          "base_q": 4946.0,
+          "profit": -32789.76,
+          "base_profit": 214995.72
+        },
+        {
+          "round": 38,
+          "delta": -163555.96631089074,
+          "p": 14932.0,
+          "base_p": 12667.0,
+          "q": 760.0,
+          "base_q": 4426.0,
+          "profit": 7078.37,
+          "base_profit": 205047.6
+        },
+        {
+          "round": 39,
+          "delta": -163483.9748031783,
+          "p": 14836.0,
+          "base_p": 12586.0,
+          "q": 795.0,
+          "base_q": 4519.0,
+          "profit": 11141.78,
+          "base_profit": 211022.68
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "native-single-switch-2": [
+    {
+      "seed": 181016,
+      "group": "balanced",
+      "seat": 3,
+      "policy": "inf2",
+      "baseline": "skip2",
+      "start": 35,
+      "gain": -1636581.0270486136,
+      "first_four": -17658.68143073,
+      "rest": -1618922.3456178838,
+      "parts": {
+        "price": 349224.9921418385,
+        "volume": -4665488.606593805,
+        "other_revenue": -8.37926574068347e-12,
+        "cost_effect": 2679682.5874033533
+      },
+      "worst_rounds": [
+        {
+          "round": 55,
+          "delta": -141726.5542677956,
+          "p": 15718.0,
+          "base_p": 12036.0,
+          "q": 618.0,
+          "base_q": 4380.0,
+          "profit": 10941.85,
+          "base_profit": 184221.41
+        },
+        {
+          "round": 52,
+          "delta": -122980.32896725881,
+          "p": 14775.0,
+          "base_p": 11314.0,
+          "q": 591.0,
+          "base_q": 4064.0,
+          "profit": -8949.33,
+          "base_profit": 136944.64
+        },
+        {
+          "round": 54,
+          "delta": -120429.00579106947,
+          "p": 14775.0,
+          "base_p": 11314.0,
+          "q": 626.0,
+          "base_q": 4093.0,
+          "profit": -5619.34,
+          "base_profit": 140148.73
+        },
+        {
+          "round": 60,
+          "delta": -118256.72374619116,
+          "p": 16919.0,
+          "base_p": 12079.0,
+          "q": 174.0,
+          "base_q": 3055.0,
+          "profit": -27419.82,
+          "base_profit": 124616.02
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 181126,
+      "group": "random",
+      "seat": 3,
+      "policy": "inf2",
+      "baseline": "skip2",
+      "start": 23,
+      "gain": -1054310.124042638,
+      "first_four": 9812.252080139991,
+      "rest": -1064122.376122778,
+      "parts": {
+        "price": 1110822.73662993,
+        "volume": -6043665.531869834,
+        "other_revenue": -1.4351025330075461e-10,
+        "cost_effect": 3878532.6711972677
+      },
+      "worst_rounds": [
+        {
+          "round": 55,
+          "delta": -80293.52965423933,
+          "p": 14104.0,
+          "base_p": 11552.0,
+          "q": 1213.0,
+          "base_q": 3912.0,
+          "profit": 23563.91,
+          "base_profit": 134316.61
+        },
+        {
+          "round": 51,
+          "delta": -76228.24801245576,
+          "p": 13103.0,
+          "base_p": 10951.0,
+          "q": 1457.0,
+          "base_q": 4583.0,
+          "profit": 51349.19,
+          "base_profit": 152351.31
+        },
+        {
+          "round": 58,
+          "delta": -69838.23088374162,
+          "p": 14104.0,
+          "base_p": 11552.0,
+          "q": 1049.0,
+          "base_q": 3569.0,
+          "profit": 18902.7,
+          "base_profit": 118182.62
+        },
+        {
+          "round": 57,
+          "delta": -67093.84637454072,
+          "p": 14104.0,
+          "base_p": 11552.0,
+          "q": 1075.0,
+          "base_q": 3665.0,
+          "profit": 26009.75,
+          "base_profit": 120434.55
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 181023,
+      "group": "balanced",
+      "seat": 2,
+      "policy": "inf2",
+      "baseline": "skip2",
+      "start": 31,
+      "gain": -1009108.0696319072,
+      "first_four": -41789.15826227999,
+      "rest": -967318.9113696272,
+      "parts": {
+        "price": 295552.2524011066,
+        "volume": -2809339.445523708,
+        "other_revenue": -6.933750824323874e-11,
+        "cost_effect": 1504679.1234906942
+      },
+      "worst_rounds": [
+        {
+          "round": 41,
+          "delta": -95926.05219495836,
+          "p": 15176.0,
+          "base_p": 12685.0,
+          "q": 658.0,
+          "base_q": 2765.0,
+          "profit": -2075.04,
+          "base_profit": 103993.02
+        },
+        {
+          "round": 40,
+          "delta": -91203.36954737274,
+          "p": 15176.0,
+          "base_p": 12685.0,
+          "q": 568.0,
+          "base_q": 2577.0,
+          "profit": -6852.64,
+          "base_profit": 92984.96
+        },
+        {
+          "round": 39,
+          "delta": -82103.79287186859,
+          "p": 15176.0,
+          "base_p": 12685.0,
+          "q": 738.0,
+          "base_q": 2398.0,
+          "profit": -11217.25,
+          "base_profit": 77760.55
+        },
+        {
+          "round": 43,
+          "delta": -71279.04719609351,
+          "p": 15176.0,
+          "base_p": 13654.0,
+          "q": 636.0,
+          "base_q": 1957.0,
+          "profit": -1064.67,
+          "base_profit": 79350.79
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "native-rolling-4": [
+    {
+      "seed": 181020,
+      "group": "balanced",
+      "seat": 2,
+      "policy": "inf4",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -5663650.311458347,
+      "first_four": -34344.49308384,
+      "rest": -5629305.818374507,
+      "parts": {
+        "price": 487045.3405186552,
+        "volume": -13802316.928614695,
+        "other_revenue": 3.1000027357215014e-10,
+        "cost_effect": 7651621.276637693
+      },
+      "worst_rounds": [
+        {
+          "round": 40,
+          "delta": -204374.69854586577,
+          "p": 16329.0,
+          "base_p": 12315.0,
+          "q": 198.0,
+          "base_q": 4710.0,
+          "profit": -33185.87,
+          "base_profit": 219213.37
+        },
+        {
+          "round": 41,
+          "delta": -200907.0391931266,
+          "p": 16329.0,
+          "base_p": 12315.0,
+          "q": 224.0,
+          "base_q": 4694.0,
+          "profit": -30645.07,
+          "base_profit": 219977.9
+        },
+        {
+          "round": 42,
+          "delta": -200794.1672813908,
+          "p": 16329.0,
+          "base_p": 12315.0,
+          "q": 202.0,
+          "base_q": 4709.0,
+          "profit": -39649.63,
+          "base_profit": 213362.66
+        },
+        {
+          "round": 39,
+          "delta": -196503.07417164353,
+          "p": 16329.0,
+          "base_p": 12315.0,
+          "q": 193.0,
+          "base_q": 4509.0,
+          "profit": -33778.77,
+          "base_profit": 206472.37
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 181014,
+      "group": "balanced",
+      "seat": 1,
+      "policy": "inf4",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -4937528.247721985,
+      "first_four": 7352.022165839977,
+      "rest": -4944880.2698878255,
+      "parts": {
+        "price": 750806.5059121773,
+        "volume": -12679960.207568765,
+        "other_revenue": 1.7582603538741665e-10,
+        "cost_effect": 6991625.453934601
+      },
+      "worst_rounds": [
+        {
+          "round": 51,
+          "delta": -183105.99976481678,
+          "p": 18000.0,
+          "base_p": 12369.0,
+          "q": 355.0,
+          "base_q": 4909.0,
+          "profit": -12195.91,
+          "base_profit": 240370.94
+        },
+        {
+          "round": 44,
+          "delta": -181234.01016485592,
+          "p": 16187.0,
+          "base_p": 11454.0,
+          "q": 400.0,
+          "base_q": 5515.0,
+          "profit": -24234.01,
+          "base_profit": 208768.09
+        },
+        {
+          "round": 49,
+          "delta": -179518.88961010953,
+          "p": 17220.0,
+          "base_p": 11716.0,
+          "q": 365.0,
+          "base_q": 5407.0,
+          "profit": -13321.2,
+          "base_profit": 229370.16
+        },
+        {
+          "round": 48,
+          "delta": -178099.27279241997,
+          "p": 17220.0,
+          "base_p": 11716.0,
+          "q": 348.0,
+          "base_q": 5439.0,
+          "profit": -15511.02,
+          "base_profit": 222853.44
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 181008,
+      "group": "balanced",
+      "seat": 1,
+      "policy": "inf4",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -4416491.622491365,
+      "first_four": -139745.50614299998,
+      "rest": -4276746.116348365,
+      "parts": {
+        "price": 594460.4934701168,
+        "volume": -11398308.874878047,
+        "other_revenue": 1.2544587079889734e-10,
+        "cost_effect": 6387356.758916562
+      },
+      "worst_rounds": [
+        {
+          "round": 53,
+          "delta": -204581.2062004292,
+          "p": 18000.0,
+          "base_p": 11978.0,
+          "q": 214.0,
+          "base_q": 5692.0,
+          "profit": -38093.34,
+          "base_profit": 249824.86
+        },
+        {
+          "round": 52,
+          "delta": -199678.67028261922,
+          "p": 18000.0,
+          "base_p": 11978.0,
+          "q": 202.0,
+          "base_q": 5482.0,
+          "profit": -32548.6,
+          "base_profit": 245659.81
+        },
+        {
+          "round": 42,
+          "delta": -191555.01296106825,
+          "p": 18000.0,
+          "base_p": 11729.0,
+          "q": 166.0,
+          "base_q": 5053.0,
+          "profit": -50094.76,
+          "base_profit": 191275.66
+        },
+        {
+          "round": 54,
+          "delta": -191352.3344071693,
+          "p": 18000.0,
+          "base_p": 11978.0,
+          "q": 210.0,
+          "base_q": 5571.0,
+          "profit": -38199.6,
+          "base_profit": 233821.1
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "native-single-switch-4": [
+    {
+      "seed": 181081,
+      "group": "unseen",
+      "seat": 0,
+      "policy": "inf4",
+      "baseline": "skip4",
+      "start": 27,
+      "gain": -2408826.2856544927,
+      "first_four": -86231.55803009002,
+      "rest": -2322594.7276244024,
+      "parts": {
+        "price": 780182.1138687757,
+        "volume": -7244247.10673366,
+        "other_revenue": -7.450078901252867e-11,
+        "cost_effect": 4055238.7072103927
+      },
+      "worst_rounds": [
+        {
+          "round": 58,
+          "delta": -137729.49408482708,
+          "p": 16636.0,
+          "base_p": 13938.0,
+          "q": 243.0,
+          "base_q": 2807.0,
+          "profit": -26204.88,
+          "base_profit": 161872.22
+        },
+        {
+          "round": 57,
+          "delta": -131673.4421185341,
+          "p": 16636.0,
+          "base_p": 13938.0,
+          "q": 238.0,
+          "base_q": 2702.0,
+          "profit": -19095.08,
+          "base_profit": 158914.08
+        },
+        {
+          "round": 56,
+          "delta": -128156.67611557232,
+          "p": 16636.0,
+          "base_p": 13938.0,
+          "q": 238.0,
+          "base_q": 2720.0,
+          "profit": -26972.34,
+          "base_profit": 144549.96
+        },
+        {
+          "round": 43,
+          "delta": -127959.13436794393,
+          "p": 14238.0,
+          "base_p": 11095.0,
+          "q": 1116.0,
+          "base_q": 4821.0,
+          "profit": 19957.63,
+          "base_profit": 170240.05
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 181074,
+      "group": "unseen",
+      "seat": 0,
+      "policy": "inf4",
+      "baseline": "skip4",
+      "start": 35,
+      "gain": -2144231.368041386,
+      "first_four": -3758.0353488299897,
+      "rest": -2140473.332692556,
+      "parts": {
+        "price": 100660.00012715592,
+        "volume": -3829341.4972332,
+        "other_revenue": -7.069594150337786e-11,
+        "cost_effect": 1584450.129064658
+      },
+      "worst_rounds": [
+        {
+          "round": 52,
+          "delta": -163665.79985083162,
+          "p": 16933.0,
+          "base_p": 15685.0,
+          "q": 327.0,
+          "base_q": 2472.0,
+          "profit": -27421.72,
+          "base_profit": 166738.22
+        },
+        {
+          "round": 58,
+          "delta": -162079.67055340135,
+          "p": 17191.0,
+          "base_p": 16056.0,
+          "q": 319.0,
+          "base_q": 2543.0,
+          "profit": -24251.36,
+          "base_profit": 179978.42
+        },
+        {
+          "round": 57,
+          "delta": -159642.4713084385,
+          "p": 17191.0,
+          "base_p": 16056.0,
+          "q": 613.0,
+          "base_q": 2779.0,
+          "profit": -6723.47,
+          "base_profit": 192423.71
+        },
+        {
+          "round": 56,
+          "delta": -159240.7667705241,
+          "p": 17191.0,
+          "base_p": 16056.0,
+          "q": 298.0,
+          "base_q": 2419.0,
+          "profit": -27829.32,
+          "base_profit": 168830.29
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 181113,
+      "group": "random",
+      "seat": 3,
+      "policy": "inf4",
+      "baseline": "skip4",
+      "start": 23,
+      "gain": -1601445.3559102316,
+      "first_four": -11846.866140300008,
+      "rest": -1589598.4897699316,
+      "parts": {
+        "price": 144127.33466717953,
+        "volume": -3188908.9449423435,
+        "other_revenue": 8.337452774052481e-11,
+        "cost_effect": 1443336.2543649324
+      },
+      "worst_rounds": [
+        {
+          "round": 54,
+          "delta": -109134.65124420241,
+          "p": 16669.0,
+          "base_p": 14024.0,
+          "q": 309.0,
+          "base_q": 2431.0,
+          "profit": -30163.7,
+          "base_profit": 118865.59
+        },
+        {
+          "round": 60,
+          "delta": -101421.54566658784,
+          "p": 18000.0,
+          "base_p": 14264.0,
+          "q": 249.0,
+          "base_q": 2385.0,
+          "profit": -6437.21,
+          "base_profit": 140667.99
+        },
+        {
+          "round": 55,
+          "delta": -101151.3734154207,
+          "p": 18000.0,
+          "base_p": 14356.0,
+          "q": 263.0,
+          "base_q": 2212.0,
+          "profit": -31296.31,
+          "base_profit": 108226.61
+        },
+        {
+          "round": 53,
+          "delta": -92897.34255301266,
+          "p": 16669.0,
+          "base_p": 14024.0,
+          "q": 285.0,
+          "base_q": 2030.0,
+          "profit": -22536.09,
+          "base_profit": 103051.71
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "appointments-rolling-1": [
+    {
+      "seed": 182060,
+      "group": "random",
+      "seat": 1,
+      "policy": "inf1",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -334.9125025483773,
+      "first_four": -12.11109033291997,
+      "rest": -322.8014122154574,
+      "parts": {
+        "price": 51.411426298704356,
+        "volume": -738.4148521159374,
+        "other_revenue": 5.318341212481708e-14,
+        "cost_effect": 352.0909232688556
+      },
+      "worst_rounds": [
+        {
+          "round": 59,
+          "delta": -15.262129081253839,
+          "p": 25.41,
+          "base_p": 20.02,
+          "q": 2.01,
+          "base_q": 25.86,
+          "profit": -1.9425900000000005,
+          "base_profit": 20.871719999999996
+        },
+        {
+          "round": 56,
+          "delta": -12.465205000058635,
+          "p": 23.61,
+          "base_p": 19.95,
+          "q": 5.0,
+          "base_q": 25.01,
+          "profit": 1.7649999999999988,
+          "base_profit": 19.84495
+        },
+        {
+          "round": 57,
+          "delta": -12.340552950058049,
+          "p": 23.61,
+          "base_p": 19.95,
+          "q": 5.0,
+          "base_q": 25.01,
+          "profit": 1.7649999999999988,
+          "base_profit": 19.84495
+        },
+        {
+          "round": 58,
+          "delta": -12.217147420557467,
+          "p": 23.61,
+          "base_p": 19.95,
+          "q": 5.0,
+          "base_q": 25.01,
+          "profit": 1.7649999999999988,
+          "base_profit": 19.84495
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 182041,
+      "group": "unseen",
+      "seat": 2,
+      "policy": "inf1",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -269.96423934871837,
+      "first_four": 0.0,
+      "rest": -269.96423934871837,
+      "parts": {
+        "price": 72.13596377799341,
+        "volume": -629.3319393234455,
+        "other_revenue": -1.093569492449615e-14,
+        "cost_effect": 287.2317361967338
+      },
+      "worst_rounds": [
+        {
+          "round": 48,
+          "delta": -15.322841866656736,
+          "p": 8.37,
+          "base_p": 7.16,
+          "q": 5.95,
+          "base_q": 24.34,
+          "profit": 4.392968749999999,
+          "base_profit": 24.900749999999995
+        },
+        {
+          "round": 49,
+          "delta": -15.16961344799017,
+          "p": 8.37,
+          "base_p": 7.16,
+          "q": 5.95,
+          "base_q": 24.34,
+          "profit": 4.392968749999999,
+          "base_profit": 24.900749999999995
+        },
+        {
+          "round": 50,
+          "delta": -15.017917313510269,
+          "p": 8.37,
+          "base_p": 7.16,
+          "q": 5.95,
+          "base_q": 24.34,
+          "profit": 4.392968749999999,
+          "base_profit": 24.900749999999995
+        },
+        {
+          "round": 40,
+          "delta": -13.842044867283592,
+          "p": 7.9,
+          "base_p": 7.03,
+          "q": 8.0,
+          "base_q": 24.1,
+          "profit": 6.890000000000001,
+          "base_profit": 23.9846875
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 182046,
+      "group": "unseen",
+      "seat": 3,
+      "policy": "inf1",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -232.72343619091575,
+      "first_four": -5.471142886999995,
+      "rest": -227.25229330391576,
+      "parts": {
+        "price": 53.38553859188863,
+        "volume": -633.9420981255481,
+        "other_revenue": -1.8051512066836198e-14,
+        "cost_effect": 347.83312334274393
+      },
+      "worst_rounds": [
+        {
+          "round": 23,
+          "delta": -9.745822879056002,
+          "p": 2.08,
+          "base_p": 1.8,
+          "q": 11.08,
+          "base_q": 27.64,
+          "profit": 6.7464,
+          "base_profit": 16.892000000000003
+        },
+        {
+          "round": 43,
+          "delta": -9.245388954134866,
+          "p": 2.25,
+          "base_p": 1.77,
+          "q": 2.98,
+          "base_q": 20.12,
+          "profit": -1.315,
+          "base_profit": 10.4524
+        },
+        {
+          "round": 36,
+          "delta": -8.395798500423249,
+          "p": 2.21,
+          "base_p": 1.81,
+          "q": 4.28,
+          "base_q": 18.69,
+          "profit": -0.0411999999999999,
+          "base_profit": 9.9189
+        },
+        {
+          "round": 48,
+          "delta": -8.332164327148229,
+          "p": 2.38,
+          "base_p": 1.78,
+          "q": 1.85,
+          "base_q": 17.57,
+          "profit": -1.407,
+          "base_profit": 9.744600000000002
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "appointments-single-switch-1": [
+    {
+      "seed": 182016,
+      "group": "balanced",
+      "seat": 3,
+      "policy": "inf1",
+      "baseline": "skip1",
+      "start": 27,
+      "gain": -137.1497448855229,
+      "first_four": -8.404871066999991,
+      "rest": -128.7448738185229,
+      "parts": {
+        "price": 24.447566056780886,
+        "volume": -287.77455292460075,
+        "other_revenue": -1.5232405136000356e-14,
+        "cost_effect": 126.17724198229695
+      },
+      "worst_rounds": [
+        {
+          "round": 56,
+          "delta": -9.027632112552077,
+          "p": 2.64,
+          "base_p": 2.21,
+          "q": 4.29,
+          "base_q": 15.8,
+          "profit": 3.6156000000000006,
+          "base_profit": 15.697999999999999
+        },
+        {
+          "round": 57,
+          "delta": -8.937355791426555,
+          "p": 2.64,
+          "base_p": 2.21,
+          "q": 4.29,
+          "base_q": 15.8,
+          "profit": 3.6156000000000006,
+          "base_profit": 15.697999999999999
+        },
+        {
+          "round": 58,
+          "delta": -8.84798223351229,
+          "p": 2.64,
+          "base_p": 2.21,
+          "q": 4.29,
+          "base_q": 15.8,
+          "profit": 3.6156000000000006,
+          "base_profit": 15.697999999999999
+        },
+        {
+          "round": 51,
+          "delta": -7.439429179675397,
+          "p": 2.58,
+          "base_p": 2.2,
+          "q": 4.64,
+          "base_q": 14.0,
+          "profit": 2.2912,
+          "base_profit": 11.760000000000005
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 182048,
+      "group": "random",
+      "seat": 2,
+      "policy": "inf1",
+      "baseline": "skip1",
+      "start": 43,
+      "gain": -86.04143444126562,
+      "first_four": -10.0043828378,
+      "rest": -76.03705160346564,
+      "parts": {
+        "price": 34.067117979423344,
+        "volume": -232.21351297250715,
+        "other_revenue": -3.6258261339023354e-14,
+        "cost_effect": 112.1049605518182
+      },
+      "worst_rounds": [
+        {
+          "round": 52,
+          "delta": -9.726400837407823,
+          "p": 23.56,
+          "base_p": 20.72,
+          "q": 9.24,
+          "base_q": 21.62,
+          "profit": 7.8494399999999995,
+          "base_profit": 18.496640000000003
+        },
+        {
+          "round": 53,
+          "delta": -9.629136829033746,
+          "p": 23.56,
+          "base_p": 20.72,
+          "q": 9.24,
+          "base_q": 21.62,
+          "profit": 7.8494399999999995,
+          "base_profit": 18.496640000000003
+        },
+        {
+          "round": 54,
+          "delta": -9.532845460743408,
+          "p": 23.56,
+          "base_p": 20.72,
+          "q": 9.24,
+          "base_q": 21.62,
+          "profit": 7.8494399999999995,
+          "base_profit": 18.496640000000003
+        },
+        {
+          "round": 47,
+          "delta": -7.731347380524896,
+          "p": 23.03,
+          "base_p": 20.65,
+          "q": 10.17,
+          "base_q": 20.0,
+          "profit": 9.65151,
+          "base_profit": 17.699999999999996
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 182053,
+      "group": "random",
+      "seat": 3,
+      "policy": "inf1",
+      "baseline": "skip1",
+      "start": 27,
+      "gain": -71.02779297208079,
+      "first_four": -11.440954481250001,
+      "rest": -59.586838490830765,
+      "parts": {
+        "price": 22.162040101426523,
+        "volume": -178.09819362084204,
+        "other_revenue": 3.0235505043005655e-14,
+        "cost_effect": 84.90836054733472
+      },
+      "worst_rounds": [
+        {
+          "round": 39,
+          "delta": -3.651379380452881,
+          "p": 6.84,
+          "base_p": 6.57,
+          "q": 16.83,
+          "base_q": 22.09,
+          "profit": 14.644124999999992,
+          "base_profit": 18.763531250000003
+        },
+        {
+          "round": 40,
+          "delta": -3.614865586648352,
+          "p": 6.84,
+          "base_p": 6.57,
+          "q": 16.83,
+          "base_q": 22.09,
+          "profit": 14.464124999999992,
+          "base_profit": 18.583531250000004
+        },
+        {
+          "round": 41,
+          "delta": -3.5787169307818685,
+          "p": 6.84,
+          "base_p": 6.57,
+          "q": 16.83,
+          "base_q": 22.09,
+          "profit": 14.464124999999992,
+          "base_profit": 18.583531250000004
+        },
+        {
+          "round": 42,
+          "delta": -3.54292976147405,
+          "p": 6.84,
+          "base_p": 6.57,
+          "q": 16.83,
+          "base_q": 22.09,
+          "profit": 14.464124999999992,
+          "base_profit": 18.583531250000004
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "appointments-rolling-2": [
+    {
+      "seed": 182006,
+      "group": "balanced",
+      "seat": 3,
+      "policy": "inf2",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -216.3247964302071,
+      "first_four": -10.322663260299993,
+      "rest": -206.0021331699071,
+      "parts": {
+        "price": 80.8321339548287,
+        "volume": -656.8684651303279,
+        "other_revenue": -5.3204301853606336e-15,
+        "cost_effect": 359.7115347452921
+      },
+      "worst_rounds": [
+        {
+          "round": 32,
+          "delta": -12.44386237084146,
+          "p": 23.45,
+          "base_p": 18.7,
+          "q": 4.14,
+          "base_q": 22.7,
+          "profit": 1.2482999999999986,
+          "base_profit": 15.428999999999995
+        },
+        {
+          "round": 33,
+          "delta": -12.319423747133046,
+          "p": 23.45,
+          "base_p": 18.7,
+          "q": 4.14,
+          "base_q": 22.7,
+          "profit": 1.2482999999999986,
+          "base_profit": 15.428999999999995
+        },
+        {
+          "round": 34,
+          "delta": -12.196229509661716,
+          "p": 23.45,
+          "base_p": 18.7,
+          "q": 4.14,
+          "base_q": 22.7,
+          "profit": 1.2482999999999986,
+          "base_profit": 15.428999999999995
+        },
+        {
+          "round": 31,
+          "delta": -9.716285048290693,
+          "p": 23.45,
+          "base_p": 18.7,
+          "q": 4.14,
+          "base_q": 19.0,
+          "profit": 2.148299999999999,
+          "base_profit": 13.109999999999998
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 182024,
+      "group": "unseen",
+      "seat": 1,
+      "policy": "inf2",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -189.6912197013646,
+      "first_four": -11.456100263609986,
+      "rest": -178.2351194377546,
+      "parts": {
+        "price": 78.63122344764444,
+        "volume": -560.0206444532314,
+        "other_revenue": -1.8948850099404574e-14,
+        "cost_effect": 291.6982013042224
+      },
+      "worst_rounds": [
+        {
+          "round": 47,
+          "delta": -7.409773584222286,
+          "p": 21.96,
+          "base_p": 18.41,
+          "q": 11.48,
+          "base_q": 28.0,
+          "profit": 8.690080000000002,
+          "base_profit": 18.508
+        },
+        {
+          "round": 44,
+          "delta": -7.294595385571454,
+          "p": 21.04,
+          "base_p": 18.0,
+          "q": 11.44,
+          "base_q": 27.51,
+          "profit": 7.589760000000001,
+          "base_profit": 16.968000000000004
+        },
+        {
+          "round": 45,
+          "delta": -7.221649431715739,
+          "p": 21.04,
+          "base_p": 18.0,
+          "q": 11.44,
+          "base_q": 27.51,
+          "profit": 7.589760000000001,
+          "base_profit": 16.968000000000004
+        },
+        {
+          "round": 23,
+          "delta": -7.193288737443599,
+          "p": 24.92,
+          "base_p": 21.48,
+          "q": 2.76,
+          "base_q": 10.11,
+          "profit": 0.87792,
+          "base_profit": 8.36628
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 182060,
+      "group": "random",
+      "seat": 1,
+      "policy": "inf2",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -179.83673392897788,
+      "first_four": -8.866654076319984,
+      "rest": -170.97007985265793,
+      "parts": {
+        "price": 86.02575086012502,
+        "volume": -505.46223748459244,
+        "other_revenue": 5.388899739572196e-14,
+        "cost_effect": 239.59975269548946
+      },
+      "worst_rounds": [
+        {
+          "round": 59,
+          "delta": -10.10792244215478,
+          "p": 24.92,
+          "base_p": 20.02,
+          "q": 7.24,
+          "base_q": 25.86,
+          "profit": 5.76208,
+          "base_profit": 20.871719999999996
+        },
+        {
+          "round": 39,
+          "delta": -8.588644454043495,
+          "p": 25.25,
+          "base_p": 21.58,
+          "q": 6.38,
+          "base_q": 17.47,
+          "profit": 4.8695,
+          "base_profit": 15.370259999999998
+        },
+        {
+          "round": 40,
+          "delta": -8.502758009503058,
+          "p": 25.25,
+          "base_p": 21.58,
+          "q": 6.38,
+          "base_q": 17.47,
+          "profit": 5.7695,
+          "base_profit": 16.270259999999997
+        },
+        {
+          "round": 41,
+          "delta": -8.417730429408028,
+          "p": 25.25,
+          "base_p": 21.58,
+          "q": 6.38,
+          "base_q": 17.47,
+          "profit": 5.7695,
+          "base_profit": 16.270259999999997
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "appointments-single-switch-2": [
+    {
+      "seed": 182008,
+      "group": "balanced",
+      "seat": 2,
+      "policy": "inf2",
+      "baseline": "skip2",
+      "start": 31,
+      "gain": -131.12596980638673,
+      "first_four": -10.839399539062494,
+      "rest": -120.28657026732427,
+      "parts": {
+        "price": 32.80079720881003,
+        "volume": -308.7547060326352,
+        "other_revenue": 2.6510730366466526e-14,
+        "cost_effect": 144.82793901743847
+      },
+      "worst_rounds": [
+        {
+          "round": 59,
+          "delta": -10.571824755415781,
+          "p": 7.56,
+          "base_p": 6.63,
+          "q": 10.96,
+          "base_q": 27.0,
+          "profit": 10.073,
+          "base_profit": 24.080624999999998
+        },
+        {
+          "round": 55,
+          "delta": -10.170333455888542,
+          "p": 7.53,
+          "base_p": 6.74,
+          "q": 11.51,
+          "base_q": 25.78,
+          "profit": 10.534468749999998,
+          "base_profit": 23.479124999999996
+        },
+        {
+          "round": 56,
+          "delta": -10.068630121329656,
+          "p": 7.53,
+          "base_p": 6.74,
+          "q": 11.51,
+          "base_q": 25.78,
+          "profit": 10.71446875,
+          "base_profit": 23.659124999999996
+        },
+        {
+          "round": 57,
+          "delta": -9.967943820116359,
+          "p": 7.53,
+          "base_p": 6.74,
+          "q": 11.51,
+          "base_q": 25.78,
+          "profit": 10.71446875,
+          "base_profit": 23.659124999999996
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 182003,
+      "group": "balanced",
+      "seat": 1,
+      "policy": "inf2",
+      "baseline": "skip2",
+      "start": 23,
+      "gain": -95.32242747062912,
+      "first_four": -7.725152239499997,
+      "rest": -87.59727523112915,
+      "parts": {
+        "price": 25.19992220405183,
+        "volume": -235.79581187822697,
+        "other_revenue": -1.7031570477622543e-14,
+        "cost_effect": 115.27346220354607
+      },
+      "worst_rounds": [
+        {
+          "round": 39,
+          "delta": -8.333166118239282,
+          "p": 21.52,
+          "base_p": 19.91,
+          "q": 8.52,
+          "base_q": 19.78,
+          "profit": 6.215040000000002,
+          "base_profit": 16.001980000000003
+        },
+        {
+          "round": 40,
+          "delta": -8.24983445705689,
+          "p": 21.52,
+          "base_p": 19.91,
+          "q": 8.52,
+          "base_q": 19.78,
+          "profit": 6.215040000000002,
+          "base_profit": 16.001980000000003
+        },
+        {
+          "round": 41,
+          "delta": -8.16733611248632,
+          "p": 21.52,
+          "base_p": 19.91,
+          "q": 8.52,
+          "base_q": 19.78,
+          "profit": 6.215040000000002,
+          "base_profit": 16.001980000000003
+        },
+        {
+          "round": 42,
+          "delta": -8.085662751361458,
+          "p": 21.52,
+          "base_p": 19.91,
+          "q": 8.52,
+          "base_q": 19.78,
+          "profit": 6.215040000000002,
+          "base_profit": 16.001980000000003
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 182068,
+      "group": "random",
+      "seat": 1,
+      "policy": "inf2",
+      "baseline": "skip2",
+      "start": 31,
+      "gain": -66.83947212256604,
+      "first_four": -8.82206081112501,
+      "rest": -58.01741131144102,
+      "parts": {
+        "price": 20.804127809348163,
+        "volume": -157.47015220847442,
+        "other_revenue": 5.045627634540539e-15,
+        "cost_effect": 69.82655227656022
+      },
+      "worst_rounds": [
+        {
+          "round": 59,
+          "delta": -3.4901993436732024,
+          "p": 7.15,
+          "base_p": 6.87,
+          "q": 15.83,
+          "base_q": 21.07,
+          "profit": 15.400156249999998,
+          "base_profit": 20.024656250000003
+        },
+        {
+          "round": 55,
+          "delta": -3.2703361562262416,
+          "p": 7.12,
+          "base_p": 6.85,
+          "q": 14.61,
+          "base_q": 19.34,
+          "profit": 13.757249999999999,
+          "base_profit": 17.91968749999999
+        },
+        {
+          "round": 56,
+          "delta": -3.2376327946639796,
+          "p": 7.12,
+          "base_p": 6.85,
+          "q": 14.61,
+          "base_q": 19.34,
+          "profit": 13.757249999999999,
+          "base_profit": 17.91968749999999
+        },
+        {
+          "round": 57,
+          "delta": -3.2052564667173393,
+          "p": 7.12,
+          "base_p": 6.85,
+          "q": 14.61,
+          "base_q": 19.34,
+          "profit": 13.757249999999999,
+          "base_profit": 17.91968749999999
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "appointments-rolling-4": [
+    {
+      "seed": 182011,
+      "group": "balanced",
+      "seat": 0,
+      "policy": "inf4",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -292.1082605396204,
+      "first_four": -9.662597172812497,
+      "rest": -282.4456633668079,
+      "parts": {
+        "price": 50.28446758608611,
+        "volume": -634.3784657323963,
+        "other_revenue": -6.33981906044379e-16,
+        "cost_effect": 291.9857376066897
+      },
+      "worst_rounds": [
+        {
+          "round": 59,
+          "delta": -16.274953996157734,
+          "p": 9.3,
+          "base_p": 6.73,
+          "q": 1.89,
+          "base_q": 25.32,
+          "profit": -1.0771875,
+          "base_profit": 23.251125
+        },
+        {
+          "round": 60,
+          "delta": -16.112204456196157,
+          "p": 9.3,
+          "base_p": 6.73,
+          "q": 1.89,
+          "base_q": 25.32,
+          "profit": -1.6171875,
+          "base_profit": 22.711125
+        },
+        {
+          "round": 47,
+          "delta": -14.762686617346656,
+          "p": 8.52,
+          "base_p": 7.0,
+          "q": 4.37,
+          "base_q": 22.59,
+          "profit": 2.2251249999999985,
+          "base_profit": 21.785625
+        },
+        {
+          "round": 56,
+          "delta": -12.9730187242555,
+          "p": 8.48,
+          "base_p": 6.58,
+          "q": 5.24,
+          "base_q": 26.0,
+          "profit": 3.9659999999999993,
+          "base_profit": 22.7825
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 182038,
+      "group": "unseen",
+      "seat": 3,
+      "policy": "inf4",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -221.70583842992733,
+      "first_four": -14.135196312750004,
+      "rest": -207.5706421171773,
+      "parts": {
+        "price": 80.35195529372423,
+        "volume": -629.4635941221889,
+        "other_revenue": -4.778525151102274e-14,
+        "cost_effect": 327.4058003985375
+      },
+      "worst_rounds": [
+        {
+          "round": 43,
+          "delta": -13.165805025041763,
+          "p": 8.24,
+          "base_p": 5.89,
+          "q": 2.17,
+          "base_q": 24.0,
+          "profit": -0.9022500000000009,
+          "base_profit": 15.854999999999993
+        },
+        {
+          "round": 44,
+          "delta": -13.164918190840329,
+          "p": 8.24,
+          "base_p": 5.89,
+          "q": 2.17,
+          "base_q": 24.2,
+          "profit": -1.8022500000000004,
+          "base_profit": 15.123124999999995
+        },
+        {
+          "round": 45,
+          "delta": -13.033269008931923,
+          "p": 8.24,
+          "base_p": 5.89,
+          "q": 2.17,
+          "base_q": 24.2,
+          "profit": -1.8022500000000004,
+          "base_profit": 15.123124999999995
+        },
+        {
+          "round": 46,
+          "delta": -12.902936318842604,
+          "p": 8.24,
+          "base_p": 5.89,
+          "q": 2.17,
+          "base_q": 24.2,
+          "profit": -1.8022500000000004,
+          "base_profit": 15.123124999999995
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 182006,
+      "group": "balanced",
+      "seat": 3,
+      "policy": "inf4",
+      "baseline": "keep",
+      "start": 19,
+      "gain": -211.46664586076793,
+      "first_four": -9.704257041239996,
+      "rest": -201.76238881952793,
+      "parts": {
+        "price": 88.41647373848764,
+        "volume": -661.1174451231803,
+        "other_revenue": -4.131538361353797e-15,
+        "cost_effect": 361.23432552392467
+      },
+      "worst_rounds": [
+        {
+          "round": 32,
+          "delta": -11.759308220799966,
+          "p": 23.45,
+          "base_p": 18.7,
+          "q": 4.72,
+          "base_q": 22.7,
+          "profit": 2.0283999999999986,
+          "base_profit": 15.428999999999995
+        },
+        {
+          "round": 33,
+          "delta": -11.641715138591968,
+          "p": 23.45,
+          "base_p": 18.7,
+          "q": 4.72,
+          "base_q": 22.7,
+          "profit": 2.0283999999999986,
+          "base_profit": 15.428999999999995
+        },
+        {
+          "round": 34,
+          "delta": -11.525297987206047,
+          "p": 23.45,
+          "base_p": 18.7,
+          "q": 4.72,
+          "base_q": 22.7,
+          "profit": 2.0283999999999986,
+          "base_profit": 15.428999999999995
+        },
+        {
+          "round": 31,
+          "delta": -9.024816209864941,
+          "p": 23.45,
+          "base_p": 18.7,
+          "q": 4.72,
+          "base_q": 19.0,
+          "profit": 2.928399999999999,
+          "base_profit": 13.109999999999998
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ],
+  "appointments-single-switch-4": [
+    {
+      "seed": 182005,
+      "group": "balanced",
+      "seat": 3,
+      "policy": "inf4",
+      "baseline": "skip4",
+      "start": 39,
+      "gain": -103.7875579982984,
+      "first_four": -3.9281727198750067,
+      "rest": -99.8593852784234,
+      "parts": {
+        "price": 24.69696618660729,
+        "volume": -203.83064146464451,
+        "other_revenue": -4.739247416457036e-14,
+        "cost_effect": 75.34611727973883
+      },
+      "worst_rounds": [
+        {
+          "round": 59,
+          "delta": -10.023193924336063,
+          "p": 9.67,
+          "base_p": 8.74,
+          "q": 4.0,
+          "base_q": 11.75,
+          "profit": 3.227499999999999,
+          "base_profit": 15.482187499999998
+        },
+        {
+          "round": 60,
+          "delta": -9.922961985092702,
+          "p": 9.67,
+          "base_p": 8.74,
+          "q": 4.0,
+          "base_q": 11.75,
+          "profit": 5.387499999999999,
+          "base_profit": 17.6421875
+        },
+        {
+          "round": 55,
+          "delta": -7.578080594965775,
+          "p": 9.82,
+          "base_p": 9.06,
+          "q": 3.7,
+          "base_q": 9.04,
+          "profit": 3.154375000000001,
+          "base_profit": 12.054499999999997
+        },
+        {
+          "round": 56,
+          "delta": -7.502299789016117,
+          "p": 9.82,
+          "base_p": 9.06,
+          "q": 3.7,
+          "base_q": 9.04,
+          "profit": 2.7943750000000014,
+          "base_profit": 11.694499999999998
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 182006,
+      "group": "balanced",
+      "seat": 3,
+      "policy": "inf4",
+      "baseline": "skip4",
+      "start": 31,
+      "gain": -93.39178047367145,
+      "first_four": -7.771451927749999,
+      "rest": -85.62032854592144,
+      "parts": {
+        "price": 19.414987133105274,
+        "volume": -216.96184259838526,
+        "other_revenue": -5.318121972405227e-15,
+        "cost_effect": 104.15507499160859
+      },
+      "worst_rounds": [
+        {
+          "round": 52,
+          "delta": -7.907057411410044,
+          "p": 23.27,
+          "base_p": 19.81,
+          "q": 5.29,
+          "base_q": 17.11,
+          "profit": 2.6998299999999995,
+          "base_profit": 12.464909999999996
+        },
+        {
+          "round": 53,
+          "delta": -7.827986837295944,
+          "p": 23.27,
+          "base_p": 19.81,
+          "q": 5.29,
+          "base_q": 17.11,
+          "profit": 2.6998299999999995,
+          "base_profit": 12.464909999999996
+        },
+        {
+          "round": 54,
+          "delta": -7.749706968922984,
+          "p": 23.27,
+          "base_p": 19.81,
+          "q": 5.29,
+          "base_q": 17.11,
+          "profit": 2.6998299999999995,
+          "base_profit": 12.464909999999996
+        },
+        {
+          "round": 47,
+          "delta": -5.477019141723207,
+          "p": 23.92,
+          "base_p": 21.0,
+          "q": 4.19,
+          "base_q": 11.15,
+          "profit": 1.6924800000000024,
+          "base_profit": 8.125
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    },
+    {
+      "seed": 182023,
+      "group": "balanced",
+      "seat": 2,
+      "policy": "inf4",
+      "baseline": "skip4",
+      "start": 43,
+      "gain": -69.56522106277048,
+      "first_four": -15.650033453312492,
+      "rest": -53.91518760945798,
+      "parts": {
+        "price": 11.746321430448619,
+        "volume": -141.61417332078153,
+        "other_revenue": 2.1347164497760482e-14,
+        "cost_effect": 60.30263082756241
+      },
+      "worst_rounds": [
+        {
+          "round": 59,
+          "delta": -7.705479963965848,
+          "p": 7.5,
+          "base_p": 7.21,
+          "q": 6.06,
+          "base_q": 13.72,
+          "profit": 5.623125,
+          "base_profit": 14.672874999999998
+        },
+        {
+          "round": 60,
+          "delta": -7.628425164326189,
+          "p": 7.5,
+          "base_p": 7.21,
+          "q": 6.06,
+          "base_q": 13.72,
+          "profit": 4.723125,
+          "base_profit": 13.772874999999997
+        },
+        {
+          "round": 55,
+          "delta": -5.295983411340426,
+          "p": 7.93,
+          "base_p": 7.62,
+          "q": 5.48,
+          "base_q": 10.19,
+          "profit": 5.940125,
+          "base_profit": 11.9149375
+        },
+        {
+          "round": 56,
+          "delta": -5.243023577227021,
+          "p": 7.93,
+          "base_p": 7.62,
+          "q": 5.48,
+          "base_q": 10.19,
+          "profit": 5.580125000000001,
+          "base_profit": 11.554937500000001
+        }
+      ],
+      "exit": [
+        null,
+        null
+      ]
+    }
+  ]
+}
