@@ -73,6 +73,8 @@ class PublicPriceGuard:
             reason=reason,
             n=len(neighbors),
             risk_adjusted_gain=float(forecast),
+            historical_mean_gain=float(gains.mean()),
+            historical_seeds=[row["seed"] for row in neighbors],
             extra_exits=extra_exits,
             volume_losses=volume_loss,
         )

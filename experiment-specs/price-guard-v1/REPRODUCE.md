@@ -13,6 +13,8 @@ python scripts/four_prices/guard_decisions.py
 python scripts/four_prices/guard_spillovers.py
 python scripts/four_prices/guard_tail.py
 python scripts/four_prices/guard_quotes.py
+python scripts/four_prices/expiry_study.py
+python scripts/four_prices/guard_transfer.py
 python scripts/four_prices/plot_guard.py
 python -m pytest
 ~~~
@@ -23,3 +25,5 @@ python -m pytest
 
 原推断和简单估值都从保留、降低4%、提高4%中选择；筛选器只决定是否否决。对手建模的净价值应比较 safe_inf 和 safe_dir，两者使用相同公开数据、历史结果、三个候选和计算额度。inf 与 safe_inf 的差异包含额外历史训练标签的价值。每家利润按从第19轮起的0.99折现计到第60轮，正数指同市场同店比自主报价多赚。原门槛采用每个预定机会为分母；一次性风险在预抽单个合同上计算。观测最差值不是可能损失的上限。
 
+
+追试的 expiry-control / expiry 按同一新种子切换是否使用原草稿的续约参考。qwen 在原 legal 的相同场景上改用 Qwen2.5-0.5B，本地权重 SHA 与协议见 MODEL.md，若重采样则使用端口 19944、服务模型名 qwen。完整检出从已有归档计算这两项时均无需模型服务。

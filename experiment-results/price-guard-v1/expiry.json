@@ -1,0 +1,2560 @@
+{
+  "markets": {
+    "econ": {
+      "expire": {
+        "n": 36,
+        "calls": 5045,
+        "paths": 648,
+        "baseline_same": [
+          0.004188712522045855,
+          0.0015432098765432098,
+          0.007275132275132275
+        ],
+        "exits": 0,
+        "clips": 0,
+        "once": {
+          "n": 36,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "risk_lower": null,
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "passed": false,
+          "rejected": 18,
+          "rejected_would_lose": 10,
+          "rejected_gain": [
+            18.392641702681786,
+            -17.80882125472073,
+            57.27938560823177
+          ],
+          "accepted_gain": null
+        },
+        "install": {
+          "1": {
+            "inf": {
+              "effect": [
+                -14.513668430713343,
+                -50.08410078008606,
+                23.225187305336007
+              ],
+              "individual_tail": {
+                "min": -238.95144984214093,
+                "es5": -231.94398507836132,
+                "losses": 22
+              },
+              "worst": {
+                "seed": 208005,
+                "seat": 1,
+                "start": 19,
+                "gain": -238.95144984214096,
+                "first_contract": 0.0,
+                "later": -238.95144984214096,
+                "units": -465.88000000000005,
+                "extra_exit": 0,
+                "initial_prices": [
+                  2.35,
+                  2.35
+                ]
+              },
+              "extra_exits": 0
+            },
+            "dir": {
+              "effect": [
+                -15.052779539824684,
+                -46.96512651228883,
+                17.21388849699486
+              ],
+              "individual_tail": {
+                "min": -238.95144984214093,
+                "es5": -228.93036258302692,
+                "losses": 20
+              },
+              "worst": {
+                "seed": 208005,
+                "seat": 1,
+                "start": 19,
+                "gain": -238.95144984214096,
+                "first_contract": 0.0,
+                "later": -238.95144984214096,
+                "units": -465.88000000000005,
+                "extra_exit": 0,
+                "initial_prices": [
+                  2.35,
+                  2.35
+                ]
+              },
+              "extra_exits": 0
+            },
+            "safe_inf": {
+              "effect": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "individual_tail": {
+                "min": 0.0,
+                "es5": 0.0,
+                "losses": 0
+              },
+              "worst": {
+                "seed": 208000,
+                "seat": 2,
+                "start": 19,
+                "gain": 0.0,
+                "first_contract": 0.0,
+                "later": 0.0,
+                "units": 0.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  6.01,
+                  6.01
+                ]
+              },
+              "extra_exits": 0
+            },
+            "safe_dir": {
+              "effect": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "individual_tail": {
+                "min": 0.0,
+                "es5": 0.0,
+                "losses": 0
+              },
+              "worst": {
+                "seed": 208000,
+                "seat": 2,
+                "start": 19,
+                "gain": 0.0,
+                "first_contract": 0.0,
+                "later": 0.0,
+                "units": 0.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  6.01,
+                  6.01
+                ]
+              },
+              "extra_exits": 0
+            },
+            "per": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "risk": {
+              "n": 36,
+              "used": 0,
+              "lost": 0,
+              "large": 0,
+              "coverage": 0.0,
+              "risk_upper": null,
+              "risk_lower": null
+            },
+            "passed": false,
+            "vs_previous": [
+              14.513668430713343,
+              -23.225187305336007,
+              50.08410078008606
+            ],
+            "vs_direct": [
+              15.052779539824684,
+              -17.21388849699486,
+              46.96512651228883
+            ],
+            "vs_safe_direct": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "wins_over_safe_direct": 0,
+            "losses_to_safe_direct": 0,
+            "matched_gap": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "matched_tie": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "coactive_pairs": 9072,
+            "same_change": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "groups": {
+              "balanced": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "random": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "unseen": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "worst_probe": {
+              "seed": 208000,
+              "seat": 2,
+              "start": 39,
+              "gain": 0.0,
+              "first_contract": 0.0,
+              "later": 0.0,
+              "units": 0.0,
+              "extra_exit": 0,
+              "initial_prices": [
+                4.95,
+                4.95
+              ]
+            }
+          },
+          "2": {
+            "inf": {
+              "effect": [
+                -8.730740620545987,
+                -33.981022023519515,
+                16.576578824673636
+              ],
+              "individual_tail": {
+                "min": -230.53957313917604,
+                "es5": -212.99817002263853,
+                "losses": 38
+              },
+              "worst": {
+                "seed": 208025,
+                "seat": 1,
+                "start": 19,
+                "gain": -230.539573139176,
+                "first_contract": 0.3940399000000056,
+                "later": -230.93361303917607,
+                "units": -526.67,
+                "extra_exit": 0,
+                "initial_prices": [
+                  21.4,
+                  21.4
+                ]
+              },
+              "extra_exits": 0
+            },
+            "dir": {
+              "effect": [
+                -3.26094097820301,
+                -28.04854314306939,
+                22.720371788930393
+              ],
+              "individual_tail": {
+                "min": -230.59480015900505,
+                "es5": -207.02903847906455,
+                "losses": 40
+              },
+              "worst": {
+                "seed": 208025,
+                "seat": 1,
+                "start": 19,
+                "gain": -230.59480015900496,
+                "first_contract": 0.3940399000000056,
+                "later": -230.98884005900496,
+                "units": -550.0999999999999,
+                "extra_exit": 0,
+                "initial_prices": [
+                  21.4,
+                  21.4
+                ]
+              },
+              "extra_exits": 0
+            },
+            "safe_inf": {
+              "effect": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "individual_tail": {
+                "min": 0.0,
+                "es5": 0.0,
+                "losses": 0
+              },
+              "worst": {
+                "seed": 208000,
+                "seat": 2,
+                "start": 19,
+                "gain": 0.0,
+                "first_contract": 0.0,
+                "later": 0.0,
+                "units": 0.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  6.01,
+                  6.01
+                ]
+              },
+              "extra_exits": 0
+            },
+            "safe_dir": {
+              "effect": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "individual_tail": {
+                "min": 0.0,
+                "es5": 0.0,
+                "losses": 0
+              },
+              "worst": {
+                "seed": 208000,
+                "seat": 2,
+                "start": 19,
+                "gain": 0.0,
+                "first_contract": 0.0,
+                "later": 0.0,
+                "units": 0.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  6.01,
+                  6.01
+                ]
+              },
+              "extra_exits": 0
+            },
+            "per": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "risk": {
+              "n": 36,
+              "used": 0,
+              "lost": 0,
+              "large": 0,
+              "coverage": 0.0,
+              "risk_upper": null,
+              "risk_lower": null
+            },
+            "passed": false,
+            "vs_previous": [
+              8.730740620545987,
+              -16.576578824673636,
+              33.981022023519515
+            ],
+            "vs_direct": [
+              3.26094097820301,
+              -22.720371788930393,
+              28.04854314306939
+            ],
+            "vs_safe_direct": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "wins_over_safe_direct": 0,
+            "losses_to_safe_direct": 0,
+            "matched_gap": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "matched_tie": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "coactive_pairs": 9072,
+            "same_change": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "groups": {
+              "balanced": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "random": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "unseen": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "worst_probe": {
+              "seed": 208000,
+              "seat": 2,
+              "start": 39,
+              "gain": 0.0,
+              "first_contract": 0.0,
+              "later": 0.0,
+              "units": 0.0,
+              "extra_exit": 0,
+              "initial_prices": [
+                4.95,
+                4.95
+              ]
+            }
+          },
+          "4": {
+            "inf": {
+              "effect": [
+                9.545434545057363,
+                1.0719229178504666,
+                18.132812147823394
+              ],
+              "individual_tail": {
+                "min": -363.5065244244937,
+                "es5": -257.22647107571504,
+                "losses": 64
+              },
+              "worst": {
+                "seed": 208021,
+                "seat": 2,
+                "start": 19,
+                "gain": -363.5065244244937,
+                "first_contract": -6.5016583500000085,
+                "later": -357.00486607449375,
+                "units": -573.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  7.33,
+                  7.04
+                ]
+              },
+              "extra_exits": 0
+            },
+            "dir": {
+              "effect": [
+                9.711307852875406,
+                1.4953415537558687,
+                18.63492175104772
+              ],
+              "individual_tail": {
+                "min": -481.2980031522226,
+                "es5": -266.68961118758654,
+                "losses": 65
+              },
+              "worst": {
+                "seed": 208021,
+                "seat": 2,
+                "start": 19,
+                "gain": -481.2980031522226,
+                "first_contract": 8.314241889999998,
+                "later": -489.61224504222264,
+                "units": -878.8199999999999,
+                "extra_exit": 0,
+                "initial_prices": [
+                  7.04,
+                  7.04
+                ]
+              },
+              "extra_exits": 0
+            },
+            "safe_inf": {
+              "effect": [
+                0.6800609308935234,
+                -0.15196474920133962,
+                2.872208472775433
+              ],
+              "individual_tail": {
+                "min": -38.31028094653867,
+                "es5": -9.27303113459189,
+                "losses": 4
+              },
+              "worst": {
+                "seed": 208005,
+                "seat": 1,
+                "start": 19,
+                "gain": -38.31028094653866,
+                "first_contract": 0.0,
+                "later": -38.31028094653867,
+                "units": -59.780000000000015,
+                "extra_exit": 0,
+                "initial_prices": [
+                  2.35,
+                  2.35
+                ]
+              },
+              "extra_exits": 0
+            },
+            "safe_dir": {
+              "effect": [
+                -0.05065491640044654,
+                -0.20261966560178615,
+                0.0
+              ],
+              "individual_tail": {
+                "min": -38.31028094653867,
+                "es5": -7.370291826191661,
+                "losses": 3
+              },
+              "worst": {
+                "seed": 208005,
+                "seat": 1,
+                "start": 19,
+                "gain": -38.31028094653866,
+                "first_contract": 0.0,
+                "later": -38.31028094653867,
+                "units": -59.780000000000015,
+                "extra_exit": 0,
+                "initial_prices": [
+                  2.35,
+                  2.35
+                ]
+              },
+              "extra_exits": 0
+            },
+            "per": [
+              0.06800609308935233,
+              -0.01519647492013396,
+              0.28722084727754327
+            ],
+            "risk": {
+              "n": 36,
+              "used": 0,
+              "lost": 0,
+              "large": 0,
+              "coverage": 0.0,
+              "risk_upper": null,
+              "risk_lower": null
+            },
+            "passed": false,
+            "vs_previous": [
+              -8.865373614163838,
+              -17.901252962462785,
+              0.09894034077283537
+            ],
+            "vs_direct": [
+              -9.031246921981882,
+              -18.101207606696814,
+              -0.2046402398504591
+            ],
+            "vs_safe_direct": [
+              0.7307158472939699,
+              0.0,
+              2.9228633891758795
+            ],
+            "wins_over_safe_direct": 1,
+            "losses_to_safe_direct": 0,
+            "matched_gap": [
+              -0.0009412237521659949,
+              -0.0031205182913287433,
+              0.0
+            ],
+            "matched_tie": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "coactive_pairs": 9072,
+            "same_change": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "groups": {
+              "balanced": [
+                -0.15196474920133962,
+                -0.45589424760401887,
+                0.0
+              ],
+              "random": [
+                2.19214754188191,
+                0.0,
+                8.768590167527638
+              ],
+              "unseen": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "worst_probe": {
+              "seed": 208000,
+              "seat": 1,
+              "start": 39,
+              "gain": 0.0,
+              "first_contract": 0.0,
+              "later": 0.0,
+              "units": 0.0,
+              "extra_exit": 0,
+              "initial_prices": [
+                6.8,
+                6.8
+              ]
+            }
+          }
+        }
+      },
+      "control": {
+        "n": 36,
+        "calls": 3981,
+        "paths": 648,
+        "baseline_same": [
+          0.004188712522045855,
+          0.0015432098765432098,
+          0.007275132275132275
+        ],
+        "exits": 0,
+        "clips": 0,
+        "once": {
+          "n": 36,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "risk_lower": null,
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "passed": false,
+          "rejected": 18,
+          "rejected_would_lose": 14,
+          "rejected_gain": [
+            -17.538956477546986,
+            -43.75429049785326,
+            12.77467201144874
+          ],
+          "accepted_gain": null
+        },
+        "install": {
+          "1": {
+            "inf": {
+              "effect": [
+                -99.35106635393663,
+                -138.43971769765056,
+                -61.33325344063889
+              ],
+              "individual_tail": {
+                "min": -395.767028033412,
+                "es5": -325.09825039433133,
+                "losses": 32
+              },
+              "worst": {
+                "seed": 208009,
+                "seat": 1,
+                "start": 19,
+                "gain": -395.76702803341203,
+                "first_contract": -13.318548620000005,
+                "later": -382.44847941341203,
+                "units": -699.6700000000001,
+                "extra_exit": 0,
+                "initial_prices": [
+                  7.39,
+                  7.11
+                ]
+              },
+              "extra_exits": 0
+            },
+            "dir": {
+              "effect": [
+                -99.26024979820383,
+                -138.52938048769994,
+                -62.73773055947143
+              ],
+              "individual_tail": {
+                "min": -395.767028033412,
+                "es5": -346.88481060876234,
+                "losses": 31
+              },
+              "worst": {
+                "seed": 208009,
+                "seat": 1,
+                "start": 19,
+                "gain": -395.76702803341203,
+                "first_contract": -13.318548620000005,
+                "later": -382.44847941341203,
+                "units": -699.6700000000001,
+                "extra_exit": 0,
+                "initial_prices": [
+                  7.39,
+                  7.11
+                ]
+              },
+              "extra_exits": 0
+            },
+            "safe_inf": {
+              "effect": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "individual_tail": {
+                "min": 0.0,
+                "es5": 0.0,
+                "losses": 0
+              },
+              "worst": {
+                "seed": 208000,
+                "seat": 2,
+                "start": 19,
+                "gain": 0.0,
+                "first_contract": 0.0,
+                "later": 0.0,
+                "units": 0.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  6.01,
+                  6.01
+                ]
+              },
+              "extra_exits": 0
+            },
+            "safe_dir": {
+              "effect": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "individual_tail": {
+                "min": 0.0,
+                "es5": 0.0,
+                "losses": 0
+              },
+              "worst": {
+                "seed": 208000,
+                "seat": 2,
+                "start": 19,
+                "gain": 0.0,
+                "first_contract": 0.0,
+                "later": 0.0,
+                "units": 0.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  6.01,
+                  6.01
+                ]
+              },
+              "extra_exits": 0
+            },
+            "per": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "risk": {
+              "n": 36,
+              "used": 0,
+              "lost": 0,
+              "large": 0,
+              "coverage": 0.0,
+              "risk_upper": null,
+              "risk_lower": null
+            },
+            "passed": false,
+            "vs_previous": [
+              99.35106635393663,
+              61.33325344063889,
+              138.43971769765056
+            ],
+            "vs_direct": [
+              99.26024979820383,
+              62.73773055947143,
+              138.52938048769994
+            ],
+            "vs_safe_direct": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "wins_over_safe_direct": 0,
+            "losses_to_safe_direct": 0,
+            "matched_gap": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "matched_tie": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "coactive_pairs": 9072,
+            "same_change": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "groups": {
+              "balanced": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "random": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "unseen": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "worst_probe": {
+              "seed": 208000,
+              "seat": 2,
+              "start": 39,
+              "gain": 0.0,
+              "first_contract": 0.0,
+              "later": 0.0,
+              "units": 0.0,
+              "extra_exit": 0,
+              "initial_prices": [
+                4.95,
+                4.95
+              ]
+            }
+          },
+          "2": {
+            "inf": {
+              "effect": [
+                -81.42604300661269,
+                -106.28268818173764,
+                -57.0268088481929
+              ],
+              "individual_tail": {
+                "min": -380.7215187746476,
+                "es5": -336.7857708512156,
+                "losses": 58
+              },
+              "worst": {
+                "seed": 208009,
+                "seat": 1,
+                "start": 19,
+                "gain": -380.72151877464756,
+                "first_contract": -12.530468819999998,
+                "later": -368.19104995464755,
+                "units": -686.9199999999998,
+                "extra_exit": 0,
+                "initial_prices": [
+                  7.39,
+                  7.11
+                ]
+              },
+              "extra_exits": 0
+            },
+            "dir": {
+              "effect": [
+                -79.99475107027814,
+                -103.45221237940207,
+                -58.06915055315241
+              ],
+              "individual_tail": {
+                "min": -388.94014238251594,
+                "es5": -338.087872944116,
+                "losses": 57
+              },
+              "worst": {
+                "seed": 208009,
+                "seat": 1,
+                "start": 19,
+                "gain": -388.940142382516,
+                "first_contract": -13.318548620000005,
+                "later": -375.62159376251594,
+                "units": -694.8500000000001,
+                "extra_exit": 0,
+                "initial_prices": [
+                  7.39,
+                  7.11
+                ]
+              },
+              "extra_exits": 0
+            },
+            "safe_inf": {
+              "effect": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "individual_tail": {
+                "min": 0.0,
+                "es5": 0.0,
+                "losses": 0
+              },
+              "worst": {
+                "seed": 208000,
+                "seat": 2,
+                "start": 19,
+                "gain": 0.0,
+                "first_contract": 0.0,
+                "later": 0.0,
+                "units": 0.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  6.01,
+                  6.01
+                ]
+              },
+              "extra_exits": 0
+            },
+            "safe_dir": {
+              "effect": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "individual_tail": {
+                "min": 0.0,
+                "es5": 0.0,
+                "losses": 0
+              },
+              "worst": {
+                "seed": 208000,
+                "seat": 2,
+                "start": 19,
+                "gain": 0.0,
+                "first_contract": 0.0,
+                "later": 0.0,
+                "units": 0.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  6.01,
+                  6.01
+                ]
+              },
+              "extra_exits": 0
+            },
+            "per": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "risk": {
+              "n": 36,
+              "used": 0,
+              "lost": 0,
+              "large": 0,
+              "coverage": 0.0,
+              "risk_upper": null,
+              "risk_lower": null
+            },
+            "passed": false,
+            "vs_previous": [
+              81.42604300661269,
+              57.0268088481929,
+              106.28268818173764
+            ],
+            "vs_direct": [
+              79.99475107027814,
+              58.06915055315241,
+              103.45221237940207
+            ],
+            "vs_safe_direct": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "wins_over_safe_direct": 0,
+            "losses_to_safe_direct": 0,
+            "matched_gap": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "matched_tie": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "coactive_pairs": 9072,
+            "same_change": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "groups": {
+              "balanced": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "random": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "unseen": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "worst_probe": {
+              "seed": 208000,
+              "seat": 2,
+              "start": 39,
+              "gain": 0.0,
+              "first_contract": 0.0,
+              "later": 0.0,
+              "units": 0.0,
+              "extra_exit": 0,
+              "initial_prices": [
+                4.95,
+                4.95
+              ]
+            }
+          },
+          "4": {
+            "inf": {
+              "effect": [
+                31.05053083297321,
+                10.540897699805788,
+                53.395083790063126
+              ],
+              "individual_tail": {
+                "min": -510.1310954971691,
+                "es5": -220.02010537338822,
+                "losses": 61
+              },
+              "worst": {
+                "seed": 208021,
+                "seat": 2,
+                "start": 19,
+                "gain": -510.1310954971691,
+                "first_contract": -6.5016583500000085,
+                "later": -503.62943714716914,
+                "units": -1050.96,
+                "extra_exit": 0,
+                "initial_prices": [
+                  7.33,
+                  7.04
+                ]
+              },
+              "extra_exits": 0
+            },
+            "dir": {
+              "effect": [
+                33.96791363944472,
+                12.90025918508441,
+                56.63013048758946
+              ],
+              "individual_tail": {
+                "min": -499.81658717057786,
+                "es5": -242.01304071346337,
+                "losses": 62
+              },
+              "worst": {
+                "seed": 208021,
+                "seat": 2,
+                "start": 19,
+                "gain": -499.8165871705779,
+                "first_contract": 8.314241889999998,
+                "later": -508.1308290605779,
+                "units": -954.8599999999999,
+                "extra_exit": 0,
+                "initial_prices": [
+                  7.04,
+                  7.04
+                ]
+              },
+              "extra_exits": 0
+            },
+            "safe_inf": {
+              "effect": [
+                0.8363064774001299,
+                -0.6896179801514597,
+                4.034843889751979
+              ],
+              "individual_tail": {
+                "min": -113.54941069522522,
+                "es5": -29.77819226777337,
+                "losses": 4
+              },
+              "worst": {
+                "seed": 208035,
+                "seat": 0,
+                "start": 19,
+                "gain": -113.5494106952252,
+                "first_contract": 0.0,
+                "later": -113.54941069522519,
+                "units": -452.72,
+                "extra_exit": 0,
+                "initial_prices": [
+                  1.99,
+                  1.99
+                ]
+              },
+              "extra_exits": 0
+            },
+            "safe_dir": {
+              "effect": [
+                -0.22987266005048657,
+                -0.9194906402019463,
+                0.0
+              ],
+              "individual_tail": {
+                "min": -86.75780384873308,
+                "es5": -13.816401399315435,
+                "losses": 2
+              },
+              "worst": {
+                "seed": 208005,
+                "seat": 1,
+                "start": 19,
+                "gain": -86.75780384873308,
+                "first_contract": 0.0,
+                "later": -86.75780384873308,
+                "units": -141.32,
+                "extra_exit": 0,
+                "initial_prices": [
+                  2.35,
+                  2.35
+                ]
+              },
+              "extra_exits": 0
+            },
+            "per": [
+              0.08363064774001298,
+              -0.06896179801514596,
+              0.4034843889751979
+            ],
+            "risk": {
+              "n": 36,
+              "used": 0,
+              "lost": 0,
+              "large": 0,
+              "coverage": 0.0,
+              "risk_upper": null,
+              "risk_lower": null
+            },
+            "passed": false,
+            "vs_previous": [
+              -30.21422435557308,
+              -52.649678158316384,
+              -9.695201755220573
+            ],
+            "vs_direct": [
+              -33.13160716204458,
+              -55.82339310742332,
+              -12.013535252521896
+            ],
+            "vs_safe_direct": [
+              1.0661791374506164,
+              0.0,
+              4.264716549802466
+            ],
+            "wins_over_safe_direct": 1,
+            "losses_to_safe_direct": 0,
+            "matched_gap": [
+              -0.0014800548023589156,
+              -0.005793854141641653,
+              0.0
+            ],
+            "matched_tie": [
+              0.0002204585537918871,
+              0.0,
+              0.0008818342151675485
+            ],
+            "coactive_pairs": 9072,
+            "same_change": [
+              0.0002204585537918871,
+              0.0,
+              0.0008818342151675485
+            ],
+            "groups": {
+              "balanced": [
+                -0.6896179801514597,
+                -2.068853940454379,
+                0.0
+              ],
+              "random": [
+                3.198537412351849,
+                0.0,
+                12.794149649407396
+              ],
+              "unseen": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "worst_probe": {
+              "seed": 208000,
+              "seat": 1,
+              "start": 39,
+              "gain": 0.0,
+              "first_contract": 0.0,
+              "later": 0.0,
+              "units": 0.0,
+              "extra_exit": 0,
+              "initial_prices": [
+                6.8,
+                6.8
+              ]
+            }
+          }
+        }
+      },
+      "improvement": {
+        "inf1": [
+          84.83739792322332,
+          51.278591932761756,
+          120.82074943275914
+        ],
+        "inf2": [
+          72.69530238606669,
+          41.32986228458587,
+          102.1032785519478
+        ],
+        "inf4": [
+          -21.50509628791585,
+          -41.08106470796596,
+          -1.9136972197525821
+        ],
+        "safe_inf1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "safe_inf2": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "safe_inf4": [
+          -0.1562455465066065,
+          -1.1333393770065574,
+          0.5376532309501201
+        ],
+        "dir1": [
+          84.20747025837915,
+          46.908491351355494,
+          123.34203316332226
+        ],
+        "dir2": [
+          76.73381009207509,
+          49.21556249764534,
+          104.21699786512576
+        ],
+        "dir4": [
+          -24.2566057865693,
+          -43.26763757881097,
+          -6.041070439067022
+        ],
+        "safe_dir1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "safe_dir2": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "safe_dir4": [
+          0.17921774365004003,
+          0.0,
+          0.71687097460016
+        ]
+      }
+    },
+    "native": {
+      "expire": {
+        "n": 36,
+        "calls": 6186,
+        "paths": 648,
+        "baseline_same": [
+          0.001513543827639277,
+          0.0002204585537918871,
+          0.00325636137696811
+        ],
+        "exits": 30,
+        "clips": 0,
+        "once": {
+          "n": 36,
+          "used": 4,
+          "lost": 3,
+          "large": 3,
+          "coverage": 0.1111111111111111,
+          "risk_upper": 0.9968602438243735,
+          "risk_lower": 0.15223001476808776,
+          "effect": [
+            -16657.625775817563,
+            -97289.75503635981,
+            48668.81156253216
+          ],
+          "passed": false,
+          "rejected": 24,
+          "rejected_would_lose": 13,
+          "rejected_gain": [
+            -162187.94482261944,
+            -378738.12177640677,
+            21016.55589306072
+          ],
+          "accepted_gain": [
+            -149918.63198235809,
+            -855208.4112367555,
+            431935.60172147676
+          ]
+        },
+        "install": {
+          "1": {
+            "inf": {
+              "effect": [
+                -377827.4377268625,
+                -635149.9824954589,
+                -137598.18962104977
+              ],
+              "individual_tail": {
+                "min": -2361320.3210516525,
+                "es5": -2162443.1750830943,
+                "losses": 27
+              },
+              "worst": {
+                "seed": 209031,
+                "seat": 2,
+                "start": 19,
+                "gain": -2361320.3210516525,
+                "first_contract": -90849.5019826,
+                "later": -2270470.8190690526,
+                "units": -58639.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  12130.0,
+                  11664.0
+                ]
+              },
+              "extra_exits": 0
+            },
+            "dir": {
+              "effect": [
+                -356384.3363746295,
+                -610541.49834259,
+                -121816.92853129444
+              ],
+              "individual_tail": {
+                "min": -2216492.4445221955,
+                "es5": -2116377.5701114666,
+                "losses": 27
+              },
+              "worst": {
+                "seed": 209031,
+                "seat": 2,
+                "start": 19,
+                "gain": -2216492.4445221955,
+                "first_contract": -90849.5019826,
+                "later": -2125642.9425395955,
+                "units": -55154.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  12130.0,
+                  11664.0
+                ]
+              },
+              "extra_exits": 0
+            },
+            "safe_inf": {
+              "effect": [
+                -50955.921433077645,
+                -185417.85680062795,
+                69663.31697263822
+              ],
+              "individual_tail": {
+                "min": -1379900.2098613693,
+                "es5": -1132623.8822539782,
+                "losses": 11
+              },
+              "worst": {
+                "seed": 209001,
+                "seat": 3,
+                "start": 19,
+                "gain": -1379900.2098613693,
+                "first_contract": 0.0,
+                "later": -1379900.2098613693,
+                "units": -44218.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  12372.0,
+                  12372.0
+                ]
+              },
+              "extra_exits": -1
+            },
+            "safe_dir": {
+              "effect": [
+                -34375.676011643176,
+                -158159.6951255848,
+                68263.19160531068
+              ],
+              "individual_tail": {
+                "min": -1379900.2098613693,
+                "es5": -962601.2095852008,
+                "losses": 9
+              },
+              "worst": {
+                "seed": 209001,
+                "seat": 3,
+                "start": 19,
+                "gain": -1379900.2098613693,
+                "first_contract": 0.0,
+                "later": -1379900.2098613693,
+                "units": -44218.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  12372.0,
+                  12372.0
+                ]
+              },
+              "extra_exits": -1
+            },
+            "per": [
+              -5095.592143307766,
+              -18541.785680062792,
+              6966.33169726382
+            ],
+            "risk": {
+              "n": 36,
+              "used": 5,
+              "lost": 2,
+              "large": 2,
+              "coverage": 0.1388888888888889,
+              "risk_upper": 0.8856660255367991,
+              "risk_lower": 0.03668898201290747
+            },
+            "passed": false,
+            "vs_previous": [
+              326871.51629378484,
+              129492.01714949674,
+              571184.9087474643
+            ],
+            "vs_direct": [
+              305428.41494155186,
+              100496.89515844262,
+              546209.3492818117
+            ],
+            "vs_safe_direct": [
+              -16580.245421434476,
+              -95214.54730233295,
+              47159.790468787025
+            ],
+            "wins_over_safe_direct": 3,
+            "losses_to_safe_direct": 4,
+            "matched_gap": [
+              0.004219432185594548,
+              -0.0001426962325909391,
+              0.0092740183159143
+            ],
+            "matched_tie": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "coactive_pairs": 7339,
+            "same_change": [
+              -3.812636165577339e-05,
+              -0.00014535675381263606,
+              0.0
+            ],
+            "groups": {
+              "balanced": [
+                -78620.90584662237,
+                -404634.98777647846,
+                141852.93180192378
+              ],
+              "random": [
+                -27810.00206731746,
+                -79569.0923121455,
+                3054.97111216959
+              ],
+              "unseen": [
+                -46436.85638529313,
+                -306759.50847838644,
+                219565.63593166092
+              ]
+            },
+            "worst_probe": {
+              "seed": 209012,
+              "seat": 3,
+              "start": 23,
+              "gain": -1007050.0788743466,
+              "first_contract": -3335.1033651600046,
+              "later": -1003714.9755091863,
+              "units": -28140.0,
+              "extra_exit": 0,
+              "initial_prices": [
+                12794.0,
+                13327.0
+              ]
+            }
+          },
+          "2": {
+            "inf": {
+              "effect": [
+                -130185.58882603614,
+                -261914.32174374064,
+                -8623.582710066845
+              ],
+              "individual_tail": {
+                "min": -3045883.2356269322,
+                "es5": -1954054.5291009624,
+                "losses": 35
+              },
+              "worst": {
+                "seed": 209006,
+                "seat": 0,
+                "start": 19,
+                "gain": -3045883.2356269322,
+                "first_contract": -82744.25122253998,
+                "later": -2963138.9844043925,
+                "units": -119582.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  14510.0,
+                  13952.0
+                ]
+              },
+              "extra_exits": -2
+            },
+            "dir": {
+              "effect": [
+                -156331.90813455882,
+                -296716.37211273436,
+                -23087.9064559861
+              ],
+              "individual_tail": {
+                "min": -2850122.193792696,
+                "es5": -2089236.8982383134,
+                "losses": 34
+              },
+              "worst": {
+                "seed": 209006,
+                "seat": 0,
+                "start": 19,
+                "gain": -2850122.193792696,
+                "first_contract": -82744.25122253998,
+                "later": -2767377.942570157,
+                "units": -116012.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  14510.0,
+                  13952.0
+                ]
+              },
+              "extra_exits": -1
+            },
+            "safe_inf": {
+              "effect": [
+                -3257.2731379403094,
+                -101317.15374557521,
+                105437.68218079409
+              ],
+              "individual_tail": {
+                "min": -1216001.3134378253,
+                "es5": -994142.8832732594,
+                "losses": 24
+              },
+              "worst": {
+                "seed": 209008,
+                "seat": 0,
+                "start": 19,
+                "gain": -1216001.313437825,
+                "first_contract": -4190.643757080005,
+                "later": -1211810.6696807456,
+                "units": -30149.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  11883.0,
+                  11883.0
+                ]
+              },
+              "extra_exits": -3
+            },
+            "safe_dir": {
+              "effect": [
+                -16483.95319377289,
+                -86805.06735132067,
+                49745.56864442301
+              ],
+              "individual_tail": {
+                "min": -1159187.5118980368,
+                "es5": -922276.1485447756,
+                "losses": 22
+              },
+              "worst": {
+                "seed": 209022,
+                "seat": 1,
+                "start": 19,
+                "gain": -1159187.5118980368,
+                "first_contract": 0.0,
+                "later": -1159187.511898037,
+                "units": -31858.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  10738.0,
+                  10738.0
+                ]
+              },
+              "extra_exits": -2
+            },
+            "per": [
+              -325.72731379403047,
+              -10131.715374557523,
+              10543.768218079407
+            ],
+            "risk": {
+              "n": 36,
+              "used": 5,
+              "lost": 1,
+              "large": 1,
+              "coverage": 0.1388888888888889,
+              "risk_upper": 0.7644086910853735,
+              "risk_lower": 0.002512594578184214
+            },
+            "passed": false,
+            "vs_previous": [
+              126928.31568809581,
+              -25720.89801150819,
+              278228.25642742927
+            ],
+            "vs_direct": [
+              153074.6349966185,
+              -7913.635060304301,
+              314746.48435505864
+            ],
+            "vs_safe_direct": [
+              13226.68005583257,
+              -73356.59237737316,
+              111157.23789042638
+            ],
+            "wins_over_safe_direct": 6,
+            "losses_to_safe_direct": 6,
+            "matched_gap": [
+              0.0022800908536294295,
+              -0.004246812152014147,
+              0.009045155091923076
+            ],
+            "matched_tie": [
+              0.0004966451044882418,
+              -0.0002204585537918871,
+              0.0014044156201018945
+            ],
+            "coactive_pairs": 7270,
+            "same_change": [
+              0.00048560465227131893,
+              -0.0002204585537918871,
+              0.001391272224605558
+            ],
+            "groups": {
+              "balanced": [
+                -145679.97247546513,
+                -296260.77520941925,
+                6880.374737856314
+              ],
+              "random": [
+                79657.10706871629,
+                -18746.748220486068,
+                190678.74367701588
+              ],
+              "unseen": [
+                56251.04599292789,
+                -141560.9487498787,
+                294240.63150232774
+              ]
+            },
+            "worst_probe": {
+              "seed": 209012,
+              "seat": 3,
+              "start": 23,
+              "gain": -1043956.1749704453,
+              "first_contract": -3335.1033651600046,
+              "later": -1040621.0716052853,
+              "units": -28632.0,
+              "extra_exit": 0,
+              "initial_prices": [
+                12794.0,
+                13327.0
+              ]
+            }
+          },
+          "4": {
+            "inf": {
+              "effect": [
+                -27652.094799653896,
+                -88266.06750423444,
+                32596.696493810938
+              ],
+              "individual_tail": {
+                "min": -2790399.9064411176,
+                "es5": -1764074.510405075,
+                "losses": 68
+              },
+              "worst": {
+                "seed": 209006,
+                "seat": 0,
+                "start": 19,
+                "gain": -2790399.9064411176,
+                "first_contract": -72036.92896674,
+                "later": -2718362.9774743775,
+                "units": -112615.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  14510.0,
+                  13952.0
+                ]
+              },
+              "extra_exits": -2
+            },
+            "dir": {
+              "effect": [
+                -21072.23047143074,
+                -81626.12659240072,
+                38238.28815321375
+              ],
+              "individual_tail": {
+                "min": -2777265.95307819,
+                "es5": -1822059.5018248148,
+                "losses": 70
+              },
+              "worst": {
+                "seed": 209006,
+                "seat": 0,
+                "start": 19,
+                "gain": -2777265.9530781894,
+                "first_contract": -72036.92896674,
+                "later": -2705229.0241114493,
+                "units": -112644.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  14510.0,
+                  13952.0
+                ]
+              },
+              "extra_exits": -1
+            },
+            "safe_inf": {
+              "effect": [
+                -1031.637777109374,
+                -31794.15484930055,
+                29956.390198355853
+              ],
+              "individual_tail": {
+                "min": -1539821.2664799471,
+                "es5": -1039548.9272048665,
+                "losses": 68
+              },
+              "worst": {
+                "seed": 209022,
+                "seat": 0,
+                "start": 19,
+                "gain": -1539821.2664799474,
+                "first_contract": 0.0,
+                "later": -1539821.2664799474,
+                "units": -35356.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  11424.0,
+                  11424.0
+                ]
+              },
+              "extra_exits": -3
+            },
+            "safe_dir": {
+              "effect": [
+                -8380.54782008496,
+                -33537.560797959544,
+                17077.562275450033
+              ],
+              "individual_tail": {
+                "min": -1379900.2098613693,
+                "es5": -949173.3025277215,
+                "losses": 64
+              },
+              "worst": {
+                "seed": 209001,
+                "seat": 3,
+                "start": 19,
+                "gain": -1379900.2098613693,
+                "first_contract": 0.0,
+                "later": -1379900.2098613693,
+                "units": -44218.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  12372.0,
+                  12372.0
+                ]
+              },
+              "extra_exits": -4
+            },
+            "per": [
+              -103.16377771093732,
+              -3179.415484930055,
+              2995.6390198355853
+            ],
+            "risk": {
+              "n": 36,
+              "used": 3,
+              "lost": 2,
+              "large": 0,
+              "coverage": 0.08333333333333333,
+              "risk_upper": 0.9958158506449566,
+              "risk_lower": 0.06601890173055047
+            },
+            "passed": false,
+            "vs_previous": [
+              26620.457022544528,
+              -39744.05440604075,
+              89759.40077822092
+            ],
+            "vs_direct": [
+              20040.59269432136,
+              -41571.056365842145,
+              81857.36526153922
+            ],
+            "vs_safe_direct": [
+              7348.91004297558,
+              -19245.568302288717,
+              37800.0219749781
+            ],
+            "wins_over_safe_direct": 11,
+            "losses_to_safe_direct": 10,
+            "matched_gap": [
+              -0.002465876117558438,
+              -0.010926146472997953,
+              0.006291593015609057
+            ],
+            "matched_tie": [
+              0.0006873119618217657,
+              0.0,
+              0.001705311754331362
+            ],
+            "coactive_pairs": 7311,
+            "same_change": [
+              0.0006232492997198879,
+              -7.625272331154678e-05,
+              0.0016534391534391533
+            ],
+            "groups": {
+              "balanced": [
+                1968.2912901463496,
+                -30412.97950876313,
+                33067.77771523639
+              ],
+              "random": [
+                -19163.33801257554,
+                -70733.00974150526,
+                20239.488586574964
+              ],
+              "unseen": [
+                14100.133391101068,
+                -55343.21300703294,
+                84120.2009813698
+              ]
+            },
+            "worst_probe": {
+              "seed": 209034,
+              "seat": 2,
+              "start": 39,
+              "gain": -15705.078528737195,
+              "first_contract": 78516.5150366,
+              "later": -94221.5935653372,
+              "units": -1008.0,
+              "extra_exit": 0,
+              "initial_prices": [
+                13490.0,
+                14052.0
+              ]
+            }
+          }
+        }
+      },
+      "control": {
+        "n": 36,
+        "calls": 5066,
+        "paths": 648,
+        "baseline_same": [
+          0.001513543827639277,
+          0.0002204585537918871,
+          0.00325636137696811
+        ],
+        "exits": 30,
+        "clips": 0,
+        "once": {
+          "n": 36,
+          "used": 4,
+          "lost": 2,
+          "large": 2,
+          "coverage": 0.1111111111111111,
+          "risk_upper": 0.9528792079360333,
+          "risk_lower": 0.0471207920639668,
+          "effect": [
+            -1973.9397352335573,
+            -58066.75715220482,
+            52674.70686317675
+          ],
+          "passed": false,
+          "rejected": 24,
+          "rejected_would_lose": 21,
+          "rejected_gain": [
+            -396413.56990829203,
+            -629253.4684225218,
+            -201347.06800094497
+          ],
+          "accepted_gain": [
+            -17765.457617102016,
+            -522600.8143698434,
+            452359.8229070569
+          ]
+        },
+        "install": {
+          "1": {
+            "inf": {
+              "effect": [
+                -959374.8122372185,
+                -1307566.3075390707,
+                -640891.7054425236
+              ],
+              "individual_tail": {
+                "min": -3788315.6285306276,
+                "es5": -3163269.2037542323,
+                "losses": 34
+              },
+              "worst": {
+                "seed": 209031,
+                "seat": 2,
+                "start": 19,
+                "gain": -3788315.6285306276,
+                "first_contract": -90849.5019826,
+                "later": -3697466.126548027,
+                "units": -103563.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  12130.0,
+                  11664.0
+                ]
+              },
+              "extra_exits": 1
+            },
+            "dir": {
+              "effect": [
+                -999252.5697678408,
+                -1337704.8429378623,
+                -691712.7205012788
+              ],
+              "individual_tail": {
+                "min": -3788315.6285306276,
+                "es5": -3328762.887583575,
+                "losses": 33
+              },
+              "worst": {
+                "seed": 209031,
+                "seat": 2,
+                "start": 19,
+                "gain": -3788315.6285306276,
+                "first_contract": -90849.5019826,
+                "later": -3697466.126548027,
+                "units": -103563.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  12130.0,
+                  11664.0
+                ]
+              },
+              "extra_exits": 1
+            },
+            "safe_inf": {
+              "effect": [
+                -35613.523582528396,
+                -173655.57008875292,
+                58436.73447495717
+              ],
+              "individual_tail": {
+                "min": -1737385.0917484143,
+                "es5": -1071026.5622489532,
+                "losses": 11
+              },
+              "worst": {
+                "seed": 209022,
+                "seat": 0,
+                "start": 19,
+                "gain": -1737385.0917484143,
+                "first_contract": 0.0,
+                "later": -1737385.0917484143,
+                "units": -44929.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  11424.0,
+                  11424.0
+                ]
+              },
+              "extra_exits": -1
+            },
+            "safe_dir": {
+              "effect": [
+                -42435.64997681206,
+                -176868.11333913537,
+                47629.09726417611
+              ],
+              "individual_tail": {
+                "min": -1737385.0917484143,
+                "es5": -1109946.3899273495,
+                "losses": 9
+              },
+              "worst": {
+                "seed": 209022,
+                "seat": 0,
+                "start": 19,
+                "gain": -1737385.0917484143,
+                "first_contract": 0.0,
+                "later": -1737385.0917484143,
+                "units": -44929.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  11424.0,
+                  11424.0
+                ]
+              },
+              "extra_exits": -1
+            },
+            "per": [
+              -3561.352358252839,
+              -17365.557008875294,
+              5843.673447495717
+            ],
+            "risk": {
+              "n": 36,
+              "used": 5,
+              "lost": 2,
+              "large": 2,
+              "coverage": 0.1388888888888889,
+              "risk_upper": 0.8856660255367991,
+              "risk_lower": 0.03668898201290747
+            },
+            "passed": false,
+            "vs_previous": [
+              923761.28865469,
+              621167.1599388181,
+              1258221.8642247566
+            ],
+            "vs_direct": [
+              963639.0461853126,
+              681902.1361493235,
+              1276482.8121622535
+            ],
+            "vs_safe_direct": [
+              6822.1263942836595,
+              -28550.653908823904,
+              52717.8465793441
+            ],
+            "wins_over_safe_direct": 5,
+            "losses_to_safe_direct": 3,
+            "matched_gap": [
+              -0.0016221673746113345,
+              -0.0044921531371535876,
+              0.001081599397088103
+            ],
+            "matched_tie": [
+              0.0004409171075837742,
+              0.0,
+              0.0011022927689594356
+            ],
+            "coactive_pairs": 7351,
+            "same_change": [
+              0.00040279074592800083,
+              -7.625272331154678e-05,
+              0.0011022927689594356
+            ],
+            "groups": {
+              "balanced": [
+                65811.9856204968,
+                -27606.663313549605,
+                190418.20629254045
+              ],
+              "random": [
+                -13176.684108740192,
+                -66498.72687403225,
+                26040.69845022139
+              ],
+              "unseen": [
+                -159475.8722593418,
+                -526430.3524018042,
+                57711.492825293215
+              ]
+            },
+            "worst_probe": {
+              "seed": 209002,
+              "seat": 1,
+              "start": 35,
+              "gain": -374826.9951812555,
+              "first_contract": 6128.066623719999,
+              "later": -380955.0618049755,
+              "units": -7502.0,
+              "extra_exit": 0,
+              "initial_prices": [
+                12916.0,
+                13454.0
+              ]
+            }
+          },
+          "2": {
+            "inf": {
+              "effect": [
+                -668644.3159270914,
+                -905307.4945389524,
+                -462167.0776388236
+              ],
+              "individual_tail": {
+                "min": -3326092.771276577,
+                "es5": -2938391.3494984997,
+                "losses": 55
+              },
+              "worst": {
+                "seed": 209003,
+                "seat": 3,
+                "start": 19,
+                "gain": -3326092.771276577,
+                "first_contract": 51939.129839040004,
+                "later": -3378031.901115617,
+                "units": -82525.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  10448.0,
+                  10046.0
+                ]
+              },
+              "extra_exits": 1
+            },
+            "dir": {
+              "effect": [
+                -696394.3945896727,
+                -932915.8742111195,
+                -474018.61460070696
+              ],
+              "individual_tail": {
+                "min": -3006469.5012926343,
+                "es5": -2877459.552372977,
+                "losses": 55
+              },
+              "worst": {
+                "seed": 209003,
+                "seat": 3,
+                "start": 19,
+                "gain": -3006469.5012926343,
+                "first_contract": 51939.129839040004,
+                "later": -3058408.631131674,
+                "units": -77657.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  10448.0,
+                  10046.0
+                ]
+              },
+              "extra_exits": 0
+            },
+            "safe_inf": {
+              "effect": [
+                116953.80447754796,
+                -3447.3301781895307,
+                278957.3158881094
+              ],
+              "individual_tail": {
+                "min": -966686.9454958315,
+                "es5": -699976.2214115597,
+                "losses": 24
+              },
+              "worst": {
+                "seed": 209008,
+                "seat": 0,
+                "start": 19,
+                "gain": -966686.9454958315,
+                "first_contract": -4190.643757080005,
+                "later": -962496.3017387515,
+                "units": -26281.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  11883.0,
+                  11883.0
+                ]
+              },
+              "extra_exits": -4
+            },
+            "safe_dir": {
+              "effect": [
+                60723.42394379184,
+                2232.8728740113997,
+                127637.59672250964
+              ],
+              "individual_tail": {
+                "min": -770131.7774937267,
+                "es5": -607896.9564616939,
+                "losses": 23
+              },
+              "worst": {
+                "seed": 209028,
+                "seat": 1,
+                "start": 19,
+                "gain": -770131.7774937267,
+                "first_contract": 0.0,
+                "later": -770131.7774937267,
+                "units": -23304.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  12212.0,
+                  12212.0
+                ]
+              },
+              "extra_exits": -4
+            },
+            "per": [
+              11695.3804477548,
+              -344.7330178189529,
+              27895.731588810937
+            ],
+            "risk": {
+              "n": 36,
+              "used": 5,
+              "lost": 2,
+              "large": 1,
+              "coverage": 0.1388888888888889,
+              "risk_upper": 0.8856660255367991,
+              "risk_lower": 0.03668898201290747
+            },
+            "passed": false,
+            "vs_previous": [
+              785598.1204046393,
+              554183.8676909952,
+              1037549.4478736697
+            ],
+            "vs_direct": [
+              813348.1990672207,
+              570454.2669623811,
+              1065081.2062187225
+            ],
+            "vs_safe_direct": [
+              56230.38053375614,
+              -33550.901672326814,
+              206416.9183710111
+            ],
+            "wins_over_safe_direct": 7,
+            "losses_to_safe_direct": 5,
+            "matched_gap": [
+              -0.005200798789570572,
+              -0.011837378704435209,
+              0.0009192842788036773
+            ],
+            "matched_tie": [
+              0.000838044502428064,
+              0.0,
+              0.002293674953492305
+            ],
+            "coactive_pairs": 7267,
+            "same_change": [
+              0.0008546543934671788,
+              0.0,
+              0.0023435046266096493
+            ],
+            "groups": {
+              "balanced": [
+                22870.188561040002,
+                -137663.02831544363,
+                200263.43202742722
+              ],
+              "random": [
+                143614.66696259796,
+                26065.23186562382,
+                274230.3419677534
+              ],
+              "unseen": [
+                184376.55790900602,
+                -50199.500587798684,
+                594190.1096177042
+              ]
+            },
+            "worst_probe": {
+              "seed": 209030,
+              "seat": 3,
+              "start": 39,
+              "gain": -50846.03453555964,
+              "first_contract": 262.6553901899988,
+              "later": -51108.68992574964,
+              "units": 5978.0,
+              "extra_exit": 0,
+              "initial_prices": [
+                11802.0,
+                12294.0
+              ]
+            }
+          },
+          "4": {
+            "inf": {
+              "effect": [
+                -415498.35119411664,
+                -561088.8736620547,
+                -276160.9829274046
+              ],
+              "individual_tail": {
+                "min": -3042411.315727068,
+                "es5": -2657830.411451402,
+                "losses": 91
+              },
+              "worst": {
+                "seed": 209003,
+                "seat": 3,
+                "start": 19,
+                "gain": -3042411.3157270676,
+                "first_contract": 51939.129839040004,
+                "later": -3094350.445566108,
+                "units": -79266.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  10448.0,
+                  10046.0
+                ]
+              },
+              "extra_exits": -10
+            },
+            "dir": {
+              "effect": [
+                -460327.9420128574,
+                -611493.7457930234,
+                -312036.13675299607
+              ],
+              "individual_tail": {
+                "min": -3239956.7192170774,
+                "es5": -2813822.703367272,
+                "losses": 85
+              },
+              "worst": {
+                "seed": 209019,
+                "seat": 2,
+                "start": 19,
+                "gain": -3239956.7192170774,
+                "first_contract": 70942.31223453,
+                "later": -3310899.0314516076,
+                "units": -73378.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  13652.0,
+                  13127.0
+                ]
+              },
+              "extra_exits": -8
+            },
+            "safe_inf": {
+              "effect": [
+                -16364.012505234788,
+                -48170.52206367374,
+                13886.794713615267
+              ],
+              "individual_tail": {
+                "min": -2821087.9062042795,
+                "es5": -1524175.1836213712,
+                "losses": 73
+              },
+              "worst": {
+                "seed": 209019,
+                "seat": 2,
+                "start": 19,
+                "gain": -2821087.90620428,
+                "first_contract": 0.0,
+                "later": -2821087.90620428,
+                "units": -58666.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  13127.0,
+                  13127.0
+                ]
+              },
+              "extra_exits": -5
+            },
+            "safe_dir": {
+              "effect": [
+                -16202.720390173949,
+                -46300.83910027046,
+                9150.318564976096
+              ],
+              "individual_tail": {
+                "min": -2247206.8628919837,
+                "es5": -1341640.155075749,
+                "losses": 67
+              },
+              "worst": {
+                "seed": 209022,
+                "seat": 0,
+                "start": 19,
+                "gain": -2247206.862891983,
+                "first_contract": 0.0,
+                "later": -2247206.862891983,
+                "units": -53702.0,
+                "extra_exit": 0,
+                "initial_prices": [
+                  11424.0,
+                  11424.0
+                ]
+              },
+              "extra_exits": -7
+            },
+            "per": [
+              -1636.4012505234791,
+              -4817.052206367374,
+              1388.6794713615268
+            ],
+            "risk": {
+              "n": 36,
+              "used": 3,
+              "lost": 1,
+              "large": 1,
+              "coverage": 0.08333333333333333,
+              "risk_upper": 0.9339810982694496,
+              "risk_lower": 0.0041841493550434615
+            },
+            "passed": false,
+            "vs_previous": [
+              399134.33868888183,
+              250349.2868627456,
+              552962.0039212775
+            ],
+            "vs_direct": [
+              443963.92950762267,
+              293445.1589384835,
+              595728.5554895896
+            ],
+            "vs_safe_direct": [
+              -161.2921150608474,
+              -21464.53422453312,
+              20017.577708008663
+            ],
+            "wins_over_safe_direct": 12,
+            "losses_to_safe_direct": 10,
+            "matched_gap": [
+              -0.013421869195158089,
+              -0.02494760123456879,
+              -0.0013437675511914402
+            ],
+            "matched_tie": [
+              0.0006666879156838996,
+              0.0,
+              0.002005376001359937
+            ],
+            "coactive_pairs": 7326,
+            "same_change": [
+              0.0006298896176051858,
+              -7.625272331154678e-05,
+              0.0019725618940124017
+            ],
+            "groups": {
+              "balanced": [
+                -31504.780476784163,
+                -98755.17536808879,
+                25840.79849330732
+              ],
+              "random": [
+                -7983.461816439291,
+                -50466.21728452328,
+                29761.119439885224
+              ],
+              "unseen": [
+                -9603.795222480918,
+                -60762.64430613752,
+                43328.89735012898
+              ]
+            },
+            "worst_probe": {
+              "seed": 209030,
+              "seat": 3,
+              "start": 39,
+              "gain": -50846.03453555964,
+              "first_contract": 262.6553901899988,
+              "later": -51108.68992574964,
+              "units": 5978.0,
+              "extra_exit": 0,
+              "initial_prices": [
+                11802.0,
+                12294.0
+              ]
+            }
+          }
+        }
+      },
+      "improvement": {
+        "inf1": [
+          581547.3745103559,
+          313585.3274316232,
+          860583.2494001111
+        ],
+        "inf2": [
+          538458.7271010553,
+          359417.17551098985,
+          733907.1204185707
+        ],
+        "inf4": [
+          387846.25639446283,
+          278532.2730514804,
+          501893.7870739647
+        ],
+        "safe_inf1": [
+          -15342.397850549249,
+          -152163.0765662974,
+          137669.89590008106
+        ],
+        "safe_inf2": [
+          -120211.07761548829,
+          -224304.5012655855,
+          -36490.15304912668
+        ],
+        "safe_inf4": [
+          15332.374728125416,
+          -17042.21261737834,
+          48968.65197075953
+        ],
+        "dir1": [
+          642868.2333932115,
+          404677.4701694266,
+          912913.6723169266
+        ],
+        "dir2": [
+          540062.486455114,
+          350652.5331754833,
+          741919.9980329477
+        ],
+        "dir4": [
+          439255.71154142666,
+          307798.71087231796,
+          574725.6023855116
+        ],
+        "safe_dir1": [
+          8059.973965168881,
+          -126121.99500049587,
+          163321.21135557003
+        ],
+        "safe_dir2": [
+          -77207.37713756475,
+          -142510.44058513,
+          -18021.51270582362
+        ],
+        "safe_dir4": [
+          7822.172570088985,
+          -21288.366251525527,
+          38533.60291842682
+        ]
+      }
+    }
+  },
+  "backend_requests": 11231,
+  "distinct_seeds": 72,
+  "terminal_paths": 2592,
+  "full_replays": 4
+}

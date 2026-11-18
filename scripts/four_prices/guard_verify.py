@@ -50,6 +50,10 @@ def verify_raw(r, interface):
                     continue
                 if interface in ("legal", "legacy"):
                     assert id_ in r["tape"]
+                    assert (
+                        r["tape"][id_]["body"]["seed"]
+                        == number("model", r["seed"], j, d["t"]) % 2147483646 + 1
+                    )
                     if interface == "legal":
                         assert float(r["tape"][id_]["raw"]) == d["draft"][j]
     return len(r["paths"])

@@ -5,6 +5,7 @@ from concurrent.futures import ProcessPoolExecutor
 import json
 from guard_study import ARMS, OUTPUT, design, guard
 from guard_report import one, summarize
+from guard_verify import verify_raw
 from prices import GROUPS, number
 from run import read, save, simulation
 from saturation_report import ci
@@ -54,6 +55,7 @@ def pair(task):
         if not f.exists():
             save(f, run(task, tape, expire, True))
         r = read(f)
+        assert r["seed"] == seed and verify_raw(r, "menu") == len(ARMS)
         if tape is not None:
             assert all(r["tape"][k] == v for k, v in tape.items())
         tape = r["tape"]
