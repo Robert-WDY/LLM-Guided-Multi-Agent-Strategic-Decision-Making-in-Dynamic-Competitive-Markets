@@ -5,6 +5,7 @@ from concurrent.futures import ProcessPoolExecutor
 
 import numpy as np
 from cause_trials import ARMS, MARKETS
+from game_theory_agent.game_theory.renewal_review import PublicRenewalReview
 from guard_verify import replay, verify_raw
 from prices import number
 from renewal_risk import opportunity, targets
@@ -30,6 +31,25 @@ def case(item):
     gains = [[values[0], values[4]]]
     changed = [bool(values[1]), bool(values[5])]
     additional = set()
+    reviewer = PublicRenewalReview(OUT / f"public-{market}.npz")
+    preview = OUT / "pretrade" / f"{seed}.json"
+
+    def observe(listings, focal_seat, time, draft):
+        assert focal_seat == seat and t == time and len(listings) == time - 1
+        record = dict(
+            seed=seed,
+            market=market,
+            panel=listings,
+            seat=seat,
+            round=time,
+            draft=draft,
+            review=reviewer.review(listings, seat, time, draft),
+        )
+        if collect and not preview.exists():
+            preview.parent.mkdir(parents=True, exist_ok=True)
+            save(preview, record)
+        assert read(preview) == record
+
     for rep in (1, 2, 3):
         draw = number("renewal-innovation", seed, rep)
         dst = OUT / "draws" / f"{seed}-{rep}.json.gz"
@@ -42,8 +62,10 @@ def case(item):
                 study_design=profile,
                 run_only=ARMS,
                 future_focal_draw=draw,
+                observe_proposal=observe,
             )
             save(dst, result)
+        assert preview.is_file()
         r = read(dst)
         assert r["future_focal_draw"] == draw and r["seed"] == seed
         assert all(k in r["tape"] and r["tape"][k] == v for k, v in common.items())
@@ -78,6 +100,7 @@ def case(item):
                     study_design=profile,
                     run_only=ARMS,
                     future_focal_draw=draw,
+                    observe_proposal=observe,
                 ),
             )
         _, v, _ = targets(r)

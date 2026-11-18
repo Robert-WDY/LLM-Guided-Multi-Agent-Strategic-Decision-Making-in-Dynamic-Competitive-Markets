@@ -96,6 +96,7 @@ def simulation(
     track_feedback_source=False,
     diagnostic_rule="inf",
     future_focal_draw=None,
+    observe_proposal=None,
 ):
     if sum((expire_advice, feedback_rollback, track_feedback_source)) > 1:
         raise ValueError("Select one renewal policy")
@@ -176,6 +177,10 @@ def simulation(
         for w, h, terms, indices, records, market, vs, offset in prepared:
             drafts = [term["draft"] for term in terms]
             legal = [effective(w, j, draft) for j, draft in enumerate(drafts)]
+            if observe_proposal is not None and t == probe:
+                seat = masks[1][0]
+                listings = [[cell[0] if cell[4] else None for cell in row] for row in records]
+                observe_proposal(listings, seat, t, drafts[seat])
             brackets = {}
             for v in vs:
                 rule = v if diagnostic is None else f"{diagnostic_rule}{coverage}"
