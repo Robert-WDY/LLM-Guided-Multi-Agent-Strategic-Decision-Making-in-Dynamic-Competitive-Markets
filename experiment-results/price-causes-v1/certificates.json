@@ -1,0 +1,86 @@
+{
+  "econ": {
+    "legacy": false,
+    "legacy_simple": false,
+    "legacy_uniform": false,
+    "value_guard": false,
+    "frequency_guard": false,
+    "direct": false,
+    "persistence": false,
+    "forecast": false,
+    "external": {
+      "cut": {
+        "effect": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "n": 96,
+        "used": 0,
+        "lost": 0,
+        "large": 0,
+        "coverage": 0.0,
+        "risk_upper": null,
+        "worst": 0.0,
+        "passed": false
+      },
+      "raise": {
+        "effect": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "n": 96,
+        "used": 0,
+        "lost": 0,
+        "large": 0,
+        "coverage": 0.0,
+        "risk_upper": null,
+        "worst": 0.0,
+        "passed": false
+      }
+    }
+  },
+  "native": {
+    "legacy": false,
+    "legacy_simple": false,
+    "legacy_uniform": false,
+    "value_guard": false,
+    "frequency_guard": false,
+    "direct": false,
+    "persistence": false,
+    "forecast": false,
+    "external": {
+      "cut": {
+        "effect": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "n": 96,
+        "used": 0,
+        "lost": 0,
+        "large": 0,
+        "coverage": 0.0,
+        "risk_upper": null,
+        "worst": 0.0,
+        "passed": false
+      },
+      "raise": {
+        "effect": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "n": 96,
+        "used": 0,
+        "lost": 0,
+        "large": 0,
+        "coverage": 0.0,
+        "risk_upper": null,
+        "worst": 0.0,
+        "passed": false
+      }
+    }
+  }
+}
