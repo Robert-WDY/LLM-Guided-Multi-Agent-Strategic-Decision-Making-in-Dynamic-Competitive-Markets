@@ -97,6 +97,7 @@ def simulation(
     diagnostic_rule="inf",
     future_focal_draw=None,
     observe_proposal=None,
+    probe_policy=None,
 ):
     if sum((expire_advice, feedback_rollback, track_feedback_source)) > 1:
         raise ValueError("Select one renewal policy")
@@ -108,6 +109,8 @@ def simulation(
     if diagnostic is not None:
         coverage, seat, base_targets = diagnostic
         profiles = ["natural", "fixed_rivals", *[f"omit-{t}" for t in REVIEW]]
+    if "public_probe" in profiles and probe_policy is None:
+        raise ValueError("A frozen public probe policy is required")
     logs = {v: [] for v in profiles}
     paths = {}
     world = World(m, seed)
@@ -117,7 +120,7 @@ def simulation(
     ]
     if "greedy" not in profiles:
         nodes = nodes[:1]
-    needs_scores = any(v not in ("keep", "greedy", "audit_cut", "audit_raise") for v in profiles)
+    needs_scores = any(v not in ("keep", "greedy", "audit_cut", "audit_raise", "public_probe") for v in profiles)
     ends = list(range(1, 7, 2)) + list(range(7, 60, 4))
     for t in ends:
         prepared = []
@@ -177,16 +180,26 @@ def simulation(
         for w, h, terms, indices, records, market, vs, offset in prepared:
             drafts = [term["draft"] for term in terms]
             legal = [effective(w, j, draft) for j, draft in enumerate(drafts)]
-            if observe_proposal is not None and t == probe:
+            reviewed_action = 0
+            if (observe_proposal is not None or probe_policy is not None) and t == probe:
                 seat = masks[1][0]
                 listings = [[cell[0] if cell[4] else None for cell in row] for row in records]
-                observe_proposal(listings, seat, t, drafts[seat])
+                if observe_proposal is not None:
+                    observe_proposal(listings, seat, t, drafts[seat])
+                if probe_policy is not None:
+                    reviewed_action = probe_policy(listings, seat, t, drafts[seat])
+                    if type(reviewed_action) is not int or reviewed_action not in (0, 1, 2):
+                        raise ValueError("A public probe must select keep, cut or raise")
             brackets = {}
             for v in vs:
                 rule = v if diagnostic is None else f"{diagnostic_rule}{coverage}"
                 guarded = rule.startswith("safe_")
                 rule = rule.removeprefix("safe_")
-                use = arms(rule, t, scores[offset : offset + 4], masks, focal, probe)
+                if rule == "public_probe":
+                    use = [0] * 4
+                    use[masks[1][0]] = reviewed_action
+                else:
+                    use = arms(rule, t, scores[offset : offset + 4], masks, focal, probe)
                 if guarded:
                     if price_guard is None:
                         raise ValueError("A frozen public price guard is required")
