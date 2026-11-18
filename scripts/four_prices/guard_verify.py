@@ -26,7 +26,10 @@ def verify_raw(r, interface):
             seat, t, k = tag.split(":")
             market, role, rel, sales, profit = k.split("/")
             assert r["roles"][int(seat)] == int(role)
-            seed = number("model", r["seed"], int(seat), int(t)) % 2147483646 + 1
+            draw_seed = r["seed"]
+            if "future_focal_draw" in r and int(seat) == r["masks"]["1"][0] and int(t) > r["probe"]:
+                draw_seed = r["future_focal_draw"]
+            seed = number("model", draw_seed, int(seat), int(t)) % 2147483646 + 1
             body = build_request(
                 (market, int(role), int(rel), int(sales), int(profit)), seed
             )

@@ -5,6 +5,7 @@ from sklearn.compose import TransformedTargetRegressor
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import StandardScaler
 
+from game_theory_agent.game_theory.renewal_review import decisions, estimates
 from cause_value import estimator, public_panel
 from game_theory_agent.game_theory.quote_panel import public_state, rivals
 
@@ -87,21 +88,3 @@ class RenewalRisk:
 
     def diagnostic(self, x, actual_path):
         return self.final["known_renewal"].predict(np.column_stack((x, actual_path)))
-
-
-def estimates(values):
-    by_arm = np.asarray(values).reshape(-1, 2, 4)
-    gain, chance_changed, chance_lost, downside = np.moveaxis(by_arm, 2, 0)
-    risk = np.divide(
-        chance_lost, chance_changed, out=np.ones_like(gain), where=chance_changed > 1e-9
-    )
-    return gain - downside, np.clip(risk, 0, 1)
-
-
-def decisions(values, enabled, cutoff, hurdle):
-    score, risk = estimates(values)
-    # A tied go/hold score at the hurdle abstains. Tied profitable moves prefer cut.
-    feasible = np.asarray(enabled)[:, None] & (score > hurdle) & (risk <= cutoff)
-    return np.column_stack(
-        (np.zeros(len(score)), np.where(feasible, score, -np.inf))
-    ).argmax(axis=1)

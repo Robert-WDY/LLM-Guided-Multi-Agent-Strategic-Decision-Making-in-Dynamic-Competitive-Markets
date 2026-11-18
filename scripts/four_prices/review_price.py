@@ -90,9 +90,29 @@ if __name__ == "__main__":
         type=Path,
         help="UTF-8 JSON containing market, round, prices, draft and proposal",
     )
+    parser.add_argument(
+        "--own-renewal",
+        action="store_true",
+        help="Preview the own-renewal risk estimate for a four-seller public panel",
+    )
     args = parser.parse_args()
     try:
-        result = review(json.loads(args.proposal.read_text(encoding="utf8")))
+        proposal = json.loads(args.proposal.read_text(encoding="utf8"))
+        if args.own_renewal:
+            from game_theory_agent.game_theory.renewal_review import PublicRenewalReview
+
+            market = proposal["market"]
+            if market not in ("native", "econ"):
+                raise ValueError("No own-renewal study for this market")
+            weights = BANK.parents[1] / "renewal-risk-v1" / f"public-{market}.npz"
+            result = PublicRenewalReview(weights).review(
+                proposal["panel"],
+                proposal["seat"],
+                proposal["round"],
+                proposal["draft"],
+            )
+        else:
+            result = review(proposal)
     except (ValueError, KeyError, TypeError) as exc:
         parser.error(str(exc))
     print(json.dumps(result, ensure_ascii=False, indent=2))

@@ -95,6 +95,7 @@ def simulation(
     expire_advice=False,
     track_feedback_source=False,
     diagnostic_rule="inf",
+    future_focal_draw=None,
 ):
     if sum((expire_advice, feedback_rollback, track_feedback_source)) > 1:
         raise ValueError("Select one renewal policy")
@@ -156,7 +157,10 @@ def simulation(
                     k = key(m, roles[j], h[j])
                     if offline is not None and not allow_new and live and vs != ["greedy"]:
                         assert f"{j}:{t}:{label(k)}" in tape
-                    ix = sample(k, seed, j, t, live, vs == ["greedy"], tape)
+                    draw_seed = seed
+                    if future_focal_draw is not None and j == masks[1][0] and t > probe:
+                        draw_seed = future_focal_draw
+                    ix = sample(k, draw_seed, j, t, live, vs == ["greedy"], tape)
                     term["draft"] = float(np.clip(term["draft"] * FACTORS[ix], w.low, w.high))
                 terms.append(term)
                 indices.append(ix)
@@ -260,6 +264,7 @@ def simulation(
         masks=masks,
         focal=focal,
         probe=probe,
+        **({"future_focal_draw": future_focal_draw} if future_focal_draw is not None else {}),
         live=live,
         tape=tape,
         paths=paths,
