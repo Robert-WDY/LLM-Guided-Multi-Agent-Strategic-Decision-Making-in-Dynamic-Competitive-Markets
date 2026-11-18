@@ -76,9 +76,10 @@ def effective(w, j, draft):
 
 
 def simulation(
-    m, g, i, offline=None, diagnostic=None, allow_new=False, allocation=None, run_only=None
+    m, g, i, offline=None, diagnostic=None, allow_new=False, allocation=None, run_only=None,
+    numeric_quote=None, study_design=design
 ):
-    seed, masks, focal, roles, probe, live = design(m, g, i)
+    seed, masks, focal, roles, probe, live = study_design(m, g, i)
     tape = {} if offline is None else dict(offline)
     if allocation is not None:
         masks = allocation
@@ -110,7 +111,11 @@ def simulation(
                     or w.state.company_ids[j] in w.state.strategic_market.active_company_ids
                 )
                 ix = None
-                if t > 6 and active:
+                if t > 6 and active and numeric_quote is not None:
+                    low, high = effective(w, j, w.low), effective(w, j, w.high)
+                    term["draft"], ix = numeric_quote(m, roles[j], h[j], term["draft"], low, high,
+                                                      seed, j, t, tape, offline is not None)
+                elif t > 6 and active:
                     k = key(m, roles[j], h[j])
                     if offline is not None and not allow_new and live and vs != ["greedy"]:
                         assert f"{j}:{t}:{label(k)}" in tape
