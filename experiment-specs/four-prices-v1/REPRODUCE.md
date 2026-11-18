@@ -15,3 +15,6 @@
 ## 全量真实后端结果
 
 在 PowerShell 中设 `$env:FOUR_PRICES_ALL_LIVE='1'`，重跑 run、saturation_report、subgroups、tail_replay、seat_rotation、plot_loss、validate。主报告采用 `experiment-results/four-prices-v1/live/`。原始混合口径保存在其父目录。计算模型表时共同抬高全部九个合法 token 的分数，并核实返回的概率和为 1；从概率表抽样使用同一权重，但不能保证和不同推理批次重新计算的概率完全一致。全量后端复核消除了对此数值相等假设的依赖。复算单个分支使用原始回包即可，无需联网。开启全量模式重做采集时，会优先复用先行批次已直接采样的108个市场。
+
+额外的直接数字报价检验运行 `python scripts/four_prices/open_price.py`，从持续运行的本地模型获取24个未使用种子的报价和反事实续报并做离线抽检。
+运行 `loss_audit.py` 可复算全部合同方向与损失分布；运行 `verify_diagnostics.py` 可验证最差案例及同种子穷举身份的额外路径。
