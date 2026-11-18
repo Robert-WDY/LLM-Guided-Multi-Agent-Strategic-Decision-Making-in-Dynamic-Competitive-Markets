@@ -1,0 +1,8 @@
+{
+  "seed": 1,
+  "products": 1,
+  "policy": "deepseek",
+  "ratio": 0.7976424483940704,
+  "periods": 100,
+  "env": "periodic_shifts"
+}

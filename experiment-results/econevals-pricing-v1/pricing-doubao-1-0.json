@@ -1,0 +1,8 @@
+{
+  "seed": 0,
+  "products": 1,
+  "policy": "doubao",
+  "ratio": 0.8983108352096153,
+  "periods": 100,
+  "env": "linear_shifts"
+}

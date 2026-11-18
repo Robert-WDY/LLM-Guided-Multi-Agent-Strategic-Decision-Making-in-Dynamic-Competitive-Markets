@@ -1,0 +1,127 @@
+{
+  "rounds_replayed": 345600,
+  "max_rounding_error": 0.004999990179388902,
+  "calibration_hashes_verified": true,
+  "index": {
+    "A": {
+      "50": 0.3805621581532194,
+      "51": 0.3802838133038438
+    },
+    "B": {
+      "50": 0.38062054015828606,
+      "51": 0.37926033114162894
+    },
+    "C": {
+      "50": 0.3976373898084953,
+      "51": 0.39735283916657954
+    },
+    "D": {
+      "50": 0.3907907494014509,
+      "51": 0.3905301341227405
+    },
+    "Craw": {
+      "50": 0.7052503064675998,
+      "51": 0.7050471102208243
+    },
+    "Draw": {
+      "50": 0.7367479679752433,
+      "51": 0.7367803281477485
+    }
+  },
+  "usage": {
+    "deepseek-basic-calls": {
+      "requests": 101,
+      "responses": 100,
+      "valid": 100,
+      "errors": [
+        {
+          "status": null,
+          "code": "None"
+        }
+      ],
+      "models": [
+        "deepseek-v4-flash"
+      ],
+      "input_tokens": 32752,
+      "output_tokens": 300
+    },
+    "deepseek-official-calls": {
+      "requests": 103,
+      "responses": 103,
+      "valid": 100,
+      "errors": [],
+      "models": [
+        "deepseek-v4-flash"
+      ],
+      "input_tokens": 243979,
+      "output_tokens": 3788
+    },
+    "deepseek-pilot-calls": {
+      "requests": 14,
+      "responses": 14,
+      "valid": 14,
+      "errors": [],
+      "models": [
+        "deepseek-v4-flash"
+      ],
+      "input_tokens": 5107,
+      "output_tokens": 42
+    },
+    "deepseek-window-calls": {
+      "requests": 48,
+      "responses": 48,
+      "valid": 48,
+      "errors": [],
+      "models": [
+        "deepseek-v4-flash"
+      ],
+      "input_tokens": 19040,
+      "output_tokens": 170
+    },
+    "doubao-basic-calls": {
+      "requests": 103,
+      "responses": 100,
+      "valid": 100,
+      "errors": [
+        {
+          "status": 400,
+          "code": "InvalidEndpoint.ClosedEndpoint"
+        },
+        {
+          "status": 400,
+          "code": "InvalidEndpoint.ClosedEndpoint"
+        },
+        {
+          "status": 400,
+          "code": "InvalidEndpoint.ClosedEndpoint"
+        }
+      ],
+      "models": [
+        "doubao-seed-2-0-lite-260215",
+        "doubao-seed-2-0-lite-260428"
+      ],
+      "input_tokens": 45210,
+      "output_tokens": 442
+    },
+    "doubao-window-calls": {
+      "requests": 50,
+      "responses": 48,
+      "valid": 48,
+      "errors": [
+        {
+          "status": null,
+          "code": "None"
+        },
+        {
+          "status": null,
+          "code": "None"
+        }
+      ],
+      "models": [
+        "doubao-seed-2-0-lite-260428"
+      ],
+      "input_tokens": 26658,
+      "output_tokens": 239
+    }
+  }
+}

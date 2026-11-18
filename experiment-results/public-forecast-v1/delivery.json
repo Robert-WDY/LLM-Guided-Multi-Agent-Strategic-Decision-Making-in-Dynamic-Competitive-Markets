@@ -1,0 +1,84 @@
+{
+  "prior_yuan": 23.80894,
+  "additional_yuan": 24.15558,
+  "total_yuan": 47.96452,
+  "remaining_yuan": 2.03548,
+  "ledger_columns": [
+    "provider",
+    "status",
+    "attempts",
+    "micro_yuan",
+    "input",
+    "output"
+  ],
+  "rows": [
+    [
+      "deepseek",
+      "ok",
+      6000,
+      9373912,
+      2250570,
+      23227
+    ],
+    [
+      "doubao",
+      "error-APIConnectionError",
+      1,
+      4936,
+      null,
+      null
+    ],
+    [
+      "doubao",
+      "error-APITimeoutError",
+      1,
+      5880,
+      null,
+      null
+    ],
+    [
+      "doubao",
+      "invalid",
+      149,
+      401756,
+      74171,
+      6567
+    ],
+    [
+      "doubao",
+      "ok",
+      5962,
+      14369096,
+      3408450,
+      45956
+    ]
+  ],
+  "attempts": 12113,
+  "valid": 11962,
+  "input_tokens": 5733191,
+  "output_tokens": 75750,
+  "fallback_events": {
+    "rtrain-econ": 1,
+    "rcal-econ": 5,
+    "rtest-econ": 9,
+    "offer-econ": 5,
+    "rtrain-native": 0,
+    "rcal-native": 0,
+    "rtest-native": 0,
+    "offer-native": 0,
+    "direction-econ": 12
+  },
+  "submitted_heldout_before_settlement": 400,
+  "marginal_diagnostics": {
+    "econ": {
+      "equal_executed_price": 0,
+      "changed_price_equal_sales": 0,
+      "changed_price_equal_sales_with_market_stockout": 0
+    },
+    "native": {
+      "equal_executed_price": 3,
+      "changed_price_equal_sales": 47,
+      "changed_price_equal_sales_with_market_stockout": 47
+    }
+  }
+}

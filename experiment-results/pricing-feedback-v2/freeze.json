@@ -1,0 +1,11 @@
+{
+  "experiment-specs\\pricing-feedback-v2\\PLAN.md": "efdaaaded462fdffee7d04ba479e3c5810502d1befac424d38ae8e0638112896",
+  "experiment-specs\\pricing-feedback-v2\\CONFIRM.md": "9606e89af28bf2dc37019ddc11934cac22c69935ad264ab36a2d021667680938",
+  "src\\game_theory_agent\\game_theory\\cycle_pricing.py": "3643662447fa72066549e99927656816f74e921d53cea0d1ff2917c9969683ea",
+  "scripts\\pricing_feedback\\study.py": "a9625ad80e275fd73111d7ed2551dd1ff019766a1f552329db1468504b2e80a4",
+  "scripts\\pricing_feedback\\selector.py": "ec7c41d7fdf2e099244d18e4b4946ecaa1f8447ec9ba041113b4e8e5cec63088",
+  "scripts\\pricing_feedback\\analyze.py": "e8b864f568616426f7b33e06b8c9b763532b6402eb3b55dfdb5dfa73aeebdd14",
+  "experiment-results\\pricing-feedback-v2\\thresholds.json": "d42cb6376c1f9be3b529c600f119a359dd05a2d1fd987d0c9b469a3e19751bb8",
+  "experiment-results\\pricing-feedback-v2\\learned-thresholds.json": "be5ba46a5c9c07b3103d30e93f95ef7cb28adb19fadae91da576d97fe907eb63",
+  "experiment-results\\pricing-feedback-v2\\selectors.json": "401cbeae15c0ece22229c267ee10d3d012d4ddde40f247f476f9a3ae609c72ef"
+}

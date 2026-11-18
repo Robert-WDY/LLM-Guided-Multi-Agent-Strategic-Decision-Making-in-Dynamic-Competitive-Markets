@@ -19,12 +19,13 @@ test("server-renders the multi-agent game research dashboard", async () => {
   const html = await response.text();
   assert.match(html, /<title>多智能体博弈实验室/);
   assert.match(html, /多智能体博弈实验室/);
-  assert.match(html, /多智能体博弈实验平台/);
-  assert.match(html, /从一个清楚的入口/);
-  assert.match(html, /个人体验/);
-  assert.match(html, /观察实验/);
-  assert.match(html, /研究控制台/);
-  assert.match(html, /配置并进入/);
+  // The first view is the command-center big screen; the lab entry is one click away.
+  assert.match(html, /博弈指挥大屏/);
+  assert.match(html, /SHARED MARKET/);
+  assert.match(html, /LIVE FEED/);
+  assert.match(html, /交互演示数据/);
+  assert.match(html, /返回实验室/);
+  assert.match(html, /ROUND (<!-- -->)?01(<!-- -->)? \/ (<!-- -->)?20/);
   assert.doesNotMatch(html, /当前模式导航/);
   assert.doesNotMatch(html, /实验报告 REPORT/);
   assert.doesNotMatch(html, /Chain of Thought.*真实推理过程/);

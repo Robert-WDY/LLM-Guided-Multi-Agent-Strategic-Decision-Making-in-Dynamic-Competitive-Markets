@@ -2,15 +2,17 @@
 import {useCallback,useEffect,useState} from "react";
 import {AdvisorResult} from "./advisor-v16";
 import {RecordedFields} from "./research-live";
-type Mode="robust_company"|"robust_profit"|"robust_welfare"|"advisor_company"|"advisor_profit"|"advisor_welfare"|"rule"|"learning"|"neural"|"model"|"theory_best_response"|"theory_maximin"|"theory_tft"|"theory_grim"|"theory_wsls";
+type Mode="pricing_feedback"|"robust_company"|"robust_profit"|"robust_welfare"|"advisor_company"|"advisor_profit"|"advisor_welfare"|"rule"|"learning"|"neural"|"model"|"theory_best_response"|"theory_maximin"|"theory_tft"|"theory_grim"|"theory_wsls";
 type Variant={label:string;modes:Record<string,Mode>;fixed:Record<string,string>;overrides:Record<string,number>};
 type Job={id:string;status:string;created:string;error?:string;payload:{variants:Variant[]};progress:Record<string,unknown>;results:Record<string,unknown>[];statistics:{groups:{variant:string;n:number;mean_welfare_cents:number;std_welfare_cents:number|null;mean_company_profit_cents:number;mean_supplier_profit_cents:number;mean_consumer_surplus_cents:number}[];paired_comparisons:Record<string,unknown>[]}};
 const otherActors=["economy_supplier","resilient_supplier","consumers","government"];
 const names:Record<string,string>={company_A:"企业 A",company_B:"企业 B",company_C:"企业 C",company_D:"企业 D",economy_supplier:"经济供应商",resilient_supplier:"韧性供应商",consumers:"消费者群体",government:"政府"};
-const controls:Record<Mode,string>={robust_company:"v17反击感知：公司阶段",robust_profit:"v17反击感知：公司利润",robust_welfare:"v17反击感知：社会福利",advisor_company:"目标建议：公司阶段",advisor_profit:"目标建议：公司利润",advisor_welfare:"目标建议：社会福利",rule:"规则",learning:"共同学习",neural:"已训练神经策略",model:"真实模型",theory_best_response:"公开预测最佳回应",theory_maximin:"公开预测保底策略",theory_tft:"公开价格互惠",theory_grim:"价格触发持续竞争",theory_wsls:"收益赢留输换"};
+const controls:Record<Mode,string>={pricing_feedback:"预热选价与四轮利润反馈",robust_company:"v17反击感知：公司阶段",robust_profit:"v17反击感知：公司利润",robust_welfare:"v17反击感知：社会福利",advisor_company:"目标建议：公司阶段",advisor_profit:"目标建议：公司利润",advisor_welfare:"目标建议：社会福利",rule:"规则",learning:"共同学习",neural:"已训练神经策略",model:"真实模型",theory_best_response:"公开预测最佳回应",theory_maximin:"公开预测保底策略",theory_tft:"公开价格互惠",theory_grim:"价格触发持续竞争",theory_wsls:"收益赢留输换"};
 const statusNames:Record<string,string>={queued:"排队中",running:"运行中",complete:"已完成",cancelled:"已暂停",interrupted:"服务中断",failed:"失败"};
 const money=(c:number)=>new Intl.NumberFormat("zh-CN",{style:"currency",currency:"CNY"}).format(c/100);
 type TheoryDecision={mode:string;signal:string;public_price_change:number;selected_option:string;criterion?:string;scope?:string;belief_counts?:Record<string,number>;payoff_table?:{option:string;scenario_profits_cents:number[];expected_profit_cents:number;worst_profit_cents:number}[]};
+type PriceTerm={start:number;end:number;next_decision:number|null;price:number};
+type PriceRow={caseName:string;round:number;actor:string;term:PriceTerm;executed:number};
 type AuditRow={caseName:string;round:number;actor:string;decision:TheoryDecision};
 export function ResearchWorkbench({apiUrl,token}:{apiUrl:string;token:string}){
  const [companyCount,setCompanyCount]=useState(4);
@@ -21,6 +23,7 @@ export function ResearchWorkbench({apiUrl,token}:{apiUrl:string;token:string}){
  const [model,setModel]=useState("deepseek-v4-flash");
  const [selected,setSelected]=useState<string[]>([]);
  const [advisorAudits,setAdvisorAudits]=useState<Record<string,{caseName:string;round:number;actor:string;decision:unknown}[]>>({});
+ const [priceRows,setPriceRows]=useState<Record<string,PriceRow[]>>({});
  const [audits,setAudits]=useState<Record<string,AuditRow[]>>({});
  const comparisonRows=selected.flatMap(id=>{
    const job=jobs.find(j=>j.id===id);return job?.statistics.groups.map(g=>({id,label:`${id.slice(0,8)} · ${g.variant}`,group:g,rows:job.results.filter(r=>r.variant===g.variant)}))||[];
@@ -47,14 +50,34 @@ export function ResearchWorkbench({apiUrl,token}:{apiUrl:string;token:string}){
    }catch(e){setError(String(e));}finally{setBusy(false);}
  }
  async function control(id:string,action:string){try{await call(`jobs/${id}/${action}`,{});await refresh();}catch(e){setError(String(e));}}
- async function readAudit(id:string){try{const response=await fetch(`${apiUrl}/v1/controller/workbench/jobs/${id}/export`,{headers:token?{"X-Controller-Token":token}:{}});if(!response.ok)throw new Error(await response.text());const data=await response.json() as {cases:Record<string,{decisions:{decisions:Record<string,{observation:{round:number};theory_decision?:TheoryDecision}>}[]}>};const rows:AuditRow[]=[];for(const [caseName,c] of Object.entries(data.cases))for(const round of c.decisions)for(const [actor,d] of Object.entries(round.decisions))if(d.theory_decision)rows.push({caseName,round:d.observation.round,actor,decision:d.theory_decision});setAudits({...audits,[id]:rows.slice(-12)});}catch(e){setError(String(e));}}
+ async function readAudit(id:string){
+   try {
+     const response=await fetch(`${apiUrl}/v1/controller/workbench/jobs/${id}/export`,{headers:token?{"X-Controller-Token":token}:{}});
+     if(!response.ok) throw new Error(await response.text());
+     type Decision={observation:{round:number};theory_decision?:TheoryDecision;price_decision?:PriceTerm;executed_price_cents?:number};
+     const data=await response.json() as {cases:Record<string,{decisions:{decisions:Record<string,Decision>}[]}>};
+     const theory:AuditRow[]=[],prices:PriceRow[]=[];
+     for(const [caseName,c] of Object.entries(data.cases)){
+       for(const frame of c.decisions){
+         for(const [actor,d] of Object.entries(frame.decisions)){
+           const key={caseName,actor,round:d.observation.round};
+           if(d.theory_decision) theory.push({...key,decision:d.theory_decision});
+           if(d.price_decision && d.executed_price_cents!==undefined) prices.push({...key,term:d.price_decision,executed:d.executed_price_cents});
+         }
+       }
+     }
+     if(theory.length) setAudits(prev=>({...prev,[id]:theory.slice(-12)}));
+     setPriceRows(prev=>({...prev,[id]:prices.slice(-12)}));
+   } catch(e){setError(String(e));}
+ }
  async function readAdvisorAudit(id:string){try{const response=await fetch(`${apiUrl}/v1/controller/workbench/jobs/${id}/export`,{headers:token?{"X-Controller-Token":token}:{}});if(!response.ok)throw new Error(await response.text());const data=await response.json() as {cases:Record<string,{decisions:{decisions:Record<string,{observation:{round:number};advisor_decision?:unknown}>}[]}>};const rows:{caseName:string;round:number;actor:string;decision:unknown}[]=[];for(const [caseName,c] of Object.entries(data.cases))for(const round of c.decisions)for(const [actor,d] of Object.entries(round.decisions))if(d.advisor_decision)rows.push({caseName,round:d.observation.round,actor,decision:d.advisor_decision});setAdvisorAudits({...advisorAudits,[id]:rows.slice(-5)});}catch(e){setError(String(e));}}
  async function download(id:string){try{const response=await fetch(`${apiUrl}/v1/controller/workbench/jobs/${id}/export`,{headers:token?{"X-Controller-Token":token}:{}});if(!response.ok)throw new Error(await response.text());const url=URL.createObjectURL(await response.blob());const a=document.createElement("a");a.href=url;a.download=`market-experiment-${id}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}catch(e){setError(String(e));}}
  return <section className="card research-live workbench" aria-label="四方批量实验工作台"><h1>四方批量实验工作台</h1><p>配置策略与参数，对每个种子成对比较。单队列逐局运行，完成回合自动落盘；关闭页面后继续。真实模型使用受约束的策略选项，各主体只读取自身和公开信息。</p>
  <div className="workbench-controls"><label>实验种子<input value={seeds} onChange={e=>setSeeds(e.target.value)}/></label><label>每局回合数<input type="number" min="5" max="60" value={rounds} onChange={e=>setRounds(Number(e.target.value))}/></label>
  <label>公司数量<input type="number" min="2" max="10" value={companyCount} onChange={e=>setCompanyCount(Math.max(2,Math.min(10,Math.trunc(Number(e.target.value))||2)))}/></label><button onClick={()=>setModes({...modes,...Object.fromEntries(actors.filter(a=>a.startsWith("company_")).map(a=>[a,"robust_profit" as Mode]))})}>全部企业使用v17利润建议</button>
- <label>四方默认控制<select value={mode} onChange={e=>setMode(e.target.value as Mode)}>{Object.entries(controls).filter(([k])=>!k.startsWith('theory_')&&!k.startsWith('advisor_')&&!k.startsWith('robust_')).map(([k,v])=><option key={k} value={k}>{v}</option>)}</select></label>
- {actors.map(a=><label key={a}>{names[a]||`企业 ${a.slice(-1)}`}控制<select value={modes[a]||""} onChange={e=>setModes({...modes,[a]:e.target.value as Mode})}><option value="">跟随默认</option>{Object.entries(controls).filter(([k])=>a.startsWith('company_')||!k.startsWith('theory_')&&!k.startsWith('advisor_')&&!k.startsWith('robust_')).map(([k,v])=><option key={k} value={k}>{v}</option>)}</select></label>)}
+ <label>四方默认控制<select value={mode} onChange={e=>setMode(e.target.value as Mode)}>{Object.entries(controls).filter(([k])=>!k.startsWith('pricing_')&&!k.startsWith('theory_')&&!k.startsWith('advisor_')&&!k.startsWith('robust_')).map(([k,v])=><option key={k} value={k}>{v}</option>)}</select></label>
+ {actors.map(a=><label key={a}>{names[a]||`企业 ${a.slice(-1)}`}控制<select value={modes[a]||""} onChange={e=>setModes({...modes,[a]:e.target.value as Mode})}><option value="">跟随默认</option>{Object.entries(controls).filter(([k])=>a.startsWith('company_')||!k.startsWith('pricing_')&&!k.startsWith('theory_')&&!k.startsWith('advisor_')&&!k.startsWith('robust_')).map(([k,v])=><option key={k} value={k}>{v}</option>)}</select></label>)}
+ {Object.values(chosen).includes("pricing_feedback")&&<p>前六轮试三个价格，每价两轮。之后每四轮依据刚结算的利润重新选价，最后一期合同随对局结束。每轮执行价仍受市场价格约束。</p>}
  <label>扫描参数<select value={parameter} onChange={e=>setParameter(e.target.value)}><option value="">不扫描参数</option><option value="supplier_cash">供应商初始现金（分）</option><option value="inventory_target">供应商库存目标（ppm）</option><option value="government_program">政府每轮项目预算（分）</option><option value="government_cash">政府初始现金（分）</option></select></label>
  {parameter&&<label>参数值列表<input value={values} placeholder="例如 100000,20000000" onChange={e=>setValues(e.target.value)}/></label>}
  <label><input type="checkbox" checked={compare} onChange={e=>setCompare(e.target.checked)}/>加入同种子规则基线</label>
@@ -74,9 +97,12 @@ export function ResearchWorkbench({apiUrl,token}:{apiUrl:string;token:string}){
  {j.status==="failed"&&j.error?.startsWith("ActorModelValidationError:")&&<button onClick={()=>void control(j.id,"retry-schema")}>已完成但格式错误：再尝试一次（保留原费用）</button>}
  {j.status==="failed"&&!j.payload.variants.some(v=>Object.values(v.modes).includes("model"))&&<button onClick={()=>void control(j.id,"rebuild-free")}>保留故障文件并重新计算免费批次</button>}
  <button onClick={()=>void download(j.id)}>导出全部轨迹与模型记录</button>
- {j.payload.variants.some(v=>Object.values(v.modes).some(m=>m.startsWith('theory_')))&&<button onClick={()=>void readAudit(j.id)}>查看策略决策依据</button>}
+ {j.payload.variants.some(v=>Object.values(v.modes).some(m=>m.startsWith('theory_')||m.startsWith('pricing_')))&&<button onClick={()=>void readAudit(j.id)}>查看策略决策依据</button>}
  {j.payload.variants.some(v=>Object.values(v.modes).some(m=>m.startsWith('advisor_')||m.startsWith('robust_')))&&<button onClick={()=>void readAdvisorAudit(j.id)}>查看目标建议依据</button>}
  {advisorAudits[j.id]&&<section aria-label="已执行目标建议"><h4>最近5条已执行目标建议</h4>{!advisorAudits[j.id].length&&<p>尚无已执行建议。</p>}{advisorAudits[j.id].map((r,i)=><details key={i} open={i===advisorAudits[j.id].length-1}><summary>{r.caseName} · 第{r.round}轮 · {names[r.actor]||`企业 ${r.actor.slice(-1)}`}</summary><AdvisorResult value={r.decision}/></details>)}</section>}
+ {Boolean(priceRows[j.id]?.length)&&<section><h4>最近执行的价格合同</h4><table><thead><tr><th>实验与企业</th><th>结算轮</th><th>有效轮次</th><th>申请价</th><th>执行价</th><th>下次选价</th></tr></thead><tbody>
+ {priceRows[j.id].map(r=><tr key={`${r.caseName}-${r.actor}-${r.round}`}><td>{r.caseName} · {names[r.actor]||r.actor}</td><td>{r.round}</td><td>{r.term.start}–{r.term.end}</td><td>{money(r.term.price)}</td><td>{money(r.executed)}</td><td>{r.term.next_decision??"到期结算"}</td></tr>)}
+ </tbody></table></section>}
  {audits[j.id]&&<section aria-label="市场策略决策依据"><h4>最近12条已记录策略决策</h4>{!audits[j.id].length&&<p>尚无已记录策略决策。</p>}{audits[j.id].map((r,i)=><details key={i} open={i===audits[j.id].length-1}><summary>{r.caseName} · 第{r.round}轮 · {names[r.actor]||`企业 ${r.actor.slice(-1)}`} · {controls[r.decision.mode as Mode]} → {r.decision.selected_option}</summary><p>公开价格信号：{r.decision.signal}；对手平均价格变化 {(100*r.decision.public_price_change).toFixed(2)}%。实际选择 {r.decision.selected_option}。</p>{r.decision.belief_counts&&<p>对手降价/基线/提价情景计数：{['value','balanced','margin'].map(k=>r.decision.belief_counts?.[k]).join(' / ')}。{r.decision.criterion==='expected_profit_cents'?'按经验频率加权的预测利润选择。':'按三个情景中的最低预测利润选择。'}</p>}{r.decision.payoff_table&&<div className="v10-table-scroll"><table><thead><tr><th>自身选项</th><th>对手降价</th><th>对手基线</th><th>对手提价</th><th>期望利润</th><th>最低利润</th></tr></thead><tbody>{r.decision.payoff_table.map(p=><tr key={p.option}><td>{p.option}{p.option===r.decision.selected_option?' ✓':''}</td>{p.scenario_profits_cents.map((v,k)=><td key={k}>{money(v)}</td>)}<td>{money(p.expected_profit_cents)}</td><td>{money(p.worst_profit_cents)}</td></tr>)}</tbody></table></div>}<p>{r.decision.scope||'根据公开价格历史及自身利润更新状态；不读取对手私有现金或人格。这是有限启发式，不是市场均衡证明。'}</p></details>)}</section>}
  {!!j.statistics.groups.length&&<div className="v10-table-scroll"><table><thead><tr><th>处理组</th><th>完成局数</th><th>平均福利</th><th>福利标准差</th><th>企业利润</th><th>供应商利润</th><th>消费者剩余</th></tr></thead><tbody>{j.statistics.groups.map(g=><tr key={g.variant}><td>{g.variant}</td><td>{g.n}</td><td>{money(g.mean_welfare_cents)}</td><td>{g.std_welfare_cents===null?"样本不足":money(g.std_welfare_cents)}</td><td>{money(g.mean_company_profit_cents)}</td><td>{money(g.mean_supplier_profit_cents)}</td><td>{money(g.mean_consumer_surplus_cents)}</td></tr>)}</tbody></table></div>}
  <details><summary>同种子差值与完成结果</summary><RecordedFields value={{paired:j.statistics.paired_comparisons,results:j.results}}/></details><p>统计来自已完成局；中断或失败局不计入均值。小样本差异不能解释为现实市场最优。</p></section>)}</section>;

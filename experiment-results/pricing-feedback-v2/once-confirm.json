@@ -1,0 +1,150 @@
+{
+  "econ": {
+    "diagnostic": {
+      "impact": {
+        "mean": 2.8544536578258373,
+        "ci": [
+          -0.33576031348262836,
+          6.685012025814162
+        ],
+        "n": 48
+      },
+      "selected": 16,
+      "opportunities": 96,
+      "exposed": 10,
+      "harmed": 6,
+      "risk_upper": 0.84997175919332
+    },
+    "strict": {
+      "impact": {
+        "mean": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "n": 48
+      },
+      "selected": 0,
+      "opportunities": 96,
+      "exposed": 0,
+      "harmed": 0,
+      "risk_upper": null
+    },
+    "all": {
+      "impact": {
+        "mean": -9.651569057965277,
+        "ci": [
+          -19.20102873143702,
+          -0.6204559714044017
+        ],
+        "n": 48
+      },
+      "selected": 96,
+      "opportunities": 96,
+      "exposed": 48,
+      "harmed": 39,
+      "risk_upper": 0.8985427158568295
+    },
+    "ranking": {
+      "n": 96,
+      "accepted": 16,
+      "auc": 0.7275132275132276,
+      "positive_missed": 0.696969696969697,
+      "accepted_outcomes": {
+        "loss": 0.375,
+        "gain": 20.102970555736352,
+        "positive": 0.625,
+        "p10": -46.65101963082877
+      },
+      "rejected_outcomes": {
+        "loss": 0.7125,
+        "gain": -18.480242486197227,
+        "positive": 0.2875,
+        "p10": -81.03020043183706
+      },
+      "all_outcomes": {
+        "loss": 0.65625,
+        "gain": -12.049706979208297,
+        "positive": 0.34375,
+        "p10": -79.76233280736426
+      }
+    },
+    "sign_flip": 0.20833333333333334,
+    "fallbacks": 8,
+    "total": 96
+  },
+  "native": {
+    "diagnostic": {
+      "impact": {
+        "mean": 43137.057188809405,
+        "ci": [
+          -22694.721151895057,
+          134550.724739311
+        ],
+        "n": 48
+      },
+      "selected": 22,
+      "opportunities": 96,
+      "exposed": 11,
+      "harmed": 8,
+      "risk_upper": 0.921179954333971
+    },
+    "strict": {
+      "impact": {
+        "mean": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "n": 48
+      },
+      "selected": 0,
+      "opportunities": 96,
+      "exposed": 0,
+      "harmed": 0,
+      "risk_upper": null
+    },
+    "all": {
+      "impact": {
+        "mean": -142685.0076005621,
+        "ci": [
+          -266169.35832887556,
+          -7907.6848551219255
+        ],
+        "n": 48
+      },
+      "selected": 94,
+      "opportunities": 96,
+      "exposed": 47,
+      "harmed": 38,
+      "risk_upper": 0.8962982136868249
+    },
+    "ranking": {
+      "n": 96,
+      "accepted": 22,
+      "auc": 0.5732394366197183,
+      "positive_missed": 0.64,
+      "accepted_outcomes": {
+        "loss": 0.5909090909090909,
+        "gain": 224921.70020071176,
+        "positive": 0.4090909090909091,
+        "p10": -387899.6975703215
+      },
+      "rejected_outcomes": {
+        "loss": 0.7837837837837838,
+        "gain": -289136.86058257724,
+        "positive": 0.21621621621621623,
+        "p10": -860287.9320853833
+      },
+      "all_outcomes": {
+        "loss": 0.7395833333333334,
+        "gain": -171331.77373640682,
+        "positive": 0.2604166666666667,
+        "p10": -837043.1744852647
+      }
+    },
+    "sign_flip": 0.2916666666666667,
+    "fallbacks": 0,
+    "total": 96
+  }
+}

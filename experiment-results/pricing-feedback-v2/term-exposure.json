@@ -1,0 +1,398 @@
+{
+  "primary/econ//generic": {
+    "opportunities": 2688,
+    "immediate": 462,
+    "full": 462,
+    "coverage": 0.171875,
+    "exposed": 48,
+    "harmed": 47,
+    "upper95": 0.9989319604609207
+  },
+  "primary/econ//conditional": {
+    "opportunities": 2688,
+    "immediate": 429,
+    "full": 429,
+    "coverage": 0.15959821428571427,
+    "exposed": 48,
+    "harmed": 47,
+    "upper95": 0.9989319604609207
+  },
+  "primary/econ//wide": {
+    "opportunities": 2688,
+    "immediate": 556,
+    "full": 556,
+    "coverage": 0.20684523809523808,
+    "exposed": 48,
+    "harmed": 47,
+    "upper95": 0.9989319604609207
+  },
+  "primary/econ//gated": {
+    "opportunities": 2688,
+    "immediate": 0,
+    "full": 0,
+    "coverage": 0.0,
+    "exposed": 0,
+    "harmed": 0,
+    "upper95": null
+  },
+  "primary/econ//learned": {
+    "opportunities": 2688,
+    "immediate": 0,
+    "full": 0,
+    "coverage": 0.0,
+    "exposed": 0,
+    "harmed": 0,
+    "upper95": null
+  },
+  "primary/econ//diagnostic": {
+    "opportunities": 2688,
+    "immediate": 529,
+    "full": 529,
+    "coverage": 0.19680059523809523,
+    "exposed": 46,
+    "harmed": 45,
+    "upper95": 0.9988855498442222
+  },
+  "primary/native//generic": {
+    "opportunities": 2672,
+    "immediate": 585,
+    "full": 589,
+    "coverage": 0.22043413173652696,
+    "exposed": 48,
+    "harmed": 47,
+    "upper95": 0.9989319604609207
+  },
+  "primary/native//conditional": {
+    "opportunities": 2672,
+    "immediate": 552,
+    "full": 556,
+    "coverage": 0.20808383233532934,
+    "exposed": 48,
+    "harmed": 47,
+    "upper95": 0.9989319604609207
+  },
+  "primary/native//wide": {
+    "opportunities": 2672,
+    "immediate": 643,
+    "full": 648,
+    "coverage": 0.24251497005988024,
+    "exposed": 48,
+    "harmed": 47,
+    "upper95": 0.9989319604609207
+  },
+  "primary/native//gated": {
+    "opportunities": 2688,
+    "immediate": 0,
+    "full": 0,
+    "coverage": 0.0,
+    "exposed": 0,
+    "harmed": 0,
+    "upper95": null
+  },
+  "primary/native//learned": {
+    "opportunities": 2688,
+    "immediate": 0,
+    "full": 0,
+    "coverage": 0.0,
+    "exposed": 0,
+    "harmed": 0,
+    "upper95": null
+  },
+  "primary/native//diagnostic": {
+    "opportunities": 2688,
+    "immediate": 388,
+    "full": 396,
+    "coverage": 0.14732142857142858,
+    "exposed": 48,
+    "harmed": 41,
+    "upper95": 0.9294995023574062
+  },
+  "long/econ//gate0": {
+    "opportunities": 2688,
+    "immediate": 0,
+    "full": 0,
+    "coverage": 0.0,
+    "exposed": 0,
+    "harmed": 0,
+    "upper95": null
+  },
+  "long/econ//gate1": {
+    "opportunities": 2688,
+    "immediate": 742,
+    "full": 742,
+    "coverage": 0.2760416666666667,
+    "exposed": 48,
+    "harmed": 38,
+    "upper95": 0.882381733561441
+  },
+  "long/econ//conditional": {
+    "opportunities": 2688,
+    "immediate": 390,
+    "full": 390,
+    "coverage": 0.14508928571428573,
+    "exposed": 48,
+    "harmed": 44,
+    "upper95": 0.9710337890632341
+  },
+  "long/econ//generic": {
+    "opportunities": 2688,
+    "immediate": 467,
+    "full": 467,
+    "coverage": 0.17373511904761904,
+    "exposed": 48,
+    "harmed": 41,
+    "upper95": 0.9294995023574062
+  },
+  "long/econ//wide": {
+    "opportunities": 2688,
+    "immediate": 539,
+    "full": 539,
+    "coverage": 0.20052083333333334,
+    "exposed": 48,
+    "harmed": 44,
+    "upper95": 0.9710337890632341
+  },
+  "long/econ//short": {
+    "opportunities": 2688,
+    "immediate": 636,
+    "full": 636,
+    "coverage": 0.23660714285714285,
+    "exposed": 47,
+    "harmed": 45,
+    "upper95": 0.9923864537970654
+  },
+  "long/native//gate0": {
+    "opportunities": 2686,
+    "immediate": 0,
+    "full": 0,
+    "coverage": 0.0,
+    "exposed": 0,
+    "harmed": 0,
+    "upper95": null
+  },
+  "long/native//gate1": {
+    "opportunities": 2688,
+    "immediate": 434,
+    "full": 439,
+    "coverage": 0.16331845238095238,
+    "exposed": 48,
+    "harmed": 43,
+    "upper95": 0.9580490920244185
+  },
+  "long/native//conditional": {
+    "opportunities": 2641,
+    "immediate": 562,
+    "full": 562,
+    "coverage": 0.21279818250662627,
+    "exposed": 48,
+    "harmed": 44,
+    "upper95": 0.9710337890632341
+  },
+  "long/native//generic": {
+    "opportunities": 2641,
+    "immediate": 597,
+    "full": 597,
+    "coverage": 0.22605073835668307,
+    "exposed": 48,
+    "harmed": 45,
+    "upper95": 0.9827496671598939
+  },
+  "long/native//wide": {
+    "opportunities": 2641,
+    "immediate": 631,
+    "full": 631,
+    "coverage": 0.2389246497538811,
+    "exposed": 48,
+    "harmed": 46,
+    "upper95": 0.9925461601092587
+  },
+  "long/native//short": {
+    "opportunities": 2686,
+    "immediate": 393,
+    "full": 397,
+    "coverage": 0.14780342516753536,
+    "exposed": 47,
+    "harmed": 41,
+    "upper95": 0.9429151921435762
+  },
+  "real2/econ/deepseek/conditional": {
+    "opportunities": 448,
+    "immediate": 51,
+    "full": 51,
+    "coverage": 0.11383928571428571,
+    "exposed": 26,
+    "harmed": 23,
+    "upper95": 0.9678010953799681
+  },
+  "real2/econ/deepseek/diagnostic": {
+    "opportunities": 448,
+    "immediate": 124,
+    "full": 124,
+    "coverage": 0.2767857142857143,
+    "exposed": 24,
+    "harmed": 17,
+    "upper95": 0.8543135197119636
+  },
+  "real2/econ/deepseek/wide": {
+    "opportunities": 448,
+    "immediate": 85,
+    "full": 85,
+    "coverage": 0.18973214285714285,
+    "exposed": 26,
+    "harmed": 23,
+    "upper95": 0.9678010953799681
+  },
+  "real2/native/deepseek/conditional": {
+    "opportunities": 436,
+    "immediate": 92,
+    "full": 93,
+    "coverage": 0.21330275229357798,
+    "exposed": 30,
+    "harmed": 28,
+    "upper95": 0.9880241990347909
+  },
+  "real2/native/deepseek/diagnostic": {
+    "opportunities": 448,
+    "immediate": 66,
+    "full": 67,
+    "coverage": 0.14955357142857142,
+    "exposed": 29,
+    "harmed": 16,
+    "upper95": 0.7107285154429428
+  },
+  "real2/native/deepseek/wide": {
+    "opportunities": 437,
+    "immediate": 104,
+    "full": 105,
+    "coverage": 0.2402745995423341,
+    "exposed": 30,
+    "harmed": 27,
+    "upper95": 0.9721844502602504
+  },
+  "real2/econ/doubao/conditional": {
+    "opportunities": 448,
+    "immediate": 51,
+    "full": 51,
+    "coverage": 0.11383928571428571,
+    "exposed": 25,
+    "harmed": 19,
+    "upper95": 0.8899438003382061
+  },
+  "real2/econ/doubao/diagnostic": {
+    "opportunities": 448,
+    "immediate": 97,
+    "full": 97,
+    "coverage": 0.21651785714285715,
+    "exposed": 24,
+    "harmed": 18,
+    "upper95": 0.8850894294356577
+  },
+  "real2/econ/doubao/wide": {
+    "opportunities": 448,
+    "immediate": 74,
+    "full": 74,
+    "coverage": 0.16517857142857142,
+    "exposed": 27,
+    "harmed": 20,
+    "upper95": 0.8714776365150806
+  },
+  "real2/native/doubao/conditional": {
+    "opportunities": 437,
+    "immediate": 88,
+    "full": 88,
+    "coverage": 0.20137299771167047,
+    "exposed": 30,
+    "harmed": 26,
+    "upper95": 0.9531451730853993
+  },
+  "real2/native/doubao/diagnostic": {
+    "opportunities": 447,
+    "immediate": 62,
+    "full": 64,
+    "coverage": 0.14317673378076062,
+    "exposed": 29,
+    "harmed": 16,
+    "upper95": 0.7107285154429428
+  },
+  "real2/native/doubao/wide": {
+    "opportunities": 437,
+    "immediate": 103,
+    "full": 103,
+    "coverage": 0.23569794050343248,
+    "exposed": 30,
+    "harmed": 26,
+    "upper95": 0.9531451730853993
+  },
+  "realunits/econ/deepseek/conditional": {
+    "opportunities": 448,
+    "immediate": 103,
+    "full": 103,
+    "coverage": 0.22991071428571427,
+    "exposed": 30,
+    "harmed": 20,
+    "upper95": 0.8066915788794069
+  },
+  "realunits/econ/deepseek/wide": {
+    "opportunities": 448,
+    "immediate": 158,
+    "full": 158,
+    "coverage": 0.35267857142857145,
+    "exposed": 32,
+    "harmed": 20,
+    "upper95": 0.7673779288977712
+  },
+  "realunits/native/deepseek/conditional": {
+    "opportunities": 437,
+    "immediate": 147,
+    "full": 148,
+    "coverage": 0.33867276887871856,
+    "exposed": 32,
+    "harmed": 28,
+    "upper95": 0.9561545559073756
+  },
+  "realunits/native/deepseek/wide": {
+    "opportunities": 439,
+    "immediate": 169,
+    "full": 171,
+    "coverage": 0.3895216400911162,
+    "exposed": 32,
+    "harmed": 27,
+    "upper95": 0.9363472682486426
+  },
+  "realunits/econ/doubao/conditional": {
+    "opportunities": 448,
+    "immediate": 90,
+    "full": 90,
+    "coverage": 0.20089285714285715,
+    "exposed": 27,
+    "harmed": 13,
+    "upper95": 0.6530283003096504
+  },
+  "realunits/econ/doubao/wide": {
+    "opportunities": 448,
+    "immediate": 144,
+    "full": 144,
+    "coverage": 0.32142857142857145,
+    "exposed": 29,
+    "harmed": 15,
+    "upper95": 0.6797037392619758
+  },
+  "realunits/native/doubao/conditional": {
+    "opportunities": 439,
+    "immediate": 148,
+    "full": 148,
+    "coverage": 0.33712984054669703,
+    "exposed": 31,
+    "harmed": 24,
+    "upper95": 0.8889112287407399
+  },
+  "realunits/native/doubao/wide": {
+    "opportunities": 439,
+    "immediate": 162,
+    "full": 163,
+    "coverage": 0.3712984054669704,
+    "exposed": 32,
+    "harmed": 27,
+    "upper95": 0.9363472682486426
+  }
+}

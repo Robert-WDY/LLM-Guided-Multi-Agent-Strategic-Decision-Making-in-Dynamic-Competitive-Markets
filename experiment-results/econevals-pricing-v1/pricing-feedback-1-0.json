@@ -1,0 +1,8 @@
+{
+  "seed": 0,
+  "products": 1,
+  "policy": "feedback",
+  "ratio": 0.9435955484369872,
+  "periods": 100,
+  "env": "linear_shifts"
+}

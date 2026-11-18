@@ -10,6 +10,7 @@ from .actor_model import choose_option,ActorModelValidationError
 from .replay import EpisodeManifest, MarketTransition, verify_replay
 from .protocols import sha256_hash
 from game_theory_agent.game_theory.market_strategies import MODES as THEORY_MODES
+from game_theory_agent.game_theory.cycle_pricing import MODES as PRICING_MODES
 from game_theory_agent.game_theory.objectives import ADVISOR_MODES
 from game_theory_agent.game_theory.advisor_robust import ROBUST_MODES
 
@@ -70,8 +71,8 @@ async def run_episode(config, *, directory, seed, rounds=10, modes=None, fixed=N
         write_json(cp,dict(identity=identity,config=config.to_dict(),state=s.to_dict(),manifest=manifest.to_dict(),transitions=[],memory=memory))
     ids=actor_ids(s)
     if set(modes)-set(ids) or set(fixed)-set(ids):raise ValueError("unknown experiment actor")
-    if any(m not in ("rule","learning","model","neural",*THEORY_MODES,*ADVISOR_MODES,*ROBUST_MODES) for m in modes.values()):raise ValueError("unknown actor control")
-    if any(m in (*THEORY_MODES,*ADVISOR_MODES,*ROBUST_MODES) and a not in s.company_ids for a,m in modes.items()):raise ValueError("game-theory policies support companies only")
+    if any(m not in ("rule","learning","model","neural",*PRICING_MODES,*THEORY_MODES,*ADVISOR_MODES,*ROBUST_MODES) for m in modes.values()):raise ValueError("unknown actor control")
+    if any(m in (*PRICING_MODES,*THEORY_MODES,*ADVISOR_MODES,*ROBUST_MODES) and a not in s.company_ids for a,m in modes.items()):raise ValueError("game-theory policies support companies only")
     for actor,choice in fixed.items():
         if choice not in options(actor):raise ValueError("unknown fixed portfolio")
     if "model" in modes.values() and not authorize_real:raise ValueError("real model authorization required")
@@ -92,6 +93,13 @@ async def run_episode(config, *, directory, seed, rounds=10, modes=None, fixed=N
             record=dict(mode=mode,observation=observation(s,actor),objective=objective(actor),options=descriptions(actor))
             if existing:record["reviewed_attempts"]=existing["reviewed_attempts"]
             if actor in fixed:choice=fixed[actor];record["mode"]="fixed"
+            elif mode in PRICING_MODES:
+                from game_theory_agent.game_theory.cycle_pricing import native_decision
+                choice = "balanced"
+                if actor in s.strategic_market.active_company_ids:
+                    decision, policy_memory = native_decision(config, s, actor, memory.get('_theory', {}).get(actor), mode)
+                    memory.setdefault('_theory', {})[actor] = policy_memory
+                    record.update(price_decision=decision, policy_memory_after=policy_memory)
             elif mode in ROBUST_MODES:
                 from game_theory_agent.game_theory.advisor_beliefs import RobustRequest
                 from game_theory_agent.game_theory.advisor_robust import advise
@@ -132,6 +140,10 @@ async def run_episode(config, *, directory, seed, rounds=10, modes=None, fixed=N
             choices[actor]=choice
         aa=actions_for(config,s,choices)
         for actor,decision in journal['decisions'].items():
+            if 'price_decision' in decision:
+                from game_theory_agent.game_theory.cycle_pricing import apply_native_price
+                aa[actor] = apply_native_price(config,s,actor,aa[actor],decision['price_decision']['price'])
+                decision['executed_price_cents'] = aa[actor].price_cents
             if 'advisor_recipe' in decision:
                 from game_theory_agent.game_theory.advisor_market import recipe_action
                 aa[actor]=recipe_action(config,s,actor,decision['advisor_recipe'])

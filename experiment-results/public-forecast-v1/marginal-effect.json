@@ -1,0 +1,38 @@
+{
+  "econ": {
+    "n": 96,
+    "forecast_mae": 1.3427135904134613,
+    "zero_effect_mae": 8.442708333333332,
+    "paired_mae_difference": {
+      "mean": -7.099994742919872,
+      "ci": [
+        -7.976894695079917,
+        -6.2884585825191115
+      ],
+      "n": 48
+    },
+    "nonzero_effect": 96,
+    "sign_correct": 1.0,
+    "rank_first_profit": 0.8979886665429638,
+    "rank_terminal_profit": 0.4799647314161693,
+    "rank_true_first_vs_terminal": 0.53456502497942
+  },
+  "native": {
+    "n": 96,
+    "forecast_mae": 168.89464309413844,
+    "zero_effect_mae": 180.51041666666666,
+    "paired_mae_difference": {
+      "mean": -11.615773572528203,
+      "ci": [
+        -57.501383302868646,
+        33.96980729892579
+      ],
+      "n": 48
+    },
+    "nonzero_effect": 46,
+    "sign_correct": 1.0,
+    "rank_first_profit": 0.552095840931074,
+    "rank_terminal_profit": -0.11072633851208276,
+    "rank_true_first_vs_terminal": -0.09463048331797388
+  }
+}

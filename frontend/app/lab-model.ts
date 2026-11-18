@@ -498,6 +498,16 @@ export function buildRuntimeAgents(configs: AgentConfig[]): AgentRuntimeView[] {
 
 export const DEMO_AGENTS = buildRuntimeAgents(DEFAULT_AGENTS);
 
+/** Unit fulfilment cost (cents) of the seat at `index` in the UI-only demo market. */
+export function demoUnitCost(index: number): number {
+  return [6200, 6000, 6500, 6300][index % 4] + Math.floor(index / 4) * 40;
+}
+
+/** Realized demand (orders) used by the UI-only demo market for a round. */
+export function demoDemand(round: number): number {
+  return 11_600 + ((round * 811) % 1_900);
+}
+
 export type DemoHumanAction = {
   price: number;
   advertising: number;
@@ -513,6 +523,8 @@ export function advanceDemoRound(
   agents: AgentRuntimeView[],
   settledRound: number,
   humanAction: DemoHumanAction,
+  /** Optional what-if overrides applied to the joint action (used for advice counterfactuals). */
+  overrides: Record<string, Partial<AgentRuntimeView["action"]>> = {},
 ): AgentRuntimeView[] {
   const pricePatterns = [
     [0, 0, 0, 0],
@@ -558,6 +570,10 @@ export function advanceDemoRound(
           : agent.action.contribution,
     };
   });
+  agents.forEach((agent, index) => {
+    const override = overrides[agent.companyId];
+    if (override) nextActions[index] = { ...nextActions[index], ...override };
+  });
   const averagePrice =
     nextActions.reduce((sum, action) => sum + action.price, 0) /
     nextActions.length;
@@ -585,11 +601,8 @@ export function advanceDemoRound(
         roundedShares.slice(0, -1).reduce((sum, value) => sum + value, 0)) *
         10,
     ) / 10;
-  const realizedDemand = 11_600 + ((settledRound * 811) % 1_900);
-  const unitCosts = agents.map(
-    (_, index) =>
-      [6200, 6000, 6500, 6300][index % 4] + Math.floor(index / 4) * 40,
-  );
+  const realizedDemand = demoDemand(settledRound);
+  const unitCosts = agents.map((_, index) => demoUnitCost(index));
 
   return agents.map((agent, index) => {
     const action = nextActions[index];

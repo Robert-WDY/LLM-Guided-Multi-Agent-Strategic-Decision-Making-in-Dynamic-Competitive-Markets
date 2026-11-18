@@ -1,0 +1,270 @@
+{
+  "episodes": 72,
+  "units": "official last-50 OPT ratio",
+  "results": {
+    "linear_shifts": {
+      "means": {
+        "fixed": 0.8988543000441883,
+        "feedback": 0.9977774376451195,
+        "last10": 0.9458965959785962
+      },
+      "feedback_minus_fixed": {
+        "mean": 0.0989231376009313,
+        "ci": [
+          0.0474566311685307,
+          0.15937659798011122
+        ],
+        "n": 12
+      },
+      "feedback_minus_previous": {
+        "mean": 0.05188084166652329,
+        "ci": [
+          0.04395205020906345,
+          0.06068699771409181
+        ],
+        "n": 12
+      }
+    },
+    "periodic_shifts": {
+      "means": {
+        "fixed": 0.6125945374935567,
+        "feedback": 0.6468867178202792,
+        "last10": 0.6586088730523979
+      },
+      "feedback_minus_fixed": {
+        "mean": 0.034292180326722294,
+        "ci": [
+          -0.038222905757074696,
+          0.10921162156225935
+        ],
+        "n": 12
+      },
+      "feedback_minus_previous": {
+        "mean": -0.011722155232118706,
+        "ci": [
+          -0.0958055446764407,
+          0.061931130641927595
+        ],
+        "n": 12
+      }
+    }
+  },
+  "seeds": [
+    {
+      "seed": 56100,
+      "change": "linear_shifts",
+      "scores": {
+        "fixed": 0.9922288051519161,
+        "feedback": 0.9966721326844132,
+        "last10": 0.9222504164133362
+      }
+    },
+    {
+      "seed": 56101,
+      "change": "periodic_shifts",
+      "scores": {
+        "fixed": 0.6384314851405869,
+        "feedback": 0.6321384197375254,
+        "last10": 0.5731912761070486
+      }
+    },
+    {
+      "seed": 56102,
+      "change": "linear_shifts",
+      "scores": {
+        "fixed": 0.7862593893398583,
+        "feedback": 0.9989873075904859,
+        "last10": 0.9682588572149853
+      }
+    },
+    {
+      "seed": 56103,
+      "change": "periodic_shifts",
+      "scores": {
+        "fixed": 0.7406854319905131,
+        "feedback": 0.6012381328614256,
+        "last10": 0.8056107035514493
+      }
+    },
+    {
+      "seed": 56104,
+      "change": "linear_shifts",
+      "scores": {
+        "fixed": 0.6711770392901394,
+        "feedback": 0.9968901216781813,
+        "last10": 0.9499283561940035
+      }
+    },
+    {
+      "seed": 56105,
+      "change": "periodic_shifts",
+      "scores": {
+        "fixed": 0.5919797580033758,
+        "feedback": 0.47900425563400845,
+        "last10": 0.5653026451198806
+      }
+    },
+    {
+      "seed": 56106,
+      "change": "linear_shifts",
+      "scores": {
+        "fixed": 0.8710403304570188,
+        "feedback": 0.9982387771619864,
+        "last10": 0.9595124767933054
+      }
+    },
+    {
+      "seed": 56107,
+      "change": "periodic_shifts",
+      "scores": {
+        "fixed": 0.4824258201946927,
+        "feedback": 0.6604443234936866,
+        "last10": 0.5500012752262834
+      }
+    },
+    {
+      "seed": 56108,
+      "change": "linear_shifts",
+      "scores": {
+        "fixed": 0.9093509538179109,
+        "feedback": 0.9987596067025178,
+        "last10": 0.9366584309155436
+      }
+    },
+    {
+      "seed": 56109,
+      "change": "periodic_shifts",
+      "scores": {
+        "fixed": 0.4801622565617171,
+        "feedback": 0.3353692889847191,
+        "last10": 0.6588334837620965
+      }
+    },
+    {
+      "seed": 56110,
+      "change": "linear_shifts",
+      "scores": {
+        "fixed": 0.9908072209274762,
+        "feedback": 0.9978038980466188,
+        "last10": 0.913036788722127
+      }
+    },
+    {
+      "seed": 56111,
+      "change": "periodic_shifts",
+      "scores": {
+        "fixed": 0.5482846871915289,
+        "feedback": 0.5087758876605657,
+        "last10": 0.6329508171825633
+      }
+    },
+    {
+      "seed": 56112,
+      "change": "linear_shifts",
+      "scores": {
+        "fixed": 0.7795532221947049,
+        "feedback": 0.9961777380990487,
+        "last10": 0.9546103750664345
+      }
+    },
+    {
+      "seed": 56113,
+      "change": "periodic_shifts",
+      "scores": {
+        "fixed": 0.526538444930307,
+        "feedback": 0.7527455376035205,
+        "last10": 0.6976359893307182
+      }
+    },
+    {
+      "seed": 56114,
+      "change": "linear_shifts",
+      "scores": {
+        "fixed": 0.9806301311367447,
+        "feedback": 0.9980549251676492,
+        "last10": 0.94855463963707
+      }
+    },
+    {
+      "seed": 56115,
+      "change": "periodic_shifts",
+      "scores": {
+        "fixed": 0.758082169542858,
+        "feedback": 0.7735612951990886,
+        "last10": 0.6192484125229558
+      }
+    },
+    {
+      "seed": 56116,
+      "change": "linear_shifts",
+      "scores": {
+        "fixed": 0.9971867086389066,
+        "feedback": 0.9982731630407925,
+        "last10": 0.9604851686978293
+      }
+    },
+    {
+      "seed": 56117,
+      "change": "periodic_shifts",
+      "scores": {
+        "fixed": 0.706211341239909,
+        "feedback": 0.7495104246838734,
+        "last10": 0.6895762547060736
+      }
+    },
+    {
+      "seed": 56118,
+      "change": "linear_shifts",
+      "scores": {
+        "fixed": 0.9119347206871095,
+        "feedback": 0.9984525596333502,
+        "last10": 0.9516438903806762
+      }
+    },
+    {
+      "seed": 56119,
+      "change": "periodic_shifts",
+      "scores": {
+        "fixed": 0.4864816168530099,
+        "feedback": 0.6850068262877704,
+        "last10": 0.6290960436445968
+      }
+    },
+    {
+      "seed": 56120,
+      "change": "linear_shifts",
+      "scores": {
+        "fixed": 0.9033645602098277,
+        "feedback": 0.9970486505219367,
+        "last10": 0.9483270534877082
+      }
+    },
+    {
+      "seed": 56121,
+      "change": "periodic_shifts",
+      "scores": {
+        "fixed": 0.7122600239043407,
+        "feedback": 0.6891800262241206,
+        "last10": 0.7192714944022411
+      }
+    },
+    {
+      "seed": 56122,
+      "change": "linear_shifts",
+      "scores": {
+        "fixed": 0.9927185186786466,
+        "feedback": 0.9979703714144545,
+        "last10": 0.9374926982201367
+      }
+    },
+    {
+      "seed": 56123,
+      "change": "periodic_shifts",
+      "scores": {
+        "fixed": 0.679591414369843,
+        "feedback": 0.8956661954730454,
+        "last10": 0.7625880810728669
+      }
+    }
+  ]
+}

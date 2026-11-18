@@ -1,0 +1,58 @@
+{
+  "files": {
+    "scripts/public_forecast/collect.py": "e1bfded0f07861f5b67bf84d923bbb183b35817192bbdc180f94149caafaac9c",
+    "scripts/public_forecast/controls.py": "68b9ee6778122e3a74521fcc706c735a9aab31618cbeb06eeda25f4f10406111",
+    "scripts/public_forecast/evaluate.py": "e8a95b77bf0ea443275afdee006459a4ece8232838d528bd480ac679860ad464",
+    "scripts/public_forecast/freeze.py": "ebc515eac04f48c2939ea7de8595b08a26ed2b38f42ef2a7b1e2e1a1160aeb5f",
+    "scripts/public_forecast/gates.py": "61601e7edddf34a7c586e8234f5c1431c3bfc7c168b05c921baa91066c4c1e3c",
+    "scripts/public_forecast/models.py": "930c603c16e216139db7d6cf89773a1ef88f9ee57cf3a8b774bb7f41efd8c61d",
+    "scripts/public_forecast/stress.py": "7b1f22d94279ed4a1ed4ba228517a55637ed7366b45641cd06b8b3285a093ef2",
+    "src/game_theory_agent/game_theory/public_forecast.py": "540c0b296ebe6de92fd5e3f48b6c6aafaf6be1a56f0dcdc74cda28baf02debaf",
+    "experiment-specs/public-forecast-v1/CONTROLS.md": "bc5b66ca5f3aa3b88f363683b5c6a91d3776abc23f885131d7c73b661bfe12f1",
+    "experiment-specs/public-forecast-v1/PLAN.md": "5cf887057dc337a00cb834560730a0dfccb5b90f41732553b953114b60661cc7",
+    "scripts/pricing_feedback/paid.py": "098dcbc8829dc63b81a2d33295bf4d2f01a1dae457ab8cf75a1a995ba8fcf100",
+    "scripts/pricing_feedback/study.py": "a9625ad80e275fd73111d7ed2551dd1ff019766a1f552329db1468504b2e80a4",
+    "scripts/pricing_feedback/units.py": "07d0c8c6d8b21875c1f2e8414172c5e1948764370065c64eaf7eceae6f638605",
+    "experiment-results/public-forecast-v1/econ-controls.joblib": "2ca72bbdda828d48dd76c2693c8e92040f5d0ba2615c8d7fbb2b057132882a37",
+    "experiment-results/public-forecast-v1/econ-forecast.joblib": "928ca37ce645eddeb1f8cd2d87f115639d625af1d9bc77aabc4e6bef08241a54",
+    "experiment-results/public-forecast-v1/econ-gates.joblib": "e3928624c74f8c65229a128fb6fbb86335cefa8409b71383817f3203fccebff9",
+    "experiment-results/public-forecast-v1/native-controls.joblib": "ed2e590b30bdb8be469d6e2783095c69c3d0acec2756a704e97dd644c7be6936",
+    "experiment-results/public-forecast-v1/native-forecast.joblib": "26c697c3700f438cda4fc497da884e1d44edf7d02c6ab01582a1ec5ac089b8a4",
+    "experiment-results/public-forecast-v1/native-gates.joblib": "aac3e9e023be46adb68e19abf20ad94b85623e29d50f6cd5b66a4e77eca66b3f",
+    "experiment-results/public-forecast-v1/econ-thresholds.json": "d54072146fb22339bc4f3e87a0cd3d76fb83a00e42b22fd58e907497b46a8f05",
+    "experiment-results/public-forecast-v1/native-thresholds.json": "0f71bd7ee5624fd9c424067a291ef9b7e5ad1b5da9da56406903a89bc2cb298c"
+  },
+  "seeds": {
+    "train": [
+      71200,
+      64
+    ],
+    "dev": [
+      72200,
+      24
+    ],
+    "cal": [
+      73200,
+      32
+    ],
+    "test": [
+      74200,
+      64
+    ],
+    "rtrain": [
+      75200,
+      24
+    ],
+    "rcal": [
+      76200,
+      16
+    ],
+    "rtest": [
+      77200,
+      48
+    ]
+  },
+  "baseline_id": 12460,
+  "baseline_micro_yuan": 23808940,
+  "total_cap_micro_yuan": 50000000
+}

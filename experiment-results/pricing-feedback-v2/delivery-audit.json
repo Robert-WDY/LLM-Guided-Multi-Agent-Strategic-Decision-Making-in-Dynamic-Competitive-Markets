@@ -1,0 +1,73 @@
+{
+  "secondary_episodes": {
+    "terminal": 3072,
+    "units": 1920,
+    "real": 512,
+    "real_units": 256,
+    "real_once": 384
+  },
+  "first_confirmation_rounds": {
+    "econ": 115200,
+    "native": 115200
+  },
+  "total_attempts": 12460,
+  "input_tokens": 5596533,
+  "output_tokens": 87326,
+  "conservative_yuan": 23.80894,
+  "model_drafts_after_reconciliation": {
+    "decisions": 10668,
+    "prompts": 6002,
+    "multi_draft_histories": 0,
+    "affected": []
+  },
+  "ledger_columns": [
+    "provider",
+    "status",
+    "attempts",
+    "input",
+    "output",
+    "micro_yuan"
+  ],
+  "ledger": [
+    [
+      "deepseek",
+      "error-APIConnectionError",
+      4,
+      0,
+      0,
+      20812
+    ],
+    [
+      "deepseek",
+      "ok",
+      6174,
+      2168251,
+      24940,
+      9072044
+    ],
+    [
+      "doubao",
+      "error-APITimeoutError",
+      1,
+      0,
+      0,
+      4780
+    ],
+    [
+      "doubao",
+      "invalid",
+      122,
+      61097,
+      5321,
+      329524
+    ],
+    [
+      "doubao",
+      "ok",
+      6159,
+      3367185,
+      57065,
+      14381780
+    ]
+  ]
+}

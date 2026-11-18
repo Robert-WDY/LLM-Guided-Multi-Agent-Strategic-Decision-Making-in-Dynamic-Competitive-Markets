@@ -1,0 +1,122 @@
+[
+  {
+    "alpha": 1.0,
+    "players": 1,
+    "reference": "nash",
+    "price": 1.8019812674384508,
+    "profit": 55.2,
+    "foc": 0.001029662577423096,
+    "index": null,
+    "periods": 300
+  },
+  {
+    "alpha": 1.0,
+    "players": 1,
+    "reference": "joint",
+    "price": 1.801985642429283,
+    "profit": 55.2,
+    "foc": -0.00017481298186794447,
+    "index": null,
+    "periods": 300
+  },
+  {
+    "alpha": 1.0,
+    "players": 2,
+    "reference": "nash",
+    "price": 1.4729287006069567,
+    "profit": 22.29,
+    "foc": -0.00022229295737474786,
+    "index": 0.0,
+    "periods": 300
+  },
+  {
+    "alpha": 1.0,
+    "players": 2,
+    "reference": "joint",
+    "price": 1.9249809175424142,
+    "profit": 33.75,
+    "foc": 6.252776074688882e-08,
+    "index": 0.9999999999999996,
+    "periods": 300
+  },
+  {
+    "alpha": 3.2,
+    "players": 1,
+    "reference": "nash",
+    "price": 5.766346164516944,
+    "profit": 55.2,
+    "foc": 0.00015753270909968364,
+    "index": null,
+    "periods": 300
+  },
+  {
+    "alpha": 3.2,
+    "players": 1,
+    "reference": "joint",
+    "price": 5.766352007706002,
+    "profit": 55.2,
+    "foc": 4.346412119105025e-07,
+    "index": null,
+    "periods": 300
+  },
+  {
+    "alpha": 3.2,
+    "players": 2,
+    "reference": "nash",
+    "price": 4.7133652985771635,
+    "profit": 22.29,
+    "foc": 3.744504706304496e-07,
+    "index": 0.0,
+    "periods": 300
+  },
+  {
+    "alpha": 3.2,
+    "players": 2,
+    "reference": "joint",
+    "price": 6.159939391704244,
+    "profit": 33.75,
+    "foc": -1.2966361317978679e-05,
+    "index": 1.0,
+    "periods": 300
+  },
+  {
+    "alpha": 10.0,
+    "players": 1,
+    "reference": "nash",
+    "price": 18.01984249680092,
+    "profit": 55.2,
+    "foc": 2.086239447862681e-05,
+    "index": null,
+    "periods": 300
+  },
+  {
+    "alpha": 10.0,
+    "players": 1,
+    "reference": "joint",
+    "price": 18.019849471486744,
+    "profit": 55.2,
+    "foc": 1.6604388974883477e-06,
+    "index": null,
+    "periods": 300
+  },
+  {
+    "alpha": 10.0,
+    "players": 2,
+    "reference": "nash",
+    "price": 14.729266555755126,
+    "profit": 22.29,
+    "foc": 1.2233769552949525e-07,
+    "index": 0.0,
+    "periods": 300
+  },
+  {
+    "alpha": 10.0,
+    "players": 2,
+    "reference": "joint",
+    "price": 19.2498105982241,
+    "profit": 33.75,
+    "foc": -4.146755827605375e-06,
+    "index": 1.0,
+    "periods": 300
+  }
+]

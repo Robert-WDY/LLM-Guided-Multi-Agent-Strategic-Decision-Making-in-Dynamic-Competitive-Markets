@@ -1,0 +1,74 @@
+{
+  "rounds": {
+    "econ": 115200,
+    "native": 115200
+  },
+  "max_econ_rounding_error": 0.00499994569607054,
+  "native_feedback_clamped_rounds": 289,
+  "strict_gate_rows_match": true,
+  "frozen_hashes": 9,
+  "once": {
+    "econ": {
+      "versus_original": {
+        "mean": 0.24026117161435367,
+        "ci": [
+          -2.306180460562034,
+          2.5714649742356492
+        ],
+        "n": 48
+      },
+      "matched_episode_uniform": {
+        "mean": -2.7523528179661896,
+        "ci": [
+          -4.515554713365471,
+          -1.102267166426897
+        ],
+        "n": 48
+      },
+      "selection_minus_uniform": {
+        "mean": 2.992613989580544,
+        "ci": [
+          1.0707044688045968,
+          5.020974369152549
+        ],
+        "n": 48
+      },
+      "exposed": 47,
+      "harmed": 35,
+      "risk_upper": 0.8455717517426431,
+      "acted": 148,
+      "eligible": 2496
+    },
+    "native": {
+      "versus_original": {
+        "mean": -67306.17844153037,
+        "ci": [
+          -159432.3701050455,
+          17688.166506569836
+        ],
+        "n": 48
+      },
+      "matched_episode_uniform": {
+        "mean": -107449.84965950028,
+        "ci": [
+          -144585.65282767097,
+          -71212.42577919482
+        ],
+        "n": 48
+      },
+      "selection_minus_uniform": {
+        "mean": 40143.6712179699,
+        "ci": [
+          -34268.38937214976,
+          110933.69120763888
+        ],
+        "n": 48
+      },
+      "exposed": 47,
+      "harmed": 37,
+      "risk_upper": 0.8797699726858044,
+      "acted": 171,
+      "eligible": 2496
+    }
+  }
+}

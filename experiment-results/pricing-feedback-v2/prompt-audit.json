@@ -1,0 +1,20 @@
+{
+  "before": {
+    "decisions": 10668,
+    "prompts": 6024,
+    "multi_draft_histories": 1,
+    "affected": [
+      "real2-doubao-econ-58129-conditional.json.gz",
+      "real2-doubao-econ-58129-diagnostic.json.gz",
+      "real2-doubao-econ-58129-wide.json.gz",
+      "realunits-doubao-econ-58129-conditional.json.gz",
+      "realunits-doubao-econ-58129-wide.json.gz"
+    ]
+  },
+  "after": {
+    "decisions": 10668,
+    "prompts": 6002,
+    "multi_draft_histories": 0,
+    "affected": []
+  }
+}

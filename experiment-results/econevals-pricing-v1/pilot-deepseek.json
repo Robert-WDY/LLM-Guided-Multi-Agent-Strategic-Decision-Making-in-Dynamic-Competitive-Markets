@@ -1,0 +1,610 @@
+[
+  {
+    "seed": 3300,
+    "family": "matching",
+    "arm": "A",
+    "profit": 1125.1544372496244,
+    "decisions": [
+      {
+        "t": 10,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 20,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 30,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 40,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      }
+    ]
+  },
+  {
+    "seed": 3300,
+    "family": "matching",
+    "arm": "B",
+    "profit": 1145.995663392524,
+    "decisions": [
+      {
+        "t": 10,
+        "executed": 1.6906500000000002
+      },
+      {
+        "t": 20,
+        "executed": 1.6184000000000003
+      },
+      {
+        "t": 30,
+        "executed": 1.6906500000000002
+      },
+      {
+        "t": 40,
+        "executed": 1.6184000000000003
+      }
+    ]
+  },
+  {
+    "seed": 3300,
+    "family": "matching",
+    "arm": "C",
+    "profit": 1125.1544372496244,
+    "decisions": [
+      {
+        "t": 10,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 20,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 30,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 40,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      }
+    ]
+  },
+  {
+    "seed": 3300,
+    "family": "matching",
+    "arm": "D",
+    "profit": 1125.1544372496244,
+    "decisions": [
+      {
+        "t": 10,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 20,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 30,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 40,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      }
+    ]
+  },
+  {
+    "seed": 3300,
+    "family": "matching",
+    "arm": "Dopt",
+    "profit": 1125.1544372496244,
+    "decisions": [
+      {
+        "t": 10,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 20,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 30,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 40,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      }
+    ]
+  },
+  {
+    "seed": 3300,
+    "family": "switching",
+    "arm": "A",
+    "profit": 1120.0742127233025,
+    "decisions": [
+      {
+        "t": 10,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 20,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 30,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 40,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      }
+    ]
+  },
+  {
+    "seed": 3300,
+    "family": "switching",
+    "arm": "B",
+    "profit": 1132.575930245376,
+    "decisions": [
+      {
+        "t": 10,
+        "executed": 1.6906500000000002
+      },
+      {
+        "t": 20,
+        "executed": 1.6184000000000003
+      },
+      {
+        "t": 30,
+        "executed": 1.6906500000000002
+      },
+      {
+        "t": 40,
+        "executed": 1.6184000000000003
+      }
+    ]
+  },
+  {
+    "seed": 3300,
+    "family": "switching",
+    "arm": "C",
+    "profit": 1120.0742127233025,
+    "decisions": [
+      {
+        "t": 10,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 20,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 30,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 40,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      }
+    ]
+  },
+  {
+    "seed": 3300,
+    "family": "switching",
+    "arm": "D",
+    "profit": 1120.0742127233025,
+    "decisions": [
+      {
+        "t": 10,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 20,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 30,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 40,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      }
+    ]
+  },
+  {
+    "seed": 3300,
+    "family": "switching",
+    "arm": "Dopt",
+    "profit": 1120.0742127233025,
+    "decisions": [
+      {
+        "t": 10,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 20,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 30,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      },
+      {
+        "t": 40,
+        "draft": 1.62,
+        "rec": 1.62,
+        "executed": 1.62
+      }
+    ]
+  },
+  {
+    "seed": 3301,
+    "family": "matching",
+    "arm": "A",
+    "profit": 1075.9604314334827,
+    "decisions": [
+      {
+        "t": 10,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 20,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 30,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 40,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      }
+    ]
+  },
+  {
+    "seed": 3301,
+    "family": "matching",
+    "arm": "B",
+    "profit": 1072.8980745500453,
+    "decisions": [
+      {
+        "t": 10,
+        "executed": 5.590199999999999
+      },
+      {
+        "t": 20,
+        "executed": 5.3591999999999995
+      },
+      {
+        "t": 30,
+        "executed": 5.590199999999999
+      },
+      {
+        "t": 40,
+        "executed": 5.3591999999999995
+      }
+    ]
+  },
+  {
+    "seed": 3301,
+    "family": "matching",
+    "arm": "C",
+    "profit": 1075.9604314334827,
+    "decisions": [
+      {
+        "t": 10,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 20,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 30,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 40,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      }
+    ]
+  },
+  {
+    "seed": 3301,
+    "family": "matching",
+    "arm": "D",
+    "profit": 1075.9604314334827,
+    "decisions": [
+      {
+        "t": 10,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 20,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 30,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 40,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      }
+    ]
+  },
+  {
+    "seed": 3301,
+    "family": "matching",
+    "arm": "Dopt",
+    "profit": 1075.9604314334827,
+    "decisions": [
+      {
+        "t": 10,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 20,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 30,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 40,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      }
+    ]
+  },
+  {
+    "seed": 3301,
+    "family": "switching",
+    "arm": "A",
+    "profit": 1002.3662103025509,
+    "decisions": [
+      {
+        "t": 10,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 20,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 30,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 40,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      }
+    ]
+  },
+  {
+    "seed": 3301,
+    "family": "switching",
+    "arm": "B",
+    "profit": 1003.0224509321193,
+    "decisions": [
+      {
+        "t": 10,
+        "executed": 5.590199999999999
+      },
+      {
+        "t": 20,
+        "executed": 5.3591999999999995
+      },
+      {
+        "t": 30,
+        "executed": 5.590199999999999
+      },
+      {
+        "t": 40,
+        "executed": 5.3591999999999995
+      }
+    ]
+  },
+  {
+    "seed": 3301,
+    "family": "switching",
+    "arm": "C",
+    "profit": 1002.3662103025509,
+    "decisions": [
+      {
+        "t": 10,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 20,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 30,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 40,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      }
+    ]
+  },
+  {
+    "seed": 3301,
+    "family": "switching",
+    "arm": "D",
+    "profit": 1002.3662103025509,
+    "decisions": [
+      {
+        "t": 10,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 20,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 30,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 40,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      }
+    ]
+  },
+  {
+    "seed": 3301,
+    "family": "switching",
+    "arm": "Dopt",
+    "profit": 1002.3662103025509,
+    "decisions": [
+      {
+        "t": 10,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 20,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 30,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      },
+      {
+        "t": 40,
+        "draft": 5.5,
+        "rec": 5.5,
+        "executed": 5.5
+      }
+    ]
+  }
+]

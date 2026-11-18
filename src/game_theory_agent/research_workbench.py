@@ -14,6 +14,7 @@ from .market import MarketConfig,MarketEnv
 from .market.actor_policies import actor_ids,options
 from .market.actor_experiments import run_episode,read_json,authorize_schema_retry
 from .game_theory.market_strategies import MODES as THEORY_MODES
+from game_theory_agent.game_theory.cycle_pricing import MODES as PRICING_MODES
 from .game_theory.objectives import ADVISOR_MODES
 from .game_theory.advisor_robust import ROBUST_MODES
 
@@ -112,8 +113,8 @@ class Workbench:
         for variant in payload["variants"]:
             config=configured(self.config,variant);e=MarketEnv(config);ids=actor_ids(e.reset(company_ids=[f'company_{chr(65+i)}' for i in range(request.company_count)],episode_id="queue-validation",max_rounds=request.rounds))
             if set(variant["modes"])-set(ids) or set(variant["fixed"])-set(ids):raise ValueError("unknown actor")
-            if any(m not in ("rule","learning","model","neural",*THEORY_MODES,*ADVISOR_MODES,*ROBUST_MODES) for m in variant["modes"].values()):raise ValueError("unknown controller")
-            if any(m in (*THEORY_MODES,*ADVISOR_MODES,*ROBUST_MODES) and not a.startswith('company_') for a,m in variant['modes'].items()):raise ValueError("game-theory policies support companies only")
+            if any(m not in ("rule","learning","model","neural",*PRICING_MODES,*THEORY_MODES,*ADVISOR_MODES,*ROBUST_MODES) for m in variant["modes"].values()):raise ValueError("unknown controller")
+            if any(m in (*PRICING_MODES,*THEORY_MODES,*ADVISOR_MODES,*ROBUST_MODES) and not a.startswith('company_') for a,m in variant['modes'].items()):raise ValueError("game-theory policies support companies only")
             if any(o not in options(a) for a,o in variant["fixed"].items()):raise ValueError("unknown portfolio")
             if "model" in variant["modes"].values() and not request.authorize_real:raise ValueError("real model authorization is required")
             if "neural" in variant["modes"].values():

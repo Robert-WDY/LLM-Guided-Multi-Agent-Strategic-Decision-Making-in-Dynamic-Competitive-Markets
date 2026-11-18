@@ -10,6 +10,8 @@ import { SupplierStrategies, type StrategicSupply } from "./supplier-strategies"
 import { GovernmentStrategies } from "./government-strategies";
 import { ResearchWorkbench } from "./research-workbench";
 import { TheoryLab } from "./theory-lab";
+import { CommandCenter } from "./command-center";
+import { PixelAvatar } from "./pixel-avatar";
 import './theory-lab.css';
 import { BackendEvidence, ProcurementControls, SavedExperiments, V10Results, type CheckpointMeta, type HumanAction, type SavedUi, type V10State } from "./market-v10";
 import {
@@ -327,7 +329,7 @@ function AppShell({
 }) {
   if(workbench)return <main className="configuration-shell">{children}</main>;
   if (active === "home")
-    return <main className="landing-shell">{children}</main>;
+    return <main className="landing-shell pixel-shell">{children}</main>;
   const nav = NAV_ITEMS.find((item) => item.id === active);
   if (active === "setup")
     return (
@@ -463,18 +465,25 @@ function LandingView({
   choose,
   resume,
   hasSession,
+  openScreen,
 }: {
   choose: (mode: EntryMode) => void;
   resume: () => void;
   hasSession: boolean;
+  openScreen: () => void;
 }) {
+  const entries: Array<{ mode: EntryMode; no: string; tag: string; title: string; text: string; avatar: number; color: string }> = [
+    { mode: "participant", no: "01", tag: "PLAYER · 参与决策", title: "个人体验", text: "作为公司 A 做价格、投入与合作决策，观察其他智能体如何响应。", avatar: 0, color: "#7ce3d0" },
+    { mode: "observer", no: "02", tag: "OBSERVER · 观察过程", title: "观察实验", text: "不参与决策，跟随回合查看市场、消息、智能体判断和结算结果。", avatar: 3, color: "#8fb8ff" },
+    { mode: "research", no: "03", tag: "RESEARCH · 研究分析", title: "研究控制台", text: "配置处理组、回合重建和完整研究工具；实验完成后才生成报告。", avatar: 6, color: "#ffab91" },
+  ];
   return (
-    <div className="landing-page">
+    <div className="landing-page pixel-landing">
       <header className="landing-header">
         <div className="landing-logo">
-          <span>博弈</span>
+          <PixelAvatar index={4} color="#ffd36e" size={40} />
           <div>
-            <strong>多智能体博弈实验室</strong>
+            <strong>GAME LAB · 多智能体博弈实验室</strong>
             <small>多智能体博弈实验平台</small>
           </div>
         </div>
@@ -484,7 +493,7 @@ function LandingView({
         </div>
       </header>
       <section className="landing-hero">
-        <span>选择进入方式</span>
+        <span>SELECT MODE · 选择进入方式</span>
         <h1>
           从一个清楚的入口
           <br />
@@ -493,47 +502,43 @@ function LandingView({
         <p>
           先选择你要扮演的角色，再配置市场环境。观察、参与和研究不会混在同一个界面里。
         </p>
+        <div className="landing-party" aria-hidden="true">
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
+            <PixelAvatar key={i} index={i} color={["#7ce3d0", "#ffab91", "#8fb8ff", "#c7a6ff", "#ff8fab", "#ffd36e", "#8fe3a2", "#7fd6f5", "#f5a3d6", "#b8c4ff"][i]} size={40} />
+          ))}
+        </div>
+      </section>
+      <section className="screen-banner">
+        <div>
+          <span>LIVE SCREEN · 交互大屏</span>
+          <strong>博弈指挥大屏</strong>
+          <p>多智能体围绕共享市场实时博弈：交流连线、战略建议、协议履约、操作与库存面板。</p>
+        </div>
+        <button type="button" onClick={openScreen}>
+          打开大屏 ▶
+        </button>
       </section>
       <section className="entry-grid">
-        <button
-          type="button"
-          className="entry-card participant"
-          onClick={() => choose("participant")}
-        >
-          <i>01</i>
-          <span>参与决策</span>
-          <h2>个人体验</h2>
-          <p>作为公司 A 做价格、投入与合作决策，观察其他智能体如何响应。</p>
-          <b>
-            配置并进入 <em>→</em>
-          </b>
-        </button>
-        <button
-          type="button"
-          className="entry-card observer"
-          onClick={() => choose("observer")}
-        >
-          <i>02</i>
-          <span>观察过程</span>
-          <h2>观察实验</h2>
-          <p>不参与决策，跟随回合查看市场、消息、智能体判断和结算结果。</p>
-          <b>
-            配置并进入 <em>→</em>
-          </b>
-        </button>
-        <button
-          type="button"
-          className="entry-card research"
-          onClick={() => choose("research")}
-        >
-          <i>03</i>
-          <span>研究分析</span>
-          <h2>研究控制台</h2>
-          <p>配置处理组、回合重建和完整研究工具；实验完成后才生成报告。</p>
-          <b>
-            配置并进入 <em>→</em>
-          </b>
-        </button>
+        {entries.map((e) => (
+          <button
+            key={e.mode}
+            type="button"
+            className={`entry-card ${e.mode}`}
+            style={{ "--entry": e.color } as React.CSSProperties}
+            onClick={() => choose(e.mode)}
+          >
+            <span className="entry-top">
+              <PixelAvatar index={e.avatar} color={e.color} size={48} />
+              <i>{e.no}</i>
+            </span>
+            <span>{e.tag}</span>
+            <h2>{e.title}</h2>
+            <p>{e.text}</p>
+            <b>
+              配置并进入 <em>▶</em>
+            </b>
+          </button>
+        ))}
       </section>
       {hasSession && (
         <section className="resume-session">
@@ -542,7 +547,7 @@ function LandingView({
             <strong>已有一个未关闭的本地会话</strong>
           </div>
           <button type="button" onClick={resume}>
-            继续当前会话 →
+            继续当前会话 ▶
           </button>
         </section>
       )}
@@ -3017,6 +3022,7 @@ function hydrateDemoAgents(configs: AgentConfig[]) {
 export default function Home() {
   const [workbench,setWorkbench]=useState(false);
   const [theoryLab,setTheoryLab]=useState(false);
+  const [screen, setScreen] = useState(true);
   const [active, setActive] = useState<ViewId>("home");
   const [entryMode, setEntryMode] = useState<EntryMode>("participant");
   const [config, setConfig] = useState<LabConfig>({
@@ -3747,6 +3753,7 @@ export default function Home() {
         choose={chooseEntry}
         resume={() => setActive("live")}
         hasSession={Boolean(episodeId)}
+        openScreen={() => setScreen(true)}
       />
     ) : active === "setup" ? (
       <SetupView
@@ -3809,6 +3816,18 @@ export default function Home() {
         strategicMarket={strategicMarket}
       />
     );
+  const tools = (
+    <>
+      <section className="card local-run-control"><button onClick={()=>{setTheoryLab(false);setWorkbench(!workbench);}}>{workbench?"返回当前市场":"打开四方批量实验工作台"}</button><button onClick={()=>{setWorkbench(false);setTheoryLab(!theoryLab);}}>{theoryLab?"返回当前市场":"打开博弈策略实验室"}</button></section>
+      {backendConfig?.local_model_budget && <section className="card local-run-control" aria-label="真实模型费用"><p>真实模型总上限 ¥{backendConfig.local_model_budget.total_cny} · 已保留 ¥{backendConfig.local_model_budget.reserved_cny?.toFixed(3) ?? "待核对"} · 可用 ¥{backendConfig.local_model_budget.remaining_cny?.toFixed(3) ?? "0"}。规则模拟免费；已接入 DeepSeek Flash 与豆包 Lite。完整上下文每次最多保留 ¥0.42，工作台紧凑决策按请求上界保留，失败不自动退还额度。{backendConfig.local_model_budget.message}</p></section>}
+      {!workbench && !theoryLab && runtimeMode === "backend" && <section className="card local-run-control"><button disabled={busy || autoRunning} onClick={() => { setEntryMode(entryMode === "research" && agents.some(a => a.driver === "human") ? "participant" : "research"); setActive("live"); }}>{entryMode === "research" && agents.some(a => a.driver === "human") ? "返回真人决策" : "打开本局研究视图"}</button><span> 本机所有者可切换视图；研究回放包含全量账目。</span></section>}
+      {autoRunning && <section className="card local-run-control" aria-label="连续运行控制"><p role="status">正在逐轮运行并保存。暂停会等待当前回合结算，不丢弃已接受的动作。</p><button type="button" onClick={() => { pauseRequested.current = true; setNotice("已请求暂停，等待当前回合完成。"); }}>完成当前回合后暂停</button></section>}
+      {!workbench && !theoryLab && active !== "archive" && <SavedExperiments episodes={savedEpisodes} busy={busy || autoRunning} currentId={runtimeMode === "backend" ? episodeId : ""} recovery={recoveryRequired} message={checkpointMessage} configHash={savedConfigHash} onRefresh={() => void checkpointTask(refreshSaved)} onSave={() => void checkpointTask(() => saveCurrent())} onRestore={id => void checkpointTask(() => restoreSaved(id))} onExport={() => void checkpointTask(() => readEvidence(true))} onRecover={() => void checkpointTask(() => restoreSaved(episodeId, true))} />}
+    </>
+  );
+  if (screen) {
+    return <CommandCenter onExit={() => { setScreen(false); setActive("home"); }} />;
+  }
   return (
     <AppShell
       workbench={workbench||theoryLab}
@@ -3821,12 +3840,8 @@ export default function Home() {
       completed={demoCompleted}
       onHome={() => setActive("home")}
     >
-      <section className="card local-run-control"><button onClick={()=>{setTheoryLab(false);setWorkbench(!workbench);}}>{workbench?"返回当前市场":"打开四方批量实验工作台"}</button><button onClick={()=>{setWorkbench(false);setTheoryLab(!theoryLab);}}>{theoryLab?"返回当前市场":"打开博弈策略实验室"}</button></section>
-      {backendConfig?.local_model_budget && <section className="card local-run-control" aria-label="真实模型费用"><p>真实模型总上限 ¥{backendConfig.local_model_budget.total_cny} · 已保留 ¥{backendConfig.local_model_budget.reserved_cny?.toFixed(3) ?? "待核对"} · 可用 ¥{backendConfig.local_model_budget.remaining_cny?.toFixed(3) ?? "0"}。规则模拟免费；已接入 DeepSeek Flash 与豆包 Lite。完整上下文每次最多保留 ¥0.42，工作台紧凑决策按请求上界保留，失败不自动退还额度。{backendConfig.local_model_budget.message}</p></section>}
-      {!workbench && !theoryLab && runtimeMode === "backend" && <section className="card local-run-control"><button disabled={busy || autoRunning} onClick={() => { setEntryMode(entryMode === "research" && agents.some(a => a.driver === "human") ? "participant" : "research"); setActive("live"); }}>{entryMode === "research" && agents.some(a => a.driver === "human") ? "返回真人决策" : "打开本局研究视图"}</button><span> 本机所有者可切换视图；研究回放包含全量账目。</span></section>}
-      {autoRunning && <section className="card local-run-control" aria-label="连续运行控制"><p role="status">正在逐轮运行并保存。暂停会等待当前回合结算，不丢弃已接受的动作。</p><button type="button" onClick={() => { pauseRequested.current = true; setNotice("已请求暂停，等待当前回合完成。"); }}>完成当前回合后暂停</button></section>}
-      {!workbench && !theoryLab && active !== "archive" && <SavedExperiments episodes={savedEpisodes} busy={busy || autoRunning} currentId={runtimeMode === "backend" ? episodeId : ""} recovery={recoveryRequired} message={checkpointMessage} configHash={savedConfigHash} onRefresh={() => void checkpointTask(refreshSaved)} onSave={() => void checkpointTask(() => saveCurrent())} onRestore={id => void checkpointTask(() => restoreSaved(id))} onExport={() => void checkpointTask(() => readEvidence(true))} onRecover={() => void checkpointTask(() => restoreSaved(episodeId, true))} />}
-      {view}
+      {active === "home" && !workbench && !theoryLab ? view : tools}
+      {active === "home" && !workbench && !theoryLab ? tools : view}
       {!workbench && !theoryLab && marketState && runtimeMode === "backend" && ["live", "market", "report"].includes(active) && <V10Results state={marketState} />}
       {!workbench && !theoryLab && marketState && runtimeMode === "backend" && ["live", "market", "report"].includes(active) && <LocalMarketLedger state={marketState} />}
       {!workbench && !theoryLab && marketState && runtimeMode === "backend" && ["live", "market", "report"].includes(active) && <SupplierStrategies state={marketState as unknown as StrategicSupply} />}

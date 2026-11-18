@@ -1,0 +1,264 @@
+{
+  "results": {
+    "deepseek-econ": {
+      "feedback": {
+        "profit_difference": {
+          "mean": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "n": 6
+        },
+        "active": 0,
+        "lower_profit": 0,
+        "opportunities": 84
+      },
+      "learned": {
+        "profit_difference": {
+          "mean": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "n": 6
+        },
+        "active": 0,
+        "lower_profit": 0,
+        "opportunities": 84
+      },
+      "diagnostic": {
+        "profit_difference": {
+          "mean": 8.123108140037365,
+          "ci": [
+            -36.224558850839536,
+            62.522780825187056
+          ],
+          "n": 6
+        },
+        "active": 15,
+        "lower_profit": 2,
+        "opportunities": 84
+      },
+      "conditional": {
+        "profit_difference": {
+          "mean": -6.297609441779552,
+          "ci": [
+            -28.782557817151503,
+            15.153875327427121
+          ],
+          "n": 6
+        },
+        "active": 14,
+        "lower_profit": 2,
+        "opportunities": 84
+      }
+    },
+    "deepseek-native": {
+      "feedback": {
+        "profit_difference": {
+          "mean": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "n": 6
+        },
+        "active": 0,
+        "lower_profit": 0,
+        "opportunities": 84
+      },
+      "learned": {
+        "profit_difference": {
+          "mean": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "n": 6
+        },
+        "active": 0,
+        "lower_profit": 0,
+        "opportunities": 84
+      },
+      "diagnostic": {
+        "profit_difference": {
+          "mean": -66301.31001274283,
+          "ci": [
+            -507520.7074612368,
+            426270.80388367025
+          ],
+          "n": 6
+        },
+        "active": 10,
+        "lower_profit": 3,
+        "opportunities": 84
+      },
+      "conditional": {
+        "profit_difference": {
+          "mean": -723692.1631959941,
+          "ci": [
+            -1042400.2932040342,
+            -353046.61741321435
+          ],
+          "n": 6
+        },
+        "active": 21,
+        "lower_profit": 6,
+        "opportunities": 84
+      }
+    },
+    "doubao-econ": {
+      "feedback": {
+        "profit_difference": {
+          "mean": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "n": 6
+        },
+        "active": 0,
+        "lower_profit": 0,
+        "opportunities": 84
+      },
+      "learned": {
+        "profit_difference": {
+          "mean": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "n": 6
+        },
+        "active": 0,
+        "lower_profit": 0,
+        "opportunities": 84
+      },
+      "diagnostic": {
+        "profit_difference": {
+          "mean": 8.744101764792958,
+          "ci": [
+            -15.636442090275144,
+            29.949019357600275
+          ],
+          "n": 6
+        },
+        "active": 11,
+        "lower_profit": 1,
+        "opportunities": 84
+      },
+      "conditional": {
+        "profit_difference": {
+          "mean": -10.30255801016572,
+          "ci": [
+            -47.77146495405473,
+            26.387285784393743
+          ],
+          "n": 6
+        },
+        "active": 12,
+        "lower_profit": 2,
+        "opportunities": 84
+      }
+    },
+    "doubao-native": {
+      "feedback": {
+        "profit_difference": {
+          "mean": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "n": 6
+        },
+        "active": 0,
+        "lower_profit": 0,
+        "opportunities": 84
+      },
+      "learned": {
+        "profit_difference": {
+          "mean": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "n": 6
+        },
+        "active": 0,
+        "lower_profit": 0,
+        "opportunities": 84
+      },
+      "diagnostic": {
+        "profit_difference": {
+          "mean": -50414.63095413463,
+          "ci": [
+            -531620.0992590651,
+            532781.0760583973
+          ],
+          "n": 6
+        },
+        "active": 10,
+        "lower_profit": 5,
+        "opportunities": 84
+      },
+      "conditional": {
+        "profit_difference": {
+          "mean": -727894.3222205247,
+          "ci": [
+            -1054637.395127601,
+            -359677.9756776264
+          ],
+          "n": 6
+        },
+        "active": 19,
+        "lower_profit": 6,
+        "opportunities": 84
+      }
+    }
+  },
+  "ledger": [
+    {
+      "provider": "deepseek",
+      "status": "error-APIConnectionError",
+      "attempts": 4,
+      "micro_yuan": 20812,
+      "input": null,
+      "output": null
+    },
+    {
+      "provider": "deepseek",
+      "status": "ok",
+      "attempts": 6174,
+      "micro_yuan": 9072044,
+      "input": 2168251,
+      "output": 24940
+    },
+    {
+      "provider": "doubao",
+      "status": "error-APITimeoutError",
+      "attempts": 1,
+      "micro_yuan": 4780,
+      "input": null,
+      "output": null
+    },
+    {
+      "provider": "doubao",
+      "status": "invalid",
+      "attempts": 122,
+      "micro_yuan": 329524,
+      "input": 61097,
+      "output": 5321
+    },
+    {
+      "provider": "doubao",
+      "status": "ok",
+      "attempts": 6159,
+      "micro_yuan": 14381780,
+      "input": 3367185,
+      "output": 57065
+    }
+  ],
+  "conservative_yuan": 23.80894,
+  "limit_yuan": 50
+}

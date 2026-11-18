@@ -1,0 +1,350 @@
+{
+  "cases": [
+    {
+      "seed": 820001,
+      "market": "normal",
+      "A": 171202.217875875,
+      "C": 189977.25787587502,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 189977.25787587502,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 189977.25787587502,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820001,
+      "market": "price_sensitive",
+      "A": 171202.217875875,
+      "C": 189977.25787587502,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 189977.25787587502,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 189977.25787587502,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820002,
+      "market": "normal",
+      "A": -27607.862403875006,
+      "C": -16718.34240387501,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": -16718.34240387501,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": -27607.862403875006,
+      "Dcal_action": "agent_draft"
+    },
+    {
+      "seed": 820002,
+      "market": "price_sensitive",
+      "A": -27607.862403875006,
+      "C": -16718.34240387501,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": -16718.34240387501,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": -27607.862403875006,
+      "Dcal_action": "agent_draft"
+    },
+    {
+      "seed": 820003,
+      "market": "normal",
+      "A": 170957.12103381247,
+      "C": 187291.52103381246,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 187291.52103381246,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 187291.52103381246,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820003,
+      "market": "price_sensitive",
+      "A": 170541.42953381248,
+      "C": 186875.82953381247,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 186875.82953381247,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 186875.82953381247,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820004,
+      "market": "normal",
+      "A": 149446.366182,
+      "C": 171357.926182,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 171357.926182,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 171357.926182,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820004,
+      "market": "price_sensitive",
+      "A": 148000.89791306248,
+      "C": 165162.45791306248,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 165162.45791306248,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 165162.45791306248,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820005,
+      "market": "normal",
+      "A": 239614.9637104375,
+      "C": 254152.18056043744,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 254152.18056043744,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 254152.18056043744,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820005,
+      "market": "price_sensitive",
+      "A": 238351.3554104375,
+      "C": 253892.02591043749,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 253892.02591043749,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 253892.02591043749,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820006,
+      "market": "normal",
+      "A": 70029.62347743748,
+      "C": 83716.02347743748,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 83716.02347743748,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 70029.62347743748,
+      "Dcal_action": "agent_draft"
+    },
+    {
+      "seed": 820006,
+      "market": "price_sensitive",
+      "A": 70086.80181618748,
+      "C": 83601.66679993749,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 83601.66679993749,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 70086.80181618748,
+      "Dcal_action": "agent_draft"
+    },
+    {
+      "seed": 820007,
+      "market": "normal",
+      "A": 257153.54542318746,
+      "C": 274658.2854231875,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 274658.2854231875,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 274658.2854231875,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820007,
+      "market": "price_sensitive",
+      "A": 335156.9236335,
+      "C": 353568.2836335,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 353568.2836335,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 353568.2836335,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820008,
+      "market": "normal",
+      "A": 150073.22195900002,
+      "C": 167931.511959,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 167931.511959,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 167931.511959,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820008,
+      "market": "price_sensitive",
+      "A": 150073.22195900002,
+      "C": 172444.011959,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 172444.011959,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 172444.011959,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820009,
+      "market": "normal",
+      "A": 252287.12873356245,
+      "C": 270880.89873356244,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 270880.89873356244,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 270880.89873356244,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820009,
+      "market": "price_sensitive",
+      "A": 252287.12873356245,
+      "C": 270880.89873356244,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 270880.89873356244,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 270880.89873356244,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820010,
+      "market": "normal",
+      "A": 300986.83918924996,
+      "C": 319216.83918924996,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 319216.83918924996,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 319216.83918924996,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820010,
+      "market": "price_sensitive",
+      "A": 300986.83918924996,
+      "C": 319216.83918924996,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 319216.83918924996,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 319216.83918924996,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820011,
+      "market": "normal",
+      "A": 187972.76043287496,
+      "C": 207737.89043287496,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 207737.89043287496,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 207737.89043287496,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820011,
+      "market": "price_sensitive",
+      "A": 187972.76043287496,
+      "C": 207737.89043287496,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 207737.89043287496,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 207737.89043287496,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820012,
+      "market": "normal",
+      "A": 153231.3322791875,
+      "C": 171042.6822791875,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 171042.6822791875,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 171042.6822791875,
+      "Dcal_action": "price_up"
+    },
+    {
+      "seed": 820012,
+      "market": "price_sensitive",
+      "A": 153231.3322791875,
+      "C": 171042.6822791875,
+      "C_action": "price_up",
+      "C_steps": 227,
+      "D": 171042.6822791875,
+      "D_action": "price_up",
+      "D_steps": 227,
+      "Dcal": 171042.6822791875,
+      "Dcal_action": "price_up"
+    }
+  ],
+  "comparisons": {
+    "C-A": {
+      "mean": 17220.661347239577,
+      "ci": [
+        15607.593190398433,
+        18589.320611093746
+      ],
+      "positive": 12
+    },
+    "D-A": {
+      "mean": 17220.661347239577,
+      "ci": [
+        15607.593190398433,
+        18589.320611093746
+      ],
+      "positive": 12
+    },
+    "D-C": {
+      "mean": 0.0,
+      "ci": [
+        0.0,
+        0.0
+      ],
+      "positive": 0
+    },
+    "Dcal-A": {
+      "mean": 15179.815306249991,
+      "ci": [
+        10707.684770833328,
+        18551.688895833326
+      ],
+      "positive": 10
+    }
+  }
+}

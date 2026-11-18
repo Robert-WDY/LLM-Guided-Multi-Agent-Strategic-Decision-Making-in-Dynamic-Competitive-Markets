@@ -1,0 +1,324 @@
+{
+  "econ": {
+    "episodes": 1536,
+    "long_vs_short_label_flip": 0.24919871794871795,
+    "diagnostic": {
+      "n": 2496,
+      "accepted": 640,
+      "auc": 0.6113825334821429,
+      "positive_missed": 0.6439732142857143,
+      "accepted_outcomes": {
+        "loss": 0.5015625,
+        "gain": 2.5839074232009898,
+        "positive": 0.4984375,
+        "p10": -19.70680994701977
+      },
+      "rejected_outcomes": {
+        "loss": 0.6891163793103449,
+        "gain": -10.074323059424442,
+        "positive": 0.3108836206896552,
+        "p10": -41.49583776037378
+      },
+      "all_outcomes": {
+        "loss": 0.6410256410256411,
+        "gain": -6.82862293567433,
+        "positive": 0.358974358974359,
+        "p10": -34.45671716289321
+      }
+    },
+    "strict": {
+      "n": 2496,
+      "accepted": 0,
+      "auc": 0.6113825334821429,
+      "positive_missed": 1.0,
+      "accepted_outcomes": null,
+      "rejected_outcomes": {
+        "loss": 0.6410256410256411,
+        "gain": -6.82862293567433,
+        "positive": 0.358974358974359,
+        "p10": -34.45671716289321
+      },
+      "all_outcomes": {
+        "loss": 0.6410256410256411,
+        "gain": -6.82862293567433,
+        "positive": 0.358974358974359,
+        "p10": -34.45671716289321
+      }
+    },
+    "policies": {
+      "gate0": {
+        "profit": {
+          "mean": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "n": 48
+        },
+        "coverage": 0.0,
+        "actions": 0,
+        "opportunities": 2688,
+        "harmed": 0,
+        "exposed": 0,
+        "risk_upper": null
+      },
+      "gate1": {
+        "profit": {
+          "mean": -21.490221099801243,
+          "ci": [
+            -30.7786474948665,
+            -13.242207822643472
+          ],
+          "n": 48
+        },
+        "coverage": 0.2760416666666667,
+        "actions": 742,
+        "opportunities": 2688,
+        "harmed": 38,
+        "exposed": 48,
+        "risk_upper": 0.882381733561441
+      },
+      "short": {
+        "profit": {
+          "mean": -6.708026498046007,
+          "ci": [
+            -12.238086140218364,
+            -1.9382258727549697
+          ],
+          "n": 48
+        },
+        "coverage": 0.23660714285714285,
+        "actions": 636,
+        "opportunities": 2688,
+        "harmed": 45,
+        "exposed": 47,
+        "risk_upper": 0.9923864537970654
+      },
+      "conditional": {
+        "profit": {
+          "mean": -22.944659177633127,
+          "ci": [
+            -31.406146286838037,
+            -14.891686221526307
+          ],
+          "n": 48
+        },
+        "coverage": 0.14508928571428573,
+        "actions": 390,
+        "opportunities": 2688,
+        "harmed": 44,
+        "exposed": 48,
+        "risk_upper": 0.9710337890632341
+      },
+      "generic": {
+        "profit": {
+          "mean": -24.56716726933494,
+          "ci": [
+            -33.71763508298505,
+            -16.030847643178735
+          ],
+          "n": 48
+        },
+        "coverage": 0.17373511904761904,
+        "actions": 467,
+        "opportunities": 2688,
+        "harmed": 41,
+        "exposed": 48,
+        "risk_upper": 0.9294995023574062
+      },
+      "wide": {
+        "profit": {
+          "mean": -25.167676768987437,
+          "ci": [
+            -34.1757297826839,
+            -16.711011670446435
+          ],
+          "n": 48
+        },
+        "coverage": 0.20052083333333334,
+        "actions": 539,
+        "opportunities": 2688,
+        "harmed": 44,
+        "exposed": 48,
+        "risk_upper": 0.9710337890632341
+      },
+      "fixed": {
+        "profit": {
+          "mean": -13.842510537884282,
+          "ci": [
+            -21.823196035633526,
+            -6.666698598916229
+          ],
+          "n": 48
+        },
+        "coverage": 0.0,
+        "actions": 0,
+        "opportunities": 2688,
+        "harmed": 0,
+        "exposed": 0,
+        "risk_upper": null
+      }
+    }
+  },
+  "native": {
+    "episodes": 1536,
+    "long_vs_short_label_flip": 0.2952724358974359,
+    "diagnostic": {
+      "n": 2496,
+      "accepted": 619,
+      "auc": 0.6606746720679012,
+      "positive_missed": 0.6184895833333334,
+      "accepted_outcomes": {
+        "loss": 0.5250403877221325,
+        "gain": -39564.80738235288,
+        "positive": 0.47334410339256866,
+        "p10": -462769.54871193296
+      },
+      "rejected_outcomes": {
+        "loss": 0.7469366009589771,
+        "gain": -209658.253142057,
+        "positive": 0.25306339904102293,
+        "p10": -699158.1835841917
+      },
+      "all_outcomes": {
+        "loss": 0.6919070512820513,
+        "gain": -167475.62376495087,
+        "positive": 0.3076923076923077,
+        "p10": -648991.2102692721
+      }
+    },
+    "strict": {
+      "n": 2496,
+      "accepted": 0,
+      "auc": 0.6606746720679012,
+      "positive_missed": 1.0,
+      "accepted_outcomes": null,
+      "rejected_outcomes": {
+        "loss": 0.6919070512820513,
+        "gain": -167475.62376495087,
+        "positive": 0.3076923076923077,
+        "p10": -648991.2102692721
+      },
+      "all_outcomes": {
+        "loss": 0.6919070512820513,
+        "gain": -167475.62376495087,
+        "positive": 0.3076923076923077,
+        "p10": -648991.2102692721
+      }
+    },
+    "policies": {
+      "gate0": {
+        "profit": {
+          "mean": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "n": 48
+        },
+        "coverage": 0.0,
+        "actions": 0,
+        "opportunities": 2686,
+        "harmed": 0,
+        "exposed": 0,
+        "risk_upper": null
+      },
+      "gate1": {
+        "profit": {
+          "mean": -116738.9264874372,
+          "ci": [
+            -211265.33727318828,
+            -32147.682523763244
+          ],
+          "n": 48
+        },
+        "coverage": 0.16145833333333334,
+        "actions": 434,
+        "opportunities": 2688,
+        "harmed": 43,
+        "exposed": 48,
+        "risk_upper": 0.9580490920244185
+      },
+      "short": {
+        "profit": {
+          "mean": -81142.41070339276,
+          "ci": [
+            -157804.58475204697,
+            -10290.314274858338
+          ],
+          "n": 48
+        },
+        "coverage": 0.14631422189128815,
+        "actions": 393,
+        "opportunities": 2686,
+        "harmed": 41,
+        "exposed": 47,
+        "risk_upper": 0.9429151921435762
+      },
+      "conditional": {
+        "profit": {
+          "mean": -811590.6678489203,
+          "ci": [
+            -997402.8560907674,
+            -628493.6357222163
+          ],
+          "n": 48
+        },
+        "coverage": 0.21279818250662627,
+        "actions": 562,
+        "opportunities": 2641,
+        "harmed": 44,
+        "exposed": 48,
+        "risk_upper": 0.9710337890632341
+      },
+      "generic": {
+        "profit": {
+          "mean": -811046.4090174474,
+          "ci": [
+            -998720.5882918116,
+            -628659.0600468117
+          ],
+          "n": 48
+        },
+        "coverage": 0.22605073835668307,
+        "actions": 597,
+        "opportunities": 2641,
+        "harmed": 45,
+        "exposed": 48,
+        "risk_upper": 0.9827496671598939
+      },
+      "wide": {
+        "profit": {
+          "mean": -810454.8062640098,
+          "ci": [
+            -991518.806718251,
+            -637400.4026895629
+          ],
+          "n": 48
+        },
+        "coverage": 0.2389246497538811,
+        "actions": 631,
+        "opportunities": 2641,
+        "harmed": 46,
+        "exposed": 48,
+        "risk_upper": 0.9925461601092587
+      },
+      "fixed": {
+        "profit": {
+          "mean": 7797.132741575479,
+          "ci": [
+            -118126.98440218103,
+            129300.86653243778
+          ],
+          "n": 48
+        },
+        "coverage": 0.0,
+        "actions": 0,
+        "opportunities": 2688,
+        "harmed": 0,
+        "exposed": 0,
+        "risk_upper": null
+      }
+    }
+  }
+}

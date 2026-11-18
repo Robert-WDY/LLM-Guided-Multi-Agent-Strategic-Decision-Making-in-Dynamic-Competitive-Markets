@@ -1,0 +1,29 @@
+{
+  "upstream": "e1f2a40fec96f0d27f5414873c4310f2b5c51935",
+  "fit": {
+    "C": {
+      "budget": [
+        3.034345009317902,
+        3.0186753748159054
+      ],
+      "cases": 845,
+      "clusters": 12
+    },
+    "D": {
+      "budget": [
+        4.015090595592302,
+        3.777854890760831
+      ],
+      "cases": 408,
+      "clusters": 12
+    }
+  },
+  "hashes": {
+    "experiment.py": "d7990788f0992b1b198c02a1ffef744f9a18226a63e9c0aecd7d0935b2e66e75",
+    "duopoly.py": "ba94f4c83dcec609f5f15f848b9e38c9d6ccb5d06aea4ef08a6967754e839241",
+    "common.py": "b5148ddb98512cdc2df3494da5119201c76e9c284d736404c368892e3871ae38",
+    "PLAN.md": "f24901232987494edb57ca26c29104cc00682d7128705bbec6b694dfd0c1d825",
+    "reliable_response.py": "1f67a1dc655e2293f3b2f9ba7be830caea75e7ec0e7886fb0e28763fc85813ba",
+    "reliable_advisor.py": "85a7703e0fdd060c1c5b15d78d1d545259d43c7a05cc1f94eb5712a041ad25e6"
+  }
+}

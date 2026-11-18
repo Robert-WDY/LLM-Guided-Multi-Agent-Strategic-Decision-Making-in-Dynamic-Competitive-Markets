@@ -1,0 +1,50 @@
+[
+  {
+    "seed": 0,
+    "products": 1,
+    "mode": "replay",
+    "periods": 100,
+    "score": 0.9435955484369878,
+    "max_profit_difference": 0.0
+  },
+  {
+    "seed": 1,
+    "products": 1,
+    "mode": "replay",
+    "periods": 100,
+    "score": 0.7224381501345842,
+    "max_profit_difference": 0.0
+  },
+  {
+    "seed": 0,
+    "products": 4,
+    "mode": "replay",
+    "periods": 100,
+    "score": 0.9602898145383937,
+    "max_profit_difference": 0.0
+  },
+  {
+    "seed": 1,
+    "products": 4,
+    "mode": "replay",
+    "periods": 100,
+    "score": 0.6273182107266334,
+    "max_profit_difference": 0.0
+  },
+  {
+    "seed": 0,
+    "products": 10,
+    "mode": "replay",
+    "periods": 100,
+    "score": 0.9206970508990464,
+    "max_profit_difference": 0.0
+  },
+  {
+    "seed": 1,
+    "products": 10,
+    "mode": "replay",
+    "periods": 100,
+    "score": 0.45395635262926215,
+    "max_profit_difference": 0.0
+  }
+]

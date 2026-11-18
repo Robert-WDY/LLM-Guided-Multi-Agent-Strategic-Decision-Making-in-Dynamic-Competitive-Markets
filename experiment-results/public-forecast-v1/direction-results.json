@@ -1,0 +1,158 @@
+{
+  "forecast_minus_keep": {
+    "impact": {
+      "mean": 1.7819431512577473,
+      "ci": [
+        -2.6154036913633227,
+        6.296701974254779
+      ],
+      "n": 40
+    },
+    "accepted": {
+      "n": 80,
+      "mean": 2.4191657875545296,
+      "positive": 0.6,
+      "loss": 0.4
+    },
+    "rejected": null,
+    "coverage": 1.0,
+    "harmed": 26,
+    "exposed": 40,
+    "risk_upper": 0.7744675481092778
+  },
+  "forecast_minus_up": {
+    "impact": {
+      "mean": 4.682379774702669,
+      "ci": [
+        -0.48497525450223483,
+        9.577205825606562
+      ],
+      "n": 40
+    },
+    "accepted": {
+      "n": 80,
+      "mean": 6.810813528875082,
+      "positive": 0.3875,
+      "loss": 0.1375
+    },
+    "rejected": null,
+    "coverage": 1.0,
+    "harmed": 8,
+    "exposed": 40,
+    "risk_upper": 0.33202774505858634
+  },
+  "forecast_minus_down": {
+    "impact": {
+      "mean": 1.6874252662615405,
+      "ci": [
+        -3.8085864242369087,
+        8.963408436129063
+      ],
+      "n": 40
+    },
+    "accepted": {
+      "n": 80,
+      "mean": 1.7300545367516253,
+      "positive": 0.225,
+      "loss": 0.25
+    },
+    "rejected": null,
+    "coverage": 1.0,
+    "harmed": 17,
+    "exposed": 40,
+    "risk_upper": 0.5668609107163234
+  },
+  "forecast_minus_random": {
+    "impact": {
+      "mean": 3.184902520482105,
+      "ci": [
+        -0.01308398705011427,
+        6.386478599922745
+      ],
+      "n": 40
+    },
+    "accepted": {
+      "n": 80,
+      "mean": 4.270434032813354,
+      "positive": 0.6125,
+      "loss": 0.3875
+    },
+    "rejected": null,
+    "coverage": 1.0,
+    "harmed": 22,
+    "exposed": 40,
+    "risk_upper": 0.6853868490100095
+  },
+  "up_minus_keep": {
+    "impact": {
+      "mean": -2.9004366234449224,
+      "ci": [
+        -8.197930156923494,
+        2.2912285565053274
+      ],
+      "n": 40
+    },
+    "accepted": {
+      "n": 80,
+      "mean": -4.3916477413205515,
+      "positive": 0.4375,
+      "loss": 0.5625
+    },
+    "rejected": null,
+    "coverage": 1.0,
+    "harmed": 30,
+    "exposed": 40,
+    "risk_upper": 0.857630117142979
+  },
+  "down_minus_keep": {
+    "impact": {
+      "mean": 0.09451788499620654,
+      "ci": [
+        -8.062647797666394,
+        6.19988714792274
+      ],
+      "n": 40
+    },
+    "accepted": {
+      "n": 80,
+      "mean": 0.6891112508029039,
+      "positive": 0.55,
+      "loss": 0.45
+    },
+    "rejected": null,
+    "coverage": 1.0,
+    "harmed": 29,
+    "exposed": 40,
+    "risk_upper": 0.8374785017112015
+  },
+  "gate": {
+    "impact": {
+      "mean": 0.9491710447741335,
+      "ci": [
+        -0.12955545875425012,
+        2.3765465553977414
+      ],
+      "n": 40
+    },
+    "accepted": {
+      "n": 11,
+      "mean": 10.126571426996101,
+      "positive": 0.6363636363636364,
+      "loss": 0.36363636363636365
+    },
+    "rejected": {
+      "n": 69,
+      "mean": 1.1904489464841335,
+      "positive": 0.5942028985507246,
+      "loss": 0.4057971014492754
+    },
+    "coverage": 0.1375,
+    "harmed": 4,
+    "exposed": 10,
+    "risk_upper": 0.6964627874359576
+  },
+  "directions": {
+    "up": 38,
+    "down": 42
+  }
+}
