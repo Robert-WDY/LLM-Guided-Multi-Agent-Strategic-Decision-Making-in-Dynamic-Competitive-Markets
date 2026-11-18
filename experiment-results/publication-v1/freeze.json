@@ -1,0 +1,7 @@
+{
+  "scripts/publication/signal_policy.py": "214d1f20d46f0a1ff42ce42357a2fdd536606d4afe3f40308bbfccd80b12f773",
+  "scripts/publication/paired.py": "64d391ebb6fbf719dc9d5e952b0044408ab3a696c9cc132f332e8f6420b5fe7c",
+  "experiment-specs/publication-v1/PLAN.md": "685e1437773576ff03a7eb0ef7053df8e1bf547853d4e7bd0479742f73bd2174",
+  "experiment-results/publication-v1/econ-signal.joblib": "bdafb4229ab4e2e20ad02497f67be8927ae76c81c07bed3031f684cbf8e9570a",
+  "experiment-results/publication-v1/native-signal.joblib": "fe0e6fdbc3aa9109e0539a46f93527701a244bd4db484c8007c10f67299e0f3d"
+}

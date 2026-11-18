@@ -1,0 +1,25 @@
+{
+  "initial_micro_cny": 49329416,
+  "final_micro_cny": 49844916,
+  "remaining_micro_cny": 155084,
+  "columns": [
+    "provider",
+    "status",
+    "requests",
+    "micro_cny"
+  ],
+  "rows": [
+    [
+      "deepseek",
+      "ok",
+      106,
+      187980
+    ],
+    [
+      "doubao",
+      "ok",
+      114,
+      327520
+    ]
+  ]
+}
