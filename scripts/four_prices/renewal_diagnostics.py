@@ -53,6 +53,38 @@ def comparisons(rows, predictions, calibration, hurdle):
     )
 
 
+def abstention(rows, predictions):
+    eligible = [
+        (r, s)
+        for r, s in zip(rows, predictions)
+        if s["enabled"] and any(r["changed"][1:])
+    ]
+    rejected = [r for r, s in eligible if s["choices"]["renewal"] == 0]
+
+    def should_keep(r):
+        return max(r["gains"][1:]) <= 1e-7
+
+    total = sum(should_keep(r) for r, s in eligible)
+    correct = sum(should_keep(r) for r in rejected)
+    mistake = sum(not should_keep(r) for r in rejected)
+    best = [max(r["gains"]) for r in rows]
+    regret = [
+        b - r["gains"][s["choices"]["renewal"]]
+        for b, r, s in zip(best, rows, predictions)
+    ]
+    return dict(
+        evaluable=len(eligible),
+        actual_best_to_keep=total,
+        rejected=len(rejected),
+        correct_rejections=correct,
+        missed_profitable_actions=mistake,
+        profitable_move_value_missed=sum(max(r["gains"]) for r in rejected),
+        harmful_to_act_and_not_rejected=total - correct,
+        hindsight_oracle=ci(best),
+        regret_to_oracle=ci(regret),
+    )
+
+
 def tail(record, arm, snap):
     t, seat = record["probe"], record["masks"]["1"][0]
     base, path = (
@@ -120,7 +152,7 @@ def analyze(market, calibration):
             tails[name] = v
         else:
             tails[name] = None
-    return dict(**report, tails=tails)
+    return dict(**report, tails=tails, abstention=abstention(rows, predictions))
 
 
 if __name__ == "__main__":
