@@ -1,0 +1,52 @@
+{
+  "econ": {
+    "ledger": 25920,
+    "constrained": 0,
+    "exited": 0,
+    "clone": 324
+  },
+  "native": {
+    "ledger": 25920,
+    "constrained": 1924,
+    "exited": 2641,
+    "clone": 324
+  },
+  "tail": {
+    "seed": 196031,
+    "seat": 2,
+    "total": -2524284.9989655865,
+    "withdraw": {
+      "total": -1138118.784181504,
+      "first": -144135.62059240002,
+      "later": -993983.1635891043
+    }
+  },
+  "median_alias": {
+    "draft": 1.38,
+    "median": 1.51,
+    "cut": {
+      "rivals": [
+        1.25,
+        1.51,
+        1.51
+      ],
+      "profits": [
+        9.61,
+        9.63,
+        9.25
+      ]
+    },
+    "raise_": {
+      "rivals": [
+        1.51,
+        1.51,
+        2.03
+      ],
+      "profits": [
+        16.19,
+        15.54,
+        16.22
+      ]
+    }
+  }
+}
