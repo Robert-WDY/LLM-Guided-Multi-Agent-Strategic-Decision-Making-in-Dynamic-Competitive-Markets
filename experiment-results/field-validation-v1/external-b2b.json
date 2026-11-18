@@ -1,0 +1,37 @@
+{
+  "type": "published field summary audit; original row-level data unavailable here",
+  "source_pdf": "https://business.columbia.edu/sites/default/files-efs/citation_file_upload/Automating_the_B2B_Salesperson1_0.pdf",
+  "source_sha256": "2679ecfad967a7453f15a0cdbbaae80c3ed43e48380b9f51d554defef93ee4b0",
+  "source_bytes": 2996882,
+  "source_pages_one_based": [
+    20,
+    23,
+    25
+  ],
+  "study": "B2B aluminum retailer, not the proposed advisor",
+  "business_days": 8,
+  "quotes": 2075,
+  "customers": 1045,
+  "line_prices": 4142,
+  "full_or_directional_compliance_percent": 19.48,
+  "gross_profit_usd_per_line": {
+    "control": 94.16,
+    "treatment": 105.11,
+    "difference": 10.95,
+    "relative_change": 0.11629141886151229
+  },
+  "quote_clustered_rank_sum": {
+    "reported_z": -2.132,
+    "reported_p": 0.033,
+    "two_sided_p_from_reported_z": 0.03300684655794668
+  },
+  "table3_client_acceptance_probit": {
+    "coefficient": 0.154,
+    "se": 0.076,
+    "wald_ci95_from_rounded_numbers": [
+      0.005040000000000017,
+      0.30296
+    ],
+    "scale": "latent index, not a probability-point or profit effect"
+  }
+}

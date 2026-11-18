@@ -1,0 +1,133 @@
+{
+  "source": "synthetic QA only; zero firms, orders and model calls",
+  "allocation_seed": 816,
+  "units": 432,
+  "matched_market_triplets": 36,
+  "aa": {
+    "unit": "currency per pre-enrolled unit over the fixed window",
+    "weight": "equal market within each arm; equal weight per matched block",
+    "estimates": {
+      "full_vs_zero": {
+        "blocks": 36,
+        "mean_currency_per_unit": 0.0,
+        "paired_block_ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "untreated_half_vs_zero": {
+        "blocks": 36,
+        "mean_currency_per_unit": 0.0,
+        "paired_block_ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "offered_vs_unoffered_within_half": {
+        "blocks": 36,
+        "mean_currency_per_unit": 0.0,
+        "paired_block_ci95": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "adoption_counts_by_saturation": {
+      "50": {
+        "eligible": 576,
+        "shown": 288,
+        "adopt_exact": 72,
+        "adopt_partial": 72
+      },
+      "100": {
+        "eligible": 576,
+        "shown": 576,
+        "adopt_exact": 144,
+        "adopt_partial": 144
+      },
+      "0": {
+        "eligible": 576,
+        "shown": 0,
+        "adopt_exact": 0,
+        "adopt_partial": 0
+      }
+    },
+    "recommendations_shown_to_unoffered_units": 0
+  },
+  "injected": {
+    "unit": "currency per pre-enrolled unit over the fixed window",
+    "weight": "equal market within each arm; equal weight per matched block",
+    "estimates": {
+      "full_vs_zero": {
+        "blocks": 36,
+        "mean_currency_per_unit": 14.5,
+        "paired_block_ci95": [
+          14.5,
+          14.5
+        ]
+      },
+      "untreated_half_vs_zero": {
+        "blocks": 36,
+        "mean_currency_per_unit": 2.0,
+        "paired_block_ci95": [
+          2.0,
+          2.0
+        ]
+      },
+      "offered_vs_unoffered_within_half": {
+        "blocks": 36,
+        "mean_currency_per_unit": 10.5,
+        "paired_block_ci95": [
+          10.5,
+          10.5
+        ]
+      }
+    },
+    "adoption_counts_by_saturation": {
+      "50": {
+        "eligible": 576,
+        "shown": 288,
+        "adopt_exact": 72,
+        "adopt_partial": 72
+      },
+      "100": {
+        "eligible": 576,
+        "shown": 576,
+        "adopt_exact": 144,
+        "adopt_partial": 144
+      },
+      "0": {
+        "eligible": 576,
+        "shown": 0,
+        "adopt_exact": 0,
+        "adopt_partial": 0
+      }
+    },
+    "recommendations_shown_to_unoffered_units": 0
+  },
+  "expected_injected_means": {
+    "full_vs_zero": 14.5,
+    "untreated_half_vs_zero": 2.0,
+    "offered_vs_unoffered_within_half": 10.5
+  },
+  "checks": [
+    "roster-order invariance",
+    "missing/duplicate/unsettled ledger rejected",
+    "allocation edit rejected",
+    "accidental control exposure retained in ITT"
+  ],
+  "illustrative_power_only": {
+    "net_itt_mde": 10,
+    "paired_market_difference_sd": 25,
+    "target_power": 0.8,
+    "complete_triplets": 52,
+    "attained_power": 0.8077878088760594,
+    "planning_triplets_with_reserve": 58
+  },
+  "gaussian_paired_difference_simulation": {
+    "replications": 10000,
+    "seed": 23971,
+    "null_rejection": 0.0508,
+    "power": 0.8065
+  }
+}

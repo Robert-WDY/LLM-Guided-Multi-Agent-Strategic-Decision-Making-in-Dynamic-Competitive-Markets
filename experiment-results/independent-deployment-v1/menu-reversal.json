@@ -1,0 +1,12 @@
+{
+  "qwen": {
+    "n": 162,
+    "same_letter": 162,
+    "same_price": 0
+  },
+  "smol": {
+    "n": 162,
+    "same_letter": 79,
+    "same_price": 83
+  }
+}

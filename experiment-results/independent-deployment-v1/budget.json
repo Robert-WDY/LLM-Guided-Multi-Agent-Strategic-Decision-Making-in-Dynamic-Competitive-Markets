@@ -1,0 +1,8 @@
+{
+  "commercial_initial_micro_cny": 49844916,
+  "commercial_increment_micro_cny": 0,
+  "commercial_final_micro_cny": 49844916,
+  "remaining_micro_cny": 155084,
+  "local_electricity_metered": false,
+  "inference_engine": "llama.cpp build 10976 commit 987498f45, CUDA 12.4 / RTX 4080 Laptop GPU"
+}
