@@ -1,0 +1,446 @@
+{
+  "independent-econ-qwen": {
+    "offer_outcomes": {
+      "released": {
+        "n": 52,
+        "positive": 29,
+        "negative": 23,
+        "zero": 0,
+        "mean": 8.57239337860998,
+        "harm_lower": 0.28757834507973024
+      },
+      "withheld": {
+        "n": 140,
+        "positive": 87,
+        "negative": 53,
+        "zero": 0,
+        "mean": 16.184875376547584,
+        "harm_lower": 0.2874749966732322
+      }
+    },
+    "feasible_price_changes": null,
+    "locked_sd": 19.29,
+    "observed_sd": 35.82843444159988,
+    "planned_n_required": 142,
+    "stratified_bounds": [
+      -2.970521906065963,
+      7.998160673996071
+    ],
+    "clipped_at_opportunity": 0,
+    "by_condition": {
+      "demand": {
+        "mean": 12.75010300795808,
+        "n": 48
+      },
+      "reverse": {
+        "mean": -8.399049685753544,
+        "n": 48
+      },
+      "rival": {
+        "mean": -10.663411838177272,
+        "n": 48
+      },
+      "stable": {
+        "mean": 15.599118009466883,
+        "n": 48
+      }
+    }
+  },
+  "independent-econ-smol": {
+    "offer_outcomes": {
+      "released": {
+        "n": 52,
+        "positive": 29,
+        "negative": 23,
+        "zero": 0,
+        "mean": 8.57239337860998,
+        "harm_lower": 0.28757834507973024
+      },
+      "withheld": {
+        "n": 140,
+        "positive": 87,
+        "negative": 53,
+        "zero": 0,
+        "mean": 16.184875376547584,
+        "harm_lower": 0.2874749966732322
+      }
+    },
+    "feasible_price_changes": null,
+    "locked_sd": 19.29,
+    "observed_sd": 35.82843444159988,
+    "planned_n_required": 142,
+    "stratified_bounds": [
+      -2.970521906065963,
+      7.998160673996071
+    ],
+    "clipped_at_opportunity": 0,
+    "by_condition": {
+      "demand": {
+        "mean": 12.75010300795808,
+        "n": 48
+      },
+      "reverse": {
+        "mean": -8.399049685753544,
+        "n": 48
+      },
+      "rival": {
+        "mean": -10.663411838177272,
+        "n": 48
+      },
+      "stable": {
+        "mean": 15.599118009466883,
+        "n": 48
+      }
+    }
+  },
+  "independent-native-qwen": {
+    "offer_outcomes": {
+      "released": {
+        "n": 3439,
+        "positive": 2062,
+        "negative": 1348,
+        "zero": 29,
+        "mean": 167284.4158792218,
+        "harm_lower": 0.3732947506347773
+      },
+      "withheld": {
+        "n": 1169,
+        "positive": 891,
+        "negative": 248,
+        "zero": 30,
+        "mean": 171312.60461805554,
+        "harm_lower": 0.18587007546667267
+      }
+    },
+    "feasible_price_changes": null,
+    "locked_sd": 432134.0,
+    "observed_sd": 379650.50729474437,
+    "planned_n_required": 4438,
+    "stratified_bounds": [
+      112574.23772073015,
+      137466.77334639337
+    ],
+    "clipped_at_opportunity": 0,
+    "by_condition": {
+      "demand": {
+        "mean": 159976.4956786336,
+        "n": 1152
+      },
+      "reverse": {
+        "mean": 123061.77092700142,
+        "n": 1152
+      },
+      "rival": {
+        "mean": 69502.63105736118,
+        "n": 1152
+      },
+      "stable": {
+        "mean": 146843.74314311822,
+        "n": 1152
+      }
+    }
+  },
+  "independent-native-smol": {
+    "offer_outcomes": {
+      "released": {
+        "n": 3431,
+        "positive": 2067,
+        "negative": 1342,
+        "zero": 22,
+        "mean": 162053.9644037221,
+        "harm_lower": 0.37244616743823084
+      },
+      "withheld": {
+        "n": 1177,
+        "positive": 892,
+        "negative": 255,
+        "zero": 30,
+        "mean": 161842.0863691363,
+        "harm_lower": 0.19024421248617107
+      }
+    },
+    "feasible_price_changes": null,
+    "locked_sd": 432134.0,
+    "observed_sd": 388500.916155983,
+    "planned_n_required": 4438,
+    "stratified_bounds": [
+      108052.3320905104,
+      133224.57564237085
+    ],
+    "clipped_at_opportunity": 0,
+    "by_condition": {
+      "demand": {
+        "mean": 159735.87256784923,
+        "n": 1152
+      },
+      "reverse": {
+        "mean": 118385.9284102298,
+        "n": 1152
+      },
+      "rival": {
+        "mean": 59775.67768902743,
+        "n": 1152
+      },
+      "stable": {
+        "mean": 144747.61844154846,
+        "n": 1152
+      }
+    }
+  },
+  "numeric-econ-qwen": {
+    "offer_outcomes": {
+      "released": {
+        "n": 19,
+        "positive": 15,
+        "negative": 4,
+        "zero": 0,
+        "mean": 9.773505694140626,
+        "harm_lower": 0.0491649185649926
+      },
+      "withheld": {
+        "n": 173,
+        "positive": 89,
+        "negative": 84,
+        "zero": 0,
+        "mean": -11.610846047464035,
+        "harm_lower": 0.3986044289353186
+      }
+    },
+    "feasible_price_changes": {
+      "released": {
+        "n": 19,
+        "positive": 15,
+        "negative": 4,
+        "zero": 0,
+        "mean": 9.773505694140626,
+        "harm_lower": 0.0491649185649926
+      },
+      "withheld": {
+        "n": 173,
+        "positive": 89,
+        "negative": 84,
+        "zero": 0,
+        "mean": -11.610846047464035,
+        "harm_lower": 0.3986044289353186
+      }
+    },
+    "locked_sd": 19.29,
+    "observed_sd": 13.67454424535271,
+    "planned_n_required": 142,
+    "stratified_bounds": [
+      -1.3035837448550618,
+      2.8202272123572394
+    ],
+    "clipped_at_opportunity": 0,
+    "by_condition": {
+      "demand": {
+        "mean": 0.8293486390177222,
+        "n": 48
+      },
+      "reverse": {
+        "mean": -3.7863144052287723,
+        "n": 48
+      },
+      "rival": {
+        "mean": 7.66232305913987,
+        "n": 48
+      },
+      "stable": {
+        "mean": -0.8366779556648233,
+        "n": 48
+      }
+    }
+  },
+  "numeric-econ-smol": {
+    "offer_outcomes": {
+      "released": {
+        "n": 99,
+        "positive": 97,
+        "negative": 2,
+        "zero": 0,
+        "mean": 33.60136501568587,
+        "harm_lower": 0.0016950897455809358
+      },
+      "withheld": {
+        "n": 93,
+        "positive": 53,
+        "negative": 39,
+        "zero": 1,
+        "mean": -42.19044732823584,
+        "harm_lower": 0.30463033676965817
+      }
+    },
+    "feasible_price_changes": {
+      "released": {
+        "n": 99,
+        "positive": 97,
+        "negative": 2,
+        "zero": 0,
+        "mean": 33.60136501568587,
+        "harm_lower": 0.0016950897455809358
+      },
+      "withheld": {
+        "n": 92,
+        "positive": 53,
+        "negative": 39,
+        "zero": 0,
+        "mean": -42.649039147021014,
+        "harm_lower": 0.30822511751775433
+      }
+    },
+    "locked_sd": 19.29,
+    "observed_sd": 60.24327306922962,
+    "planned_n_required": 142,
+    "stratified_bounds": [
+      6.511904565322098,
+      25.77470273193023
+    ],
+    "clipped_at_opportunity": 22,
+    "by_condition": {
+      "demand": {
+        "mean": 20.69559476532023,
+        "n": 48
+      },
+      "reverse": {
+        "mean": 18.794773983955604,
+        "n": 48
+      },
+      "rival": {
+        "mean": 4.5896484540785565,
+        "n": 48
+      },
+      "stable": {
+        "mean": 25.22279814149772,
+        "n": 48
+      }
+    }
+  },
+  "numeric-native-qwen": {
+    "offer_outcomes": {
+      "released": {
+        "n": 173,
+        "positive": 115,
+        "negative": 56,
+        "zero": 2,
+        "mean": 120292.96287981953,
+        "harm_lower": 0.24566781036815113
+      },
+      "withheld": {
+        "n": 19,
+        "positive": 8,
+        "negative": 11,
+        "zero": 0,
+        "mean": -48443.4409538198,
+        "harm_lower": 0.3064497912761741
+      }
+    },
+    "feasible_price_changes": {
+      "released": {
+        "n": 168,
+        "positive": 114,
+        "negative": 54,
+        "zero": 0,
+        "mean": 120800.1271278707,
+        "harm_lower": 0.24248080681396442
+      },
+      "withheld": {
+        "n": 19,
+        "positive": 8,
+        "negative": 11,
+        "zero": 0,
+        "mean": -48443.4409538198,
+        "harm_lower": 0.3064497912761741
+      }
+    },
+    "locked_sd": 432134.0,
+    "observed_sd": 284406.0089721162,
+    "planned_n_required": 4438,
+    "stratified_bounds": [
+      64927.652593576844,
+      153664.3463347831
+    ],
+    "clipped_at_opportunity": 11,
+    "by_condition": {
+      "demand": {
+        "mean": 143740.3884621373,
+        "n": 48
+      },
+      "reverse": {
+        "mean": 34314.13041633741,
+        "n": 48
+      },
+      "rival": {
+        "mean": 144658.19011711742,
+        "n": 48
+      },
+      "stable": {
+        "mean": 110843.17805042399,
+        "n": 48
+      }
+    }
+  },
+  "numeric-native-smol": {
+    "offer_outcomes": {
+      "released": {
+        "n": 152,
+        "positive": 66,
+        "negative": 77,
+        "zero": 9,
+        "mean": -318244.0211037135,
+        "harm_lower": 0.4132039485867682
+      },
+      "withheld": {
+        "n": 40,
+        "positive": 7,
+        "negative": 27,
+        "zero": 6,
+        "mean": -276930.94869103906,
+        "harm_lower": 0.4864040632197574
+      }
+    },
+    "feasible_price_changes": {
+      "released": {
+        "n": 137,
+        "positive": 64,
+        "negative": 73,
+        "zero": 0,
+        "mean": -350644.83557537815,
+        "harm_lower": 0.4338767956873632
+      },
+      "withheld": {
+        "n": 33,
+        "positive": 7,
+        "negative": 26,
+        "zero": 0,
+        "mean": -328467.2979210533,
+        "harm_lower": 0.5862018584207822
+      }
+    },
+    "locked_sd": 432134.0,
+    "observed_sd": 899619.9493230003,
+    "planned_n_required": 4438,
+    "stratified_bounds": [
+      -394388.2045544433,
+      -117716.67345651831
+    ],
+    "clipped_at_opportunity": 6,
+    "by_condition": {
+      "demand": {
+        "mean": -466656.4493130399,
+        "n": 48
+      },
+      "reverse": {
+        "mean": -94972.7120705449,
+        "n": 48
+      },
+      "rival": {
+        "mean": -140817.05777220987,
+        "n": 48
+      },
+      "stable": {
+        "mean": -305326.514339298,
+        "n": 48
+      }
+    }
+  }
+}
