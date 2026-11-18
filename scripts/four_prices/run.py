@@ -86,6 +86,7 @@ def simulation(
     run_only=None,
     numeric_quote=None,
     study_design=design,
+    price_guard=None,
 ):
     seed, masks, focal, roles, probe, live = study_design(m, g, i)
     tape = {} if offline is None else dict(offline)
@@ -157,7 +158,17 @@ def simulation(
             brackets = {}
             for v in vs:
                 rule = v if diagnostic is None else f"inf{coverage}"
+                guarded = rule.startswith("safe_")
+                rule = rule.removeprefix("safe_")
                 use = arms(rule, t, scores[offset : offset + 4], masks, focal, probe)
+                if guarded:
+                    if price_guard is None:
+                        raise ValueError("A frozen public price guard is required")
+                    use = [
+                        price_guard.assess("native" if m == "native" else "econ",
+                                           [row[:2] for row in h[j]], drafts[j], t, action)
+                        for j, action in enumerate(use)
+                    ]
                 if diagnostic is not None and v == f"omit-{t}":
                     use[seat] = 0
                 targets = tuple(

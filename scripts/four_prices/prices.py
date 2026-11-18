@@ -23,6 +23,7 @@ ROLES = (
     "Maintain a cash buffer to meet future payroll; weigh immediate cash against later earnings.",
     "Grow the repeat customer base while keeping the business solvent.",
     "Prioritize steady service and avoid sudden swings in profit.",
+    "Finance equipment renewal from trading income while retaining dependable customers.",
 )
 MARKETS = ("econ", "native", "appointments")
 GROUPS = ("balanced", "unseen", "random")
@@ -110,9 +111,8 @@ def table():
 
 
 def sample(k, seed, seat, t, live, greedy, tape):
-    p = table()[label(k)]["p"]
     if greedy:
-        return int(np.argmax(p))
+        return int(np.argmax(table()[label(k)]["p"]))
     rnd = number("model", seed, seat, t)
     if live:
         backend_seed = rnd % 2147483646 + 1
@@ -120,6 +120,7 @@ def sample(k, seed, seat, t, live, greedy, tape):
         if tag not in tape:
             tape[tag] = request(k, backend_seed)
         return tape[tag]["action"]
+    p = table()[label(k)]["p"]
     u = (rnd + 0.5) / 2**64
     return min(8, int(np.searchsorted(np.cumsum(p) / sum(p), u, side="right")))
 

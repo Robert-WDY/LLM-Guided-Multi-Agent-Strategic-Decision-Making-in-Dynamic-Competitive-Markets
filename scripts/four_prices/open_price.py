@@ -33,7 +33,7 @@ def profile(m, g, i):
     )
 
 
-def quote(m, role, h, reference, low, high, seed, j, t, tape, offline):
+def quote(m, role, h, reference, low, high, seed, j, t, tape, offline, *, price_grammar=None):
     context = [[round(v, 3) for v in row] for row in h[-4:]]
     msgs = [
         dict(
@@ -56,7 +56,7 @@ def quote(m, role, h, reference, low, high, seed, j, t, tape, offline):
         min_p=0.0,
         top_k=0,
         max_tokens=16,
-        grammar='root ::= ("0" | [1-9] [0-9]{0,6}) ("." [0-9]{1,3})?',
+        grammar=price_grammar or 'root ::= ("0" | [1-9] [0-9]{0,6}) ("." [0-9]{1,3})?',
     )
     data = json.dumps(body, separators=(",", ":")).encode()
     key = sha256(data).hexdigest()
@@ -73,7 +73,12 @@ def quote(m, role, h, reference, low, high, seed, j, t, tape, offline):
         raw = ans["choices"][0]["message"]["content"].strip()
         assert ans["model"] == "smol" and 0 <= float(raw) < 1e7
         tape[key] = dict(body=body, raw=raw, low=low, high=high)
-    return float(np.clip(float(tape[key]["raw"]), low, high)), key
+    price = float(tape[key]["raw"])
+    if price_grammar:
+        if not low <= price <= high:
+            raise ValueError("Constrained decoder returned an infeasible price")
+        return price, key
+    return float(np.clip(price, low, high)), key
 
 
 def trial(task):
