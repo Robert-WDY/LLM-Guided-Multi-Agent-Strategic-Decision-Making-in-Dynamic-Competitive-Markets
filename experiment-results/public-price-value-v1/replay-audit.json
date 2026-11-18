@@ -1,0 +1,38 @@
+{
+  "test-econ": {
+    "seeds": 80,
+    "active": 80,
+    "all_three_paths_replayed": 80,
+    "continuation_rounds": 6840
+  },
+  "test-native": {
+    "seeds": 80,
+    "active": 80,
+    "all_three_paths_replayed": 80,
+    "continuation_rounds": 6840
+  },
+  "real-econ": {
+    "seeds": 12,
+    "active": 12,
+    "all_three_paths_replayed": 12,
+    "continuation_rounds": 1020,
+    "without_any_fallback_n": 11,
+    "without_any_fallback_gate_keep": [
+      -6.310807867864185,
+      -20.669218932216282,
+      3.3169382565373695
+    ]
+  },
+  "real-native": {
+    "seeds": 12,
+    "active": 12,
+    "all_three_paths_replayed": 12,
+    "continuation_rounds": 1020,
+    "without_any_fallback_n": 12,
+    "without_any_fallback_gate_keep": [
+      -5061.282822199534,
+      -266234.53722833935,
+      199497.81359915217
+    ]
+  }
+}

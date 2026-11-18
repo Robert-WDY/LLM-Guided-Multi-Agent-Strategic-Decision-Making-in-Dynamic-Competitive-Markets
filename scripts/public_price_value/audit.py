@@ -52,7 +52,13 @@ def main():
                     checks[tag]["without_any_fallback_gate_keep"]=summarize(clean)["conditional"]["gate_keep"]
     assert summary["native-advisor"]==native()
     assert read(OUT/"rival-replay.json")==rival_summary(read(OUT/"rival-replay-path-effects.json.gz"))
-    assert read(OUT/"empirical.json")==empirical_summary(read(OUT/"empirical-paths.json.gz"))
+    for label,first,n in (("empirical",97000,54),("empirical-replication",98000,108)):
+        rows=read(OUT/f"{label}-paths.json.gz")
+        assert [r["seed"] for r in rows]==list(range(first,first+n))
+        assert all(len(p)==21-r["t"] for r in rows for p in r["paths"].values())
+        assert read(OUT/f"{label}.json")==empirical_summary(rows)
+    from undiscounted import results
+    assert read(OUT/"undiscounted.json")==results()
     save(OUT/"replay-audit.json",checks)
 
 

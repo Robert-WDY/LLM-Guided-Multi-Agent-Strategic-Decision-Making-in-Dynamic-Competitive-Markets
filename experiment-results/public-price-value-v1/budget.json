@@ -1,0 +1,36 @@
+{
+  "first_new_id": 24574,
+  "previous_micro_cny": 47964520,
+  "increment_micro_cny": 1364896,
+  "total_micro_cny": 49329416,
+  "remaining_micro_cny": 670584,
+  "rows": [
+    {
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "status": "ok",
+      "requests": 308,
+      "input_tokens": 118466,
+      "output_tokens": 1186,
+      "micro_cny": 492840
+    },
+    {
+      "provider": "doubao",
+      "model": "doubao-seed-2-0-lite-260428",
+      "status": "invalid",
+      "requests": 8,
+      "input_tokens": 4127,
+      "output_tokens": 344,
+      "micro_cny": 22012
+    },
+    {
+      "provider": "doubao",
+      "model": "doubao-seed-2-0-lite-260428",
+      "status": "ok",
+      "requests": 343,
+      "input_tokens": 202031,
+      "output_tokens": 2620,
+      "micro_cny": 850044
+    }
+  ]
+}

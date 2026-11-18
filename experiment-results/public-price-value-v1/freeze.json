@@ -1,0 +1,10 @@
+{
+  "scripts/public_price_value/public_value_selector.py": "195a4ab91a28ad5810efdfee432260f24c084969ccebd1c5c928c1cb68271954",
+  "scripts/public_price_value/trials.py": "2c51727d55324d9478f6eba0fe3d8dd20419e142f742b65ddd59e7440c2f1c57",
+  "experiment-specs/public-price-value-v1/PLAN.md": "143c3cde80d3485624dc8adf9e83a34bf9d7753573d299f9c0812c3f7779ab8f",
+  "src/game_theory_agent/game_theory/reliable_response.py": "1f67a1dc655e2293f3b2f9ba7be830caea75e7ec0e7886fb0e28763fc85813ba",
+  "experiment-results/public-price-value-v1/econ-conditional.joblib": "2998153156863c89a77f2c8bba6b262f82f8a5b0e6e73bedf0cfc4b6678fde84",
+  "experiment-results/public-price-value-v1/econ-generic.joblib": "bfe478711dbe3955478fc25c8fbe1504de3cadff8c20b0de06bb8c7df1abeed1",
+  "experiment-results/public-price-value-v1/native-conditional.joblib": "483d15cf58d8f192ac6dd6681c88e710cab078881f3d0524ca9a17ebedf01a66",
+  "experiment-results/public-price-value-v1/native-generic.joblib": "f43d9f0c80f2bfc0d709f9a4e6fd108d71805160dd0e749d6c8ff971c327999d"
+}

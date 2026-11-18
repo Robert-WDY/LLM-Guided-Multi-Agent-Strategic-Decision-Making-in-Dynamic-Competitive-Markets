@@ -1,0 +1,78 @@
+{
+  "stable": {
+    "n": 20,
+    "peer_moved": 0,
+    "absolute_response_value": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "conditional_policy_response_value": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "conditional_minus_generic": [
+      0.4337381714726737,
+      0.0,
+      1.3012145144180212
+    ]
+  },
+  "demand": {
+    "n": 20,
+    "peer_moved": 0,
+    "absolute_response_value": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "conditional_policy_response_value": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "conditional_minus_generic": [
+      -0.19055000875221592,
+      -0.5716500262566477,
+      0.0
+    ]
+  },
+  "rival": {
+    "n": 20,
+    "peer_moved": 20,
+    "absolute_response_value": [
+      54.00927782979928,
+      40.8498053129505,
+      69.5419147640237
+    ],
+    "conditional_policy_response_value": [
+      17.54143438054357,
+      -2.780515796487692,
+      37.83175445063697
+    ],
+    "conditional_minus_generic": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "reverse": {
+    "n": 20,
+    "peer_moved": 20,
+    "absolute_response_value": [
+      13.56049018840758,
+      9.889369291478863,
+      17.888993469596535
+    ],
+    "conditional_policy_response_value": [
+      -4.19991377974949,
+      -7.454203487792222,
+      -1.4872611886909306
+    ],
+    "conditional_minus_generic": [
+      0.6600238021120856,
+      0.0,
+      1.8480379783777068
+    ]
+  }
+}
