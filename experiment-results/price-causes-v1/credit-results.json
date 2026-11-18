@@ -1,0 +1,643 @@
+{
+  "arms": {
+    "audit_cut": {
+      "original": {
+        "effect": [
+          496467.36680322135,
+          183479.52967891662,
+          861230.6123508699
+        ],
+        "worst": -474255.7081065414,
+        "n": 24,
+        "used": 22,
+        "lost": 5,
+        "large": 4,
+        "coverage": 0.9166666666666666,
+        "risk_upper": 0.48409439899802076
+      },
+      "anchor_only": {
+        "effect": [
+          260448.50185780632,
+          -67858.7336466645,
+          600082.9763413621
+        ],
+        "worst": -1658354.1919527934,
+        "n": 24,
+        "used": 22,
+        "lost": 7,
+        "large": 6,
+        "coverage": 0.9166666666666666,
+        "risk_upper": 0.5780727879023818
+      },
+      "source": {
+        "effect": [
+          129733.34013877145,
+          -135673.5228164702,
+          471917.31956105196
+        ],
+        "worst": -887405.1277661494,
+        "n": 24,
+        "used": 22,
+        "lost": 9,
+        "large": 8,
+        "coverage": 0.9166666666666666,
+        "risk_upper": 0.6639192470508344
+      },
+      "source_minus_original": [
+        -366734.02666444983,
+        -644479.1996438712,
+        -146329.65387202258
+      ],
+      "source_minus_anchor_only": [
+        -130715.16171903485,
+        -421708.94341158884,
+        120415.10923251808
+      ]
+    },
+    "audit_raise": {
+      "original": {
+        "effect": [
+          -168398.48139320887,
+          -293949.2533414737,
+          -62838.8575823783
+        ],
+        "worst": -801862.888957442,
+        "n": 24,
+        "used": 23,
+        "lost": 18,
+        "large": 15,
+        "coverage": 0.9583333333333334,
+        "risk_upper": 0.937407131518012
+      },
+      "anchor_only": {
+        "effect": [
+          -41767.285094391445,
+          -110406.33787718206,
+          21108.184891429373
+        ],
+        "worst": -336364.38983834616,
+        "n": 24,
+        "used": 23,
+        "lost": 12,
+        "large": 8,
+        "coverage": 0.9583333333333334,
+        "risk_upper": 0.7556151674952978
+      },
+      "source": {
+        "effect": [
+          41562.4737391786,
+          -173504.68001337437,
+          331890.49059655267
+        ],
+        "worst": -930067.3742409961,
+        "n": 24,
+        "used": 23,
+        "lost": 11,
+        "large": 9,
+        "coverage": 0.9583333333333334,
+        "risk_upper": 0.7193009598815088
+      },
+      "source_minus_original": [
+        209960.95513238746,
+        -21364.44511416123,
+        493586.9339328594
+      ],
+      "source_minus_anchor_only": [
+        83329.75883357006,
+        -130403.46557194482,
+        373931.9967399806
+      ]
+    }
+  },
+  "seeds": [
+    {
+      "seed": 233000,
+      "values": {
+        "original": {
+          "audit_cut": 98216.51825092403,
+          "audit_raise": -8309.928367036722
+        },
+        "anchor_only": {
+          "audit_cut": 98216.51825092403,
+          "audit_raise": -4263.215535177851
+        },
+        "source": {
+          "audit_cut": 98216.51825092403,
+          "audit_raise": -8309.928367036722
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 61
+    },
+    {
+      "seed": 233001,
+      "values": {
+        "original": {
+          "audit_cut": -151431.03304615835,
+          "audit_raise": -801862.888957442
+        },
+        "anchor_only": {
+          "audit_cut": -23934.922492798218,
+          "audit_raise": -25823.434574176394
+        },
+        "source": {
+          "audit_cut": 57055.116532167536,
+          "audit_raise": 61113.14902839903
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 82
+    },
+    {
+      "seed": 233002,
+      "values": {
+        "original": {
+          "audit_cut": 0.0,
+          "audit_raise": 11808.754047200218
+        },
+        "anchor_only": {
+          "audit_cut": 0.0,
+          "audit_raise": 11808.754047200218
+        },
+        "source": {
+          "audit_cut": 0.0,
+          "audit_raise": 17974.55255026147
+        }
+      },
+      "changed": {
+        "audit_cut": false,
+        "audit_raise": true
+      },
+      "requests": 51
+    },
+    {
+      "seed": 233003,
+      "values": {
+        "original": {
+          "audit_cut": 24411.209714830344,
+          "audit_raise": -171115.69616739548
+        },
+        "anchor_only": {
+          "audit_cut": -38961.38073725078,
+          "audit_raise": 9832.691058508863
+        },
+        "source": {
+          "audit_cut": -512386.0108649838,
+          "audit_raise": -930067.3742409961
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 92
+    },
+    {
+      "seed": 233004,
+      "values": {
+        "original": {
+          "audit_cut": 119477.54872433751,
+          "audit_raise": 181896.64964157532
+        },
+        "anchor_only": {
+          "audit_cut": -156108.27433745138,
+          "audit_raise": 138529.4663496648
+        },
+        "source": {
+          "audit_cut": -254297.40095989843,
+          "audit_raise": 712703.0366872475
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 96
+    },
+    {
+      "seed": 233005,
+      "values": {
+        "original": {
+          "audit_cut": 985039.7437996478,
+          "audit_raise": -3665.1408781440186
+        },
+        "anchor_only": {
+          "audit_cut": 1594745.5140307813,
+          "audit_raise": -3665.1408781440186
+        },
+        "source": {
+          "audit_cut": 15005.743847865644,
+          "audit_raise": -3665.1408781440186
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 77
+    },
+    {
+      "seed": 233006,
+      "values": {
+        "original": {
+          "audit_cut": 2275107.090710474,
+          "audit_raise": -43268.01361934745
+        },
+        "anchor_only": {
+          "audit_cut": 1981527.3915769411,
+          "audit_raise": -43268.01361934745
+        },
+        "source": {
+          "audit_cut": -26613.148534866312,
+          "audit_raise": -60056.90106198547
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 79
+    },
+    {
+      "seed": 233007,
+      "values": {
+        "original": {
+          "audit_cut": 1356826.8888302622,
+          "audit_raise": -185037.3495412951
+        },
+        "anchor_only": {
+          "audit_cut": 221776.35076745017,
+          "audit_raise": 124832.87999187475
+        },
+        "source": {
+          "audit_cut": 808239.6121877277,
+          "audit_raise": 124832.87999187475
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 70
+    },
+    {
+      "seed": 233008,
+      "values": {
+        "original": {
+          "audit_cut": 187175.01369645257,
+          "audit_raise": -736851.1073852351
+        },
+        "anchor_only": {
+          "audit_cut": 64256.0662982989,
+          "audit_raise": 2309.195463738961
+        },
+        "source": {
+          "audit_cut": 184737.15260518048,
+          "audit_raise": 2309.195463738961
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 63
+    },
+    {
+      "seed": 233009,
+      "values": {
+        "original": {
+          "audit_cut": 342583.8887797107,
+          "audit_raise": -232498.44005464675
+        },
+        "anchor_only": {
+          "audit_cut": 501530.71197558695,
+          "audit_raise": 9930.553970639035
+        },
+        "source": {
+          "audit_cut": 501530.71197558695,
+          "audit_raise": 198719.04930852322
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 74
+    },
+    {
+      "seed": 233010,
+      "values": {
+        "original": {
+          "audit_cut": 796380.1738709537,
+          "audit_raise": -60172.136541949214
+        },
+        "anchor_only": {
+          "audit_cut": 173653.32260160078,
+          "audit_raise": 11923.7286329264
+        },
+        "source": {
+          "audit_cut": 293662.8053729897,
+          "audit_raise": 301138.104604152
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 90
+    },
+    {
+      "seed": 233011,
+      "values": {
+        "original": {
+          "audit_cut": 1668789.8259820582,
+          "audit_raise": 29259.365256246827
+        },
+        "anchor_only": {
+          "audit_cut": 1668248.71689313,
+          "audit_raise": 29259.365256246827
+        },
+        "source": {
+          "audit_cut": 1668248.71689313,
+          "audit_raise": 29259.365256246827
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 73
+    },
+    {
+      "seed": 233012,
+      "values": {
+        "original": {
+          "audit_cut": 2382151.340810771,
+          "audit_raise": -25913.84195608535
+        },
+        "anchor_only": {
+          "audit_cut": 1407113.756393052,
+          "audit_raise": -83252.21288814378
+        },
+        "source": {
+          "audit_cut": 2236689.96365122,
+          "audit_raise": 2060531.2257346963
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 137
+    },
+    {
+      "seed": 233013,
+      "values": {
+        "original": {
+          "audit_cut": 50160.65725275202,
+          "audit_raise": -10215.00235668321
+        },
+        "anchor_only": {
+          "audit_cut": 44059.39604201781,
+          "audit_raise": -11170.742864160076
+        },
+        "source": {
+          "audit_cut": 44059.39604201781,
+          "audit_raise": 29862.200714953615
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 82
+    },
+    {
+      "seed": 233014,
+      "values": {
+        "original": {
+          "audit_cut": -3181.702761438046,
+          "audit_raise": 14881.368180573028
+        },
+        "anchor_only": {
+          "audit_cut": -691.8804664513773,
+          "audit_raise": 14881.368180573028
+        },
+        "source": {
+          "audit_cut": -3181.702761438046,
+          "audit_raise": 14881.368180573028
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 55
+    },
+    {
+      "seed": 233015,
+      "values": {
+        "original": {
+          "audit_cut": 0.0,
+          "audit_raise": 0.0
+        },
+        "anchor_only": {
+          "audit_cut": 0.0,
+          "audit_raise": 0.0
+        },
+        "source": {
+          "audit_cut": 0.0,
+          "audit_raise": 0.0
+        }
+      },
+      "changed": {
+        "audit_cut": false,
+        "audit_raise": false
+      },
+      "requests": 49
+    },
+    {
+      "seed": 233016,
+      "values": {
+        "original": {
+          "audit_cut": -474255.7081065414,
+          "audit_raise": -258833.09533509923
+        },
+        "anchor_only": {
+          "audit_cut": -1658354.1919527934,
+          "audit_raise": -295770.9236884169
+        },
+        "source": {
+          "audit_cut": -887405.1277661494,
+          "audit_raise": -758095.0302897439
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 117
+    },
+    {
+      "seed": 233017,
+      "values": {
+        "original": {
+          "audit_cut": -158863.85430041232,
+          "audit_raise": -90475.21016821337
+        },
+        "anchor_only": {
+          "audit_cut": -156588.713713016,
+          "audit_raise": 14269.809770877995
+        },
+        "source": {
+          "audit_cut": -119719.07485336317,
+          "audit_raise": -168681.23879819465
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 55
+    },
+    {
+      "seed": 233018,
+      "values": {
+        "original": {
+          "audit_cut": 1054640.6026436738,
+          "audit_raise": -368614.5631831795
+        },
+        "anchor_only": {
+          "audit_cut": 167977.42028332723,
+          "audit_raise": -336364.38983834616
+        },
+        "source": {
+          "audit_cut": 167977.42028332723,
+          "audit_raise": -26259.741465825984
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 58
+    },
+    {
+      "seed": 233019,
+      "values": {
+        "original": {
+          "audit_cut": -112845.61695614512,
+          "audit_raise": -746236.8194508881
+        },
+        "anchor_only": {
+          "audit_cut": 19675.710796981126,
+          "audit_raise": -218401.10175014357
+        },
+        "source": {
+          "audit_cut": 19675.710796981126,
+          "audit_raise": -218401.10175014357
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 53
+    },
+    {
+      "seed": 233020,
+      "values": {
+        "original": {
+          "audit_cut": 444924.1340853881,
+          "audit_raise": -391113.0727302258
+        },
+        "anchor_only": {
+          "audit_cut": 174159.5153913332,
+          "audit_raise": -282167.81530160573
+        },
+        "source": {
+          "audit_cut": -384254.22136756143,
+          "audit_raise": -377936.1447111419
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 89
+    },
+    {
+      "seed": 233021,
+      "values": {
+        "original": {
+          "audit_cut": 473316.455703409,
+          "audit_raise": -160746.24685035087
+        },
+        "anchor_only": {
+          "audit_cut": -58479.63375625081,
+          "audit_raise": -301339.30115115514
+        },
+        "source": {
+          "audit_cut": -478426.70999284636,
+          "audit_raise": 459810.3229701354
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 107
+    },
+    {
+      "seed": 233022,
+      "values": {
+        "original": {
+          "audit_cut": 273728.18979880144,
+          "audit_raise": -138716.08829487703
+        },
+        "anchor_only": {
+          "audit_cut": 82507.58838873057,
+          "audit_raise": -12442.27786836436
+        },
+        "source": {
+          "audit_cut": -333993.9138065429,
+          "audit_raise": -355741.71937004663
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 74
+    },
+    {
+      "seed": 233023,
+      "values": {
+        "original": {
+          "audit_cut": 282865.43579355953,
+          "audit_raise": 154234.95127548592
+        },
+        "anchor_only": {
+          "audit_cut": 144435.0623532081,
+          "audit_raise": 247935.91496953584
+        },
+        "source": {
+          "audit_cut": 18778.60579904669,
+          "audit_raise": -108420.75981725684
+        }
+      },
+      "changed": {
+        "audit_cut": true,
+        "audit_raise": true
+      },
+      "requests": 80
+    }
+  ],
+  "requests": 1864
+}

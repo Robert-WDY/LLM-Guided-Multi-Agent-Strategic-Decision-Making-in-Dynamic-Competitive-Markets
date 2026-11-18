@@ -1,0 +1,77 @@
+{
+  "gpu_model": "NVIDIA GeForce RTX 4080 Laptop GPU",
+  "during_original_requests": {
+    "card_power_w": 62.29,
+    "gpu_layers_requested": 99,
+    "project_pids": [
+      4180,
+      29812
+    ],
+    "card_memory_mib": 4873,
+    "card_utilization_percent": 99
+  },
+  "after_owned_gpu_services_stopped": {
+    "card_power_w": 14.62,
+    "card_memory_mib": 1518,
+    "card_utilization_percent": 19
+  },
+  "cpu_inference_sample_time": "2026-11-18T23:10:07.2984145+08:00",
+  "cpu_processes": [
+    {
+      "pid": 15708,
+      "image": "pricing-worker",
+      "cpu_seconds": 3625.59375,
+      "in_nvidia_process_list": false,
+      "backend_modules": [
+        "ggml-base.dll",
+        "ggml.dll",
+        "ggml-cpu-alderlake.dll"
+      ]
+    }
+  ],
+  "forced_controller_exit_test": {
+    "server": 45676,
+    "controller": 48480,
+    "server_gone_within_ms": 400
+  },
+  "scope": "System GPU counters include other applications; process lists and loaded modules identify the project backend.",
+  "second_cpu_check": {
+    "owned_pids": [
+      15708,
+      6120
+    ],
+    "registered_nvidia_pids": [],
+    "cuda_cublas_or_vulkan_module_count": [
+      0,
+      0
+    ]
+  },
+  "windows_gpu_engine_sample": {
+    "pid": 15708,
+    "matching_gpu_engine_instances": 0
+  },
+  "cached_numeric_replication": {
+    "seeds": 256,
+    "command": "serve_numeric.py --offline replicate",
+    "project_server_pids_before": [
+      15708
+    ],
+    "project_server_pids_after": [
+      15708
+    ],
+    "exit_code": 0
+  },
+  "after_cpu_confirmation": {
+    "time": "2026-11-18T23:29:49+08:00",
+    "project_model_pids": [],
+    "card_utilization_percent": 5,
+    "card_memory_mib": 2908,
+    "card_power_w": 4.98
+  },
+  "cpu_runtime_sha256": {
+    "smol.gguf": "decd2598bc2c8ed08c19adc3c8fdd461ee19ed5708679d1c54ef54a5a30d4f33",
+    "qwen.gguf": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+    "pricing-worker.exe": "a1c2b33ea499e0a8f80d0125371b87de8708af588d2dcb6a4b425c401bfda55e",
+    "ggml-cpu-alderlake.dll": "00e78baae91c5f965b75aff42bdb9e07ba7e74b5fbb4efc2b9467824719474d8"
+  }
+}

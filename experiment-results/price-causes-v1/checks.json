@@ -1,0 +1,16 @@
+{
+  "paths": 1872,
+  "backend_requests": 41987,
+  "replayed_markets": 6,
+  "seeds": 624,
+  "hardware_counts": {
+    "econ": {
+      "cpu": 56,
+      "gpu": 40
+    },
+    "native": {
+      "cpu": 57,
+      "gpu": 39
+    }
+  }
+}

@@ -1,0 +1,962 @@
+[
+  {
+    "seed": 226000,
+    "seat": 2,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 1.778943673816672,
+    "market_only": -0.6698678300000067,
+    "focal": 2.4488115038166787,
+    "rivals": 0.0
+  },
+  {
+    "seed": 226000,
+    "seat": 2,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -24.187470274981926,
+    "market_only": -2.48245137000001,
+    "focal": -10.698273055591699,
+    "rivals": -11.006745849390215
+  },
+  {
+    "seed": 227000,
+    "seat": 0,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": 767938.2928139172,
+    "market_only": -3082.292479089029,
+    "focal": 842313.6590294887,
+    "rivals": -71293.07373648247
+  },
+  {
+    "seed": 227000,
+    "seat": 0,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": -787037.4301813216,
+    "market_only": 14169.41131133286,
+    "focal": -773679.9799034514,
+    "rivals": -27526.861589203007
+  },
+  {
+    "seed": 226032,
+    "seat": 2,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 29.254279692306365,
+    "market_only": 8.077817950000004,
+    "focal": 30.23556293063061,
+    "rivals": -9.059101188324249
+  },
+  {
+    "seed": 226032,
+    "seat": 2,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -125.31988783470052,
+    "market_only": -7.486758100000001,
+    "focal": -89.9109617054277,
+    "rivals": -27.922168029272825
+  },
+  {
+    "seed": 227032,
+    "seat": 3,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": 66133.43593048085,
+    "market_only": 66540.75798789243,
+    "focal": -407.32205741158396,
+    "rivals": 0.0
+  },
+  {
+    "seed": 227032,
+    "seat": 3,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": -163329.26956295272,
+    "market_only": -13000.378106158685,
+    "focal": -138375.2462990521,
+    "rivals": -11953.645157741907
+  },
+  {
+    "seed": 226064,
+    "seat": 1,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": -32.08409885296313,
+    "market_only": 7.999009970000004,
+    "focal": -13.499055755789852,
+    "rivals": -26.584053067173283
+  },
+  {
+    "seed": 226064,
+    "seat": 1,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -20.123928817019014,
+    "market_only": -9.338745629999991,
+    "focal": -6.5927758690150595,
+    "rivals": -4.192407318003963
+  },
+  {
+    "seed": 227064,
+    "seat": 3,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": 111316.79608100439,
+    "market_only": 39478.0550001408,
+    "focal": 276568.26045616076,
+    "rivals": -204729.51937529715
+  },
+  {
+    "seed": 227064,
+    "seat": 3,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": -971417.6675298992,
+    "market_only": -154183.77823982475,
+    "focal": -595794.7890057587,
+    "rivals": -221439.1002843157
+  },
+  {
+    "seed": 226004,
+    "seat": 2,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 28.81292836431898,
+    "market_only": 13.43676059,
+    "focal": 19.911453970264645,
+    "rivals": -4.535286195945664
+  },
+  {
+    "seed": 226004,
+    "seat": 2,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -65.72515481755238,
+    "market_only": -11.663581039999997,
+    "focal": -33.2302039722057,
+    "rivals": -20.83136980534668
+  },
+  {
+    "seed": 227004,
+    "seat": 0,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": -534193.8310526748,
+    "market_only": 222167.61675150093,
+    "focal": -404427.72950215434,
+    "rivals": -351933.7183020214
+  },
+  {
+    "seed": 227004,
+    "seat": 0,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": -482783.3466944216,
+    "market_only": -143732.76971954014,
+    "focal": -247554.68884085095,
+    "rivals": -91495.88813403051
+  },
+  {
+    "seed": 226036,
+    "seat": 2,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": -35.41382875327026,
+    "market_only": 12.294044880000005,
+    "focal": -34.11172633847981,
+    "rivals": -13.596147294790452
+  },
+  {
+    "seed": 226036,
+    "seat": 2,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -88.98900931981082,
+    "market_only": -10.757289270000001,
+    "focal": -23.330999418144145,
+    "rivals": -54.90072063166667
+  },
+  {
+    "seed": 227036,
+    "seat": 3,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": 0.0,
+    "market_only": 0.0,
+    "focal": 0.0,
+    "rivals": 0.0
+  },
+  {
+    "seed": 227036,
+    "seat": 3,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": 0.0,
+    "market_only": 0.0,
+    "focal": 0.0,
+    "rivals": 0.0
+  },
+  {
+    "seed": 226068,
+    "seat": 1,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 20.16194424984908,
+    "market_only": 6.619870320000002,
+    "focal": 22.027380703197466,
+    "rivals": -8.485306773348388
+  },
+  {
+    "seed": 226068,
+    "seat": 1,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -20.873563954557422,
+    "market_only": -5.75298254,
+    "focal": -15.120581414557424,
+    "rivals": 0.0
+  },
+  {
+    "seed": 227068,
+    "seat": 3,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": 0.0,
+    "market_only": 0.0,
+    "focal": 0.0,
+    "rivals": 0.0
+  },
+  {
+    "seed": 227068,
+    "seat": 3,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": 0.0,
+    "market_only": 0.0,
+    "focal": 0.0,
+    "rivals": 0.0
+  },
+  {
+    "seed": 226008,
+    "seat": 2,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 20.44397955930978,
+    "market_only": 9.338745629999991,
+    "focal": 11.10523392930979,
+    "rivals": 0.0
+  },
+  {
+    "seed": 226008,
+    "seat": 2,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": 4.335453850986238,
+    "market_only": -9.181129670000008,
+    "focal": -93.88403265468325,
+    "rivals": 107.4006161756695
+  },
+  {
+    "seed": 227008,
+    "seat": 0,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": -86373.39255921307,
+    "market_only": 1457.253017098099,
+    "focal": -124260.28153715776,
+    "rivals": 36429.6359608466
+  },
+  {
+    "seed": 227008,
+    "seat": 0,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": 318701.513525617,
+    "market_only": 27437.370241125747,
+    "focal": 297524.97292438813,
+    "rivals": -6260.829639896867
+  },
+  {
+    "seed": 226040,
+    "seat": 2,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 79.33799607957219,
+    "market_only": 10.836097249999987,
+    "focal": 152.29678115306965,
+    "rivals": -83.79488232349743
+  },
+  {
+    "seed": 226040,
+    "seat": 2,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": 200.2272925771971,
+    "market_only": -12.924508720000004,
+    "focal": 166.17489028977445,
+    "rivals": 46.97691100742263
+  },
+  {
+    "seed": 227040,
+    "seat": 3,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": -369087.76372793375,
+    "market_only": -174363.2962156248,
+    "focal": 225664.84879557136,
+    "rivals": -420389.31630788033
+  },
+  {
+    "seed": 227040,
+    "seat": 3,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": -1666574.2533386603,
+    "market_only": -134863.62746654617,
+    "focal": -1613949.8183156427,
+    "rivals": 82239.19244352868
+  },
+  {
+    "seed": 226072,
+    "seat": 1,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 9.402501240333436,
+    "market_only": -0.7092718199999989,
+    "focal": 9.065481288408959,
+    "rivals": 1.0462917719244755
+  },
+  {
+    "seed": 226072,
+    "seat": 1,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -8.231404355113993,
+    "market_only": -2.167219450000003,
+    "focal": -7.094362278643458,
+    "rivals": 1.030177373529468
+  },
+  {
+    "seed": 227072,
+    "seat": 3,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": 788517.0577210054,
+    "market_only": -103895.42151690264,
+    "focal": 733552.8087085065,
+    "rivals": 158859.67052940157
+  },
+  {
+    "seed": 227072,
+    "seat": 3,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": 756923.1132247472,
+    "market_only": -44371.86400494876,
+    "focal": 690628.8537490747,
+    "rivals": 110666.1234806212
+  },
+  {
+    "seed": 226012,
+    "seat": 2,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": -12.875628056702656,
+    "market_only": 7.683778050000004,
+    "focal": -30.995354446686754,
+    "rivals": 10.435948339984092
+  },
+  {
+    "seed": 226012,
+    "seat": 2,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -0.06577472983389399,
+    "market_only": -7.604970070000006,
+    "focal": -20.006579019367322,
+    "rivals": 27.545774359533432
+  },
+  {
+    "seed": 227012,
+    "seat": 0,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": 0.0,
+    "market_only": 0.0,
+    "focal": 0.0,
+    "rivals": 0.0
+  },
+  {
+    "seed": 227012,
+    "seat": 0,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": 205364.7123780306,
+    "market_only": -7851.062922180431,
+    "focal": 221013.63882321038,
+    "rivals": -7797.863522999367
+  },
+  {
+    "seed": 226044,
+    "seat": 2,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 42.00336867851861,
+    "market_only": 6.895698250000001,
+    "focal": 17.558209624164416,
+    "rivals": 17.549460804354194
+  },
+  {
+    "seed": 226044,
+    "seat": 2,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -137.64826707574593,
+    "market_only": -6.974506229999998,
+    "focal": -249.04896469262337,
+    "rivals": 118.37520384687747
+  },
+  {
+    "seed": 227044,
+    "seat": 3,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": 0.0,
+    "market_only": 0.0,
+    "focal": 0.0,
+    "rivals": 0.0
+  },
+  {
+    "seed": 227044,
+    "seat": 3,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": 0.0,
+    "market_only": 0.0,
+    "focal": 0.0,
+    "rivals": 0.0
+  },
+  {
+    "seed": 226076,
+    "seat": 1,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 27.685669832719466,
+    "market_only": 9.417553610000002,
+    "focal": -14.036638122447371,
+    "rivals": 32.304754345166835
+  },
+  {
+    "seed": 226076,
+    "seat": 1,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -34.1228617469704,
+    "market_only": -9.417553609999995,
+    "focal": -26.906962602299956,
+    "rivals": 2.201654465329554
+  },
+  {
+    "seed": 227076,
+    "seat": 3,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": 0.0,
+    "market_only": 0.0,
+    "focal": 0.0,
+    "rivals": 0.0
+  },
+  {
+    "seed": 227076,
+    "seat": 3,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": 0.0,
+    "market_only": 0.0,
+    "focal": 0.0,
+    "rivals": 0.0
+  },
+  {
+    "seed": 226016,
+    "seat": 2,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 73.47567669957571,
+    "market_only": 10.363249369999997,
+    "focal": 78.83790907909635,
+    "rivals": -15.725481749520625
+  },
+  {
+    "seed": 226016,
+    "seat": 2,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -37.625394802735485,
+    "market_only": -11.42715710000001,
+    "focal": -7.962031821244281,
+    "rivals": -18.236205881491195
+  },
+  {
+    "seed": 227016,
+    "seat": 0,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": 130614.57710433847,
+    "market_only": 79310.17745318696,
+    "focal": 103914.55129556285,
+    "rivals": -52610.15164441132
+  },
+  {
+    "seed": 227016,
+    "seat": 0,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": -355721.77118210786,
+    "market_only": -224070.42162485464,
+    "focal": -213503.6676930772,
+    "rivals": 81852.318135824
+  },
+  {
+    "seed": 226048,
+    "seat": 2,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 112.35662505323204,
+    "market_only": 8.708281790000003,
+    "focal": 61.308732697874404,
+    "rivals": 42.33961056535762
+  },
+  {
+    "seed": 226048,
+    "seat": 2,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -33.37246926404623,
+    "market_only": -9.023513710000003,
+    "focal": -30.954740942418123,
+    "rivals": 6.605785388371897
+  },
+  {
+    "seed": 227048,
+    "seat": 3,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": -11042.84911594214,
+    "market_only": 170.45196338984601,
+    "focal": -18894.683325477978,
+    "rivals": 7681.382246145993
+  },
+  {
+    "seed": 227048,
+    "seat": 3,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": -7842.550681266206,
+    "market_only": 3071.682886382834,
+    "focal": -185.0722611863457,
+    "rivals": -10729.161306462694
+  },
+  {
+    "seed": 226080,
+    "seat": 1,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 20.1980182485146,
+    "market_only": 7.486758100000008,
+    "focal": 8.395817162043137,
+    "rivals": 4.315442986471454
+  },
+  {
+    "seed": 226080,
+    "seat": 1,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -50.795819186595246,
+    "market_only": -8.274837899999998,
+    "focal": -58.61841409618612,
+    "rivals": 16.097432809590874
+  },
+  {
+    "seed": 227080,
+    "seat": 3,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": 68257.66184930639,
+    "market_only": -14418.50204362865,
+    "focal": 36489.06700855197,
+    "rivals": 46187.09688438306
+  },
+  {
+    "seed": 227080,
+    "seat": 3,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": 106018.64449412267,
+    "market_only": 18259.682789398074,
+    "focal": 41558.57386437591,
+    "rivals": 46200.38784034869
+  },
+  {
+    "seed": 226020,
+    "seat": 2,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 33.93082944549553,
+    "market_only": 7.526162090000003,
+    "focal": 26.404667355495533,
+    "rivals": 0.0
+  },
+  {
+    "seed": 226020,
+    "seat": 2,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -22.218939662045333,
+    "market_only": -7.013910219999998,
+    "focal": -33.933227570166316,
+    "rivals": 18.728198128120987
+  },
+  {
+    "seed": 227020,
+    "seat": 0,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": -82779.29122718249,
+    "market_only": 1145.58373868103,
+    "focal": -81312.11402787447,
+    "rivals": -2612.760937989049
+  },
+  {
+    "seed": 227020,
+    "seat": 0,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": 6464.179837500369,
+    "market_only": -68400.98132890942,
+    "focal": 68007.23610617573,
+    "rivals": 6857.925060234066
+  },
+  {
+    "seed": 226052,
+    "seat": 2,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 104.68450164210296,
+    "market_only": 11.54536907,
+    "focal": 73.85380737247627,
+    "rivals": 19.285325199626683
+  },
+  {
+    "seed": 226052,
+    "seat": 2,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -38.193363732188764,
+    "market_only": -11.033117200000003,
+    "focal": -69.0550657186235,
+    "rivals": 41.894819186434745
+  },
+  {
+    "seed": 227052,
+    "seat": 3,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": -335059.0863364709,
+    "market_only": 155578.27662898332,
+    "focal": -490055.3405324492,
+    "rivals": -582.0224330050696
+  },
+  {
+    "seed": 227052,
+    "seat": 3,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": -619351.6306800168,
+    "market_only": -130793.87624749406,
+    "focal": -475831.5519688122,
+    "rivals": -12726.202463710564
+  },
+  {
+    "seed": 226084,
+    "seat": 1,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 163.61208274591505,
+    "market_only": 12.648680790000004,
+    "focal": 122.68542564499563,
+    "rivals": 28.2779763109194
+  },
+  {
+    "seed": 226084,
+    "seat": 1,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -63.66112203122972,
+    "market_only": -13.43676059,
+    "focal": -24.243036180337796,
+    "rivals": -25.98132526089193
+  },
+  {
+    "seed": 227084,
+    "seat": 3,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": 0.0,
+    "market_only": 0.0,
+    "focal": 0.0,
+    "rivals": 0.0
+  },
+  {
+    "seed": 227084,
+    "seat": 3,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": 0.0,
+    "market_only": 0.0,
+    "focal": 0.0,
+    "rivals": 0.0
+  },
+  {
+    "seed": 226024,
+    "seat": 2,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": -76.01758976624097,
+    "market_only": 8.077817949999996,
+    "focal": -99.21137363150889,
+    "rivals": 15.115965915267935
+  },
+  {
+    "seed": 226024,
+    "seat": 2,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -61.57115130366332,
+    "market_only": -6.777486280000002,
+    "focal": -45.88227748796389,
+    "rivals": -8.911387535699426
+  },
+  {
+    "seed": 227024,
+    "seat": 0,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": 444506.1265504223,
+    "market_only": 249007.6798858263,
+    "focal": 195498.44666459598,
+    "rivals": 0.0
+  },
+  {
+    "seed": 227024,
+    "seat": 0,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": -277617.3452603294,
+    "market_only": -7316.526934911505,
+    "focal": -269944.2120221367,
+    "rivals": -356.60630328117986
+  },
+  {
+    "seed": 226056,
+    "seat": 2,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": -76.70157094482032,
+    "market_only": 14.027820439999996,
+    "focal": 78.93822032257108,
+    "rivals": -169.6676117073914
+  },
+  {
+    "seed": 226056,
+    "seat": 2,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -192.7800217650032,
+    "market_only": -13.16093266,
+    "focal": -167.5550840938517,
+    "rivals": -12.064005011151508
+  },
+  {
+    "seed": 227056,
+    "seat": 3,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": 386762.1336497624,
+    "market_only": -11896.392859564201,
+    "focal": 342677.71816913213,
+    "rivals": 55980.80834019452
+  },
+  {
+    "seed": 227056,
+    "seat": 3,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": -844685.6280506892,
+    "market_only": 15390.665058890618,
+    "focal": -972688.029359377,
+    "rivals": 112611.73624979728
+  },
+  {
+    "seed": 226088,
+    "seat": 1,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 86.15802222850591,
+    "market_only": 8.708281789999996,
+    "focal": 95.17338849950252,
+    "rivals": -17.723648060996616
+  },
+  {
+    "seed": 226088,
+    "seat": 1,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": 16.223376038621172,
+    "market_only": -7.486758100000001,
+    "focal": 23.71013413862117,
+    "rivals": 0.0
+  },
+  {
+    "seed": 227088,
+    "seat": 3,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": 44657.04564468568,
+    "market_only": 24865.49024777988,
+    "focal": 13658.543852311073,
+    "rivals": 6133.011544594727
+  },
+  {
+    "seed": 227088,
+    "seat": 3,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": -2534.6488552082637,
+    "market_only": -724.2337682641046,
+    "focal": -1810.4150869441592,
+    "rivals": 0.0
+  },
+  {
+    "seed": 226028,
+    "seat": 2,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 31.485456837433755,
+    "market_only": 13.27914462999999,
+    "focal": 18.206312207433765,
+    "rivals": 0.0
+  },
+  {
+    "seed": 226028,
+    "seat": 2,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -40.3721769062465,
+    "market_only": -13.791396500000001,
+    "focal": -30.403763279026577,
+    "rivals": 3.8229828727800736
+  },
+  {
+    "seed": 227028,
+    "seat": 0,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": -402074.0479072604,
+    "market_only": -49230.11931050886,
+    "focal": 209762.05086769167,
+    "rivals": -562605.9794644432
+  },
+  {
+    "seed": 227028,
+    "seat": 0,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": -194085.18646001266,
+    "market_only": 4850.628625669385,
+    "focal": -532908.7367470709,
+    "rivals": 333972.9216613889
+  },
+  {
+    "seed": 226060,
+    "seat": 2,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 10.52086533,
+    "market_only": 10.52086533,
+    "focal": 0.0,
+    "rivals": 0.0
+  },
+  {
+    "seed": 226060,
+    "seat": 2,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -39.26295514499265,
+    "market_only": -9.653977550000004,
+    "focal": 24.8595297266368,
+    "rivals": -54.468507321629446
+  },
+  {
+    "seed": 227060,
+    "seat": 3,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": 0.0,
+    "market_only": 0.0,
+    "focal": 0.0,
+    "rivals": 0.0
+  },
+  {
+    "seed": 227060,
+    "seat": 3,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": 0.0,
+    "market_only": 0.0,
+    "focal": 0.0,
+    "rivals": 0.0
+  },
+  {
+    "seed": 226092,
+    "seat": 1,
+    "arm": "audit_cut",
+    "market": "econ",
+    "total": 80.0479451775494,
+    "market_only": 9.811593510000009,
+    "focal": 56.52541344998488,
+    "rivals": 13.710938217564504
+  },
+  {
+    "seed": 226092,
+    "seat": 1,
+    "arm": "audit_raise",
+    "market": "econ",
+    "total": -59.09566990773602,
+    "market_only": -8.393049869999997,
+    "focal": -42.90541603337249,
+    "rivals": -7.797204004363529
+  },
+  {
+    "seed": 227092,
+    "seat": 3,
+    "arm": "audit_cut",
+    "market": "native",
+    "total": -238524.40732832666,
+    "market_only": 208702.86407745112,
+    "focal": -179876.75000218424,
+    "rivals": -267350.5214035936
+  },
+  {
+    "seed": 227092,
+    "seat": 3,
+    "arm": "audit_raise",
+    "market": "native",
+    "total": -383704.70714543865,
+    "market_only": -33887.89891699986,
+    "focal": -349816.80822843884,
+    "rivals": 0.0
+  }
+]

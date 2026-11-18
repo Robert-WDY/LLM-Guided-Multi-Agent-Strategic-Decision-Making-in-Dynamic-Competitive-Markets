@@ -1,0 +1,184 @@
+{
+  "summary": {
+    "econ": {
+      "n": 8,
+      "same_requests": 347,
+      "different_draws": 109,
+      "cut_diff": [
+        44.98863195582873,
+        -80.68562477388114,
+        188.3905534228498
+      ],
+      "raise_diff": [
+        49.75225294423123,
+        -7.171436099317915,
+        116.10804990830916
+      ]
+    },
+    "native": {
+      "n": 8,
+      "same_requests": 254,
+      "different_draws": 102,
+      "cut_diff": [
+        -65241.09438820425,
+        -427334.99415483937,
+        293082.8156830097
+      ],
+      "raise_diff": [
+        278374.189189501,
+        27172.750661020462,
+        604460.464768114
+      ]
+    }
+  },
+  "seeds": {
+    "econ": [
+      {
+        "seed": 226000,
+        "same_requests": 34,
+        "different_draws": 11,
+        "gpu_requests": 62,
+        "cpu_requests": 61,
+        "cut": 17.74095723179687,
+        "raise_": -18.277336816426093
+      },
+      {
+        "seed": 226001,
+        "same_requests": 39,
+        "different_draws": 9,
+        "gpu_requests": 89,
+        "cpu_requests": 77,
+        "cut": 389.58897844999234,
+        "raise_": 204.77486154587749
+      },
+      {
+        "seed": 226002,
+        "same_requests": 35,
+        "different_draws": 10,
+        "gpu_requests": 56,
+        "cpu_requests": 57,
+        "cut": -3.442170103065065,
+        "raise_": 2.6818590920943413
+      },
+      {
+        "seed": 226032,
+        "same_requests": 57,
+        "different_draws": 21,
+        "gpu_requests": 80,
+        "cpu_requests": 68,
+        "cut": -30.02757480326257,
+        "raise_": 123.82652083660003
+      },
+      {
+        "seed": 226033,
+        "same_requests": 39,
+        "different_draws": 13,
+        "gpu_requests": 78,
+        "cpu_requests": 67,
+        "cut": -195.68757096769727,
+        "raise_": 39.105386157792424
+      },
+      {
+        "seed": 226034,
+        "same_requests": 58,
+        "different_draws": 21,
+        "gpu_requests": 78,
+        "cpu_requests": 83,
+        "cut": -0.27281030008911955,
+        "raise_": -38.48392127364659
+      },
+      {
+        "seed": 226064,
+        "same_requests": 34,
+        "different_draws": 11,
+        "gpu_requests": 73,
+        "cpu_requests": 64,
+        "cut": -72.17545181651094,
+        "raise_": -22.809188661927408
+      },
+      {
+        "seed": 226065,
+        "same_requests": 51,
+        "different_draws": 13,
+        "gpu_requests": 72,
+        "cpu_requests": 76,
+        "cut": 254.1846979554656,
+        "raise_": 107.19984267348565
+      }
+    ],
+    "native": [
+      {
+        "seed": 227000,
+        "same_requests": 43,
+        "different_draws": 11,
+        "gpu_requests": 89,
+        "cpu_requests": 95,
+        "cut": 641887.7045024019,
+        "raise_": 222677.57424754743
+      },
+      {
+        "seed": 227001,
+        "same_requests": 37,
+        "different_draws": 16,
+        "gpu_requests": 71,
+        "cpu_requests": 80,
+        "cut": -654679.7448375701,
+        "raise_": 113594.14612111554
+      },
+      {
+        "seed": 227002,
+        "same_requests": 22,
+        "different_draws": 6,
+        "gpu_requests": 35,
+        "cpu_requests": 40,
+        "cut": 0.0,
+        "raise_": 0.0
+      },
+      {
+        "seed": 227032,
+        "same_requests": 27,
+        "different_draws": 12,
+        "gpu_requests": 62,
+        "cpu_requests": 61,
+        "cut": -783501.4575338018,
+        "raise_": 37700.22465610411
+      },
+      {
+        "seed": 227033,
+        "same_requests": 35,
+        "different_draws": 20,
+        "gpu_requests": 82,
+        "cpu_requests": 87,
+        "cut": -221607.1450014343,
+        "raise_": 62633.5863341646
+      },
+      {
+        "seed": 227034,
+        "same_requests": 29,
+        "different_draws": 9,
+        "gpu_requests": 69,
+        "cpu_requests": 70,
+        "cut": 443078.25908414734,
+        "raise_": 1088975.6477367354
+      },
+      {
+        "seed": 227064,
+        "same_requests": 43,
+        "different_draws": 18,
+        "gpu_requests": 85,
+        "cpu_requests": 81,
+        "cut": -200838.7118861936,
+        "raise_": 773820.2341009262
+      },
+      {
+        "seed": 227065,
+        "same_requests": 18,
+        "different_draws": 10,
+        "gpu_requests": 49,
+        "cpu_requests": 60,
+        "cut": 253732.34056681662,
+        "raise_": -72407.89968058537
+      }
+    ]
+  }
+}

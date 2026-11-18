@@ -1,0 +1,1506 @@
+{
+  "econ": {
+    "cpu": {
+      "policies": {
+        "direct": {
+          "effect": [
+            41.624438488544364,
+            21.822897899389964,
+            62.22959944586448
+          ],
+          "n": 56,
+          "used": 56,
+          "lost": 10,
+          "large": 9,
+          "coverage": 1.0,
+          "risk_upper": 0.3221458922945623,
+          "worst": -91.66181213525357,
+          "passed": false
+        },
+        "persistence": {
+          "effect": [
+            41.624438488544364,
+            21.822897899389964,
+            62.22959944586448
+          ],
+          "n": 56,
+          "used": 56,
+          "lost": 10,
+          "large": 9,
+          "coverage": 1.0,
+          "risk_upper": 0.3221458922945623,
+          "worst": -91.66181213525357,
+          "passed": false
+        },
+        "forecast": {
+          "effect": [
+            41.624438488544364,
+            21.822897899389964,
+            62.22959944586448
+          ],
+          "n": 56,
+          "used": 56,
+          "lost": 10,
+          "large": 9,
+          "coverage": 1.0,
+          "risk_upper": 0.3221458922945623,
+          "worst": -91.66181213525357,
+          "passed": false
+        },
+        "known_next": {
+          "effect": [
+            41.624438488544364,
+            21.822897899389964,
+            62.22959944586448
+          ],
+          "n": 56,
+          "used": 56,
+          "lost": 10,
+          "large": 9,
+          "coverage": 1.0,
+          "risk_upper": 0.3221458922945623,
+          "worst": -91.66181213525357,
+          "passed": false
+        },
+        "legacy": {
+          "effect": [
+            -22.52180841444145,
+            -38.15160456336313,
+            -5.203180463614685
+          ],
+          "n": 56,
+          "used": 32,
+          "lost": 29,
+          "large": 29,
+          "coverage": 0.5714285714285714,
+          "risk_upper": 0.9848169945738208,
+          "worst": -192.7800217650032,
+          "passed": false
+        },
+        "legacy_simple": {
+          "effect": [
+            -17.484430269608545,
+            -32.20631572727345,
+            -0.17018332803590508
+          ],
+          "n": 56,
+          "used": 30,
+          "lost": 26,
+          "large": 26,
+          "coverage": 0.5357142857142857,
+          "risk_upper": 0.9695629407007457,
+          "worst": -192.7800217650032,
+          "passed": false
+        },
+        "legacy_uniform": {
+          "effect": [
+            -21.076020103025844,
+            -36.775512467287044,
+            -3.7247864421546115
+          ],
+          "n": 56,
+          "used": 30,
+          "lost": 27,
+          "large": 27,
+          "coverage": 0.5357142857142857,
+          "risk_upper": 0.9837775366480607,
+          "worst": -192.7800217650032,
+          "passed": false
+        },
+        "value_guard": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 56,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "frequency_guard": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 56,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "best_terminal": {
+          "effect": [
+            50.994237495982084,
+            35.19326105439859,
+            68.79668554345321
+          ],
+          "n": 56,
+          "used": 46,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.8214285714285714,
+          "risk_upper": 0.09086478871650618,
+          "worst": 0.0,
+          "passed": true
+        },
+        "certified_legacy": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 56,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_legacy_simple": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 56,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_legacy_uniform": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 56,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_value_guard": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 56,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_frequency_guard": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 56,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_direct": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 56,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_persistence": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 56,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_forecast": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 56,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        }
+      },
+      "contrasts": {
+        "forecast-persistence": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        },
+        "forecast-direct": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        },
+        "known_next-persistence": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        },
+        "known_next-forecast": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        },
+        "legacy-legacy_uniform": {
+          "effect": [
+            -1.4457883114156094,
+            -5.1000755666873365,
+            1.7308030253436586
+          ],
+          "distinct": 4
+        },
+        "legacy-legacy_simple": {
+          "effect": [
+            -5.037378144832906,
+            -13.272553985943901,
+            0.46483713291149154
+          ],
+          "distinct": 6
+        },
+        "frequency_guard-value_guard": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        }
+      },
+      "errors": {
+        "next": {
+          "persistence": [
+            0.04508130887685447,
+            0.03905992570563117,
+            0.05134591870660335
+          ],
+          "forecast": [
+            0.04206803872833118,
+            0.036650236268266856,
+            0.04777991581774016
+          ],
+          "difference": [
+            -0.0030132701485232967,
+            -0.006013219606694593,
+            -0.0002476713631640121
+          ],
+          "seeds": 56
+        },
+        "later": {
+          "persistence": [
+            0.0675907147314422,
+            0.05996927620983341,
+            0.07560181491634725
+          ],
+          "forecast": [
+            0.06594151923180355,
+            0.058482989986709574,
+            0.07351645601995897
+          ],
+          "difference": [
+            -0.0016491954996386358,
+            -0.0048760590424457295,
+            0.001630963697337595
+          ],
+          "seeds": 56
+        }
+      },
+      "reaction": [
+        0.009537724716752781,
+        0.006778801980639282,
+        0.012355237888798647
+      ]
+    },
+    "gpu": {
+      "policies": {
+        "direct": {
+          "effect": [
+            45.61632544256747,
+            25.020160055387528,
+            70.08264009372698
+          ],
+          "n": 40,
+          "used": 40,
+          "lost": 5,
+          "large": 4,
+          "coverage": 1.0,
+          "risk_upper": 0.28923022953668265,
+          "worst": -71.89637009066605,
+          "passed": false
+        },
+        "persistence": {
+          "effect": [
+            45.61632544256747,
+            25.020160055387528,
+            70.08264009372698
+          ],
+          "n": 40,
+          "used": 40,
+          "lost": 5,
+          "large": 4,
+          "coverage": 1.0,
+          "risk_upper": 0.28923022953668265,
+          "worst": -71.89637009066605,
+          "passed": false
+        },
+        "forecast": {
+          "effect": [
+            45.61632544256747,
+            25.020160055387528,
+            70.08264009372698
+          ],
+          "n": 40,
+          "used": 40,
+          "lost": 5,
+          "large": 4,
+          "coverage": 1.0,
+          "risk_upper": 0.28923022953668265,
+          "worst": -71.89637009066605,
+          "passed": false
+        },
+        "known_next": {
+          "effect": [
+            45.61632544256747,
+            25.020160055387528,
+            70.08264009372698
+          ],
+          "n": 40,
+          "used": 40,
+          "lost": 5,
+          "large": 4,
+          "coverage": 1.0,
+          "risk_upper": 0.28923022953668265,
+          "worst": -71.89637009066605,
+          "passed": false
+        },
+        "legacy": {
+          "effect": [
+            -9.463037224004358,
+            -24.27237464293006,
+            8.833875405472114
+          ],
+          "n": 40,
+          "used": 21,
+          "lost": 16,
+          "large": 15,
+          "coverage": 0.525,
+          "risk_upper": 0.9310093433372897,
+          "worst": -119.71609100084156,
+          "passed": false
+        },
+        "legacy_simple": {
+          "effect": [
+            -4.878608652852682,
+            -18.92103565166916,
+            12.22777706541898
+          ],
+          "n": 40,
+          "used": 21,
+          "lost": 15,
+          "large": 14,
+          "coverage": 0.525,
+          "risk_upper": 0.9030545519445717,
+          "worst": -119.71609100084156,
+          "passed": false
+        },
+        "legacy_uniform": {
+          "effect": [
+            -9.086395286567162,
+            -23.26492520970081,
+            8.785018257453826
+          ],
+          "n": 40,
+          "used": 20,
+          "lost": 16,
+          "large": 15,
+          "coverage": 0.5,
+          "risk_upper": 0.9534413062777097,
+          "worst": -119.71609100084156,
+          "passed": false
+        },
+        "value_guard": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 40,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "frequency_guard": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 40,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "best_terminal": {
+          "effect": [
+            51.957667110789245,
+            31.424338946328497,
+            77.35893379180385
+          ],
+          "n": 40,
+          "used": 35,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.875,
+          "risk_upper": 0.11768025058452376,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_legacy": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 40,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_legacy_simple": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 40,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_legacy_uniform": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 40,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_value_guard": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 40,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_frequency_guard": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 40,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_direct": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 40,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_persistence": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 40,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_forecast": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 40,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        }
+      },
+      "contrasts": {
+        "forecast-persistence": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        },
+        "forecast-direct": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        },
+        "known_next-persistence": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        },
+        "known_next-forecast": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        },
+        "legacy-legacy_uniform": {
+          "effect": [
+            -0.37664193743719854,
+            -5.306028548753628,
+            3.5936756901269833
+          ],
+          "distinct": 3
+        },
+        "legacy-legacy_simple": {
+          "effect": [
+            -4.584428571151678,
+            -12.476946966630267,
+            0.7829954971991111
+          ],
+          "distinct": 6
+        },
+        "frequency_guard-value_guard": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        }
+      },
+      "errors": {
+        "next": {
+          "persistence": [
+            0.047093793558859155,
+            0.040417801825348196,
+            0.05383931667068814
+          ],
+          "forecast": [
+            0.044124504571821224,
+            0.03818206022020439,
+            0.05030231796385557
+          ],
+          "difference": [
+            -0.0029692889870379354,
+            -0.005916567459605208,
+            -2.1313714909437487e-05
+          ],
+          "seeds": 40
+        },
+        "later": {
+          "persistence": [
+            0.07459153738788146,
+            0.06405452264433406,
+            0.08574272216645165
+          ],
+          "forecast": [
+            0.07107323373497987,
+            0.060605967586258115,
+            0.08226854680571094
+          ],
+          "difference": [
+            -0.0035183036529016056,
+            -0.007311893313328218,
+            0.0003613896804368524
+          ],
+          "seeds": 40
+        }
+      },
+      "reaction": [
+        0.008448845655634338,
+        0.005754286298277872,
+        0.011372096532111122
+      ]
+    }
+  },
+  "native": {
+    "cpu": {
+      "policies": {
+        "direct": {
+          "effect": [
+            127160.48515548557,
+            38667.51998986336,
+            221360.433242404
+          ],
+          "n": 57,
+          "used": 44,
+          "lost": 16,
+          "large": 11,
+          "coverage": 0.7719298245614035,
+          "risk_upper": 0.543354626633054,
+          "worst": -402074.0479072604,
+          "passed": false
+        },
+        "persistence": {
+          "effect": [
+            127160.48515548557,
+            38667.51998986336,
+            221360.433242404
+          ],
+          "n": 57,
+          "used": 44,
+          "lost": 16,
+          "large": 11,
+          "coverage": 0.7719298245614035,
+          "risk_upper": 0.543354626633054,
+          "worst": -402074.0479072604,
+          "passed": false
+        },
+        "forecast": {
+          "effect": [
+            127160.48515548557,
+            38667.51998986336,
+            221360.433242404
+          ],
+          "n": 57,
+          "used": 44,
+          "lost": 16,
+          "large": 11,
+          "coverage": 0.7719298245614035,
+          "risk_upper": 0.543354626633054,
+          "worst": -402074.0479072604,
+          "passed": false
+        },
+        "known_next": {
+          "effect": [
+            127160.48515548557,
+            38667.51998986336,
+            221360.433242404
+          ],
+          "n": 57,
+          "used": 44,
+          "lost": 16,
+          "large": 11,
+          "coverage": 0.7719298245614035,
+          "risk_upper": 0.543354626633054,
+          "worst": -402074.0479072604,
+          "passed": false
+        },
+        "legacy": {
+          "effect": [
+            -120241.1283683089,
+            -270911.0539024036,
+            -7034.246285875387
+          ],
+          "n": 57,
+          "used": 38,
+          "lost": 23,
+          "large": 19,
+          "coverage": 0.6666666666666666,
+          "risk_upper": 0.7776280809156346,
+          "worst": -2584326.4676209646,
+          "passed": false
+        },
+        "legacy_simple": {
+          "effect": [
+            -118663.69763577043,
+            -269663.8698206764,
+            -5301.438792714208
+          ],
+          "n": 57,
+          "used": 36,
+          "lost": 20,
+          "large": 18,
+          "coverage": 0.631578947368421,
+          "risk_upper": 0.740334630810902,
+          "worst": -2584326.4676209646,
+          "passed": false
+        },
+        "legacy_uniform": {
+          "effect": [
+            -120241.1283683089,
+            -270911.0539024036,
+            -7034.246285875387
+          ],
+          "n": 57,
+          "used": 38,
+          "lost": 23,
+          "large": 19,
+          "coverage": 0.6666666666666666,
+          "risk_upper": 0.7776280809156346,
+          "worst": -2584326.4676209646,
+          "passed": false
+        },
+        "value_guard": {
+          "effect": [
+            1712.0717823422717,
+            -17417.170127690006,
+            18516.33884524583
+          ],
+          "n": 57,
+          "used": 11,
+          "lost": 6,
+          "large": 2,
+          "coverage": 0.19298245614035087,
+          "risk_upper": 0.8583461325411047,
+          "worst": -335059.0863364709,
+          "passed": false
+        },
+        "frequency_guard": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 57,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "best_terminal": {
+          "effect": [
+            194665.40158164498,
+            114055.9093327939,
+            284804.2478106913
+          ],
+          "n": 57,
+          "used": 34,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.5964912280701754,
+          "risk_upper": 0.12092330831448965,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_legacy": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 57,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_legacy_simple": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 57,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_legacy_uniform": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 57,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_value_guard": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 57,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_frequency_guard": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 57,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_direct": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 57,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_persistence": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 57,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_forecast": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 57,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        }
+      },
+      "contrasts": {
+        "forecast-persistence": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        },
+        "forecast-direct": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        },
+        "known_next-persistence": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        },
+        "known_next-forecast": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        },
+        "legacy-legacy_uniform": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 1
+        },
+        "legacy-legacy_simple": {
+          "effect": [
+            -1577.4307325384493,
+            -5561.45006695516,
+            0.0
+          ],
+          "distinct": 4
+        },
+        "frequency_guard-value_guard": {
+          "effect": [
+            -1712.0717823422717,
+            -18516.33884524583,
+            17417.170127690006
+          ],
+          "distinct": 22
+        }
+      },
+      "errors": {
+        "next": {
+          "persistence": [
+            0.04257809522156539,
+            0.03665943449078063,
+            0.04858825288326548
+          ],
+          "forecast": [
+            0.04096324173498883,
+            0.03548419225840854,
+            0.04630255682097431
+          ],
+          "difference": [
+            -0.001614853486576559,
+            -0.005292963919532308,
+            0.0017822123241830108
+          ],
+          "seeds": 57
+        },
+        "later": {
+          "persistence": [
+            0.061868340229397197,
+            0.05231143834056137,
+            0.07122240910312873
+          ],
+          "forecast": [
+            0.05715071284525977,
+            0.0471379937958866,
+            0.06732290832793379
+          ],
+          "difference": [
+            -0.0047176273841374235,
+            -0.01047724692369569,
+            0.001155694364175995
+          ],
+          "seeds": 57
+        }
+      },
+      "reaction": [
+        0.005572232971794713,
+        0.003175728201767497,
+        0.008358080729530166
+      ]
+    },
+    "gpu": {
+      "policies": {
+        "direct": {
+          "effect": [
+            55136.71555559304,
+            -67612.04673019942,
+            175096.2691848982
+          ],
+          "n": 39,
+          "used": 27,
+          "lost": 9,
+          "large": 8,
+          "coverage": 0.6923076923076923,
+          "risk_upper": 0.5662647497544399,
+          "worst": -1066532.2941830754,
+          "passed": false
+        },
+        "persistence": {
+          "effect": [
+            55136.71555559304,
+            -67612.04673019942,
+            175096.2691848982
+          ],
+          "n": 39,
+          "used": 27,
+          "lost": 9,
+          "large": 8,
+          "coverage": 0.6923076923076923,
+          "risk_upper": 0.5662647497544399,
+          "worst": -1066532.2941830754,
+          "passed": false
+        },
+        "forecast": {
+          "effect": [
+            55136.71555559304,
+            -67612.04673019942,
+            175096.2691848982
+          ],
+          "n": 39,
+          "used": 27,
+          "lost": 9,
+          "large": 8,
+          "coverage": 0.6923076923076923,
+          "risk_upper": 0.5662647497544399,
+          "worst": -1066532.2941830754,
+          "passed": false
+        },
+        "known_next": {
+          "effect": [
+            55136.71555559304,
+            -67612.04673019942,
+            175096.2691848982
+          ],
+          "n": 39,
+          "used": 27,
+          "lost": 9,
+          "large": 8,
+          "coverage": 0.6923076923076923,
+          "risk_upper": 0.5662647497544399,
+          "worst": -1066532.2941830754,
+          "passed": false
+        },
+        "legacy": {
+          "effect": [
+            -92439.10872408512,
+            -225073.0330234689,
+            26134.735170689397
+          ],
+          "n": 39,
+          "used": 24,
+          "lost": 15,
+          "large": 15,
+          "coverage": 0.6153846153846154,
+          "risk_upper": 0.831744365696071,
+          "worst": -1386163.028617092,
+          "passed": false
+        },
+        "legacy_simple": {
+          "effect": [
+            -92439.10872408512,
+            -225073.0330234689,
+            26134.735170689397
+          ],
+          "n": 39,
+          "used": 24,
+          "lost": 15,
+          "large": 15,
+          "coverage": 0.6153846153846154,
+          "risk_upper": 0.831744365696071,
+          "worst": -1386163.028617092,
+          "passed": false
+        },
+        "legacy_uniform": {
+          "effect": [
+            -92439.10872408512,
+            -225073.0330234689,
+            26134.735170689397
+          ],
+          "n": 39,
+          "used": 24,
+          "lost": 15,
+          "large": 15,
+          "coverage": 0.6153846153846154,
+          "risk_upper": 0.831744365696071,
+          "worst": -1386163.028617092,
+          "passed": false
+        },
+        "value_guard": {
+          "effect": [
+            7575.816689844409,
+            -28075.513052970935,
+            42411.015883131906
+          ],
+          "n": 39,
+          "used": 4,
+          "lost": 1,
+          "large": 1,
+          "coverage": 0.10256410256410256,
+          "risk_upper": 0.8477699852319124,
+          "worst": -369087.76372793375,
+          "passed": false
+        },
+        "frequency_guard": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 39,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "best_terminal": {
+          "effect": [
+            166162.57889535197,
+            93578.86708186641,
+            251381.38282715346
+          ],
+          "n": 39,
+          "used": 23,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.5897435897435898,
+          "risk_upper": 0.17347316760451703,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_legacy": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 39,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_legacy_simple": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 39,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_legacy_uniform": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 39,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_value_guard": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 39,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_frequency_guard": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 39,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_direct": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 39,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_persistence": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 39,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        },
+        "certified_forecast": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 39,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false
+        }
+      },
+      "contrasts": {
+        "forecast-persistence": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        },
+        "forecast-direct": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        },
+        "known_next-persistence": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        },
+        "known_next-forecast": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 0
+        },
+        "legacy-legacy_uniform": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 1
+        },
+        "legacy-legacy_simple": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "distinct": 2
+        },
+        "frequency_guard-value_guard": {
+          "effect": [
+            -7575.816689844409,
+            -42411.015883131906,
+            28075.513052970935
+          ],
+          "distinct": 10
+        }
+      },
+      "errors": {
+        "next": {
+          "persistence": [
+            0.042876611695692034,
+            0.034493573285925005,
+            0.05123804791464681
+          ],
+          "forecast": [
+            0.03708676131006324,
+            0.030668759548078364,
+            0.0434762879646939
+          ],
+          "difference": [
+            -0.005789850385628796,
+            -0.009642414382939968,
+            -0.0018095341355876106
+          ],
+          "seeds": 39
+        },
+        "later": {
+          "persistence": [
+            0.06716734857226651,
+            0.05893875191111652,
+            0.07579694837404827
+          ],
+          "forecast": [
+            0.05984179718350756,
+            0.05099092681121068,
+            0.06883155738770451
+          ],
+          "difference": [
+            -0.007325551388758988,
+            -0.013034621402750551,
+            -0.0016377403498869588
+          ],
+          "seeds": 39
+        }
+      },
+      "reaction": [
+        0.00409867516493146,
+        0.0017817831533586312,
+        0.007005989531845235
+      ]
+    }
+  }
+}
