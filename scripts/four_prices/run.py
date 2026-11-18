@@ -53,6 +53,10 @@ def arms(v, t, choices, masks, focal, probe):
     use = [0] * 4
     if v in ("keep", "greedy") or t not in REVIEW:
         return use
+    if v in ("audit_cut", "audit_raise"):
+        if t == probe:
+            use[masks[1][0]] = 1 if v == "audit_cut" else 2
+        return use
     if v.startswith("once"):
         if t == probe:
             j = masks[1][0]
@@ -110,6 +114,7 @@ def simulation(
     ]
     if "greedy" not in profiles:
         nodes = nodes[:1]
+    needs_scores = any(v not in ("keep", "greedy", "audit_cut", "audit_raise") for v in profiles)
     ends = list(range(1, 7, 2)) + list(range(7, 60, 4))
     for t in ends:
         prepared = []
@@ -153,7 +158,7 @@ def simulation(
                 terms.append(term)
                 indices.append(ix)
             offset = len(points)
-            if t in REVIEW and vs != ["greedy"]:
+            if needs_scores and t in REVIEW and vs != ["greedy"]:
                 points.extend(
                     dict(prices=[row[:2] for row in h[j]], round=t, draft=terms[j]["draft"])
                     for j in range(4)
