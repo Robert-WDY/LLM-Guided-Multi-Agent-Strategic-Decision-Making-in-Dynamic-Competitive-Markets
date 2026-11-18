@@ -95,3 +95,14 @@ def test_common_episode_settings_reject_mixed_strategic_stacks(tmp_path) -> None
 
     with pytest.raises(AgentRuntimeCompatibilityError, match="share controller modes"):
         common_episode_settings([enabled, disabled])
+
+
+def test_new_live_pricing_versions_sample_but_explicit_greedy_is_available(tmp_path) -> None:
+    _, _, _, builder = _components(tmp_path)
+    spec = dict(provider="doubao", model="test-model", model_revision="test-revision",
+                persona_id="balanced_v1")
+    sampled = builder.register(**spec)
+    greedy = builder.register(**spec, temperature_ppm=0)
+    assert sampled.behavior_spec.runtime.temperature_ppm == 850_000
+    assert greedy.behavior_spec.runtime.temperature_ppm == 0
+    assert sampled.agent_version_id != greedy.agent_version_id

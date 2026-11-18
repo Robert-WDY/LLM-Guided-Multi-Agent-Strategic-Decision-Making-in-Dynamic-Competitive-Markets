@@ -244,6 +244,7 @@ class CurrentAgentVersionBuilder:
         policy_parameters: dict[str, int | str | bool | None] | None = None,
         reproducibility_tier: ReproducibilityTier | None = None,
         max_schema_attempts: int | None = None,
+        temperature_ppm: int | None = None,
     ) -> AgentVersionManifest:
         persona = self.persona_registry.get(persona_id)
         params = dict(policy_parameters or {})
@@ -268,7 +269,8 @@ class CurrentAgentVersionBuilder:
                 model=model,
                 model_revision=model_revision,
                 endpoint_id=endpoint,
-                temperature_ppm=0,
+                temperature_ppm=(0 if provider == "mock" else 850_000)
+                if temperature_ppm is None else temperature_ppm,
                 top_p_ppm=1_000_000,
                 max_output_tokens=4_000,
                 max_schema_attempts=(

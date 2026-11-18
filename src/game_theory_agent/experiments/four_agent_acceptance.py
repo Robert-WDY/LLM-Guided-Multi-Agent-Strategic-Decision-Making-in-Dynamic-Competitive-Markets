@@ -1118,7 +1118,8 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--diagnostic-mode", choices=("off", "observe"), default="off"
     )
-    parser.add_argument("--temperature", type=float, default=0.0)
+    parser.add_argument("--temperature", type=float, default=0.85,
+                        help="Independent live-model sampling. Pass 0 for legacy greedy experiments.")
     parser.add_argument("--top-p", type=float, default=1.0)
     parser.add_argument("--timeout", type=float, default=60.0)
     parser.add_argument(
