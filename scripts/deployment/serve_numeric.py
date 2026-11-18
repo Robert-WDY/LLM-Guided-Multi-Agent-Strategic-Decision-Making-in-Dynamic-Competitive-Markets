@@ -68,7 +68,7 @@ if __name__=="__main__":
     parser=argparse.ArgumentParser()
     parser.add_argument("stages",nargs="*",default=["numeric","adoption","numeric_stopping"])
     stages=parser.parse_args().stages
-    if any(s not in ("numeric","adoption","numeric_stopping") for s in stages):
+    if any(s not in ("numeric","adoption","numeric_stopping","replicate") for s in stages):
         parser.error("unknown pricing experiment")
     for attempt in range(4):
         try:
