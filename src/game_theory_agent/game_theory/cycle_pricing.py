@@ -41,7 +41,7 @@ def feedback(history, previous, low, high):
             direction = 1 if delta_price > 0 else -1
         if mean(r[3] for r in latest) < mean(r[3] for r in prior):
             direction *= -1
-    price = mean(r[0] for r in latest)
+    price = previous.get("renewal_anchor", mean(r[0] for r in latest))
     trial = bounded(price * (1 + .035 * direction), low, high)
     if abs(trial - price) < 1.e-7:
         direction *= -1

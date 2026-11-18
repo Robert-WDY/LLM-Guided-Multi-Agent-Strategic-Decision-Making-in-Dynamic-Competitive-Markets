@@ -88,7 +88,11 @@ def simulation(
     study_design=design,
     price_guard=None,
     feedback_rollback=False,
+    expire_advice=False,
+    diagnostic_rule="inf",
 ):
+    if expire_advice and feedback_rollback:
+        raise ValueError("Select one renewal policy")
     seed, masks, focal, roles, probe, live = study_design(m, g, i)
     tape = {} if offline is None else dict(offline)
     if allocation is not None:
@@ -162,7 +166,7 @@ def simulation(
             legal = [effective(w, j, draft) for j, draft in enumerate(drafts)]
             brackets = {}
             for v in vs:
-                rule = v if diagnostic is None else f"inf{coverage}"
+                rule = v if diagnostic is None else f"{diagnostic_rule}{coverage}"
                 guarded = rule.startswith("safe_")
                 rule = rule.removeprefix("safe_")
                 use = arms(rule, t, scores[offset : offset + 4], masks, focal, probe)
@@ -207,6 +211,12 @@ def simulation(
                 if feedback_rollback:
                     next_terms = [dict(term, trial_delta=effective(b,j,targets[j])-legal[j])
                                   for j,term in enumerate(terms)]
+                elif expire_advice:
+                    next_terms = [
+                        dict(term, renewal_anchor=legal[j])
+                        if effective(b, j, targets[j]) != legal[j] else term
+                        for j, term in enumerate(terms)
+                    ]
                 h2 = [list(a) for a in h]
                 rec = list(records)
                 mr = list(market)
