@@ -152,7 +152,22 @@ def analyze(market, calibration):
             tails[name] = v
         else:
             tails[name] = None
-    return dict(**report, tails=tails, abstention=abstention(rows, predictions))
+    # Additional sensitivity after primary unblinding. The frozen policy stays unchanged.
+    hurdle = 20000 if market == "native" else 5
+    strict = decisions(
+        [s["scores"]["renewal"] for s in predictions],
+        [s["enabled"] for s in predictions],
+        0.10,
+        hurdle,
+    )
+    for r, choice in zip(rows, strict):
+        r["actions"]["nominal_ten_percent"] = int(choice)
+    return dict(
+        **report,
+        tails=tails,
+        abstention=abstention(rows, predictions),
+        nominal_ten_percent=metrics(rows, "nominal_ten_percent", hurdle),
+    )
 
 
 if __name__ == "__main__":

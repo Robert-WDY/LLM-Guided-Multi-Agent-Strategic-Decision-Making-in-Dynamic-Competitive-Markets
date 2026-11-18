@@ -1,0 +1,560 @@
+{
+  "econ": {
+    "quota": 30,
+    "eligible": 120,
+    "fixed_quota": {
+      "renewal": {
+        "effect": [
+          10.57230330712985,
+          6.2591721397279185,
+          15.363887713466006
+        ],
+        "n": 120,
+        "used": 30,
+        "lost": 2,
+        "large": 0,
+        "coverage": 0.25,
+        "risk_upper": 0.24452970399073737,
+        "worst": -3.180360725651129,
+        "passed": false
+      },
+      "equal_budget": {
+        "effect": [
+          9.337636669587619,
+          4.939413994607125,
+          14.289176263135657
+        ],
+        "n": 120,
+        "used": 30,
+        "lost": 3,
+        "large": 1,
+        "coverage": 0.25,
+        "risk_upper": 0.2900103086597359,
+        "worst": -49.87020333254374,
+        "passed": false
+      },
+      "one_stage": {
+        "effect": [
+          8.93095746997352,
+          4.742744963783257,
+          13.366366911650331
+        ],
+        "n": 120,
+        "used": 30,
+        "lost": 2,
+        "large": 1,
+        "coverage": 0.25,
+        "risk_upper": 0.24452970399073737,
+        "worst": -49.87020333254374,
+        "passed": false
+      },
+      "random": {
+        "effect": [
+          7.548104788974869,
+          2.9643563802183115,
+          12.65905959284416
+        ],
+        "n": 120,
+        "used": 30,
+        "lost": 6,
+        "large": 5,
+        "coverage": 0.25,
+        "risk_upper": 0.41162368367446656,
+        "worst": -45.45993956567563,
+        "passed": false
+      }
+    },
+    "same_threshold": {
+      "renewal_using_renewal": {
+        "effect": [
+          10.564024786751766,
+          6.0199212630587065,
+          15.500532713258554
+        ],
+        "n": 120,
+        "used": 35,
+        "lost": 3,
+        "large": 1,
+        "coverage": 0.2916666666666667,
+        "risk_upper": 0.25263499993442573,
+        "worst": -49.87020333254374,
+        "passed": false
+      },
+      "renewal_using_equal_budget": {
+        "effect": [
+          27.76894904673068,
+          18.206716276527942,
+          37.76796293398506
+        ],
+        "n": 120,
+        "used": 91,
+        "lost": 15,
+        "large": 11,
+        "coverage": 0.7583333333333333,
+        "risk_upper": 0.2708202123850319,
+        "worst": -49.87020333254374,
+        "passed": false
+      },
+      "equal_budget_using_renewal": {
+        "effect": [
+          6.85394018557126,
+          3.1466113433135705,
+          11.020953725308953
+        ],
+        "n": 120,
+        "used": 18,
+        "lost": 1,
+        "large": 0,
+        "coverage": 0.15,
+        "risk_upper": 0.3058658518006273,
+        "worst": -3.180360725651129,
+        "passed": false
+      },
+      "equal_budget_using_equal_budget": {
+        "effect": [
+          28.88192936425936,
+          19.59081383063311,
+          38.68749160021294
+        ],
+        "n": 120,
+        "used": 92,
+        "lost": 15,
+        "large": 11,
+        "coverage": 0.7666666666666667,
+        "risk_upper": 0.2680686314522128,
+        "worst": -80.67494277649575,
+        "passed": false
+      },
+      "one_stage_using_renewal": {
+        "effect": [
+          9.7454904697978,
+          5.246038821517841,
+          14.523086026032422
+        ],
+        "n": 120,
+        "used": 31,
+        "lost": 2,
+        "large": 1,
+        "coverage": 0.25833333333333336,
+        "risk_upper": 0.23741879552412545,
+        "worst": -49.87020333254374,
+        "passed": false
+      },
+      "one_stage_using_equal_budget": {
+        "effect": [
+          30.441716877977424,
+          20.314555564648508,
+          41.081195100031096
+        ],
+        "n": 120,
+        "used": 92,
+        "lost": 15,
+        "large": 10,
+        "coverage": 0.7666666666666667,
+        "risk_upper": 0.2680686314522128,
+        "worst": -80.67494277649575,
+        "passed": false
+      }
+    },
+    "fixed_quota_diff": [
+      1.2346666375422304,
+      -0.37365187665109356,
+      3.30771753096083
+    ],
+    "same_cutoff_diff": {
+      "renewal": [
+        3.7100846011805078,
+        0.8519230197129071,
+        7.046395463903913
+      ],
+      "equal_budget": [
+        -1.112980317528681,
+        -8.03681944977695,
+        5.656470126254513
+      ]
+    },
+    "tails": {
+      "worst_accepted": {
+        "seed": 250051,
+        "t": 39,
+        "seat": 1,
+        "arm": 1,
+        "group": "unseen",
+        "predicted_conditional_risk": 0.09978318845506348,
+        "periods": [
+          8.55066583,
+          -4.903700608842343,
+          -53.517168553701396
+        ],
+        "total": -49.87020333254374,
+        "renewals": [
+          {
+            "t": 43,
+            "requested_arm_keep": [
+              5.6935,
+              5.9251
+            ],
+            "observed_log_effect": -0.03987239124737723,
+            "predicted_log_effect": -0.05539984826385251
+          },
+          {
+            "t": 47,
+            "requested_arm_keep": [
+              5.820301000000001,
+              6.065797
+            ],
+            "observed_log_effect": -0.04131396487139437,
+            "predicted_log_effect": -0.05133087966199976
+          }
+        ]
+      },
+      "worst_rejected_cut": {
+        "seed": 250060,
+        "t": 27,
+        "seat": 2,
+        "arm": 1,
+        "group": "unseen",
+        "predicted_conditional_risk": 0.30645224278036776,
+        "periods": [
+          6.698678299999997,
+          3.659971698402055,
+          -91.0335927748978
+        ],
+        "total": -80.67494277649575,
+        "renewals": [
+          {
+            "t": 31,
+            "requested_arm_keep": [
+              5.037299999999999,
+              5.517792
+            ],
+            "observed_log_effect": -0.09110755601626813,
+            "predicted_log_effect": -0.03318309668196054
+          },
+          {
+            "t": 35,
+            "requested_arm_keep": [
+              4.960872,
+              5.3267999999999995
+            ],
+            "observed_log_effect": -0.07116915090954687,
+            "predicted_log_effect": -0.03857814154107363
+          }
+        ]
+      }
+    },
+    "abstention": {
+      "evaluable": 120,
+      "actual_best_to_keep": 24,
+      "rejected": 85,
+      "correct_rejections": 21,
+      "missed_profitable_actions": 64,
+      "profitable_move_value_missed": 3711.844809812236,
+      "harmful_to_act_and_not_rejected": 3,
+      "hindsight_oracle": [
+        42.14770379045762,
+        32.46602150479292,
+        53.45090476094733
+      ],
+      "regret_to_oracle": [
+        31.583679003705853,
+        21.78902483886099,
+        43.4061820040092
+      ]
+    },
+    "nominal_ten_percent": {
+      "effect": [
+        10.564024786751766,
+        6.0199212630587065,
+        15.500532713258554
+      ],
+      "n": 120,
+      "used": 35,
+      "lost": 3,
+      "large": 1,
+      "coverage": 0.2916666666666667,
+      "risk_upper": 0.25263499993442573,
+      "worst": -49.87020333254374,
+      "passed": false
+    }
+  },
+  "native": {
+    "quota": 27,
+    "eligible": 107,
+    "fixed_quota": {
+      "renewal": {
+        "effect": [
+          31865.27179569193,
+          -1195.864190083835,
+          75457.23485277274
+        ],
+        "n": 120,
+        "used": 22,
+        "lost": 7,
+        "large": 5,
+        "coverage": 0.18333333333333332,
+        "risk_upper": 0.5780727879023818,
+        "worst": -450666.663633839,
+        "passed": false
+      },
+      "equal_budget": {
+        "effect": [
+          55071.628228577254,
+          15335.274598988668,
+          104405.78505238122
+        ],
+        "n": 120,
+        "used": 24,
+        "lost": 7,
+        "large": 4,
+        "coverage": 0.2,
+        "risk_upper": 0.5395638493217612,
+        "worst": -310180.36832856503,
+        "passed": false
+      },
+      "one_stage": {
+        "effect": [
+          43830.81294339749,
+          8947.488514119705,
+          89224.70585482352
+        ],
+        "n": 120,
+        "used": 23,
+        "lost": 5,
+        "large": 3,
+        "coverage": 0.19166666666666668,
+        "risk_upper": 0.46681400936888684,
+        "worst": -450666.663633839,
+        "passed": false
+      },
+      "random": {
+        "effect": [
+          41685.08413916103,
+          1413.9645130860092,
+          87274.70507398286
+        ],
+        "n": 120,
+        "used": 26,
+        "lost": 10,
+        "large": 9,
+        "coverage": 0.21666666666666667,
+        "risk_upper": 0.620564598703393,
+        "worst": -778192.3848571938,
+        "passed": false
+      }
+    },
+    "same_threshold": {
+      "renewal_using_renewal": {
+        "effect": [
+          154225.1886067268,
+          46518.056955584325,
+          261378.50649592406
+        ],
+        "n": 120,
+        "used": 75,
+        "lost": 23,
+        "large": 19,
+        "coverage": 0.625,
+        "risk_upper": 0.440140403816053,
+        "worst": -2113995.122013262,
+        "passed": false
+      },
+      "renewal_using_equal_budget": {
+        "effect": [
+          140752.04211325312,
+          50636.24359383199,
+          238005.7294204451
+        ],
+        "n": 120,
+        "used": 61,
+        "lost": 17,
+        "large": 13,
+        "coverage": 0.5083333333333333,
+        "risk_upper": 0.4263647179013633,
+        "worst": -1886546.1043353458,
+        "passed": false
+      },
+      "equal_budget_using_renewal": {
+        "effect": [
+          140788.80124209318,
+          38498.98704586427,
+          245044.90918635743
+        ],
+        "n": 120,
+        "used": 66,
+        "lost": 17,
+        "large": 13,
+        "coverage": 0.55,
+        "risk_upper": 0.39732082839528216,
+        "worst": -2113995.122013262,
+        "passed": false
+      },
+      "equal_budget_using_equal_budget": {
+        "effect": [
+          117812.16169193173,
+          18538.883242475385,
+          217869.0058439995
+        ],
+        "n": 120,
+        "used": 58,
+        "lost": 16,
+        "large": 12,
+        "coverage": 0.48333333333333334,
+        "risk_upper": 0.42751406195796765,
+        "worst": -2113995.122013262,
+        "passed": false
+      },
+      "one_stage_using_renewal": {
+        "effect": [
+          167167.05096134625,
+          70966.98409744512,
+          268226.6204949381
+        ],
+        "n": 120,
+        "used": 73,
+        "lost": 21,
+        "large": 17,
+        "coverage": 0.6083333333333333,
+        "risk_upper": 0.42201851046457933,
+        "worst": -1886546.1043353458,
+        "passed": false
+      },
+      "one_stage_using_equal_budget": {
+        "effect": [
+          152102.17391551653,
+          66084.84960988082,
+          245477.5898295041
+        ],
+        "n": 120,
+        "used": 62,
+        "lost": 16,
+        "large": 12,
+        "coverage": 0.5166666666666667,
+        "risk_upper": 0.4028177500775427,
+        "worst": -1886546.1043353458,
+        "passed": false
+      }
+    },
+    "fixed_quota_diff": [
+      -23206.356432885324,
+      -70338.361328946,
+      21403.176760805796
+    ],
+    "same_cutoff_diff": {
+      "renewal": [
+        13436.387364633598,
+        -15584.797078877973,
+        50583.69321655269
+      ],
+      "equal_budget": [
+        22939.880421321424,
+        -44506.50519941802,
+        96841.66956538253
+      ]
+    },
+    "tails": {
+      "worst_accepted": {
+        "seed": 251008,
+        "t": 23,
+        "seat": 0,
+        "arm": 1,
+        "group": "balanced",
+        "predicted_conditional_risk": 0.33565322141826476,
+        "periods": [
+          -31007.406753929983,
+          -40691.787295368595,
+          -2042295.9279639637
+        ],
+        "total": -2113995.122013262,
+        "renewals": [
+          {
+            "t": 27,
+            "requested_arm_keep": [
+              11244.295800000002,
+              11712.243600000002
+            ],
+            "observed_log_effect": -0.040773796120803424,
+            "predicted_log_effect": -0.03211677668633369
+          },
+          {
+            "t": 31,
+            "requested_arm_keep": [
+              11172.0384,
+              11637.043199999998
+            ],
+            "observed_log_effect": -0.040779304174670246,
+            "predicted_log_effect": -0.029169974474671005
+          }
+        ]
+      },
+      "worst_rejected_cut": {
+        "seed": 251086,
+        "t": 43,
+        "seat": 0,
+        "arm": 1,
+        "group": "random",
+        "predicted_conditional_risk": 0.4656822090831838,
+        "periods": [
+          -89236.96219631996,
+          -146771.29777891573,
+          -114218.42681475743
+        ],
+        "total": -350226.68678999314,
+        "renewals": [
+          {
+            "t": 47,
+            "requested_arm_keep": [
+              10694.1168,
+              11139.249599999997
+            ],
+            "observed_log_effect": -0.04078111288929508,
+            "predicted_log_effect": -0.032871821071202977
+          },
+          {
+            "t": 51,
+            "requested_arm_keep": [
+              10182.826799999999,
+              10606.5558
+            ],
+            "observed_log_effect": -0.040769627336513056,
+            "predicted_log_effect": -0.035237337277289005
+          }
+        ]
+      }
+    },
+    "abstention": {
+      "evaluable": 103,
+      "actual_best_to_keep": 29,
+      "rejected": 25,
+      "correct_rejections": 8,
+      "missed_profitable_actions": 17,
+      "profitable_move_value_missed": 4894040.963472759,
+      "harmful_to_act_and_not_rejected": 21,
+      "hindsight_oracle": [
+        263041.130227445,
+        181443.56568569466,
+        354651.90962791175
+      ],
+      "regret_to_oracle": [
+        108815.9416207182,
+        56198.50970225277,
+        178520.89489824296
+      ]
+    },
+    "nominal_ten_percent": {
+      "effect": [
+        358.3998585025198,
+        -8420.142638497748,
+        7369.110148550178
+      ],
+      "n": 120,
+      "used": 11,
+      "lost": 4,
+      "large": 2,
+      "coverage": 0.09166666666666666,
+      "risk_upper": 0.727519151462408,
+      "worst": -310180.36832856503,
+      "passed": false
+    }
+  }
+}

@@ -1,0 +1,1200 @@
+{
+  "econ": {
+    "policies": {
+      "keep": {
+        "effect": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "n": 120,
+        "used": 0,
+        "lost": 0,
+        "large": 0,
+        "coverage": 0.0,
+        "risk_upper": null,
+        "worst": 0.0,
+        "passed": false,
+        "rejected": 120,
+        "rejected_cut_wins": 94,
+        "rejected_cut_losses": 26,
+        "rejected_cut_gains": 4770.67593372641,
+        "rejected_cut_downside": 714.9980325913862,
+        "paired_vs_cut": [
+          -33.79731584279187,
+          -45.5292599198958,
+          -22.40263517728176
+        ],
+        "paired_vs_equal_budget": [
+          -28.88192936425936,
+          -38.68749160021294,
+          -19.59081383063311
+        ],
+        "by_personality": {
+          "balanced": {
+            "effect": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "n": 40,
+            "used": 0,
+            "lost": 0,
+            "large": 0,
+            "coverage": 0.0,
+            "risk_upper": null,
+            "worst": 0.0,
+            "passed": false
+          },
+          "unseen": {
+            "effect": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "n": 40,
+            "used": 0,
+            "lost": 0,
+            "large": 0,
+            "coverage": 0.0,
+            "risk_upper": null,
+            "worst": 0.0,
+            "passed": false
+          },
+          "random": {
+            "effect": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "n": 40,
+            "used": 0,
+            "lost": 0,
+            "large": 0,
+            "coverage": 0.0,
+            "risk_upper": null,
+            "worst": 0.0,
+            "passed": false
+          }
+        }
+      },
+      "fixed_cut": {
+        "effect": [
+          33.79731584279187,
+          22.40263517728176,
+          45.5292599198958
+        ],
+        "n": 120,
+        "used": 120,
+        "lost": 26,
+        "large": 20,
+        "coverage": 1.0,
+        "risk_upper": 0.31332161091875865,
+        "worst": -80.67494277649575,
+        "passed": false,
+        "rejected": 0,
+        "rejected_cut_wins": 0,
+        "rejected_cut_losses": 0,
+        "rejected_cut_gains": 0,
+        "rejected_cut_downside": 0,
+        "paired_vs_cut": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "paired_vs_equal_budget": [
+          4.9153864785325085,
+          -0.8150511372165209,
+          12.420569296189761
+        ],
+        "by_personality": {
+          "balanced": {
+            "effect": [
+              38.935083635591766,
+              16.44662855741212,
+              66.23268564755028
+            ],
+            "n": 40,
+            "used": 40,
+            "lost": 11,
+            "large": 9,
+            "coverage": 1.0,
+            "risk_upper": 0.46133785038210223,
+            "worst": -49.03869193464505,
+            "passed": false
+          },
+          "unseen": {
+            "effect": [
+              25.90270229715032,
+              10.066196245894496,
+              41.280140380297524
+            ],
+            "n": 40,
+            "used": 40,
+            "lost": 8,
+            "large": 7,
+            "coverage": 1.0,
+            "risk_upper": 0.37868307349997216,
+            "worst": -80.67494277649575,
+            "passed": false
+          },
+          "random": {
+            "effect": [
+              36.55416159563352,
+              20.796648176734728,
+              53.11022953969577
+            ],
+            "n": 40,
+            "used": 40,
+            "lost": 7,
+            "large": 4,
+            "coverage": 1.0,
+            "risk_upper": 0.3497581802998809,
+            "worst": -47.38239077742959,
+            "passed": false
+          }
+        }
+      },
+      "renewal": {
+        "effect": [
+          10.564024786751766,
+          6.0199212630587065,
+          15.500532713258554
+        ],
+        "n": 120,
+        "used": 35,
+        "lost": 3,
+        "large": 1,
+        "coverage": 0.2916666666666667,
+        "risk_upper": 0.25263499993442573,
+        "worst": -49.87020333254374,
+        "passed": false,
+        "rejected": 85,
+        "rejected_cut_wins": 62,
+        "rejected_cut_losses": 23,
+        "rejected_cut_gains": 3447.1676278536916,
+        "rejected_cut_downside": 659.1727011288792,
+        "paired_vs_cut": [
+          -23.233291056040102,
+          -34.94776398814254,
+          -12.483701306713847
+        ],
+        "paired_vs_equal_budget": [
+          -18.317904577507594,
+          -28.26024901443943,
+          -9.507102167906012
+        ],
+        "by_personality": {
+          "balanced": {
+            "effect": [
+              8.316303551369142,
+              2.060138041505603,
+              15.99764613198549
+            ],
+            "n": 40,
+            "used": 8,
+            "lost": 0,
+            "large": 0,
+            "coverage": 0.2,
+            "risk_upper": 0.4217525162283793,
+            "worst": 0.0,
+            "passed": false
+          },
+          "unseen": {
+            "effect": [
+              12.15616442376116,
+              3.093622429439534,
+              22.35302247509317
+            ],
+            "n": 40,
+            "used": 14,
+            "lost": 1,
+            "large": 1,
+            "coverage": 0.35,
+            "risk_upper": 0.3772910965393045,
+            "worst": -49.87020333254374,
+            "passed": false
+          },
+          "random": {
+            "effect": [
+              11.219606385124997,
+              4.448060485668905,
+              19.054599339231107
+            ],
+            "n": 40,
+            "used": 13,
+            "lost": 2,
+            "large": 0,
+            "coverage": 0.325,
+            "risk_upper": 0.49421401942385657,
+            "worst": -3.180360725651129,
+            "passed": false
+          }
+        }
+      },
+      "equal_budget": {
+        "effect": [
+          28.88192936425936,
+          19.59081383063311,
+          38.68749160021294
+        ],
+        "n": 120,
+        "used": 92,
+        "lost": 15,
+        "large": 11,
+        "coverage": 0.7666666666666667,
+        "risk_upper": 0.2680686314522128,
+        "worst": -80.67494277649575,
+        "passed": false,
+        "rejected": 28,
+        "rejected_cut_wins": 17,
+        "rejected_cut_losses": 11,
+        "rejected_cut_gains": 894.4115056922464,
+        "rejected_cut_downside": 304.56512826834535,
+        "paired_vs_cut": [
+          -4.9153864785325085,
+          -12.420569296189761,
+          0.8150511372165209
+        ],
+        "paired_vs_equal_budget": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "by_personality": {
+          "balanced": {
+            "effect": [
+              34.67275163758175,
+              15.412605439988841,
+              60.3680274997731
+            ],
+            "n": 40,
+            "used": 27,
+            "lost": 5,
+            "large": 4,
+            "coverage": 0.675,
+            "risk_upper": 0.4082317369826007,
+            "worst": -37.6224425860534,
+            "passed": false
+          },
+          "unseen": {
+            "effect": [
+              24.69207991449331,
+              9.767182042748852,
+              38.968770277954164
+            ],
+            "n": 40,
+            "used": 32,
+            "lost": 4,
+            "large": 4,
+            "coverage": 0.8,
+            "risk_upper": 0.31420695115770125,
+            "worst": -80.67494277649575,
+            "passed": false
+          },
+          "random": {
+            "effect": [
+              27.280956540703034,
+              14.714569668503845,
+              39.98829864658025
+            ],
+            "n": 40,
+            "used": 33,
+            "lost": 6,
+            "large": 3,
+            "coverage": 0.825,
+            "risk_upper": 0.37913985873736106,
+            "worst": -47.38239077742959,
+            "passed": false
+          }
+        }
+      },
+      "one_stage": {
+        "effect": [
+          13.170809808707338,
+          7.8829962852113855,
+          18.748668993326387
+        ],
+        "n": 120,
+        "used": 48,
+        "lost": 6,
+        "large": 4,
+        "coverage": 0.4,
+        "risk_upper": 0.271428074826993,
+        "worst": -49.87020333254374,
+        "passed": false,
+        "rejected": 72,
+        "rejected_cut_wins": 52,
+        "rejected_cut_losses": 20,
+        "rejected_cut_gains": 3046.776819228968,
+        "rejected_cut_downside": 571.5960951388245,
+        "paired_vs_cut": [
+          -20.62650603408453,
+          -32.22005007297793,
+          -10.311935926344821
+        ],
+        "paired_vs_equal_budget": [
+          -15.711119555552022,
+          -25.332875376917087,
+          -7.545302260002562
+        ],
+        "by_personality": {
+          "balanced": {
+            "effect": [
+              9.968658083376752,
+              3.1623462060396488,
+              18.06766120690077
+            ],
+            "n": 40,
+            "used": 11,
+            "lost": 1,
+            "large": 1,
+            "coverage": 0.275,
+            "risk_upper": 0.4565763620479956,
+            "worst": -8.06950232699297,
+            "passed": false
+          },
+          "unseen": {
+            "effect": [
+              15.033388330194754,
+              3.9387109584208524,
+              27.041983738221564
+            ],
+            "n": 40,
+            "used": 17,
+            "lost": 2,
+            "large": 2,
+            "coverage": 0.425,
+            "risk_upper": 0.39929631823097333,
+            "worst": -49.87020333254374,
+            "passed": false
+          },
+          "random": {
+            "effect": [
+              14.510383012550506,
+              6.652635913493375,
+              22.897218879670344
+            ],
+            "n": 40,
+            "used": 20,
+            "lost": 3,
+            "large": 1,
+            "coverage": 0.5,
+            "risk_upper": 0.41098245820688856,
+            "worst": -38.70399895331345,
+            "passed": false
+          }
+        }
+      },
+      "known_renewal": {
+        "effect": [
+          34.66555778720422,
+          24.683923114712833,
+          45.76921191902942
+        ],
+        "n": 120,
+        "used": 88,
+        "lost": 6,
+        "large": 4,
+        "coverage": 0.7333333333333333,
+        "risk_upper": 0.1540681873994024,
+        "worst": -80.67494277649575,
+        "passed": false,
+        "rejected": 32,
+        "rejected_cut_wins": 12,
+        "rejected_cut_losses": 20,
+        "rejected_cut_gains": 386.502469909209,
+        "rejected_cut_downside": 490.6915032386913,
+        "paired_vs_cut": [
+          0.8682419444123521,
+          -3.047736865241074,
+          4.389994763474061
+        ],
+        "paired_vs_equal_budget": [
+          5.783628422944861,
+          0.4239528879197502,
+          12.821610106583083
+        ],
+        "by_personality": {
+          "balanced": {
+            "effect": [
+              43.91149354805725,
+              23.70297294153458,
+              70.10636201049388
+            ],
+            "n": 40,
+            "used": 26,
+            "lost": 0,
+            "large": 0,
+            "coverage": 0.65,
+            "risk_upper": 0.15510209883516124,
+            "worst": 0.0,
+            "passed": false
+          },
+          "unseen": {
+            "effect": [
+              24.331036691682762,
+              10.325198245277207,
+              38.48229449534965
+            ],
+            "n": 40,
+            "used": 29,
+            "lost": 3,
+            "large": 3,
+            "coverage": 0.725,
+            "risk_upper": 0.2988401666017596,
+            "worst": -80.67494277649575,
+            "passed": false
+          },
+          "random": {
+            "effect": [
+              35.75414312187265,
+              21.666988511934495,
+              51.65970382342114
+            ],
+            "n": 40,
+            "used": 33,
+            "lost": 3,
+            "large": 1,
+            "coverage": 0.825,
+            "risk_upper": 0.26637508452997943,
+            "worst": -38.70399895331345,
+            "passed": false
+          }
+        }
+      }
+    },
+    "risk_brier_changed_arms": {
+      "renewal": 0.13538279565461758,
+      "equal_budget": 0.13661857933361002,
+      "one_stage": 0.13509640845713708,
+      "known_renewal": 0.09914034336844331
+    },
+    "trajectory": {
+      "cut_renewal_1": {
+        "continuing": 120,
+        "nonzero_price_effects": 120,
+        "price_forecast_mae": [
+          0.02837253100860412,
+          0.022871740996641503,
+          0.03432570310079
+        ],
+        "price_no_change_mae": [
+          0.048187932593517974,
+          0.04264047316868059,
+          0.05376251775127217
+        ],
+        "price_historical_mean_mae": [
+          0.029068725627872535,
+          0.023258504476077052,
+          0.035552172758057124
+        ],
+        "paired_error_vs_zero": [
+          -0.01981540158491386,
+          -0.025050757418827327,
+          -0.014431249314928642
+        ],
+        "paired_error_vs_mean": [
+          -0.0006961946192684122,
+          -0.0027636610771553417,
+          0.001412015042828361
+        ],
+        "availability_rmse": 0.0,
+        "availability_no_change_rmse": 0.0
+      },
+      "cut_renewal_2": {
+        "continuing": 120,
+        "nonzero_price_effects": 120,
+        "price_forecast_mae": [
+          0.030870402130138443,
+          0.024103977517030736,
+          0.0382019201770493
+        ],
+        "price_no_change_mae": [
+          0.04818148165536213,
+          0.04132252766696326,
+          0.055403568521752086
+        ],
+        "price_historical_mean_mae": [
+          0.030063576571640084,
+          0.022732108025143694,
+          0.03795073660030747
+        ],
+        "paired_error_vs_zero": [
+          -0.017311079525223684,
+          -0.02284946973279125,
+          -0.011598645078811722
+        ],
+        "paired_error_vs_mean": [
+          0.0008068255584983652,
+          -0.0012610100776386836,
+          0.002768941513615165
+        ],
+        "availability_rmse": 0.0,
+        "availability_no_change_rmse": 0.0
+      },
+      "raise_renewal_1": {
+        "continuing": 120,
+        "nonzero_price_effects": 120,
+        "price_forecast_mae": [
+          0.021860242936930806,
+          0.01658880939557609,
+          0.027682108548716274
+        ],
+        "price_no_change_mae": [
+          0.04190978068812975,
+          0.03847184653803011,
+          0.04593754258121332
+        ],
+        "price_historical_mean_mae": [
+          0.021175612505673496,
+          0.015683618051464294,
+          0.027176643791128087
+        ],
+        "paired_error_vs_zero": [
+          -0.02004953775119894,
+          -0.025272004301981413,
+          -0.014344491249266235
+        ],
+        "paired_error_vs_mean": [
+          0.0006846304312573111,
+          -0.0002867767320305899,
+          0.0016750515779025504
+        ],
+        "availability_rmse": 0.0,
+        "availability_no_change_rmse": 0.0
+      },
+      "raise_renewal_2": {
+        "continuing": 120,
+        "nonzero_price_effects": 120,
+        "price_forecast_mae": [
+          0.024944234277558538,
+          0.01872012848254976,
+          0.03201761269771142
+        ],
+        "price_no_change_mae": [
+          0.045067006825476964,
+          0.04036236825956178,
+          0.05048599831920231
+        ],
+        "price_historical_mean_mae": [
+          0.02509906952488518,
+          0.01879743569486163,
+          0.032282510812683796
+        ],
+        "paired_error_vs_zero": [
+          -0.020122772547918423,
+          -0.025040476017367527,
+          -0.014809817970393763
+        ],
+        "paired_error_vs_mean": [
+          -0.0001548352473266433,
+          -0.0011901834722493983,
+          0.0009285209400029561
+        ],
+        "availability_rmse": 0.0,
+        "availability_no_change_rmse": 0.0
+      }
+    },
+    "incremental_changed_choices": 57
+  },
+  "native": {
+    "policies": {
+      "keep": {
+        "effect": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "n": 120,
+        "used": 0,
+        "lost": 0,
+        "large": 0,
+        "coverage": 0.0,
+        "risk_upper": null,
+        "worst": 0.0,
+        "passed": false,
+        "rejected": 120,
+        "rejected_cut_wins": 67,
+        "rejected_cut_losses": 33,
+        "rejected_cut_gains": 30574200.619907916,
+        "rejected_cut_downside": 9067354.93873424,
+        "paired_vs_cut": [
+          -179223.71400978058,
+          -284433.11392667243,
+          -69821.80100805982
+        ],
+        "paired_vs_equal_budget": [
+          -117812.16169193173,
+          -217869.0058439995,
+          -18538.883242475385
+        ],
+        "by_personality": {
+          "balanced": {
+            "effect": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "n": 40,
+            "used": 0,
+            "lost": 0,
+            "large": 0,
+            "coverage": 0.0,
+            "risk_upper": null,
+            "worst": 0.0,
+            "passed": false
+          },
+          "unseen": {
+            "effect": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "n": 40,
+            "used": 0,
+            "lost": 0,
+            "large": 0,
+            "coverage": 0.0,
+            "risk_upper": null,
+            "worst": 0.0,
+            "passed": false
+          },
+          "random": {
+            "effect": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "n": 40,
+            "used": 0,
+            "lost": 0,
+            "large": 0,
+            "coverage": 0.0,
+            "risk_upper": null,
+            "worst": 0.0,
+            "passed": false
+          }
+        }
+      },
+      "fixed_cut": {
+        "effect": [
+          179223.71400978058,
+          69821.80100805982,
+          284433.11392667243
+        ],
+        "n": 120,
+        "used": 100,
+        "lost": 33,
+        "large": 27,
+        "coverage": 0.8333333333333334,
+        "risk_upper": 0.44527650497764554,
+        "worst": -2113995.122013262,
+        "passed": false,
+        "rejected": 13,
+        "rejected_cut_wins": 0,
+        "rejected_cut_losses": 0,
+        "rejected_cut_gains": 0.0,
+        "rejected_cut_downside": 0.0,
+        "paired_vs_cut": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "paired_vs_equal_budget": [
+          61411.55231784888,
+          18098.69228824464,
+          112310.69880914385
+        ],
+        "by_personality": {
+          "balanced": {
+            "effect": [
+              308846.8874133107,
+              36972.19134823088,
+              574242.452097406
+            ],
+            "n": 40,
+            "used": 37,
+            "lost": 12,
+            "large": 12,
+            "coverage": 0.925,
+            "risk_upper": 0.5210043176614113,
+            "worst": -2113995.122013262,
+            "passed": false
+          },
+          "unseen": {
+            "effect": [
+              161503.32246925103,
+              27550.818487489727,
+              312977.51778867893
+            ],
+            "n": 40,
+            "used": 32,
+            "lost": 10,
+            "large": 9,
+            "coverage": 0.8,
+            "risk_upper": 0.5249571555746899,
+            "worst": -778192.3848571938,
+            "passed": false
+          },
+          "random": {
+            "effect": [
+              67320.93214678012,
+              -97609.8411109548,
+              198182.7115465703
+            ],
+            "n": 40,
+            "used": 31,
+            "lost": 11,
+            "large": 6,
+            "coverage": 0.775,
+            "risk_upper": 0.5711240382159007,
+            "worst": -1886546.1043353458,
+            "passed": false
+          }
+        }
+      },
+      "renewal": {
+        "effect": [
+          154225.1886067268,
+          46518.056955584325,
+          261378.50649592406
+        ],
+        "n": 120,
+        "used": 75,
+        "lost": 23,
+        "large": 19,
+        "coverage": 0.625,
+        "risk_upper": 0.440140403816053,
+        "worst": -2113995.122013262,
+        "passed": false,
+        "rejected": 38,
+        "rejected_cut_wins": 15,
+        "rejected_cut_losses": 10,
+        "rejected_cut_gains": 4377439.532549033,
+        "rejected_cut_downside": 1377616.4841825769,
+        "paired_vs_cut": [
+          -24998.525403053805,
+          -54578.62677743796,
+          334.4615818422441
+        ],
+        "paired_vs_equal_budget": [
+          36413.02691479507,
+          2734.475650367254,
+          81016.49919121632
+        ],
+        "by_personality": {
+          "balanced": {
+            "effect": [
+              274017.9215576613,
+              1079.4120825940036,
+              539291.5978208067
+            ],
+            "n": 40,
+            "used": 29,
+            "lost": 10,
+            "large": 10,
+            "coverage": 0.725,
+            "risk_upper": 0.5689931172202394,
+            "worst": -2113995.122013262,
+            "passed": false
+          },
+          "unseen": {
+            "effect": [
+              146807.10924710822,
+              24165.479176063982,
+              293279.0903991449
+            ],
+            "n": 40,
+            "used": 26,
+            "lost": 6,
+            "large": 5,
+            "coverage": 0.65,
+            "risk_upper": 0.4644493220161418,
+            "worst": -778192.3848571938,
+            "passed": false
+          },
+          "random": {
+            "effect": [
+              41850.535015410875,
+              -117025.26836024562,
+              167803.78885093724
+            ],
+            "n": 40,
+            "used": 20,
+            "lost": 7,
+            "large": 4,
+            "coverage": 0.5,
+            "risk_upper": 0.6220638346380931,
+            "worst": -1886546.1043353458,
+            "passed": false
+          }
+        }
+      },
+      "equal_budget": {
+        "effect": [
+          117812.16169193173,
+          18538.883242475385,
+          217869.0058439995
+        ],
+        "n": 120,
+        "used": 58,
+        "lost": 16,
+        "large": 12,
+        "coverage": 0.48333333333333334,
+        "risk_upper": 0.42751406195796765,
+        "worst": -2113995.122013262,
+        "passed": false,
+        "rejected": 55,
+        "rejected_cut_wins": 25,
+        "rejected_cut_losses": 17,
+        "rejected_cut_gains": 9882438.963683648,
+        "rejected_cut_downside": 2513052.6855417825,
+        "paired_vs_cut": [
+          -61411.55231784888,
+          -112310.69880914385,
+          -18098.69228824464
+        ],
+        "paired_vs_equal_budget": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "by_personality": {
+          "balanced": {
+            "effect": [
+              271970.0418508182,
+              5394.3964822490025,
+              532734.4824063807
+            ],
+            "n": 40,
+            "used": 22,
+            "lost": 5,
+            "large": 5,
+            "coverage": 0.55,
+            "risk_upper": 0.48409439899802076,
+            "worst": -2113995.122013262,
+            "passed": false
+          },
+          "unseen": {
+            "effect": [
+              75109.65121686483,
+              -25196.30739137187,
+              187718.65861193486
+            ],
+            "n": 40,
+            "used": 21,
+            "lost": 5,
+            "large": 4,
+            "coverage": 0.525,
+            "risk_upper": 0.5026517676220732,
+            "worst": -778192.3848571938,
+            "passed": false
+          },
+          "random": {
+            "effect": [
+              6356.792008112215,
+              -142472.82185374163,
+              115405.43211925539
+            ],
+            "n": 40,
+            "used": 15,
+            "lost": 6,
+            "large": 3,
+            "coverage": 0.375,
+            "risk_upper": 0.70852150885235,
+            "worst": -1886546.1043353458,
+            "passed": false
+          }
+        }
+      },
+      "one_stage": {
+        "effect": [
+          167167.05096134625,
+          70966.98409744512,
+          268226.6204949381
+        ],
+        "n": 120,
+        "used": 73,
+        "lost": 21,
+        "large": 17,
+        "coverage": 0.6083333333333333,
+        "risk_upper": 0.42201851046457933,
+        "worst": -1886546.1043353458,
+        "passed": false,
+        "rejected": 40,
+        "rejected_cut_wins": 15,
+        "rejected_cut_losses": 12,
+        "rejected_cut_gains": 5127896.970953909,
+        "rejected_cut_downside": 3681097.4051417867,
+        "paired_vs_cut": [
+          -12056.663048434351,
+          -60394.356021150794,
+          43809.899379898445
+        ],
+        "paired_vs_equal_budget": [
+          49354.889269414525,
+          -2187.3481255197553,
+          118444.32880954375
+        ],
+        "by_personality": {
+          "balanced": {
+            "effect": [
+              299144.6174680293,
+              93702.1209938621,
+              531606.5400019182
+            ],
+            "n": 40,
+            "used": 27,
+            "lost": 9,
+            "large": 9,
+            "coverage": 0.675,
+            "risk_upper": 0.5662647497544399,
+            "worst": -597459.8922400804,
+            "passed": false
+          },
+          "unseen": {
+            "effect": [
+              152477.60852609962,
+              31010.16407639099,
+              300230.01206897455
+            ],
+            "n": 40,
+            "used": 25,
+            "lost": 5,
+            "large": 4,
+            "coverage": 0.625,
+            "risk_upper": 0.43561235609577814,
+            "worst": -778192.3848571938,
+            "passed": false
+          },
+          "random": {
+            "effect": [
+              49878.926889909875,
+              -110623.98964078845,
+              175914.0622345603
+            ],
+            "n": 40,
+            "used": 21,
+            "lost": 7,
+            "large": 4,
+            "coverage": 0.525,
+            "risk_upper": 0.599321724802666,
+            "worst": -1886546.1043353458,
+            "passed": false
+          }
+        }
+      },
+      "known_renewal": {
+        "effect": [
+          146199.5762847197,
+          80870.80232132028,
+          218921.67501466285
+        ],
+        "n": 120,
+        "used": 45,
+        "lost": 6,
+        "large": 4,
+        "coverage": 0.375,
+        "risk_upper": 0.28782147363854615,
+        "worst": -350226.68678999314,
+        "passed": false,
+        "rejected": 74,
+        "rejected_cut_wins": 28,
+        "rejected_cut_losses": 27,
+        "rejected_cut_gains": 12408070.406367391,
+        "rejected_cut_downside": 8445173.879360085,
+        "paired_vs_cut": [
+          -33024.1377250609,
+          -126475.72587119717,
+          55294.30730402137
+        ],
+        "paired_vs_equal_budget": [
+          28387.414592787987,
+          -64506.87893750325,
+          119599.19742693106
+        ],
+        "by_personality": {
+          "balanced": {
+            "effect": [
+              215882.9990585534,
+              83112.5588652898,
+              369452.79754756566
+            ],
+            "n": 40,
+            "used": 16,
+            "lost": 2,
+            "large": 2,
+            "coverage": 0.4,
+            "risk_upper": 0.41953609681893633,
+            "worst": -57447.35398830677,
+            "passed": false
+          },
+          "unseen": {
+            "effect": [
+              129213.22946814359,
+              36035.81890245948,
+              250740.17768195595
+            ],
+            "n": 40,
+            "used": 14,
+            "lost": 1,
+            "large": 1,
+            "coverage": 0.35,
+            "risk_upper": 0.3772910965393045,
+            "worst": -159271.1336120397,
+            "passed": false
+          },
+          "random": {
+            "effect": [
+              93502.5003274622,
+              17914.78199175799,
+              187536.56226621405
+            ],
+            "n": 40,
+            "used": 15,
+            "lost": 3,
+            "large": 1,
+            "coverage": 0.375,
+            "risk_upper": 0.5175206867742024,
+            "worst": -350226.68678999314,
+            "passed": false
+          }
+        }
+      }
+    },
+    "risk_brier_changed_arms": {
+      "renewal": 0.20671272141178573,
+      "equal_budget": 0.19700866897810776,
+      "one_stage": 0.19969098923853165,
+      "known_renewal": 0.16484073525181947
+    },
+    "trajectory": {
+      "cut_renewal_1": {
+        "continuing": 103,
+        "nonzero_price_effects": 98,
+        "price_forecast_mae": [
+          0.02812590114427257,
+          0.02186280812989337,
+          0.03507042865139594
+        ],
+        "price_no_change_mae": [
+          0.05049133241147843,
+          0.04381773802931879,
+          0.057691885699759096
+        ],
+        "price_historical_mean_mae": [
+          0.02960194025332408,
+          0.023636350539795334,
+          0.03633691733104708
+        ],
+        "paired_error_vs_zero": [
+          -0.02236543126720587,
+          -0.02727340732803761,
+          -0.016848342051506586
+        ],
+        "paired_error_vs_mean": [
+          -0.0014760391090515121,
+          -0.002869687635380325,
+          4.829773749902709e-05
+        ],
+        "availability_rmse": 0.007955068650595974,
+        "availability_no_change_rmse": 0.0
+      },
+      "cut_renewal_2": {
+        "continuing": 97,
+        "nonzero_price_effects": 93,
+        "price_forecast_mae": [
+          0.035425894811749736,
+          0.027765214254013418,
+          0.0439363063526255
+        ],
+        "price_no_change_mae": [
+          0.050575737606680445,
+          0.042791440970808295,
+          0.05955744591408996
+        ],
+        "price_historical_mean_mae": [
+          0.03567601866732862,
+          0.02841202766620904,
+          0.043898903183584734
+        ],
+        "paired_error_vs_zero": [
+          -0.01514984279493071,
+          -0.020239877254635805,
+          -0.009702981784230997
+        ],
+        "paired_error_vs_mean": [
+          -0.0002501238555788793,
+          -0.0019412285758319836,
+          0.0014729099400024011
+        ],
+        "availability_rmse": 0.12878849842278015,
+        "availability_no_change_rmse": 0.12909944487358055
+      },
+      "raise_renewal_1": {
+        "continuing": 102,
+        "nonzero_price_effects": 100,
+        "price_forecast_mae": [
+          0.027786202821013593,
+          0.02166637383062028,
+          0.03393671091599884
+        ],
+        "price_no_change_mae": [
+          0.04689232164944752,
+          0.04118452801672793,
+          0.053209232620550245
+        ],
+        "price_historical_mean_mae": [
+          0.029202562836217392,
+          0.023526790881010323,
+          0.03522341491732715
+        ],
+        "paired_error_vs_zero": [
+          -0.019106118828433927,
+          -0.02427010264466897,
+          -0.013565605351628256
+        ],
+        "paired_error_vs_mean": [
+          -0.0014163600152037926,
+          -0.003171749137265194,
+          0.0006283082056944575
+        ],
+        "availability_rmse": 0.13002083944065412,
+        "availability_no_change_rmse": 0.12909944487358055
+      },
+      "raise_renewal_2": {
+        "continuing": 97,
+        "nonzero_price_effects": 94,
+        "price_forecast_mae": [
+          0.03699433478998045,
+          0.029406681266178507,
+          0.04595415294366107
+        ],
+        "price_no_change_mae": [
+          0.049028282617425666,
+          0.041010475333342976,
+          0.05864018409907313
+        ],
+        "price_historical_mean_mae": [
+          0.036486222476724124,
+          0.02922870425982118,
+          0.044887172818623075
+        ],
+        "paired_error_vs_zero": [
+          -0.012033947827445221,
+          -0.01853236029345239,
+          -0.00509450366201264
+        ],
+        "paired_error_vs_mean": [
+          0.0005081123132563291,
+          -0.0015057658574958652,
+          0.0025801954645163694
+        ],
+        "availability_rmse": 0.016753519567679398,
+        "availability_no_change_rmse": 0.0
+      }
+    },
+    "incremental_changed_choices": 17
+  }
+}
