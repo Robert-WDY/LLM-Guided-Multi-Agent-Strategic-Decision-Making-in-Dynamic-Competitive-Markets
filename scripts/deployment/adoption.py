@@ -2,7 +2,7 @@
 from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import json
-from urllib.request import Request,urlopen
+from urllib.request import ProxyHandler,Request,build_opener
 
 import numpy as np
 
@@ -39,7 +39,7 @@ def choose(row,m,reverse):
         if path.exists():
             return read(path)
         request=Request(f"http://127.0.0.1:{SOURCES[name][3]}/v1/chat/completions",data=raw,headers={"Content-Type":"application/json"})
-        with urlopen(request,timeout=150) as resp:
+        with build_opener(ProxyHandler({})).open(request,timeout=150) as resp:
             result=json.load(resp)
         letter=result["choices"][0]["message"]["content"].strip()
         assert letter in ("A","B") and result["model"]==name

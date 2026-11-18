@@ -5,7 +5,7 @@ import json
 from threading import Lock
 from time import sleep
 from urllib.error import URLError
-from urllib.request import Request,urlopen
+from urllib.request import ProxyHandler,Request,build_opener
 
 import numpy as np
 
@@ -42,7 +42,7 @@ def number_request(name,m,t,h,d,lo,hi):
         req=Request(f"http://127.0.0.1:{SOURCES[name][3]}/v1/chat/completions",data=data,headers={"Content-Type":"application/json"})
         for attempt in range(4):
             try:
-                with urlopen(req,timeout=120) as resp:
+                with build_opener(ProxyHandler({})).open(req,timeout=120) as resp:
                     result=json.load(resp)
                 break
             except (OSError,URLError):
@@ -109,10 +109,14 @@ def main():
     tasks=[(m,name,start+i) for i in range(192) for m,start in (("econ",140000),("native",141000)) for name in SOURCES]
     with ThreadPoolExecutor(max_workers=12) as ex:
         list(ex.map(trial,tasks))
+    used_keys=set()
     for m in ("econ","native"):
         rows=[read(RAW/f"numeric-{m}-{name}-{s}.json.gz") for market,name,s in tasks if market==m]
+        for row in rows:
+            for calls in (row["prefix_calls"],*row["branch_calls"]):
+                used_keys.update(event[1] for event in calls)
         save(OUT/f"numeric-{m}.json.gz",rows)
-    records={p.stem:read(p) for p in sorted(CACHE.glob("*.json"))}
+    records={k:read(CACHE/(k+".json")) for k in sorted(used_keys)}
     save(OUT/"numeric-requests.json.gz",records)
 
 

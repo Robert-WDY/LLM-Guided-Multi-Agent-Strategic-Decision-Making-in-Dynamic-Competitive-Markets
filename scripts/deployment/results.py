@@ -57,7 +57,8 @@ def summarize(rows,m,discount):
     return dict(keep=res,vs_uniform=bootstrap(policy-y[ix,picks["uniform"]]),vs_direct=bootstrap(policy-y[ix,picks["direct"]]),
                 vs_up=bootstrap(policy-y[:,2]),vs_down=bootstrap(policy-y[:,1]),active=sum(r["active"] for r in rows),
                 accepted=accepted,lost=losses,missed=int(((~use)&(y[ix,picks["offer"]]>1e-8)).sum()),
-                risk_upper=upper,threshold=THRESH[m],precision_half_width=(res["ci95"][1]-res["ci95"][0])/2,
+                risk_upper=upper,accepted_worst5_mean=(float(np.sort(policy[use])[:max(1,int(np.ceil(.05*accepted)))].mean()) if accepted else None),
+                worst_observed=float(policy.min()),loss_over_threshold=int((policy < -THRESH[m]).sum()),threshold=THRESH[m],precision_half_width=(res["ci95"][1]-res["ci95"][0])/2,
                 deployment_pass=bool(res["bounds"][0]>THRESH[m] and accepted>=.1*n and upper is not None and upper<=.1),
                 target_excluded=bool(res["bounds"][1]<THRESH[m]),identical_prior=int((picks["inferred"]==picks["uniform"]).sum()))
 

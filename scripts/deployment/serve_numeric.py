@@ -14,12 +14,23 @@ ROOT=Path(__file__).resolve().parents[2]
 MODELS=ROOT/".tmp/independent-models"
 
 
-def run():
+def run(stages):
     flags=subprocess.CREATE_NO_WINDOW if os.name=="nt" else 0
     opener=build_opener(ProxyHandler({}))
     exe=shutil.which("llama-server")
     if not exe:
         raise RuntimeError("llama-server unavailable")
+    if os.name=="nt":
+        # Keep our managed processes separate from other applications using the shared installation.
+        src=Path(exe);folder=MODELS/"runtime";folder.mkdir(exist_ok=True)
+        for f in [src,*src.parent.glob("*.dll")]:
+            dest=folder/("pricing-worker.exe" if f==src else f.name)
+            if not dest.exists():
+                try:
+                    os.link(f,dest)
+                except OSError:
+                    shutil.copy2(f,dest)
+        exe=str(folder/"pricing-worker.exe")
     with ExitStack() as cleanup:
         for name,(_,_,_,port) in SOURCES.items():
             log=cleanup.enter_context((MODELS/f"{name}-confirm.log").open("ab"))
@@ -42,7 +53,7 @@ def run():
                     time.sleep(.5)
             else:
                 raise RuntimeError(f"{name} model did not become ready")
-        for script in ("numeric.py","adoption.py"):
+        for script in stages:
             for attempt in range(3):
                 done=subprocess.run([sys.executable,str(Path(__file__).with_name(script))],cwd=ROOT)
                 if done.returncode==0:
@@ -53,4 +64,17 @@ def run():
 
 
 if __name__=="__main__":
-    run()
+    import argparse
+    parser=argparse.ArgumentParser()
+    parser.add_argument("stages",nargs="*",default=["numeric","adoption","numeric_stopping"])
+    stages=parser.parse_args().stages
+    if any(s not in ("numeric","adoption","numeric_stopping") for s in stages):
+        parser.error("unknown pricing experiment")
+    for attempt in range(4):
+        try:
+            run([s+".py" for s in stages])
+            break
+        except RuntimeError:
+            if attempt==3:
+                raise
+            time.sleep(4)
