@@ -169,6 +169,11 @@ def measure():
                 [profit(r, key) - profit(r, "terminal") for r in rows]
             ),
         )
+    assert len(rows) == len(seeds()) == 288 and len(outcomes) == 360
+    for key, result in summary.items():
+        assert all(r["actions"][key] <= r["actions"]["base"] for r in rows)
+        recovered = result["avoided_loss_amount"] - result["missed_win_amount"]
+        assert np.isclose(recovered / len(rows), result["difference_from_base"][0])
     n = summary["late"]["vetoed"]
     for key in LABELS:
         # Exactly the same number of vetoes, breaking score ties by the preassigned seed.
