@@ -23,7 +23,9 @@ def paired(task):
             g,
             i,
             offline=tape,
-            numeric_quote=partial(feasible_quote, model="qwen", port=19944),
+            numeric_quote=partial(
+                feasible_quote, model="qwen", port=19944, disclose_units=False
+            ),
             study_design=partial(design, "legal"),
             price_guard=guard(),
             run_only=ARMS,

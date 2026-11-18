@@ -19,6 +19,7 @@ def feasible_quote(
     *,
     model="smol",
     port=19943,
+    disclose_units=True,
 ):
     decimals = 0 if m == "native" else 2
     scale = 10**decimals
@@ -36,6 +37,7 @@ def feasible_quote(
         tape,
         offline,
         price_grammar=grammar,
+        disclose_units=disclose_units,
         model=model,
         port=port,
     )

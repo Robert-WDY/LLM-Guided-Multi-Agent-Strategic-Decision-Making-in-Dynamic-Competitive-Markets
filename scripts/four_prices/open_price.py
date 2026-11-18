@@ -53,10 +53,16 @@ def quote(
     offline,
     *,
     price_grammar=None,
+    disclose_units=False,
     model="smol",
     port=19943,
 ):
     context = [[round(v, 3) for v in row] for row in h[-4:]]
+    units = (
+        "Quoted prices and the reference are in cents. Profit is in yuan (100 cents = 1 yuan). "
+        if disclose_units and m == "native"
+        else ""
+    )
     msgs = [
         dict(
             role="system",
@@ -66,7 +72,7 @@ def quote(
             role="user",
             content=f"Market {m}. Set your own numeric selling price for the next {min(4, 61 - t)} rounds. "
             f"Remaining rounds: {61 - t}. Feasible [{low:.3f}, {high:.3f}]. Feedback reference: {reference:.3f}. "
-            f"Settled rows [your price, rival median price, own sales, own profit]: {context}. Return only the number.",
+            f"{units}Settled rows [your price, rival median price, own sales, own profit]: {context}. Return only the number.",
         ),
     ]
     body = dict(

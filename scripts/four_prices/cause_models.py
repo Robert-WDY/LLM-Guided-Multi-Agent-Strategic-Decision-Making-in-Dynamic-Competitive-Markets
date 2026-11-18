@@ -29,6 +29,7 @@ def mixed(task, focal_model, tape, replay):
             t,
             cache,
             replay,
+            disclose_units=False,
             model="qwen" if own else "smol",
             port=19944 if own else 19943,
         )

@@ -2,7 +2,7 @@
 
 import argparse
 from concurrent.futures import ProcessPoolExecutor
-from functools import lru_cache
+from functools import lru_cache, partial
 
 from fit_guard import OUTPUT
 from game_theory_agent.game_theory.public_price_guard import PublicPriceGuard
@@ -64,9 +64,11 @@ def simulate(task, tape=None):
         g,
         i,
         offline=tape,
-        numeric_quote={"menu": None, "legal": feasible_quote, "legacy": quote}[
-            interface
-        ],
+        numeric_quote={
+            "menu": None,
+            "legal": partial(feasible_quote, disclose_units=False),
+            "legacy": quote,
+        }[interface],
         study_design=lambda m, g, i: design(interface, m, g, i),
         price_guard=guard(),
         run_only=ARMS if interface != "legacy" else ["keep"],
