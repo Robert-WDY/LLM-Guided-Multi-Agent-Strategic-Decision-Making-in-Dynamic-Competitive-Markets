@@ -18,12 +18,27 @@ def decision_input(history, seat, t, draft):
     return state, enabled
 
 
-def opportunity(record):
+def public_proposal(record):
     t, j = record["probe"], record["masks"]["1"][0]
     keep = record["paths"]["keep"]
     rows = np.asarray(keep["rows"][: t - 1])
     draft = next(d["draft"][j] for d in keep["decisions"] if d["t"] == t)
-    return decision_input(public_panel(rows), j, t, draft)
+    return public_panel(rows), j, t, draft
+
+
+def opportunity(record):
+    return decision_input(*public_proposal(record))
+
+
+def verify_pretrade(record, prefix):
+    panel, seat, t, draft = public_proposal(record)
+    assert (record["seed"], seat, t, draft) == (
+        prefix["seed"],
+        prefix["seat"],
+        prefix["round"],
+        prefix["draft"],
+    )
+    np.testing.assert_equal(panel, np.asarray(prefix["panel"], dtype=float))
 
 
 def targets(record):

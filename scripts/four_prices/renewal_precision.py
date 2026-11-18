@@ -10,6 +10,7 @@ from game_theory_agent.game_theory.renewal_review import PublicRenewalReview
 from guard_study import design
 from guard_verify import replay, verify_raw
 from prices import GROUPS, number
+from renewal_risk import verify_pretrade
 from renewal_trials import OUT
 from run import read, save, simulation
 from saturation_report import discounted
@@ -85,6 +86,7 @@ def case(item):
     if i < 2:
         replay(r, play(r["tape"]))
     v = read(prefix)
+    verify_pretrade(r, v)
     assert action(v["panel"], v["seat"], t, v["draft"]) == (
         "keep",
         "cut",

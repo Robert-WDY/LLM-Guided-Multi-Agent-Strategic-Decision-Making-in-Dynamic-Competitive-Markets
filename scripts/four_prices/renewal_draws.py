@@ -8,7 +8,7 @@ from cause_trials import ARMS, MARKETS
 from game_theory_agent.game_theory.renewal_review import PublicRenewalReview
 from guard_verify import replay, verify_raw
 from prices import number
-from renewal_risk import opportunity, targets
+from renewal_risk import opportunity, targets, verify_pretrade
 from renewal_trials import OUT, archive, profile, tasks
 from run import read, save, simulation
 from saturation_report import ci
@@ -106,6 +106,9 @@ def case(item):
         _, v, _ = targets(r)
         assert changed == [bool(v[1]), bool(v[5])]
         gains.append([v[0], v[4]])
+    preview_record = read(preview)
+    verify_pretrade(original, preview_record)
+    observe(preview_record["panel"], seat, t, preview_record["draft"])
     return dict(
         seed=seed,
         market=market,
