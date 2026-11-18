@@ -30,3 +30,17 @@ def test_small_perfect_history_is_insufficient_but_supported_history_can_pass():
         result = PublicPriceGuard(bank).explain("native", HISTORY, 100, 27, 2)
         assert result["action"] == expected
         assert (result["risk_upper"] <= 0.1) == bool(expected)
+
+
+def test_external_override_is_not_credited_to_managers_own_search_direction():
+    from game_theory_agent.game_theory.cycle_pricing import feedback
+
+    history = [[100, 100, 12, 100]] * 12 + [[104, 100, 11, 110]] * 4
+    contaminated = {
+        "direction": -1,
+        "renewal_anchor": 100,
+        "feedback_comparison_invalid": True,
+    }
+    target, direction = feedback(history, contaminated, 1, 1000)
+    assert direction == -1 and target == 96.5
+    assert feedback(history, {"direction": -1}, 1, 1000)[1] == 1

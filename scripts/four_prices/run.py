@@ -93,9 +93,10 @@ def simulation(
     price_guard=None,
     feedback_rollback=False,
     expire_advice=False,
+    track_feedback_source=False,
     diagnostic_rule="inf",
 ):
-    if expire_advice and feedback_rollback:
+    if sum((expire_advice, feedback_rollback, track_feedback_source)) > 1:
         raise ValueError("Select one renewal policy")
     seed, masks, focal, roles, probe, live = study_design(m, g, i)
     tape = {} if offline is None else dict(offline)
@@ -125,6 +126,8 @@ def simulation(
             indices = []
             for j in range(4):
                 term = decide(t, 61 - t, w.ref, w.low, w.high, h[j], old[j] if old else None)
+                if track_feedback_source:
+                    term["prior_external"] = bool(old and old[j].get("external_contract"))
                 if feedback_rollback and old:
                     rollback = failed_trial_adjustment(h[j], old[j].get("trial_delta", 0))
                     term["rollback"] = rollback
@@ -222,6 +225,15 @@ def simulation(
                         if effective(b, j, targets[j]) != legal[j] else term
                         for j, term in enumerate(terms)
                     ]
+                elif track_feedback_source:
+                    next_terms = []
+                    for j,term in enumerate(terms):
+                        changed = effective(b,j,targets[j]) != legal[j]
+                        entry = dict(term, external_contract=changed,
+                                     feedback_comparison_invalid=changed or term["prior_external"])
+                        if changed:
+                            entry["renewal_anchor"] = legal[j]
+                        next_terms.append(entry)
                 h2 = [list(a) for a in h]
                 rec = list(records)
                 mr = list(market)

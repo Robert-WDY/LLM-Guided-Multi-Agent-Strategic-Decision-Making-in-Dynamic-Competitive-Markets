@@ -35,7 +35,7 @@ def feedback(history, previous, low, high):
     latest = history[-HOLD:]
     prior = history[-2 * HOLD:-HOLD] if len(history) >= WARM + 2 * HOLD else None
     direction = previous["direction"]
-    if prior:
+    if prior and not previous.get("feedback_comparison_invalid", False):
         delta_price = mean(r[0] for r in latest) - mean(r[0] for r in prior)
         if abs(delta_price) > 1.e-7:
             direction = 1 if delta_price > 0 else -1
