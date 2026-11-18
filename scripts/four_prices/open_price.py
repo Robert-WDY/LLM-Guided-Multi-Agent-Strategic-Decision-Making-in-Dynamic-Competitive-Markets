@@ -17,11 +17,17 @@ def profile(m, g, i):
     n = 4 * GROUPS.index(g) + i
     seed = (183000 if m == "econ" else 184000) + n
     perm = sorted(range(4), key=lambda j: number("open-seat", m, j))
-    masks = {1: (perm[n % 4],), 2: tuple(perm[j] for j in PAIRS[n % 6]), 4: (0, 1, 2, 3)}
+    masks = {
+        1: (perm[n % 4],),
+        2: tuple(perm[j] for j in PAIRS[n % 6]),
+        4: (0, 1, 2, 3),
+    }
     roles = (
         [0] * 4
         if g == "balanced"
-        else [1] * 4 if g == "unseen" else [number(seed, j, "persona") % 4 for j in range(4)]
+        else [1] * 4
+        if g == "unseen"
+        else [number(seed, j, "persona") % 4 for j in range(4)]
     )
     return (
         seed,
@@ -33,7 +39,23 @@ def profile(m, g, i):
     )
 
 
-def quote(m, role, h, reference, low, high, seed, j, t, tape, offline, *, price_grammar=None):
+def quote(
+    m,
+    role,
+    h,
+    reference,
+    low,
+    high,
+    seed,
+    j,
+    t,
+    tape,
+    offline,
+    *,
+    price_grammar=None,
+    model="smol",
+    port=19943,
+):
     context = [[round(v, 3) for v in row] for row in h[-4:]]
     msgs = [
         dict(
@@ -42,13 +64,13 @@ def quote(m, role, h, reference, low, high, seed, j, t, tape, offline, *, price_
         ),
         dict(
             role="user",
-            content=f"Market {m}. Set your own numeric selling price for the next {min(4,61-t)} rounds. "
-            f"Remaining rounds: {61-t}. Feasible [{low:.3f}, {high:.3f}]. Feedback reference: {reference:.3f}. "
+            content=f"Market {m}. Set your own numeric selling price for the next {min(4, 61 - t)} rounds. "
+            f"Remaining rounds: {61 - t}. Feasible [{low:.3f}, {high:.3f}]. Feedback reference: {reference:.3f}. "
             f"Settled rows [your price, rival median price, own sales, own profit]: {context}. Return only the number.",
         ),
     ]
     body = dict(
-        model="smol",
+        model=model,
         messages=msgs,
         seed=number("model", seed, j, t) % 2147483646 + 1,
         temperature=0.85,
@@ -64,14 +86,14 @@ def quote(m, role, h, reference, low, high, seed, j, t, tape, offline, *, price_
         if offline:
             raise ValueError("Missing archived numeric response")
         req = Request(
-            "http://127.0.0.1:19943/v1/chat/completions",
+            f"http://127.0.0.1:{port}/v1/chat/completions",
             data=data,
             headers={"Content-Type": "application/json"},
         )
         with build_opener(ProxyHandler({})).open(req, timeout=180) as res:
             ans = json.load(res)
         raw = ans["choices"][0]["message"]["content"].strip()
-        assert ans["model"] == "smol" and 0 <= float(raw) < 1e7
+        assert ans["model"] == model and 0 <= float(raw) < 1e7
         tape[key] = dict(body=body, raw=raw, low=low, high=high)
     price = float(tape[key]["raw"])
     if price_grammar:
@@ -109,7 +131,12 @@ def summarize(rows):
     for r in rows:
         base_prices.append(prices(np.array(r["paths"]["keep"]["rows"]))[0])
         for key, v in r["tape"].items():
-            assert sha256(json.dumps(v["body"], separators=(",", ":")).encode()).hexdigest() == key
+            assert (
+                sha256(
+                    json.dumps(v["body"], separators=(",", ":")).encode()
+                ).hexdigest()
+                == key
+            )
             x = float(v["raw"])
             unique.add(x)
             clips += int(x < v["low"] or x > v["high"])
@@ -135,7 +162,11 @@ def summarize(rows):
             advantage=ci(np.subtract(treatments["inf"], treatments["dir"])),
             same=ci(same),
             same_delta=ci(
-                [a - b for a, b in zip(same, base_prices) if a is not None and b is not None]
+                [
+                    a - b
+                    for a, b in zip(same, base_prices)
+                    if a is not None and b is not None
+                ]
             ),
             comparable_markets=sum(
                 a is not None and b is not None for a, b in zip(same, base_prices)
