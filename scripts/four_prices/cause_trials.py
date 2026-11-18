@@ -67,6 +67,6 @@ if __name__ == "__main__":
     parser.add_argument("phase", choices=SIZES)
     phase = parser.parse_args().phase
     with ProcessPoolExecutor(8) as pool:
-        for idx, _ in enumerate(pool.map(trial, jobs(phase)), 1):
+        for idx, _ in enumerate(pool.map(trial, sorted(jobs(phase))), 1):
             if idx % 48 == 0:
                 print(idx, flush=True)

@@ -4,7 +4,7 @@
 
 离线验证运行 `python scripts/four_prices/validate.py`。它从提交的9个分市场/人格压缩文件核对全部配对，并以保存的原始真实模型结果重建每组首末种子的全部路径（包含服务端独立抽样组）。`summary.json` 含全部、独立解码、原人格、陌生人格与随机人格结果；每个数列是均值及按种子配对重抽的1.25%和98.75%界。whole-run 和 once 不能混合比较。价格均值及同价比例只对同轮在营企业计算。风险探针先选择公司和合同，在整组其他人照旧的情况下仅撤掉这一家公司这一个合同的建议，并放任后来所有公司继续运行。累计利润从共同第19轮按 .99 折现；单次机会从预定检验轮折现。
 
-复现推理需要此前固定的 SmolLM2-1.7B Q4_K_M 文件（SHA-256 见 model.json），llama.cpp build b10976，loopback 端口19943。启动 `llama-server -m PATH --alias smol --host 127.0.0.1 --port 19943 -c 8192 -np 8 -ngl 99 --cache-ram 0`。顺序执行下列脚本，脚本均在 `scripts/four_prices/`：
+复现推理需要此前固定的 SmolLM2-1.7B Q4_K_M 文件（SHA-256 见 model.json），llama.cpp build b10976，loopback 端口19943。为需要新推理的脚本使用 `python scripts/deployment/cpu_server.py --models smol scripts/four_prices/run.py`，服务按任务生命周期在 CPU 上运行；历史归档使用过 GPU，离线复算不启动服务。顺序执行下列脚本，脚本均在 `scripts/four_prices/`：
 1. `prices.py` 和 `sampling_check.py`。模型在准确限定的9个数字 token 上返回概率，所有合法 token 施加相同偏移以消除合法集合外的概率质量。市场政策要么逐合同由后端实际独立抽取，要么由同一真实模型的完整概率向量与独立均匀数精确抽取。各竞争者独立，同一竞争者在不同政策中使用共同随机流。
 2. `run.py --workers 8`。可按种子恢复，产生本机 runs/four-prices-v1 的逐局记录。四位经理的参考价会随己方已结算利润、销量与价格变化；人格不改变市场结算。无候选使用当轮对手动作或隐藏人格。三位对手过去公开报价以在营竞争者中位数汇总。经理看自己的销量与利润，建议器只能读草稿、时钟和公开价格。
 3. `saturation_report.py`、`subgroups.py`、`tail_replay.py`、`seat_rotation.py`、`validate.py`。后两类干预复核可能遇到新的真实模型请求；数据库中的新增响应也保存在归档内。种子对应市场独立单位，不能把同一条市场路径的多家企业或多轮报价当独立样本。

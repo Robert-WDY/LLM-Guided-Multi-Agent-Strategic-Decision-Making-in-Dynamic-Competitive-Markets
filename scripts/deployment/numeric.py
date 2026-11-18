@@ -1,6 +1,7 @@
 """Direct numeric model pricing at every contract renewal with exact-request caching."""
 from concurrent.futures import ThreadPoolExecutor
 import hashlib
+import os
 import json
 from threading import Lock
 from time import sleep
@@ -39,6 +40,12 @@ def number_request(name,m,t,h,d,lo,hi):
     with LOCKS[int(key[:6],16)%len(LOCKS)]:
         if f.exists():
             return key,read(f)["price"]
+        mode = os.environ.get("PRICING_NUMERIC_BACKEND")
+        if mode == "offline":
+            raise FileNotFoundError(f"Missing archived {name} numeric response {key}")
+        if mode == "managed-cpu":
+            from cpu_server import start_on_cache_miss
+            start_on_cache_miss(name, SOURCES[name][3])
         req=Request(f"http://127.0.0.1:{SOURCES[name][3]}/v1/chat/completions",data=data,headers={"Content-Type":"application/json"})
         for attempt in range(4):
             try:
