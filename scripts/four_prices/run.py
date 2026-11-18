@@ -12,7 +12,7 @@ import numpy as np
 from prices import ALL_LIVE, FACTORS, GROUPS, MARKETS, OUT, RAW, key, label, number, sample
 from world import World, apply_native_price, company_action
 from independent import frozen_actions
-from game_theory_agent.game_theory.cycle_pricing import decide
+from game_theory_agent.game_theory.cycle_pricing import decide, failed_trial_adjustment
 from common import read, save
 
 REVIEW = tuple(range(19, 56, 4))
@@ -87,6 +87,7 @@ def simulation(
     numeric_quote=None,
     study_design=design,
     price_guard=None,
+    feedback_rollback=False,
 ):
     seed, masks, focal, roles, probe, live = study_design(m, g, i)
     tape = {} if offline is None else dict(offline)
@@ -115,6 +116,10 @@ def simulation(
             indices = []
             for j in range(4):
                 term = decide(t, 61 - t, w.ref, w.low, w.high, h[j], old[j] if old else None)
+                if feedback_rollback and old:
+                    rollback = failed_trial_adjustment(h[j], old[j].get("trial_delta", 0))
+                    term["rollback"] = rollback
+                    term["draft"] = float(np.clip(term["draft"] - rollback, w.low, w.high))
                 active = (
                     w.state is None
                     or w.state.company_ids[j] in w.state.strategic_market.active_company_ids
@@ -169,6 +174,8 @@ def simulation(
                                            [row[:2] for row in h[j]], drafts[j], t, action)
                         for j, action in enumerate(use)
                     ]
+                if feedback_rollback:
+                    use = [0 if term.get("rollback", 0) else a for term, a in zip(terms, use)]
                 if diagnostic is not None and v == f"omit-{t}":
                     use[seat] = 0
                 targets = tuple(
@@ -187,6 +194,7 @@ def simulation(
                         selected=use,
                         requested=targets,
                         model_actions=indices,
+                        **({"rollback": [x.get("rollback", 0) for x in terms]} if feedback_rollback else {}),
                     )
                 )
                 brackets.setdefault(targets, []).append(v)
@@ -195,6 +203,10 @@ def simulation(
                 for i, (targets, subset) in enumerate(brackets.items())
             ]
             for targets, subset, b in children:
+                next_terms = terms
+                if feedback_rollback:
+                    next_terms = [dict(term, trial_delta=effective(b,j,targets[j])-legal[j])
+                                  for j,term in enumerate(terms)]
                 h2 = [list(a) for a in h]
                 rec = list(records)
                 mr = list(market)
@@ -211,7 +223,7 @@ def simulation(
                     for v in subset:
                         paths[v] = dict(rows=rec, market=mr, decisions=logs[v])
                 else:
-                    nodes.append((b, h2, terms, rec, mr, subset))
+                    nodes.append((b, h2, next_terms, rec, mr, subset))
     assert set(paths) == set(profiles) and all(len(v["rows"]) == 60 for v in paths.values())
     return dict(
         seed=seed,

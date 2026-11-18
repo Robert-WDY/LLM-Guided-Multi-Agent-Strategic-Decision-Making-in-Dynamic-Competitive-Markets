@@ -15,6 +15,17 @@ def bounded(value, low, high):
     return min(high, max(low, float(value)))
 
 
+def failed_trial_adjustment(history, previous_delta):
+    """Manager's own settlement check at renewal after a temporary higher quote."""
+    if previous_delta <= 0 or len(history) < 2 * HOLD:
+        return 0.
+    latest, prior = history[-HOLD:], history[-2 * HOLD:-HOLD]
+    if (sum(row[2] for row in latest) < sum(row[2] for row in prior)
+            and sum(row[3] for row in latest) < sum(row[3] for row in prior)):
+        return previous_delta
+    return 0.
+
+
 def feedback(history, previous, low, high):
     """Perturb-and-observe from executed prices and mean settled cycle profits."""
     if len(history) == WARM:
