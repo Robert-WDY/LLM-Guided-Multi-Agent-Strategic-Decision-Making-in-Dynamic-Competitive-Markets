@@ -16,7 +16,10 @@ def check():
     req=read(OUT/"numeric-requests.json.gz")
     extra=read(OUT/"numeric-stopping-requests.json.gz")
     assert set(req).isdisjoint(extra)
-    for key,v in (req|extra).items():
+    confirmation=read(OUT/"replication-requests.json.gz")
+    for key in confirmation.keys() & (req.keys() | extra.keys()):
+        assert confirmation[key]==(req[key] if key in req else extra[key])
+    for key,v in (req|extra|confirmation).items():
         assert key==hashlib.sha256(json.dumps(v["body"],separators=(",",":")).encode()).hexdigest()
         assert np.isfinite(v["price"])
     for m,first_n,first_a in (("econ",121000,140000),("native",122000,141000)):
@@ -46,6 +49,29 @@ def check():
             assert r["onset"] is None or 8<=r["onset"]<=53
             assert all(len(p)==61-t for t,arm in zip(range(19,48,4),r["paths"]) for p in arm)
             assert all(np.isfinite(r["base"])) and len(r["base"])==60
+    voluntary=read(OUT/"adoption.json.gz")
+    assert len(voluntary)==768
+    for m in ("econ","native"):
+        src=read(OUT/f"numeric-{m}.json.gz")
+        obs={(r["seed"],r["model"]):r for r in voluntary if r["market"]==m}
+        assert len(src)==len(obs)
+        for case in src:
+            key=case["seed"],case["model"]
+            r=obs[key]
+            order_hash=hashlib.sha256(f"deployment-v1:{key[0]}:adoption-letter-order".encode()).digest()
+            assert r["order"]==int.from_bytes(order_hash[:8],"big")%2
+            for i,a in enumerate(r["choices"]):
+                if a["offered"]:
+                    assert a["reverse"]==bool(i)
+                    assert a["accepted"]==(a["letter"]==("A" if i else "B"))
+                    assert a["original"]==case["public"]["draft"]
+                else:
+                    assert not a["accepted"]
+            gain=np.asarray(case["profit"][case["decision"]["inferred"]])-case["profit"][0]
+            value=gain@(.99**np.arange(len(gain)))/(100 if m=="native" else 1)
+            np.testing.assert_allclose(r["gain"],value)
+            assert r["adopted"]==r["choices"][r["order"]]["accepted"]
+            np.testing.assert_allclose(r["value"],value*r["adopted"])
     budget=read(OUT/"budget.json")
     assert budget["commercial_increment_micro_cny"]==0 and budget["remaining_micro_cny"]==155084
     print("Independent seeds, balanced conditions, all request hashes, cash budget and primary profits verified.")
@@ -56,6 +82,7 @@ def replay():
     import blind_transfer
     import independent
     import numeric_stopping
+    import replicate
     import numeric
     import adoption
     from markets import contract,observation,source
@@ -79,12 +106,20 @@ def replay():
     stopping=read(OUT/"numeric-stopping.json.gz")
     assert numeric_stopping.report(stopping)==read(OUT/"numeric-stopping-results.json")
     assert all(k in saved for r in stopping for k in r["requests"])
+    confirmation=read(OUT/"replication.json.gz")
+    assert replicate.analyze(confirmation)==read(OUT/"replication-results.json")
+    saved.update(read(OUT/"replication-requests.json.gz"))
+    assert all(e[1] in saved for r in confirmation for calls in (r["prefix_calls"],*r["branch_calls"]) for e in calls)
     lookup=lambda *args: hashlib.sha256(json.dumps(numeric.build_request(*args),separators=(",",":")).encode()).hexdigest()
     def offline(*args):
         key=lookup(*args)
         return key,saved[key]["price"]
     with tempfile.TemporaryDirectory() as temp:
         loc=Path(temp)
+        with patch.object(numeric,"RAW",loc),patch.object(numeric,"number_request",offline):
+            for r in (confirmation[0],confirmation[-1]):
+                numeric.trial(("econ","smol",r["seed"]))
+                assert r==read(loc/f"numeric-econ-smol-{r['seed']}.json.gz")
         for m in ("econ","native"):
             rows=read(OUT/f"numeric-{m}.json.gz")
             with patch.object(numeric,"RAW",loc),patch.object(numeric,"number_request",offline):

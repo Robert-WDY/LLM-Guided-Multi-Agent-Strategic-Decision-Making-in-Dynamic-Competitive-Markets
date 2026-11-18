@@ -8,18 +8,24 @@ from results import OUT,THRESH,read
 
 
 def main():
-    fig,axes=plt.subplots(1,2,figsize=(10.4,3.9),sharey=True)
-    labels=["Qwen · menu","SmolLM · menu","Qwen · numeric","SmolLM · numeric"]
+    fig,axes=plt.subplots(1,2,figsize=(10.4,4.5),sharey=True)
+    labels=["Qwen · menu","SmolLM · menu","Qwen · numeric","SmolLM · numeric","SmolLM · fresh replication"]
     for ax,m,title in zip(axes,("econ","native"),("EconEvals duopoly","Fresh-food market")):
         ax.axvline(0,color="#8b939b",lw=1)
         ax.axvline(THRESH[m],color="#996629",lw=1.5,ls="--")
         for i,(tag,name) in enumerate((("independent","qwen"),("independent","smol"),("numeric","qwen"),("numeric","smol"))):
             v=read(OUT/f"{tag}-results.json")[f"{m}-{name}"]["0.99"]["keep"]
             lo,hi=v["bounds"]
-            ax.errorbar(v["mean"],3-i,xerr=[[v["mean"]-lo],[hi-v["mean"]]],fmt="o",
+            ax.errorbar(v["mean"],4-i,xerr=[[v["mean"]-lo],[hi-v["mean"]]],fmt="o",
                         color=("#22567b" if i<2 else "#097769"),capsize=4)
-        ax.set_title(title);ax.set_yticks(range(3,-1,-1),labels)
-        ax.set_ylim(-.65,3.65);ax.grid(axis="x",alpha=.17)
+        if m=="econ":
+            confirm=read(OUT/"replication-results.json")["discounted"]["keep"]
+            lo,hi=confirm["bounds"]
+            ax.errorbar(confirm["mean"],0,xerr=[[confirm["mean"]-lo],[hi-confirm["mean"]]],fmt="D",color="#754389",capsize=4)
+        else:
+            ax.annotate("EconEvals replication only",(.03,.116),xycoords="axes fraction",color="#64717a",fontsize=8)
+        ax.set_title(title);ax.set_yticks(range(4,-1,-1),labels)
+        ax.set_ylim(-.65,4.65);ax.grid(axis="x",alpha=.17)
         ax.spines[["right","top","left"]].set_visible(False);ax.tick_params(axis="y",length=0)
         ax.xaxis.set_major_locator(MaxNLocator(5))
         ax.xaxis.set_major_formatter(FuncFormatter(lambda x,pos:f"{x:,.0f}"))

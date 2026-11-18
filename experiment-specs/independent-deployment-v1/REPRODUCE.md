@@ -1,6 +1,13 @@
 # 复算与数据合同
 
-从项目根目录运行。代码使用 Python 3.12、NumPy、SciPy、scikit-learn 1.8.0 和 joblib。全量模拟另需项目依赖及前阶段固定版本的 EconEvals 作者结算。真实模型来源为 [Qwen](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/tree/9217f5db79a29953eb74d5343926648285ec7e67) 和 [SmolLM](https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct-GGUF/tree/2d4a76a30b4af41ecd395c35725ac11688d4cfe4)。GGUF 大文件未放入 Git；逐提示词实际输出、提示内容、模型哈希和结算结果已收录。
+从项目根目录运行。代码使用 Python 3.12、NumPy 2.3.3、SciPy 1.18.1、scikit-learn 1.8.0 和 joblib。全量模拟另需项目依赖及前阶段固定版本的 EconEvals 作者结算。真实模型来源为 [Qwen](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/tree/9217f5db79a29953eb74d5343926648285ec7e67) 和 [SmolLM](https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct-GGUF/tree/2d4a76a30b4af41ecd395c35725ac11688d4cfe4)。GGUF 大文件未放入 Git；逐提示词实际输出、提示内容、模型哈希和结算结果已收录。
+
+全市场回放在项目根目录的 `.tmp/econ-evals-upstream` 查找作者代码，也可把 `ECONEVALS_ROOT` 指向已有检出。取得新的作者检出时可运行如下命令。
+
+```powershell
+git clone https://github.com/sara-fish/econ-evals-paper.git .tmp/econ-evals-upstream
+git -C .tmp/econ-evals-upstream checkout --detach e1f2a40fec96f0d27f5414873c4310f2b5c51935
+```
 
 ## 离线复算（无需模型服务）
 
@@ -28,4 +35,4 @@ python scripts/field_validation/check_design.py
 
 ## 重新运行程序
 
-未知时点规则实验依次执行 `blind.py train`、`blind.py fit`、`blind.py test`。已存在的冻结文件会校验权重；重新独立拟合需在单独检出中省略相应生成的拟合文件。随后执行 `blind_transfer.py`。独立模型的菜单推理服务在 127.0.0.1 的 19867、19868 端口，模型别名分别为 qwen、smol。使用 llama.cpp build 10976、贪心解码、固定 seed、原生聊天模板。将已校验权重放入 `.tmp/independent-models/{qwen,smol}.gguf`，启动两个模型后运行 `local_prices.py`，再运行 `independent.py`。数值组可通过 `serve_numeric.py` 托管两个本地服务并依次完成 `numeric.py`、`adoption.py`、`numeric_stopping.py`。菜单顺序诊断可在模型启动期间运行 `menu_order.py`。数值停止迁移的额外请求保存为 `numeric-stopping-requests.json.gz`，与主数值请求按哈希联合回放。运行时缓存均按精确请求恢复；研究可复算性以已发布的输出与权重为准，重新推理的结果还依赖推理后端、硬件与数值实现。
+未知时点规则实验依次执行 `blind.py train`、`blind.py fit`、`blind.py test`。已存在的冻结文件会校验权重；重新独立拟合需在单独检出中省略相应生成的拟合文件。随后执行 `blind_transfer.py`。独立模型的菜单推理服务在 127.0.0.1 的 19867、19868 端口，模型别名分别为 qwen、smol。使用 llama.cpp build 10976、贪心解码、固定 seed、原生聊天模板。将已校验权重放入 `.tmp/independent-models/{qwen,smol}.gguf`，启动两个模型后运行 `local_prices.py`，再运行 `independent.py`。数值组可通过 `serve_numeric.py` 托管两个本地服务并依次完成 `numeric.py`、`adoption.py`、`numeric_stopping.py`。独立复验单独运行 `python scripts/deployment/serve_numeric.py replicate`，生成 256 个 SmolLM 外部机会及原始请求，复算器同时检查本批的三项门槛。菜单顺序诊断可在模型启动期间运行 `menu_order.py`。数值停止迁移的额外请求保存为 `numeric-stopping-requests.json.gz`，与主数值请求按哈希联合回放。运行时缓存均按精确请求恢复；研究可复算性以已发布的输出与权重为准，重新推理的结果还依赖推理后端、硬件与数值实现。
