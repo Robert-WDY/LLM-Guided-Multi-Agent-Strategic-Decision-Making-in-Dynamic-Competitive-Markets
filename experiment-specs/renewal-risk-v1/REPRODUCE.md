@@ -14,6 +14,13 @@ python scripts/four_prices/renewal_diagnostics.py
 python scripts/four_prices/renewal_information.py confirm
 python scripts/four_prices/renewal_verify.py
 python scripts/four_prices/renewal_draws.py
+python scripts/four_prices/renewal_label_stability.py
+python scripts/four_prices/renewal_precision.py
+python scripts/four_prices/renewal_timing.py primary
+python scripts/four_prices/renewal_timing.py precision
+python scripts/four_prices/renewal_late_veto.py freeze
+python scripts/four_prices/renewal_late_veto.py observe
+python scripts/four_prices/renewal_late_veto.py measure
 python scripts/four_prices/review_price.py --own-renewal experiment-specs/price-causes-v1/panel-example.json
 ```
 
@@ -26,4 +33,7 @@ python scripts/four_prices/review_price.py --own-renewal experiment-specs/price-
 ```powershell
 python scripts/deployment/cpu_server.py --models smol scripts/four_prices/renewal_trials.py
 python scripts/deployment/cpu_server.py --models smol scripts/four_prices/renewal_draws.py --collect
+python scripts/deployment/cpu_server.py --models smol scripts/four_prices/renewal_precision.py --collect
 ```
+
+原始补样同时在第二个终端运行 `renewal_late_veto.py live`，只监测预留的 288 份公共输入，发现已结算而未存预报即失败。`seal` 选项限首次事前封存，它要求预留种子的报价前缀尚不存在；发布归档请用 `freeze` 离线复算。在线落盘时序来自原机器，Git 检出会改变文件系统时间；预测、价格、利润及分组由归档内容复算。
