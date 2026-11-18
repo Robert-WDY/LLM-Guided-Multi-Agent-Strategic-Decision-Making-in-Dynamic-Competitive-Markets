@@ -7,12 +7,11 @@ import numpy as np
 from cause_trials import MARKETS, archive as old_archive, jobs
 from cause_value import metrics
 from prices import GROUPS
+from game_theory_agent.game_theory.renewal_review import decisions, estimates
 from renewal_risk import (
     CUTOFFS,
     METHODS,
     RenewalRisk,
-    decisions,
-    estimates,
     opportunity,
     targets,
 )

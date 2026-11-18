@@ -4,7 +4,7 @@ import numpy as np
 from cause_trials import MARKETS
 from cause_value import metrics
 from prices import number
-from renewal_risk import estimates, decisions
+from game_theory_agent.game_theory.renewal_review import estimates, decisions
 from renewal_trials import tasks, archive, OUT
 from run import read, save
 from saturation_report import ci

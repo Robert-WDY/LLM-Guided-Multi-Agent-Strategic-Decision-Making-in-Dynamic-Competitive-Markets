@@ -4,7 +4,8 @@ import argparse
 
 import numpy as np
 from cause_trials import MARKETS
-from renewal_risk import CUTOFFS, RenewalRisk, decisions
+from game_theory_agent.game_theory.renewal_review import decisions
+from renewal_risk import CUTOFFS, RenewalRisk
 from renewal_risk_study import (
     arrays,
     inputs,

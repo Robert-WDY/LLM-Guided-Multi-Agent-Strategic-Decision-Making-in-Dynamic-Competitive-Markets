@@ -5,7 +5,6 @@ from sklearn.compose import TransformedTargetRegressor
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import StandardScaler
 
-from game_theory_agent.game_theory.renewal_review import decisions, estimates
 from cause_value import estimator, public_panel
 from game_theory_agent.game_theory.quote_panel import public_state, rivals
 
