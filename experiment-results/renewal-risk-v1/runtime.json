@@ -1,0 +1,48 @@
+{
+  "model": "SmolLM2-1.7B-Instruct",
+  "model_sha256": "decd2598bc2c8ed08c19adc3c8fdd461ee19ed5708679d1c54ef54a5a30d4f33",
+  "runtime_sha256": "a1c2b33ea499e0a8f80d0125371b87de8708af588d2dcb6a4b425c401bfda55e",
+  "device": "CPU",
+  "model_pid": 29352,
+  "backend_modules": [
+    "ggml-base.dll",
+    "ggml.dll",
+    "ggml-cpu-alderlake.dll"
+  ],
+  "sample_time": "2026-11-18T23:54:13.7452538+08:00",
+  "gpu_layers": 0,
+  "commercial_api_requests": 0,
+  "commercial_cost_cny": 0,
+  "model_started": "2026-11-18T23:37:29.2235257+08:00",
+  "precision_cpu_sample": {
+    "sample_time": "2026-11-19T00:49:36.3481230+08:00",
+    "pid": 13912,
+    "modules": [
+      "ggml-base.dll",
+      "ggml.dll",
+      "ggml-cpu-alderlake.dll"
+    ]
+  },
+  "original_machine_file_order": {
+    "definition": "Time from atomic decision file write to first complete market archive. Git checkout times do not preserve this evidence.",
+    "precision": {
+      "count": 360,
+      "minimum_seconds": 4.5977691,
+      "median_seconds": 29.158217550000003
+    },
+    "late_veto": {
+      "count": 288,
+      "minimum_seconds": 4.388911,
+      "median_seconds": 25.9214556
+    },
+    "new_future_draws": {
+      "count": 24,
+      "minimum_seconds": 0.9199433,
+      "median_seconds": 32.7531337
+    }
+  },
+  "after_completion": {
+    "sample_time": "2026-11-19T01:13:57.489831+08:00",
+    "pricing_worker_pids": []
+  }
+}

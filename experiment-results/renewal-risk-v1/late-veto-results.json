@@ -1,0 +1,160 @@
+{
+  "policies": {
+    "base": {
+      "effect": [
+        9.219962265267066,
+        6.154877378206094,
+        12.429162230901264
+      ],
+      "n": 288,
+      "used": 58,
+      "lost": 3,
+      "large": 2,
+      "coverage": 0.2013888888888889,
+      "risk_upper": 0.1584209261422353,
+      "worst": -35.89744301720813,
+      "passed": false,
+      "vetoed": 0,
+      "canceled_wins": 0,
+      "canceled_losses": 0,
+      "avoided_loss_amount": 0,
+      "missed_win_amount": 0,
+      "difference_from_base": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "difference_from_terminal": [
+        1.2999457747922218,
+        0.20146258667933728,
+        3.026170768155286
+      ]
+    },
+    "late": {
+      "effect": [
+        6.008614773918726,
+        3.657774534235818,
+        8.662791079288002
+      ],
+      "n": 288,
+      "used": 43,
+      "lost": 3,
+      "large": 2,
+      "coverage": 0.14930555555555555,
+      "risk_upper": 0.20937510099608878,
+      "worst": -35.89744301720813,
+      "passed": false,
+      "vetoed": 15,
+      "canceled_wins": 15,
+      "canceled_losses": 0,
+      "avoided_loss_amount": 0,
+      "missed_win_amount": 924.8680775083221,
+      "difference_from_base": [
+        -3.211347491348341,
+        -5.603629460306682,
+        -1.3050272761558699
+      ],
+      "difference_from_terminal": [
+        -1.9114017165561188,
+        -3.787047649088076,
+        -0.5398284745130917
+      ]
+    },
+    "terminal": {
+      "effect": [
+        7.920016490474844,
+        5.184029115461512,
+        10.964205249382156
+      ],
+      "n": 288,
+      "used": 52,
+      "lost": 3,
+      "large": 2,
+      "coverage": 0.18055555555555555,
+      "risk_upper": 0.17551430427778017,
+      "worst": -35.89744301720813,
+      "passed": false,
+      "vetoed": 6,
+      "canceled_wins": 6,
+      "canceled_losses": 0,
+      "avoided_loss_amount": 0,
+      "missed_win_amount": 374.38438314015985,
+      "difference_from_base": [
+        -1.2999457747922218,
+        -3.026170768155286,
+        -0.20146258667933728
+      ],
+      "difference_from_terminal": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "random": {
+      "effect": [
+        7.923465905136859,
+        5.095315675385485,
+        11.089869842541303
+      ],
+      "n": 288,
+      "used": 48,
+      "lost": 2,
+      "large": 2,
+      "coverage": 0.16666666666666666,
+      "risk_upper": 0.15877247254422736,
+      "worst": -35.89744301720813,
+      "passed": false,
+      "vetoed": 10,
+      "canceled_wins": 9,
+      "canceled_losses": 1,
+      "avoided_loss_amount": 3.869523309364874,
+      "missed_win_amount": 377.2604750268644,
+      "difference_from_base": [
+        -1.2964963601302069,
+        -2.5653529378247963,
+        -0.33863803805294634
+      ],
+      "difference_from_terminal": [
+        0.003449414662015007,
+        -1.667099564590821,
+        1.9130723554158706
+      ]
+    },
+    "keep": {
+      "effect": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "n": 288,
+      "used": 0,
+      "lost": 0,
+      "large": 0,
+      "coverage": 0.0,
+      "risk_upper": null,
+      "worst": 0.0,
+      "passed": false,
+      "vetoed": 58,
+      "canceled_wins": 55,
+      "canceled_losses": 3,
+      "avoided_loss_amount": 45.74044537298762,
+      "missed_win_amount": 2701.0895777699025,
+      "difference_from_base": [
+        -9.219962265267066,
+        -12.429162230901264,
+        -6.154877378206094
+      ],
+      "difference_from_terminal": [
+        -7.920016490474844,
+        -10.964205249382156,
+        -5.184029115461512
+      ]
+    }
+  },
+  "matched_veto_count": 15,
+  "matched_late_minus_terminal": [
+    0.2784524589733915,
+    -1.0070702698679037,
+    1.8478297695983443
+  ]
+}

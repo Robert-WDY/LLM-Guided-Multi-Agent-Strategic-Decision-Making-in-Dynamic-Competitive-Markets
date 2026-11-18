@@ -1,0 +1,14 @@
+{
+  "econ": {
+    "effective": 81,
+    "losing": 4,
+    "up_at_four_then_lost": 3,
+    "up_at_twelve_then_lost": 1,
+    "most_loss_after_twelve": 3,
+    "mean_losing_parts": [
+      6.2750854075,
+      -8.616422623112653,
+      -9.693324165205375
+    ]
+  }
+}

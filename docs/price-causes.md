@@ -108,3 +108,5 @@
 - [主结果与误差区间](../experiment-results/price-causes-v1/test-summary.json)、[独立校准证书](../experiment-results/price-causes-v1/certificates.json)、[事前筛选](../experiment-results/price-causes-v1/selective-test.json)
 - [逐合同历史亏损](../experiment-results/price-causes-v1/reproduced-cases.json)、[后续路径分解](../experiment-results/price-causes-v1/path-effects.json)、[反馈追试](../experiment-results/price-causes-v1/credit-results.json)
 - [GPU 与 CPU 核查](../experiment-results/price-causes-v1/runtime.json)、[后端重复实验](../experiment-results/price-causes-v1/hardware-overlap.json)、[上期四家安装结果](price-guard.md)
+
+后续研究用新市场检验了本店两次续约能否提前预警亏损，并对零售规则进行了独立扩样。[续约预测与后期亏损验收](renewal-risk.md)
