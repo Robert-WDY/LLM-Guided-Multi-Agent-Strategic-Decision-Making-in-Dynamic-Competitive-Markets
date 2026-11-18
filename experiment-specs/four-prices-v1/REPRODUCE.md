@@ -18,3 +18,5 @@
 
 额外的直接数字报价检验运行 `python scripts/four_prices/open_price.py`，从持续运行的本地模型获取24个未使用种子的报价和反事实续报并做离线抽检。
 运行 `loss_audit.py` 可复算全部合同方向与损失分布；运行 `verify_diagnostics.py` 可验证最差案例及同种子穷举身份的额外路径。
+
+`quote_collisions.py` 从已存的自由报价原始回包重算原始报数不同但执行同价的企业对/轮。无两家在营的市场不参与同价率估计，利润保留完整样本。

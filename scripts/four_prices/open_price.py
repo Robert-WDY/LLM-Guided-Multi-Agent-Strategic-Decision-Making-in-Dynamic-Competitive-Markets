@@ -112,7 +112,6 @@ def summarize(rows):
     for k in (1, 2, 4):
         treatments = {}
         same = []
-        diff = []
         all_firms = []
         for method in ("inf", "dir"):
             v = []
@@ -130,7 +129,12 @@ def summarize(rows):
             direct=ci(treatments["dir"]),
             advantage=ci(np.subtract(treatments["inf"], treatments["dir"])),
             same=ci(same),
-            same_delta=ci(np.subtract(same, base_prices)),
+            same_delta=ci(
+                [a - b for a, b in zip(same, base_prices) if a is not None and b is not None]
+            ),
+            comparable_markets=sum(
+                a is not None and b is not None for a, b in zip(same, base_prices)
+            ),
             worst=min(all_firms),
         )
     return dict(
@@ -139,6 +143,11 @@ def summarize(rows):
         calls=calls,
         clipped=clips,
         distinct_numbers=len(unique),
+        baseline_comparable_markets=sum(x is not None for x in base_prices),
+        end_active={
+            v: sum(int(np.asarray(r["paths"][v]["rows"])[-1, :, 5].sum()) for r in rows)
+            for v in ("keep", "inf4")
+        },
         arms=arms,
     )
 

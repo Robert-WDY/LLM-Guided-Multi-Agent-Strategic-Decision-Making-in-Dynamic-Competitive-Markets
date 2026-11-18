@@ -1,0 +1,14 @@
+{
+  "econ": {
+    "active_pair_rounds": 3024,
+    "settled_ties": 1294,
+    "different_raw_quotes_among_ties": 1170,
+    "different_submitted_quotes_among_ties": 0
+  },
+  "native": {
+    "active_pair_rounds": 510,
+    "settled_ties": 161,
+    "different_raw_quotes_among_ties": 129,
+    "different_submitted_quotes_among_ties": 18
+  }
+}
