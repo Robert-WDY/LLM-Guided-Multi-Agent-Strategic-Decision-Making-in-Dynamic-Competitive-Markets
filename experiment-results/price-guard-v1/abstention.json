@@ -1,0 +1,233 @@
+{
+  "menu-econ": {
+    "terminal_profit": {
+      "n": 56,
+      "effective": 56,
+      "profitable": 12,
+      "loss": 44,
+      "terminal_profit": [
+        -36.18188935307048,
+        -50.38547993948803,
+        -21.381569971142046
+      ],
+      "worst": -160.06755978184069,
+      "best": 131.23583099967198
+    },
+    "original_plan": {
+      "n": 47,
+      "effective": 0,
+      "profitable": 0,
+      "loss": 0,
+      "terminal_profit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "worst": 0.0,
+      "best": 0.0
+    },
+    "insufficient_comparables": {
+      "n": 4,
+      "effective": 4,
+      "profitable": 2,
+      "loss": 2,
+      "terminal_profit": [
+        -2.821112365657728,
+        -43.20918042502719,
+        32.93898393823763
+      ],
+      "worst": -55.420296643473904,
+      "best": 40.52212840121024
+    },
+    "accepted": {
+      "n": 1,
+      "effective": 1,
+      "profitable": 0,
+      "loss": 1,
+      "terminal_profit": [
+        -17.148596226144676,
+        -17.148596226144676,
+        -17.148596226144676
+      ],
+      "worst": -17.148596226144676,
+      "best": -17.148596226144676
+    }
+  },
+  "menu-native": {
+    "original_plan": {
+      "n": 18,
+      "effective": 0,
+      "profitable": 0,
+      "loss": 0,
+      "terminal_profit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "worst": 0.0,
+      "best": 0.0
+    },
+    "accepted": {
+      "n": 27,
+      "effective": 18,
+      "profitable": 11,
+      "loss": 7,
+      "terminal_profit": [
+        74218.0819989916,
+        14160.74768365638,
+        144145.57172979493
+      ],
+      "worst": -161059.40073442625,
+      "best": 422808.19791712443
+    },
+    "terminal_profit": {
+      "n": 62,
+      "effective": 61,
+      "profitable": 15,
+      "loss": 46,
+      "terminal_profit": [
+        -227196.01080126295,
+        -332984.9435534452,
+        -126958.00870124577
+      ],
+      "worst": -1558498.3317185442,
+      "best": 551190.2202785814
+    },
+    "insufficient_comparables": {
+      "n": 1,
+      "effective": 1,
+      "profitable": 0,
+      "loss": 1,
+      "terminal_profit": [
+        -236381.07953142704,
+        -236381.07953142704,
+        -236381.07953142704
+      ],
+      "worst": -236381.07953142704,
+      "best": -236381.07953142704
+    }
+  },
+  "menu-appointments": {
+    "terminal_profit": {
+      "n": 18,
+      "effective": 18,
+      "profitable": 9,
+      "loss": 9,
+      "terminal_profit": [
+        -8.026169531612888,
+        -25.236011797828663,
+        7.389998386565243
+      ],
+      "worst": -63.384257566399135,
+      "best": 31.568457003741834
+    },
+    "insufficient_comparables": {
+      "n": 1,
+      "effective": 1,
+      "profitable": 0,
+      "loss": 1,
+      "terminal_profit": [
+        -15.3857824576167,
+        -15.3857824576167,
+        -15.3857824576167
+      ],
+      "worst": -15.3857824576167,
+      "best": -15.3857824576167
+    },
+    "original_plan": {
+      "n": 17,
+      "effective": 0,
+      "profitable": 0,
+      "loss": 0,
+      "terminal_profit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "worst": 0.0,
+      "best": 0.0
+    }
+  },
+  "legal-econ": {
+    "insufficient_comparables": {
+      "n": 5,
+      "effective": 4,
+      "profitable": 2,
+      "loss": 2,
+      "terminal_profit": [
+        33.3401948253457,
+        -14.70559008035532,
+        93.64017266216554
+      ],
+      "worst": -23.771540724044094,
+      "best": 137.75751011520538
+    },
+    "original_plan": {
+      "n": 7,
+      "effective": 0,
+      "profitable": 0,
+      "loss": 0,
+      "terminal_profit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "worst": 0.0,
+      "best": 0.0
+    }
+  },
+  "legal-native": {
+    "original_plan": {
+      "n": 2,
+      "effective": 0,
+      "profitable": 0,
+      "loss": 0,
+      "terminal_profit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "worst": 0.0,
+      "best": 0.0
+    },
+    "terminal_profit": {
+      "n": 3,
+      "effective": 1,
+      "profitable": 0,
+      "loss": 1,
+      "terminal_profit": [
+        -2950.7397777438164,
+        -8852.21933323145,
+        0.0
+      ],
+      "worst": -8852.21933323145,
+      "best": 0.0
+    },
+    "insufficient_comparables": {
+      "n": 5,
+      "effective": 2,
+      "profitable": 1,
+      "loss": 1,
+      "terminal_profit": [
+        94879.42564250511,
+        -26497.378196247013,
+        311135.6551237623
+      ],
+      "worst": -44162.296993745025,
+      "best": 518559.4252062706
+    },
+    "accepted": {
+      "n": 2,
+      "effective": 0,
+      "profitable": 0,
+      "loss": 0,
+      "terminal_profit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "worst": 0.0,
+      "best": 0.0
+    }
+  }
+}

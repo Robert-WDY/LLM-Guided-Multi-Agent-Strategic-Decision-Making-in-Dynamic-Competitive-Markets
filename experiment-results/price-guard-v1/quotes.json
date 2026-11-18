@@ -1,0 +1,82 @@
+{
+  "native": {
+    "interfaces": {
+      "legal": {
+        "active_pair_rounds": 342,
+        "settled_ties": 59,
+        "different_raw_quotes_among_ties": 16,
+        "different_submitted_quotes_among_ties": 16
+      },
+      "legacy": {
+        "active_pair_rounds": 463,
+        "settled_ties": 164,
+        "different_raw_quotes_among_ties": 112,
+        "different_submitted_quotes_among_ties": 22
+      }
+    },
+    "paired_same_change": [
+      -0.28011569540096737,
+      -0.48467218466333906,
+      -0.11716104424225832
+    ],
+    "comparable_pairs": 10,
+    "repetitions": 128,
+    "distinct": 32,
+    "pair_ties": 37,
+    "pairs": 192,
+    "top": [
+      [
+        7500.0,
+        46
+      ],
+      [
+        11200.0,
+        21
+      ],
+      [
+        10000.0,
+        11
+      ]
+    ]
+  },
+  "econ": {
+    "interfaces": {
+      "legal": {
+        "active_pair_rounds": 3024,
+        "settled_ties": 188,
+        "different_raw_quotes_among_ties": 0,
+        "different_submitted_quotes_among_ties": 0
+      },
+      "legacy": {
+        "active_pair_rounds": 3024,
+        "settled_ties": 1250,
+        "different_raw_quotes_among_ties": 1140,
+        "different_submitted_quotes_among_ties": 0
+      }
+    },
+    "paired_same_change": [
+      -0.3511904761904761,
+      -0.497891865079365,
+      -0.21164021164021163
+    ],
+    "comparable_pairs": 12,
+    "repetitions": 128,
+    "distinct": 32,
+    "pair_ties": 54,
+    "pairs": 192,
+    "top": [
+      [
+        1.86,
+        67
+      ],
+      [
+        3.08,
+        13
+      ],
+      [
+        2.86,
+        12
+      ]
+    ]
+  }
+}
