@@ -10,7 +10,7 @@ from game_theory_agent.game_theory.public_price_guard import (
 PRICES = [[100, 99]] * 8
 
 
-def bank(gain=1, exits=0, sales=1, seeds=range(16)):
+def bank(gain=1, exits=0, sales=1, seeds=range(48)):
     return {
         "m": [
             dict(

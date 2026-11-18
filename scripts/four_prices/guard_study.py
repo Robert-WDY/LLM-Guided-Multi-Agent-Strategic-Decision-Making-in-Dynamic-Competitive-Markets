@@ -46,7 +46,7 @@ def design(interface, m, g, i):
 
 @lru_cache(maxsize=1)
 def guard():
-    return PublicPriceGuard(read(OUTPUT / "bank.json.gz"))
+    return PublicPriceGuard(read(OUTPUT / "bank.json.gz"), historical_value_only=True)
 
 
 def jobs():

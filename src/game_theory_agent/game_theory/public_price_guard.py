@@ -1,8 +1,25 @@
 """Screen a proposed price using comparable completed pricing experiments."""
 
 from statistics import median
-from math import log
+from math import comb, log
+from functools import lru_cache
 import numpy as np
+
+
+@lru_cache(maxsize=2048)
+def loss_upper(losses, n):
+    """One-sided 98.75% Clopper-Pearson bound for distinct sampled markets."""
+    if losses == n:
+        return 1.0
+    lo, hi = 0.0, 1.0
+    for _ in range(52):
+        p = (lo + hi) / 2
+        cdf = sum(comb(n, k) * p**k * (1 - p) ** (n - k) for k in range(losses + 1))
+        if cdf > 0.0125:
+            lo = p
+        else:
+            hi = p
+    return hi
 
 
 def public_features(prices, draft, round_number):
@@ -22,7 +39,8 @@ def public_features(prices, draft, round_number):
 class PublicPriceGuard:
     """Training outcomes are historical paired interventions; live input is price-only."""
 
-    def __init__(self, examples):
+    def __init__(self, examples, *, historical_value_only=False):
+        self.historical_value_only = historical_value_only
         self.banks = {}
         for market, rows in examples.items():
             for action in (1, 2):
@@ -53,7 +71,7 @@ class PublicPriceGuard:
             if row["seed"] not in seeds:
                 seeds.add(row["seed"])
                 neighbors.append(row)
-            if len(neighbors) == 16:
+            if len(neighbors) == (16 if self.historical_value_only else 80):
                 break
         if len(neighbors) < 16:
             return dict(action=0, reason="insufficient_comparables", n=len(neighbors))
@@ -61,14 +79,23 @@ class PublicPriceGuard:
         forecast = gains.mean() + 0.25 * np.minimum(gains, 0).mean()
         extra_exits = sum(r["exit_delta"] for r in neighbors)
         volume_loss = sum(r["sales_delta"] < 0 for r in neighbors)
+        evidence = {}
+        if not self.historical_value_only:
+            losses = int((gains < -1e-7).sum())
+            evidence = dict(
+                losses=losses, risk_upper=loss_upper(losses, len(neighbors))
+            )
         reason = "accepted"
         if forecast <= 0:
             reason = "terminal_profit"
         elif extra_exits > 0:
             reason = "exit_risk"
-        elif action == 2 and volume_loss >= 12:
+        elif action == 2 and volume_loss >= 0.75 * len(neighbors):
             reason = "volume_risk"
+        elif evidence and evidence["risk_upper"] > 0.1:
+            reason = "loss_frequency"
         return dict(
+            **evidence,
             action=action if reason == "accepted" else 0,
             reason=reason,
             n=len(neighbors),
