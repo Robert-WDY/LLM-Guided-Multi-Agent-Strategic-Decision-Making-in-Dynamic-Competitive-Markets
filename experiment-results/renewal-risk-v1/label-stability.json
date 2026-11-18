@@ -1,0 +1,536 @@
+{
+  "econ": {
+    "eligible": 12,
+    "abstention_label_flips": 4,
+    "best_action_flips": 4,
+    "actually_accepted": 5,
+    "accepted_gain_flips": 0,
+    "value_of_knowing_the_future_draw": [
+      1.5258645121312309,
+      0.06761322614753548,
+      4.554540352157456
+    ],
+    "cases": [
+      {
+        "seed": 250000,
+        "abstain_for_draw": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "best_for_draw": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "chosen": "keep",
+        "chosen_gains": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hindsight_advantage": 2.4431719067110023
+      },
+      {
+        "seed": 250040,
+        "abstain_for_draw": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "chosen": "cut",
+        "chosen_gains": [
+          71.31165176644207,
+          69.08440258841182,
+          53.51880610238091,
+          92.25818954464907
+        ],
+        "hindsight_advantage": 0.0
+      },
+      {
+        "seed": 250080,
+        "abstain_for_draw": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "chosen": "cut",
+        "chosen_gains": [
+          53.21272489439855,
+          133.82382344055281,
+          57.33863993969166,
+          38.98519373178415
+        ],
+        "hindsight_advantage": 0.0
+      },
+      {
+        "seed": 250001,
+        "abstain_for_draw": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "chosen": "cut",
+        "chosen_gains": [
+          38.877651345951996,
+          24.1238209199404,
+          4.428950741427673,
+          18.716677975371194
+        ],
+        "hindsight_advantage": 0.0
+      },
+      {
+        "seed": 250041,
+        "abstain_for_draw": [
+          false,
+          false,
+          true,
+          true
+        ],
+        "best_for_draw": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "chosen": "keep",
+        "chosen_gains": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hindsight_advantage": 13.295974139295147
+      },
+      {
+        "seed": 250081,
+        "abstain_for_draw": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "chosen": "cut",
+        "chosen_gains": [
+          59.22473093571303,
+          61.32770572929521,
+          19.538473134893046,
+          64.07570549070135
+        ],
+        "hindsight_advantage": 0.0
+      },
+      {
+        "seed": 250002,
+        "abstain_for_draw": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "chosen": "keep",
+        "chosen_gains": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hindsight_advantage": 0.0
+      },
+      {
+        "seed": 250042,
+        "abstain_for_draw": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "chosen": "cut",
+        "chosen_gains": [
+          54.431783222588756,
+          46.357737766513466,
+          55.114725536744714,
+          51.11923198460207
+        ],
+        "hindsight_advantage": 0.0
+      },
+      {
+        "seed": 250082,
+        "abstain_for_draw": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "chosen": "keep",
+        "chosen_gains": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hindsight_advantage": 0.0
+      },
+      {
+        "seed": 250003,
+        "abstain_for_draw": [
+          true,
+          true,
+          false,
+          true
+        ],
+        "best_for_draw": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "chosen": "keep",
+        "chosen_gains": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hindsight_advantage": 0.8113587137704258
+      },
+      {
+        "seed": 250043,
+        "abstain_for_draw": [
+          false,
+          true,
+          true,
+          true
+        ],
+        "best_for_draw": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "chosen": "keep",
+        "chosen_gains": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hindsight_advantage": 1.7598693857981942
+      },
+      {
+        "seed": 250083,
+        "abstain_for_draw": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "chosen": "keep",
+        "chosen_gains": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hindsight_advantage": 0.0
+      }
+    ]
+  },
+  "native": {
+    "eligible": 10,
+    "abstention_label_flips": 2,
+    "best_action_flips": 4,
+    "actually_accepted": 5,
+    "accepted_gain_flips": 0,
+    "value_of_knowing_the_future_draw": [
+      44521.570667953114,
+      1144.4835732366541,
+      106682.26619161079
+    ],
+    "cases": [
+      {
+        "seed": 251000,
+        "abstain_for_draw": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          2,
+          1,
+          2,
+          2
+        ],
+        "chosen": "keep",
+        "chosen_gains": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hindsight_advantage": 157654.3785890007
+      },
+      {
+        "seed": 251040,
+        "abstain_for_draw": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "chosen": "cut",
+        "chosen_gains": [
+          164646.77965890628,
+          77956.82447112082,
+          135912.85971945775,
+          109483.39203319122
+        ],
+        "hindsight_advantage": 0.0
+      },
+      {
+        "seed": 251080,
+        "abstain_for_draw": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "chosen": "cut",
+        "chosen_gains": [
+          202337.8673795591,
+          172948.90926005406,
+          70989.37659882726,
+          110244.44406743538
+        ],
+        "hindsight_advantage": 0.0
+      },
+      {
+        "seed": 251001,
+        "abstain_for_draw": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          0,
+          1,
+          1,
+          1
+        ],
+        "chosen": "keep",
+        "chosen_gains": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hindsight_advantage": 44140.20403437584
+      },
+      {
+        "seed": 251041,
+        "abstain_for_draw": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "chosen": "cut",
+        "chosen_gains": [
+          1035930.37650337,
+          363881.4211880816,
+          916424.6043216088,
+          1273835.9687124756
+        ],
+        "hindsight_advantage": 0.0
+      },
+      {
+        "seed": 251081,
+        "abstain_for_draw": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "chosen": "keep",
+        "chosen_gains": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hindsight_advantage": 0.0
+      },
+      {
+        "seed": 251002,
+        "abstain_for_draw": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          1,
+          2,
+          2,
+          2
+        ],
+        "chosen": "keep",
+        "chosen_gains": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hindsight_advantage": 11444.83573236654
+      },
+      {
+        "seed": 251042,
+        "abstain_for_draw": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "chosen": "cut",
+        "chosen_gains": [
+          652349.3205226287,
+          313571.7672192913,
+          500767.3972014301,
+          311422.49395649676
+        ],
+        "hindsight_advantage": 0.0
+      },
+      {
+        "seed": 251082,
+        "abstain_for_draw": [
+          false,
+          true,
+          false,
+          true
+        ],
+        "best_for_draw": [
+          1,
+          0,
+          2,
+          0
+        ],
+        "chosen": "keep",
+        "chosen_gains": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hindsight_advantage": 231976.28832378803
+      },
+      {
+        "seed": 251043,
+        "abstain_for_draw": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "best_for_draw": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "chosen": "cut",
+        "chosen_gains": [
+          103526.21851857868,
+          280635.7930436942,
+          794956.0441290413,
+          1352759.977291149
+        ],
+        "hindsight_advantage": 0.0
+      }
+    ]
+  }
+}
