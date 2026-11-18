@@ -102,6 +102,8 @@
 
 原始终局、逐机会决定、随机请求和统计汇总在同一版本。主实验两个市场共 624 个新种子、1,872 条终局、41,987 份实际本地模型决策请求；另有单位披露和来源追试各 24 个新种子。此次商业 API 费用为 0 元，原 50 元台账余 0.155084 元。生鲜与零售的货币单位不可互换。本轮单次调价定位损失机制，持续单装或全装的收益用前一期轮换实验估计。尚无已授权企业现场数据。
 
+工程测试 567 项通过，另有一条第三方弃用提示。在独立检出中离线重建主测试表、终局校验和反馈追试结果，执行后受 Git 管理的文件没有差异。
+
 - [冻结方案](../experiment-specs/price-causes-v1/PLAN.md)、[反馈追试方案](../experiment-specs/price-causes-v1/CREDIT.md)、[完整复算命令](../experiment-specs/price-causes-v1/REPRODUCE.md)
 - [主结果与误差区间](../experiment-results/price-causes-v1/test-summary.json)、[独立校准证书](../experiment-results/price-causes-v1/certificates.json)、[事前筛选](../experiment-results/price-causes-v1/selective-test.json)
 - [逐合同历史亏损](../experiment-results/price-causes-v1/reproduced-cases.json)、[后续路径分解](../experiment-results/price-causes-v1/path-effects.json)、[反馈追试](../experiment-results/price-causes-v1/credit-results.json)
