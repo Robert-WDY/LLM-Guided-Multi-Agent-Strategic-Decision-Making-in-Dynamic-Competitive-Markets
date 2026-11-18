@@ -1,0 +1,9 @@
+{
+  "base_git": "fe6b68dcb6e91d6fc3c6bd9bf7a97c2c49b3603b",
+  "advisers": {
+    "delayed-econ.joblib": "5a9b93805a828d098b89ace6743cbe82151d8cce741cec8061eef79eec6b0774",
+    "delayed-native.joblib": "159ecd2b67a1c6c9bf994d0b90010285459864897e2fe76fe12f78501caeb2d6"
+  },
+  "model_sha256": "decd2598bc2c8ed08c19adc3c8fdd461ee19ed5708679d1c54ef54a5a30d4f33",
+  "new_training": false
+}

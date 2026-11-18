@@ -1,0 +1,215 @@
+{
+  "econ": {
+    "1": {
+      "renewals": {
+        "up": 602,
+        "down": 80,
+        "other": 758
+      },
+      "by_direction": {
+        "1": {
+          "changed": 7,
+          "losses": 0,
+          "mean": 58.752071806657554
+        },
+        "2": {
+          "changed": 65,
+          "losses": 51,
+          "mean": -27.15806357501806
+        }
+      },
+      "losing_probes": 51,
+      "fewer_sales_value": 51,
+      "short_positive_but_terminal_loss": 0,
+      "worst_five_pct_of_firms_share_of_total_loss": 0.15309820538842095
+    },
+    "2": {
+      "renewals": {
+        "up": 1187,
+        "down": 156,
+        "other": 1537
+      },
+      "by_direction": {
+        "1": {
+          "changed": 7,
+          "losses": 1,
+          "mean": 27.840646831756793
+        },
+        "2": {
+          "changed": 57,
+          "losses": 45,
+          "mean": -37.43330965273622
+        }
+      },
+      "losing_probes": 46,
+      "fewer_sales_value": 46,
+      "short_positive_but_terminal_loss": 4,
+      "worst_five_pct_of_firms_share_of_total_loss": 0.20225472590013718
+    },
+    "4": {
+      "renewals": {
+        "up": 2427,
+        "down": 278,
+        "other": 3055
+      },
+      "by_direction": {
+        "1": {
+          "changed": 8,
+          "losses": 0,
+          "mean": 65.91130602190151
+        },
+        "2": {
+          "changed": 50,
+          "losses": 36,
+          "mean": -41.773838214210954
+        }
+      },
+      "losing_probes": 36,
+      "fewer_sales_value": 35,
+      "short_positive_but_terminal_loss": 1,
+      "worst_five_pct_of_firms_share_of_total_loss": 0.4043451100449987
+    }
+  },
+  "native": {
+    "1": {
+      "renewals": {
+        "up": 470,
+        "down": 305,
+        "other": 665
+      },
+      "by_direction": {
+        "1": {
+          "changed": 26,
+          "losses": 11,
+          "mean": 41702.36169260188
+        },
+        "2": {
+          "changed": 52,
+          "losses": 37,
+          "mean": -173799.6686668446
+        }
+      },
+      "losing_probes": 48,
+      "fewer_sales_value": 40,
+      "short_positive_but_terminal_loss": 12,
+      "worst_five_pct_of_firms_share_of_total_loss": 0.23240779679387044
+    },
+    "2": {
+      "renewals": {
+        "up": 1176,
+        "down": 404,
+        "other": 1300
+      },
+      "by_direction": {
+        "1": {
+          "changed": 18,
+          "losses": 7,
+          "mean": 35994.94102826145
+        },
+        "2": {
+          "changed": 64,
+          "losses": 47,
+          "mean": -234182.0458002471
+        }
+      },
+      "losing_probes": 54,
+      "fewer_sales_value": 52,
+      "short_positive_but_terminal_loss": 18,
+      "worst_five_pct_of_firms_share_of_total_loss": 0.21702232808344124
+    },
+    "4": {
+      "renewals": {
+        "up": 2967,
+        "down": 354,
+        "other": 2439
+      },
+      "by_direction": {
+        "1": {
+          "changed": 6,
+          "losses": 0,
+          "mean": 697865.402291811
+        },
+        "2": {
+          "changed": 84,
+          "losses": 66,
+          "mean": -280656.1969706594
+        }
+      },
+      "losing_probes": 66,
+      "fewer_sales_value": 64,
+      "short_positive_but_terminal_loss": 19,
+      "worst_five_pct_of_firms_share_of_total_loss": 0.26278438565414497
+    }
+  },
+  "appointments": {
+    "1": {
+      "renewals": {
+        "up": 251,
+        "down": 27,
+        "other": 442
+      },
+      "by_direction": {
+        "1": {
+          "changed": 1,
+          "losses": 0,
+          "mean": 17.754210076321442
+        },
+        "2": {
+          "changed": 29,
+          "losses": 24,
+          "mean": -33.94350899415537
+        }
+      },
+      "losing_probes": 24,
+      "fewer_sales_value": 24,
+      "short_positive_but_terminal_loss": 6,
+      "worst_five_pct_of_firms_share_of_total_loss": 0.21338897710421353
+    },
+    "2": {
+      "renewals": {
+        "up": 540,
+        "down": 75,
+        "other": 825
+      },
+      "by_direction": {
+        "1": {
+          "changed": 4,
+          "losses": 1,
+          "mean": 55.02982089203119
+        },
+        "2": {
+          "changed": 24,
+          "losses": 19,
+          "mean": -27.83470144157944
+        }
+      },
+      "losing_probes": 20,
+      "fewer_sales_value": 17,
+      "short_positive_but_terminal_loss": 3,
+      "worst_five_pct_of_firms_share_of_total_loss": 0.2694919616620731
+    },
+    "4": {
+      "renewals": {
+        "up": 1139,
+        "down": 98,
+        "other": 1643
+      },
+      "by_direction": {
+        "1": {
+          "changed": 2,
+          "losses": 1,
+          "mean": -1.503160166394606
+        },
+        "2": {
+          "changed": 28,
+          "losses": 16,
+          "mean": -9.903147737930695
+        }
+      },
+      "losing_probes": 17,
+      "fewer_sales_value": 15,
+      "short_positive_but_terminal_loss": 4,
+      "worst_five_pct_of_firms_share_of_total_loss": 0.3864466363170048
+    }
+  }
+}
