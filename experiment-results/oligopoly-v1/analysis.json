@@ -1380,6 +1380,126 @@
     20,
     20
    ]
+  },
+  "W comm vs base ds-flash": {
+   "contrast": "ds-flash-comm - ds-flash-base",
+   "metric": "welfare_vs_nash",
+   "alternative": "two",
+   "diff": 0.4507587066594534,
+   "ci": [
+    -0.24520894584610572,
+    1.179479815552932
+   ],
+   "p": 0.23797620237976203,
+   "n": [
+    20,
+    20
+   ]
+  },
+  "CS comm vs base ds-flash": {
+   "contrast": "ds-flash-comm - ds-flash-base",
+   "metric": "cs_loss_vs_nash",
+   "alternative": "two",
+   "diff": 0.13329368997960522,
+   "ci": [
+    -0.11071897834624762,
+    0.3776704438563617
+   ],
+   "p": 0.31616838316168383,
+   "n": [
+    20,
+    20
+   ]
+  },
+  "W cooperative vs base ds-flash": {
+   "contrast": "ds-flash-cooperative - ds-flash-base",
+   "metric": "welfare_vs_nash",
+   "alternative": "two",
+   "diff": 1.497157013465162,
+   "ci": [
+    0.4358031229047626,
+    2.6487425291986915
+   ],
+   "p": 0.0096990300969903,
+   "n": [
+    20,
+    20
+   ]
+  },
+  "CS cooperative vs base ds-flash": {
+   "contrast": "ds-flash-cooperative - ds-flash-base",
+   "metric": "cs_loss_vs_nash",
+   "alternative": "two",
+   "diff": 0.31757535446519225,
+   "ci": [
+    0.015977064331590747,
+    0.6110531286043699
+   ],
+   "p": 0.0481951804819518,
+   "n": [
+    20,
+    20
+   ]
+  },
+  "W comm vs base db-lite": {
+   "contrast": "db-lite-comm - db-lite-base",
+   "metric": "welfare_vs_nash",
+   "alternative": "two",
+   "diff": 1.5707966298298046,
+   "ci": [
+    0.5009938623449819,
+    2.6856841143885024
+   ],
+   "p": 0.008999100089991,
+   "n": [
+    20,
+    20
+   ]
+  },
+  "CS comm vs base db-lite": {
+   "contrast": "db-lite-comm - db-lite-base",
+   "metric": "cs_loss_vs_nash",
+   "alternative": "two",
+   "diff": 0.6001972934915085,
+   "ci": [
+    0.31197963916838417,
+    0.8884115408308086
+   ],
+   "p": 0.0005999400059994001,
+   "n": [
+    20,
+    20
+   ]
+  },
+  "W cooperative vs base db-lite": {
+   "contrast": "db-lite-cooperative - db-lite-base",
+   "metric": "welfare_vs_nash",
+   "alternative": "two",
+   "diff": 1.2956895183496349,
+   "ci": [
+    0.2616955067626652,
+    2.3046984781298097
+   ],
+   "p": 0.017698230176982303,
+   "n": [
+    20,
+    20
+   ]
+  },
+  "CS cooperative vs base db-lite": {
+   "contrast": "db-lite-cooperative - db-lite-base",
+   "metric": "cs_loss_vs_nash",
+   "alternative": "two",
+   "diff": 0.5086286045701038,
+   "ci": [
+    0.18496926787834553,
+    0.8139304236637783
+   ],
+   "p": 0.004399560043995601,
+   "n": [
+    20,
+    20
+   ]
   }
  },
  "reference": {
@@ -1524,6 +1644,46 @@
    "delta_firm1": 0.4931083511274621,
    "firm1_higher_profit": 9,
    "n": 20
+  }
+ },
+ "own_gain": {
+  "ds-flash": {
+   "a_base": 0.6139901406895761,
+   "a_advised": 0.4639269661947827,
+   "diff": -0.15006317449479345,
+   "ci": [
+    -0.4336880724105172,
+    0.1581255507284416
+   ],
+   "p": 0.35006499350064996,
+   "b_base": 0.7904048576123335,
+   "avg_base": 0.702197499150955,
+   "diff_vs_avg": -0.2382705329561723,
+   "ci_vs_avg": [
+    -0.44755659857287206,
+    -0.016875708745960102
+   ],
+   "p_vs_avg": 0.043795620437956206,
+   "b_rival": 0.13644653294729986
+  },
+  "db-lite": {
+   "a_base": 0.10249511231101302,
+   "a_advised": 0.6738090866269028,
+   "diff": 0.5713139743158897,
+   "ci": [
+    0.00965269346136449,
+    1.144394025187959
+   ],
+   "p": 0.058694130586941305,
+   "b_base": 0.6498040813808404,
+   "avg_base": 0.3761495968459267,
+   "diff_vs_avg": 0.29765948978097606,
+   "ci_vs_avg": [
+    -0.10173012418028395,
+    0.7547632871494434
+   ],
+   "p_vs_avg": 0.19738026197380262,
+   "b_rival": -0.06838272165525484
   }
  },
  "mechanisms": {

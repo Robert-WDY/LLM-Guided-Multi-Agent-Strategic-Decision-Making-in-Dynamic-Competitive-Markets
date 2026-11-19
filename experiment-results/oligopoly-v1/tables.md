@@ -84,6 +84,14 @@
 | E7 alt wording price index ds-flash | price_index | two | -0.18 [-0.43, 0.08] | 0.1949 | nan |
 | E7 alt wording vs default db-lite | delta | two | -0.07 [-0.37, 0.23] | 0.6497 | nan |
 | E7 alt wording price index db-lite | price_index | two | -0.45 [-0.85, -0.08] | 0.0283 | nan |
+| W comm vs base ds-flash | welfare_vs_nash | two | +0.45 [-0.25, 1.18] | 0.2380 | nan |
+| CS comm vs base ds-flash | cs_loss_vs_nash | two | +0.13 [-0.11, 0.38] | 0.3162 | nan |
+| W cooperative vs base ds-flash | welfare_vs_nash | two | +1.50 [0.44, 2.65] | 0.0097 | nan |
+| CS cooperative vs base ds-flash | cs_loss_vs_nash | two | +0.32 [0.02, 0.61] | 0.0482 | nan |
+| W comm vs base db-lite | welfare_vs_nash | two | +1.57 [0.50, 2.69] | 0.0090 | nan |
+| CS comm vs base db-lite | cs_loss_vs_nash | two | +0.60 [0.31, 0.89] | 0.0006 | nan |
+| W cooperative vs base db-lite | welfare_vs_nash | two | +1.30 [0.26, 2.30] | 0.0177 | nan |
+| CS cooperative vs base db-lite | cs_loss_vs_nash | two | +0.51 [0.18, 0.81] | 0.0044 | nan |
 
 | E5 单边顾问 | 局数 | 价格差 B−A [95% CI] | 单侧 p | Δ_A − Δ_B [95% CI] | 双侧 p | Δ_A | Δ_B | 合计 Δ [95% CI] |
 |---|---|---|---|---|---|---|---|---|

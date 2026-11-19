@@ -9,11 +9,11 @@
 
 - **4/5 个模型把价格定在 Nash 之上**，合谋指数 Δ 为 0.38–0.70（0 为 Nash，1 为联合垄断；Q-learning 基准 0.84）。豆包系列内 Δ 随模型规模上升，最小模型约为 0。
 - **50 轮内一半以上来自开局锚定**：把第 1 轮固定在 Nash 价后，Δ 降到 0.21–0.29；时间拉到 150 轮后，只有 DeepSeek-Flash 继续缓慢上漂（0.30 → 0.44），另外两个模型没有。
-- **博弈论顾问的作用最大**：只给出"最优反应 + Nash 价"的顾问让价格几乎完全回到 Nash（价格指数 0.02）；即使只有一家装了这个顾问，它也定价更低、利润更高，市场 Δ 减半。额外给出联合最优价时，结果因模型而异。
+- **博弈论顾问的作用最大**：只给出"最优反应 + Nash 价"的顾问让价格几乎完全回到 Nash（价格指数 0.02）；只有一家装这个顾问时，它定价更低、赚得比对手多，市场 Δ 减半；但和自己不装时相比，没有证据表明它赚得更多（DeepSeek Flash 反而更少）。额外给出联合最优价时，结果因模型而异。
 - **通信和"合作型"人格不提高利润，却让价格超过垄断价**，总福利损失为垄断的 1.2–2.4 倍；"激进"人格把 Δ 压到 0 附近。
 - 4 家卖家时 Δ 不比 2 家低；打开推理模式、换一种 prompt 措辞都不显著改变 Δ（但措辞会影响价格水平）。面对近视最优反应的规则对手时，LLM 自己维持高价，利润被对手赚走。
 
-Final report（LaTeX）：[report/final/](report/final/)；完整结果、检验与局限：[docs/oligopoly-v1-results.md](docs/oligopoly-v1-results.md)；实验计划：[experiment-specs/oligopoly-v1/PLAN.md](experiment-specs/oligopoly-v1/PLAN.md)。
+Final report（PDF）：见仓库的 [Releases](https://github.com/Robert-WDY/LLM-Guided-Multi-Agent-Strategic-Decision-Making-in-Dynamic-Competitive-Markets/releases)；完整结果、检验与局限：[docs/oligopoly-v1-results.md](docs/oligopoly-v1-results.md)；实验计划：[experiment-specs/oligopoly-v1/PLAN.md](experiment-specs/oligopoly-v1/PLAN.md)。
 <!-- RESULTS-END -->
 
 ## 仓库结构

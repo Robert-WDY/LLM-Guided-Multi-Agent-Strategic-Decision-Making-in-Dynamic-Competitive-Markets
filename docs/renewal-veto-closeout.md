@@ -25,7 +25,7 @@
 
 ## 为什么停止
 
-主线问题是"LLM 多智能体在动态竞争市场中的策略决策"。这条研究线把问题缩成了单一决策者的三选一否决，且门槛在已有预算下注定不过。新的主线见 [oligopoly-v1 计划](../experiment-specs/oligopoly-v1/PLAN.md)。
+主线问题是"LLM 多智能体在动态竞争市场中的策略决策"。这条研究线把问题缩成了单一决策者的三选一否决，且在已有样本量下，门槛通过的把握很低（81 次改价中亏损不超过 2 次即可过线，实际为 4 次）。新的主线见 [oligopoly-v1 计划](../experiment-specs/oligopoly-v1/PLAN.md)。
 
 ```python
 from scipy.stats import beta, binom

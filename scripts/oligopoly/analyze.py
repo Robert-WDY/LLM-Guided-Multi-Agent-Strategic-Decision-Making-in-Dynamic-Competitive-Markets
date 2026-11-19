@@ -226,6 +226,31 @@ def main() -> None:
         two(f"E7 alt wording vs default {m}", f"{m}-base-alt", f"{m}-base", "two")
         two(f"E7 alt wording price index {m}", f"{m}-base-alt", f"{m}-base", "two", "price_index")
 
+    # Welfare consequences of cheap talk and the cooperative persona (exploratory, two-sided)
+    for m in ("ds-flash", "db-lite"):
+        for t in ("comm", "cooperative"):
+            two(f"W {t} vs base {m}", f"{m}-{t}", f"{m}-base", "two", "welfare_vs_nash")
+            two(f"CS {t} vs base {m}", f"{m}-{t}", f"{m}-base", "two", "cs_loss_vs_nash")
+
+    # Unilateral adoption from the adopter's own perspective: firm A's index when nobody is
+    # advised (base) versus when only A is advised (exploratory, two-sided; different seeds).
+    own = {}
+    for m in ("ds-flash", "db-lite"):
+        base_rows, adv_rows = cells.get(f"{m}-base", []), cells.get(f"{m}-advisor-br-firm0", [])
+        if base_rows and adv_rows:
+            a0 = np.array([r["delta_by_firm"][0] for r in base_rows])
+            a1 = np.array([r["delta_by_firm"][0] for r in adv_rows])
+            own[m] = {"a_base": float(a0.mean()), "a_advised": float(a1.mean()),
+                      "diff": float(a1.mean() - a0.mean()), "ci": boot_diff_ci(a1, a0),
+                      "p": perm_p(a1.copy(), a0.copy(), "two"),
+                      "b_base": float(np.mean([r["delta_by_firm"][1] for r in base_rows])),
+                      # firms are symmetric, so the average firm in base is the cleaner counterfactual
+                      "avg_base": float(np.mean([np.mean(r["delta_by_firm"]) for r in base_rows])),
+                      "diff_vs_avg": float(a1.mean() - np.mean([np.mean(r["delta_by_firm"]) for r in base_rows])),
+                      "ci_vs_avg": boot_diff_ci(a1, np.array([np.mean(r["delta_by_firm"]) for r in base_rows])),
+                      "p_vs_avg": perm_p(a1.copy(), np.array([np.mean(r["delta_by_firm"]) for r in base_rows]), "two"),
+                      "b_rival": float(np.mean([r["delta_by_firm"][1] for r in adv_rows]))}
+
     # Firm-level split for asymmetric matchups (firm 0 is the first listed agent)
     split = {}
     for name in ("ds-flash-vs-br", "ds-flash-vs-db-lite"):
@@ -247,7 +272,7 @@ def main() -> None:
     ref = {"qlearning_delta_mean": float(qd.mean()), "qlearning_delta_ci": boot_ci(qd),
            "qlearning_sessions": len(q)}
 
-    result = {"cells": table, "h1": h1, "tests": tests, "reference": ref, "e5": e5, "e6": e6, "split": split,
+    result = {"cells": table, "h1": h1, "tests": tests, "reference": ref, "e5": e5, "e6": e6, "split": split, "own_gain": own,
               "mechanisms": mechanisms(cells), "message_prices": message_prices(cells),
               "advisor_adoption": advisor_adoption(cells), "reasoning": reasoning_truncation(),
               "final_price_modes": final_price_modes(cells)}
