@@ -52,7 +52,7 @@ def collect_new(task, collect):
         time,
         masks[1],
     )
-    verify_raw(record, "menu")
+    verify_raw(record, "menu", digit_start=15 if model == "qwen" else 32)
     assert set(record["paths"]) == set(ARMS)
     for arm, label in enumerate(ARMS):
         picked = [

@@ -54,7 +54,7 @@ def key(m, role, h):
     )
 
 
-def build_request(k, seed, temperature=0.85):
+def build_request(k, seed, temperature=0.85, *, digit_start=32):
     m, role, rel, sales, profit = k
     tags = ("lower", "similar", "higher")
     prompt = (
@@ -72,7 +72,7 @@ def build_request(k, seed, temperature=0.85):
         min_p=0.0,
         top_k=0,
         n_probs=9,
-        logit_bias=[[32 + i, 100.0] for i in range(9)],
+        logit_bias=[[digit_start + i, 100.0] for i in range(9)],
         post_sampling_probs=True,
         n_predict=1,
         grammar="root ::= [0-8]",
@@ -82,9 +82,12 @@ def build_request(k, seed, temperature=0.85):
 
 
 def request(k, seed, temperature=0.85):
-    data = json.dumps(build_request(k, seed, temperature), separators=(",", ":")).encode()
+    port = int(os.environ.get("FOUR_PRICES_MENU_PORT", "19943"))
+    digit_start = 15 if port == 19944 else 32
+    body = build_request(k, seed, temperature, digit_start=digit_start)
+    data = json.dumps(body, separators=(",", ":")).encode()
     req = Request(
-        f"http://127.0.0.1:{int(os.environ.get('FOUR_PRICES_MENU_PORT', '19943'))}/completion",
+        f"http://127.0.0.1:{port}/completion",
         data=data,
         headers={"Content-Type": "application/json"},
     )
@@ -92,7 +95,7 @@ def request(k, seed, temperature=0.85):
         ans = json.load(resp)
     probs = {v["token"]: v["prob"] for v in ans["completion_probabilities"][0]["top_probs"]}
     assert all(
-        v["id"] == 32 + int(v["token"]) for v in ans["completion_probabilities"][0]["top_probs"]
+        v["id"] == digit_start + int(v["token"]) for v in ans["completion_probabilities"][0]["top_probs"]
     )
     p = (
         [float(str(i) == ans["content"]) for i in range(9)]

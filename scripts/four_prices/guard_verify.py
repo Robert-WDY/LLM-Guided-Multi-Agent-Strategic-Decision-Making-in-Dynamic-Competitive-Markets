@@ -12,7 +12,7 @@ from saturation_report import ci
 from guard_report import one, summarize
 
 
-def verify_raw(r, interface):
+def verify_raw(r, interface, *, digit_start=32):
     assert len(r["roles"]) == 4 and r["live"]
     for tag, v in r["tape"].items():
         if interface in ("legal", "legacy"):
@@ -31,7 +31,7 @@ def verify_raw(r, interface):
                 draw_seed = r["future_focal_draw"]
             seed = number("model", draw_seed, int(seat), int(t)) % 2147483646 + 1
             body = build_request(
-                (market, int(role), int(rel), int(sales), int(profit)), seed
+                (market, int(role), int(rel), int(sales), int(profit)), seed, digit_start=digit_start
             )
             assert (
                 sha256(json.dumps(body, separators=(",", ":")).encode()).hexdigest()
