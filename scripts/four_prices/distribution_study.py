@@ -163,7 +163,8 @@ def variance(grouped):
     result = {}
     data = np.asarray([[targets(read(f))[1] for f in paths] for paths in grouped])
     for label, column in (("cut", 0), ("raise", 4)):
-        y = data[data[:, 0, column + 1].astype(bool), :, column]
+        selected = np.flatnonzero(data[:, 0, column + 1].astype(bool))
+        y = data[selected, :, column]
         n, k = y.shape
         mu = y.mean(axis=1)
         within = y.var(axis=1, ddof=1)
@@ -184,8 +185,19 @@ def variance(grouped):
         err1 = np.sum((y[:, :, None] - y[:, None, :]) ** 2, axis=(1, 2)) / npairs
         first_mae = np.sum(np.abs(y[:, :, None] - y[:, None, :]), axis=(1, 2)) / npairs
         three_mae = np.mean(np.abs(y - others), axis=1)
+        flipped = (y.max(axis=1) > 1e-7) & (y.min(axis=1) < -1e-7)
+        index = int(np.argmax(np.where(flipped, np.ptp(y, axis=1), -1.0)))
+        example = (
+            dict(
+                seed=int(grouped[selected[index]][0].name.split(".")[0]),
+                outcomes=y[index].tolist(),
+            )
+            if flipped.any()
+            else None
+        )
         result[label] = dict(
             n=n,
+            widest_flipping_example=example,
             noise_share=float(share(within.mean(), signal)),
             noise_share_interval=np.quantile(
                 share(noise, between), [0.0125, 0.9875]
