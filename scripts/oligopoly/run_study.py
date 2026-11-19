@@ -112,6 +112,7 @@ async def main() -> None:
                             model(firm),
                             persona=cell["personas"][i],
                             communication=cell.get("communication", False),
+                            prompt_variant=cell.get("prompt_variant", "default"),
                             max_price=5 * scale,
                             episode_key=f"{cell['cell']}|seed{seed}",
                         )

@@ -139,3 +139,12 @@ def test_unilateral_advisor_only_reaches_listed_firm() -> None:
     spec = EpisodeSpec("u", n=2, rounds=3, scale=1.0, window=1)
     asyncio.run(run_episode(spec, agents, advisor="br", advisor_firms=[0]))
     assert seen.count(True) == 3 and seen.count(False) == 3
+
+
+def test_alt_prompt_is_paraphrase_with_same_information() -> None:
+    obs = Observation(0, 2, 2, 1.0, [RoundRecord(1, 1.5, [1.6], 47.0, 23.5)])
+    a = build_prompt(obs, persona="neutral", communication=False)[0]["content"]
+    b = build_prompt(obs, persona="neutral", communication=False, variant="alt")[0]["content"]
+    assert a != b and "pricing manager" not in b
+    assert a.split("This is round")[1] == b.split("This is round")[1]
+    assert "1.00" in b and "Firm B" in b

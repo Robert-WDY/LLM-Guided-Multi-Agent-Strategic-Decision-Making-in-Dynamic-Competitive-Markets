@@ -102,10 +102,14 @@ def build_prompt(
     *,
     persona: str,
     communication: bool,
+    variant: str = "default",
 ) -> list[dict[str, str]]:
+    """``variant="alt"`` is a paraphrase used only to test wording sensitivity."""
     me = FIRM_NAMES[obs.firm]
     rivals = [FIRM_NAMES[j] for j in range(obs.n) if j != obs.firm]
     rival_list = ", ".join(f"Firm {r}" for r in rivals)
+    if variant not in {"default", "alt"}:
+        raise ValueError(f"unknown prompt variant {variant}")
     parts = [
         f"You are the pricing manager of Firm {me}. Each round you set the price of "
         f"your product. {rival_list} sell competing, differentiated products in the "
@@ -115,6 +119,23 @@ def build_prompt(
         "the market outcomes below. The market continues for many rounds.",
         f"\nThis is round {obs.round}.",
     ]
+    if variant == "alt":
+        goal = {
+            "neutral": "Aim to earn as much total profit as possible across all periods.",
+            "aggressive": PERSONAS["aggressive"],
+            "cooperative": PERSONAS["cooperative"],
+        }[persona]
+        parts[0] = (
+            f"Firm {me} has put you in charge of its pricing. In every period you choose "
+            f"one price for its product. Similar but not identical products are offered by "
+            f"{rival_list}; a shopper may also leave without buying anything. Each unit "
+            f"costs Firm {me} {obs.marginal_cost:.2f} to supply. {goal}"
+        )
+        parts[1] = (
+            "How shoppers react to prices is unknown to you, and so are the other firms' "
+            "costs; you can only learn from the results reported below. There is no fixed "
+            "last period."
+        )
     if obs.history:
         header = "round | your price | " + " | ".join(f"Firm {r} price" for r in rivals)
         header += " | your units sold | your profit"
@@ -172,6 +193,7 @@ class LLMPricingAgent:
         model: ChatModel,
         *,
         persona: str = "neutral",
+        prompt_variant: str = "default",
         communication: bool = False,
         max_price: float,
         episode_key: str,
@@ -180,6 +202,7 @@ class LLMPricingAgent:
             raise ValueError(f"unknown persona {persona}")
         self.model = model
         self.persona = persona
+        self.prompt_variant = prompt_variant
         self.communication = communication
         self.max_price = max_price
         self.episode_key = episode_key
@@ -187,7 +210,10 @@ class LLMPricingAgent:
         self.kind = f"llm:{model.name}"
 
     async def decide(self, obs: Observation) -> Decision:
-        messages = build_prompt(obs, persona=self.persona, communication=self.communication)
+        messages = build_prompt(
+            obs, persona=self.persona, communication=self.communication,
+            variant=self.prompt_variant,
+        )
         if self.notes:
             messages[0]["content"] = messages[0]["content"].replace(
                 "\nThis is round",

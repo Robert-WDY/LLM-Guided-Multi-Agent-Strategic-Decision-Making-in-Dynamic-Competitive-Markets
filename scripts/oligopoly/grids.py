@@ -14,7 +14,8 @@ MODELS = {
 
 
 def cell(name, firms, *, personas=None, communication=False, advisor=None,
-         opening=None, advisor_firms=None, rounds=100, window=30, seeds=range(3)):
+         opening=None, advisor_firms=None, prompt_variant="default", rounds=100, window=30,
+         seeds=range(3)):
     n = len(firms)
     return {
         "cell": name,
@@ -25,6 +26,7 @@ def cell(name, firms, *, personas=None, communication=False, advisor=None,
         "advisor": advisor,
         "opening": opening,
         "advisor_firms": advisor_firms,
+        "prompt_variant": prompt_variant,
         "rounds": rounds,
         "window": window,
         "seeds": list(seeds),
@@ -75,7 +77,14 @@ E5 = [cell(f"{m}-advisor-br-firm0", [m] * 2, advisor="br", advisor_firms=[0],
 E6 = [cell("ds-flash-open-nash-long", ["ds-flash"] * 2, opening="nash",
            rounds=150, window=30, seeds=range(600, 610))]
 
+# E7 (PLAN addendum C): long horizon on two more models; prompt-wording robustness
+E7 = [cell(f"{m}-open-nash-long", [m] * 2, opening="nash", rounds=150, window=30,
+           seeds=range(600, 610)) for m in ("db-lite", "ds-pro")]
+E7 += [cell(f"{m}-base-alt", [m] * 2, prompt_variant="alt", seeds=range(700, 720), **MAIN)
+       for m in ("ds-flash", "db-lite")]
+
 PHASES: dict[str, list[dict]] = {
+    "e7": E7,
     "e5": E5,
     "e6": E6,
     "e4": E4,

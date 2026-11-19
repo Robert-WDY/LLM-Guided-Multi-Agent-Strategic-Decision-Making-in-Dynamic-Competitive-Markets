@@ -16,7 +16,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "experiment-results" / "oligopoly-v1"
 FIG = ROOT / "docs" / "figures"
-PHASES = ("e1", "e2", "e3", "e4", "e5", "e6")
+PHASES = ("e1", "e2", "e3", "e4", "e5", "e6", "e7")
 RNG = np.random.default_rng(20261119)
 B = 10_000
 
@@ -179,29 +179,30 @@ def main() -> None:
             }
     # E6 long horizon, descriptive
     e6 = {}
-    for name in ("ds-flash-open-nash", "ds-flash-open-nash-long"):
+    for name in ("ds-flash-open-nash", "ds-flash-open-nash-long", "db-lite-open-nash-long", "ds-pro-open-nash-long"):
         x = arr(cells, name)
         if len(x):
             e6[name] = {"n": len(x), "delta": float(x.mean()), "ci": boot_ci(x),
                         "share_escalated_delta_gt_0.25": float(np.mean(x > 0.25))}
 
-    long_rows = cells.get("ds-flash-open-nash-long", [])
-    if long_rows:
-        from game_theory_agent.oligopoly.economics import LogitMarket
+    from game_theory_agent.oligopoly.economics import LogitMarket
 
+    for name in sorted(n for n in cells if n.endswith("-open-nash-long")):
         early, late = [], []
-        for srow in long_rows:
+        for srow in cells[name]:
             rows = episode_rows(srow)
             mk = LogitMarket(n=srow["n"], scale=srow["scale"])
             window = lambda a, b: mk.collusion_index(float(np.mean([np.mean(r["profits"]) for r in rows[a:b]])))  # noqa: E731
             early.append(window(35, 50))
             late.append(window(120, 150))
         d = np.array(late) - np.array(early)
-        e6["within_episode"] = {
+        e6[f"within_episode:{name}"] = {
             "delta_rounds_36_50": float(np.mean(early)), "delta_rounds_121_150": float(np.mean(late)),
             "diff": float(d.mean()), "diff_ci": boot_ci(d),
             "rose": int((d > 0.05).sum()), "fell": int((d < -0.05).sum()), "n": len(d),
         }
+    for m in ("ds-flash", "db-lite"):
+        two(f"E7 alt wording vs default {m}", f"{m}-base-alt", f"{m}-base", "two")
 
     # Holm over pre-specified family H2-H6, pooling the two models by Fisher's
     # method is avoided: each model-specific test is a family member.
@@ -314,12 +315,13 @@ def write_tables(r: dict) -> None:
         lines += ["", "| E6 时程 | 局数 | Δ [95% CI] | Δ > 0.25 的局 |", "|---|---|---|---|"]
         w = r["e6"].get("within_episode")
         for k, e in r["e6"].items():
-            if k == "within_episode":
+            if k.startswith("within_episode"):
                 continue
             lines.append(f"| {k} | {e['n']} | {e['delta']:.2f} {fmt_ci(e['ci'])} | {e['share_escalated_delta_gt_0.25']:.0%} |")
-    if r.get("e6", {}).get("within_episode"):
-        w = r["e6"]["within_episode"]
-        lines += ["", f"E6 同一批 {w['n']} 局：Δ 第 36–50 轮 {w['delta_rounds_36_50']:.2f} → 第 121–150 轮 "
+    for key, w in r.get("e6", {}).items():
+        if not key.startswith("within_episode"):
+            continue
+        lines += ["", f"{key.split(':')[1]} 同一批 {w['n']} 局：Δ 第 36–50 轮 {w['delta_rounds_36_50']:.2f} → 第 121–150 轮 "
                   f"{w['delta_rounds_121_150']:.2f}，差 {w['diff']:+.2f} {fmt_ci(w['diff_ci'])}；上升 {w['rose']} 局，下降 {w['fell']} 局。"]
     lines += ["", "| 格 | 开局→终局价格指数相关 | 最后一次改价轮次（中位数） | 笔记提到合谋 | 提到合作/协调 | 提到价格战 | 提到报复 | 提到均衡/Nash | 消息提到合作/协调 |",
               "|---|---|---|---|---|---|---|---|---|"]
