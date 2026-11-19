@@ -245,6 +245,7 @@ def run(phase):
     config = {} if phase == "freeze" else read(OUT / "freeze.json")
     report = {}
     diagnostics = {}
+    model_rows = {}
     for m in MARKETS:
         models, groups, hashes, budget = training(m)
         hurdle = 20000 if m == "native" else 5
@@ -275,10 +276,31 @@ def run(phase):
                 assert scores == read(filename)
                 rows, report[name] = evaluate(records, scores, hurdle)
                 save(OUT / f"{name}-decisions.json.gz", rows)
+                if name in ("qwen-econ", "smol-econ"):
+                    model_rows[name] = rows
     if phase == "freeze":
         save(OUT / "freeze.json", config)
     if phase == "measure":
-        save(OUT / "results.json", dict(cohorts=report, within_market=diagnostics))
+        smol = {r["seed"]: r for r in model_rows["smol-econ"]}
+        qwen = {r["seed"]: r for r in model_rows["qwen-econ"]}
+        assert smol.keys() == qwen.keys()
+        paired = {}
+        for policy in ("previous", "repeated", "wide", "wide_requests", "cut"):
+            paired[policy] = ci(
+                [
+                    r["gains"][r["actions"][policy]]
+                    - smol[seed]["gains"][smol[seed]["actions"][policy]]
+                    for seed, r in qwen.items()
+                ]
+            )
+        save(
+            OUT / "results.json",
+            dict(
+                cohorts=report,
+                within_market=diagnostics,
+                qwen_minus_smol_same_econ_seeds=dict(n=len(qwen), gain_diff=paired),
+            ),
+        )
 
 
 if __name__ == "__main__":
