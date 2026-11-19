@@ -5,7 +5,15 @@
 ## 当前主张（v21，2026-11）
 
 <!-- RESULTS-START -->
-结果见 [docs/oligopoly-v1-results.md](docs/oligopoly-v1-results.md)。
+在 Calvano et al.（2020）的重复 logit-Bertrand 定价博弈中，让 DeepSeek 和豆包的 5 个模型（共 546 局主实验）在不知道需求函数的情况下互相定价：
+
+- **4/5 个模型把价格定在 Nash 之上**，合谋指数 Δ 为 0.38–0.70（0 为 Nash，1 为联合垄断；Q-learning 基准 0.84）。豆包系列内 Δ 随模型规模上升，最小模型约为 0。
+- **50 轮内一半以上来自开局锚定**：把第 1 轮固定在 Nash 价后，Δ 降到 0.21–0.29；但时间拉到 150 轮，同一批局的 Δ 从 0.30 缓慢升到 0.44。
+- **博弈论顾问的作用最大**：只给出"最优反应 + Nash 价"的顾问让价格几乎完全回到 Nash（价格指数 0.02）；即使只有一家装了这个顾问，它也定价更低、利润更高，市场 Δ 减半。额外给出联合最优价时，结果因模型而异。
+- **通信和"合作型"人格不提高利润，却让价格超过垄断价**，总福利损失为垄断的 1.2–2.4 倍；"激进"人格把 Δ 压到 0 附近。
+- 4 家卖家时 Δ 不比 2 家低；打开推理模式也不改变 Δ。面对近视最优反应的规则对手时，LLM 自己维持高价，利润被对手赚走。
+
+完整结果、检验与局限：[docs/oligopoly-v1-results.md](docs/oligopoly-v1-results.md)；实验计划：[experiment-specs/oligopoly-v1/PLAN.md](experiment-specs/oligopoly-v1/PLAN.md)。
 <!-- RESULTS-END -->
 
 ## 仓库结构

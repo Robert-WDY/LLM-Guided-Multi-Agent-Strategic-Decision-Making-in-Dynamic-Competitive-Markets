@@ -16,7 +16,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "experiment-results" / "oligopoly-v1"
 FIG = ROOT / "docs" / "figures"
-PHASES = ("e1", "e2", "e3", "e4")
+PHASES = ("e1", "e2", "e3", "e4", "e5", "e6")
 RNG = np.random.default_rng(20261119)
 B = 10_000
 
@@ -157,6 +157,52 @@ def main() -> None:
         two(f"E4 comm from Nash {m}", f"{m}-open-nash-comm", f"{m}-open-nash", "greater")
     two("E4 thinking vs no thinking (ds-flash)", "ds-flash-think-base", "ds-flash-base", "two")
 
+    # E5 unilateral advisor (PLAN addendum B): paired within-episode contrasts
+    e5 = {}
+    for m in ("ds-flash", "db-lite"):
+        rows = cells.get(f"{m}-advisor-br-firm0", [])
+        if rows:
+            dp = np.array([(r["mean_price_by_firm"][1] - r["mean_price_by_firm"][0]) / r["scale"] for r in rows])
+            dd = np.array([r["delta_by_firm"][0] - r["delta_by_firm"][1] for r in rows])
+            flips = RNG.choice([-1.0, 1.0], size=(B, len(dd)))
+            p_two = float((np.sum(np.abs((flips * dd).mean(axis=1)) >= abs(dd.mean())) + 1) / (B + 1))
+            e5[m] = {
+                "n": len(rows),
+                "price_B_minus_A": float(dp.mean()), "price_B_minus_A_ci": boot_ci(dp),
+                "p_price_one_sided": sign_flip_p(dp),
+                "delta_A_minus_B": float(dd.mean()), "delta_A_minus_B_ci": boot_ci(dd),
+                "p_delta_two_sided": p_two,
+                "delta_A": float(np.mean([r["delta_by_firm"][0] for r in rows])),
+                "delta_B": float(np.mean([r["delta_by_firm"][1] for r in rows])),
+                "delta_total": float(arr(cells, f"{m}-advisor-br-firm0").mean()),
+                "delta_total_ci": boot_ci(arr(cells, f"{m}-advisor-br-firm0")),
+            }
+    # E6 long horizon, descriptive
+    e6 = {}
+    for name in ("ds-flash-open-nash", "ds-flash-open-nash-long"):
+        x = arr(cells, name)
+        if len(x):
+            e6[name] = {"n": len(x), "delta": float(x.mean()), "ci": boot_ci(x),
+                        "share_escalated_delta_gt_0.25": float(np.mean(x > 0.25))}
+
+    long_rows = cells.get("ds-flash-open-nash-long", [])
+    if long_rows:
+        from game_theory_agent.oligopoly.economics import LogitMarket
+
+        early, late = [], []
+        for srow in long_rows:
+            rows = episode_rows(srow)
+            mk = LogitMarket(n=srow["n"], scale=srow["scale"])
+            window = lambda a, b: mk.collusion_index(float(np.mean([np.mean(r["profits"]) for r in rows[a:b]])))  # noqa: E731
+            early.append(window(35, 50))
+            late.append(window(120, 150))
+        d = np.array(late) - np.array(early)
+        e6["within_episode"] = {
+            "delta_rounds_36_50": float(np.mean(early)), "delta_rounds_121_150": float(np.mean(late)),
+            "diff": float(d.mean()), "diff_ci": boot_ci(d),
+            "rose": int((d > 0.05).sum()), "fell": int((d < -0.05).sum()), "n": len(d),
+        }
+
     # Holm over pre-specified family H2-H6, pooling the two models by Fisher's
     # method is avoided: each model-specific test is a family member.
     family = {k: v["p"] for k, v in tests.items() if k.startswith("H")}
@@ -168,7 +214,7 @@ def main() -> None:
     ref = {"qlearning_delta_mean": float(qd.mean()), "qlearning_delta_ci": boot_ci(qd),
            "qlearning_sessions": len(q)}
 
-    result = {"cells": table, "h1": h1, "tests": tests, "reference": ref,
+    result = {"cells": table, "h1": h1, "tests": tests, "reference": ref, "e5": e5, "e6": e6,
               "mechanisms": mechanisms(cells)}
     (OUT / "analysis.json").write_text(json.dumps(result, indent=1))
     write_tables(result)
@@ -256,6 +302,25 @@ def write_tables(r: dict) -> None:
             f"| {k} | {t['metric']} | {t['alternative']} | {t['diff']:+.2f} {fmt_ci(t['ci'])} | "
             f"{t['p']:.4f} | {t.get('p_holm', float('nan')):.4f} |"
         )
+    if r.get("e5"):
+        lines += ["", "| E5 单边顾问 | 局数 | 价格差 B−A [95% CI] | 单侧 p | Δ_A − Δ_B [95% CI] | 双侧 p | Δ_A | Δ_B | 合计 Δ [95% CI] |",
+                  "|---|---|---|---|---|---|---|---|---|"]
+        for m, e in r["e5"].items():
+            lines.append(
+                f"| {m} | {e['n']} | {e['price_B_minus_A']:+.3f} {fmt_ci(e['price_B_minus_A_ci'])} | {e['p_price_one_sided']:.4f} | "
+                f"{e['delta_A_minus_B']:+.2f} {fmt_ci(e['delta_A_minus_B_ci'])} | {e['p_delta_two_sided']:.4f} | "
+                f"{e['delta_A']:.2f} | {e['delta_B']:.2f} | {e['delta_total']:.2f} {fmt_ci(e['delta_total_ci'])} |")
+    if r.get("e6"):
+        lines += ["", "| E6 时程 | 局数 | Δ [95% CI] | Δ > 0.25 的局 |", "|---|---|---|---|"]
+        w = r["e6"].get("within_episode")
+        for k, e in r["e6"].items():
+            if k == "within_episode":
+                continue
+            lines.append(f"| {k} | {e['n']} | {e['delta']:.2f} {fmt_ci(e['ci'])} | {e['share_escalated_delta_gt_0.25']:.0%} |")
+    if r.get("e6", {}).get("within_episode"):
+        w = r["e6"]["within_episode"]
+        lines += ["", f"E6 同一批 {w['n']} 局：Δ 第 36–50 轮 {w['delta_rounds_36_50']:.2f} → 第 121–150 轮 "
+                  f"{w['delta_rounds_121_150']:.2f}，差 {w['diff']:+.2f} {fmt_ci(w['diff_ci'])}；上升 {w['rose']} 局，下降 {w['fell']} 局。"]
     lines += ["", "| 格 | 开局→终局价格指数相关 | 最后一次改价轮次（中位数） | 笔记提到合谋 | 提到合作/协调 | 提到价格战 | 提到报复 | 提到均衡/Nash | 消息提到合作/协调 |",
               "|---|---|---|---|---|---|---|---|---|"]
     for name, m in r["mechanisms"].items():
