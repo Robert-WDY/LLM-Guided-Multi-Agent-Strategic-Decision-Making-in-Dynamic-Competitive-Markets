@@ -1,0 +1,16 @@
+{"seed": 0, "steps": 1700355, "converged": true, "cycle_length": 1, "mean_price": 1.853943819959022, "price_index": 0.842857142857143, "delta": 0.9685979669554496}
+{"seed": 1, "steps": 1667900, "converged": true, "cycle_length": 1, "mean_price": 1.8345700660643072, "price_index": 0.8, "delta": 0.9461214293893215}
+{"seed": 2, "steps": 2767826, "converged": true, "cycle_length": 2, "mean_price": 1.728014419643376, "price_index": 0.5642857142857143, "delta": 0.694795420994015}
+{"seed": 3, "steps": 1800524, "converged": true, "cycle_length": 3, "mean_price": 1.8216542301344971, "price_index": 0.771428571428571, "delta": 0.8689049607849029}
+{"seed": 4, "steps": 1796078, "converged": true, "cycle_length": 1, "mean_price": 1.8926913277484514, "price_index": 0.9285714285714286, "delta": 0.9934204032070126}
+{"seed": 5, "steps": 1595311, "converged": true, "cycle_length": 4, "mean_price": 1.8151963121695927, "price_index": 0.7571428571428578, "delta": 0.8376023699016676}
+{"seed": 6, "steps": 2005882, "converged": true, "cycle_length": 1, "mean_price": 1.7958225582748775, "price_index": 0.714285714285714, "delta": 0.8950592918490088}
+{"seed": 7, "steps": 2010872, "converged": true, "cycle_length": 5, "mean_price": 1.7609498012643912, "price_index": 0.6371428571428573, "delta": 0.7630031934406327}
+{"seed": 8, "steps": 2153691, "converged": true, "cycle_length": 2, "mean_price": 1.708640665748661, "price_index": 0.5214285714285709, "delta": 0.6860611121268277}
+{"seed": 9, "steps": 2283078, "converged": true, "cycle_length": 2, "mean_price": 1.805509435222235, "price_index": 0.7357142857142855, "delta": 0.8731797801236436}
+{"seed": 10, "steps": 1895473, "converged": true, "cycle_length": 1, "mean_price": 1.7377012965907332, "price_index": 0.5857142857142854, "delta": 0.7766602669536163}
+{"seed": 11, "steps": 1982820, "converged": true, "cycle_length": 1, "mean_price": 1.757075050485448, "price_index": 0.6285714285714282, "delta": 0.8283797683690968}
+{"seed": 12, "steps": 1973563, "converged": true, "cycle_length": 1, "mean_price": 1.9120650816431661, "price_index": 0.9714285714285714, "delta": 0.9963964130732532}
+{"seed": 13, "steps": 1880429, "converged": true, "cycle_length": 1, "mean_price": 1.7764488043801627, "price_index": 0.6714285714285712, "delta": 0.867586592385521}
+{"seed": 14, "steps": 1717257, "converged": true, "cycle_length": 1, "mean_price": 1.757075050485448, "price_index": 0.6285714285714282, "delta": 0.8283797683690968}
+{"seed": 15, "steps": 2677395, "converged": true, "cycle_length": 1, "mean_price": 1.6408325271171595, "price_index": 0.3714285714285712, "delta": 0.5487978699537588}
