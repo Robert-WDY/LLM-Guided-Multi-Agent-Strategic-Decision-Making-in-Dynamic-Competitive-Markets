@@ -84,7 +84,9 @@ def build_request(k, seed, temperature=0.85):
 def request(k, seed, temperature=0.85):
     data = json.dumps(build_request(k, seed, temperature), separators=(",", ":")).encode()
     req = Request(
-        "http://127.0.0.1:19943/completion", data=data, headers={"Content-Type": "application/json"}
+        f"http://127.0.0.1:{int(os.environ.get('FOUR_PRICES_MENU_PORT', '19943'))}/completion",
+        data=data,
+        headers={"Content-Type": "application/json"},
     )
     with build_opener(ProxyHandler({})).open(req, timeout=180) as resp:
         ans = json.load(resp)
