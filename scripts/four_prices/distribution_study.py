@@ -9,7 +9,7 @@ from cause_value import metrics
 from distribution_trials import OUT, new_jobs, new_path, repeats
 from game_theory_agent.game_theory.renewal_review import PublicRenewalReview, estimates
 from prices import GROUPS
-from renewal_risk import forest, opportunity, public_proposal, targets
+from renewal_risk import decision_input, forest, opportunity, public_proposal, targets
 from renewal_risk_study import digest, historical
 from renewal_trials import OUT as RENEWAL, archive as earlier
 from run import read, save
@@ -69,23 +69,23 @@ def freeze(models, market, hurdle):
     )
 
 
-def predict(records, models, market, hurdle, cutoffs):
-    x, enabled = map(np.asarray, zip(*(opportunity(r) for r in records)))
+def predict(proposals, models, market, hurdle, cutoffs):
+    x, enabled = map(np.asarray, zip(*(decision_input(*p) for _, p in proposals)))
     raw = {name: model.predict(x) for name, model in models.items()}
     rows = [
         dict(
-            seed=r["seed"],
+            seed=seed,
             enabled=bool(flag),
             actions=dict(keep=0, cut=int(flag)),
             scores={},
         )
-        for r, flag in zip(records, enabled)
+        for (seed, _), flag in zip(proposals, enabled)
     ]
     choices = [candidates(raw[key], enabled, hurdle) for key in METHODS]
     quota = min(int(np.ceil(enabled.sum() / 4)), *(int(a[2].sum()) for a in choices))
     reviewer = PublicRenewalReview(RENEWAL / f"public-{market}.npz")
-    for r, src in zip(rows, records):
-        result = reviewer.review(*public_proposal(src))
+    for r, (_, proposal) in zip(rows, proposals):
+        result = reviewer.review(*proposal)
         r["actions"]["previous"] = ("keep", "cut", "raise").index(result["candidate"])
     for key, (actions, risk, eligible) in zip(METHODS, choices):
         chosen = (eligible & (risk <= cutoffs[key])) * actions
@@ -108,6 +108,18 @@ def evaluate(records, scores, hurdle):
         for r, y in zip(scores, data)
     ]
     summary = {key: metrics(rows, key, hurdle) for key in scores[0]["actions"]}
+    a = np.array([r["actions"]["wide_matched"] for r in rows])
+    b = np.array([r["actions"]["repeated_matched"] for r in rows])
+    assert np.count_nonzero(a) == np.count_nonzero(b)
+    overlap = dict(
+        proposals=int(np.count_nonzero(a)),
+        both=int(np.count_nonzero((a != 0) & (b != 0))),
+        different_actions=int(np.count_nonzero(a != b)),
+    )
+    for name, count in summary.items():
+        settled = np.array([r["gains"][r["actions"][name]] for r in rows])
+        count["gross_loss"] = float(np.maximum(-settled, 0).sum())
+        count["gross_gain"] = float(np.maximum(settled, 0).sum())
     active = data[:, :, 1].astype(bool)
     differences = []
     for key in METHODS:
@@ -137,6 +149,7 @@ def evaluate(records, scores, hurdle):
     return rows, dict(
         policies=summary,
         selection=abstention,
+        matched_overlap=overlap,
         matched_gain_diff=effect("repeated_matched", "wide_matched"),
         frozen_gain_diff=effect("repeated", "wide"),
         brier_diff=[
@@ -214,7 +227,8 @@ def run(phase):
         for name, files in datasets(m):
             records = [read(f) for f in files]
             assert len({r["seed"] for r in records}) == len(records)
-            scores = predict(records, models, m, hurdle, frozen["cutoffs"])
+            proposals = [(r["seed"], public_proposal(r)) for r in records]
+            scores = predict(proposals, models, m, hurdle, frozen["cutoffs"])
             filename = OUT / f"{name}-predictions.json.gz"
             if phase == "predict":
                 save(filename, scores)
