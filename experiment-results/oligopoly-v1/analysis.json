@@ -1,4 +1,5 @@
 {
+ "min_delta": -1.7594287289197135,
  "cells": [
   {
    "cell": "db-lite-advisor-br",
@@ -817,6 +818,16 @@
    "p_bonferroni": 1.0,
    "n": 20
   },
+  "db-mini price": {
+   "mean": 0.271596745128755,
+   "ci": [
+    0.020343834617727718,
+    0.5379206134093741
+   ],
+   "p": 0.029997000299970003,
+   "p_bonferroni": 0.14998500149985,
+   "n": 20
+  },
   "db-lite": {
    "mean": 0.37614959684592664,
    "ci": [
@@ -827,11 +838,31 @@
    "p_bonferroni": 0.012998700129987,
    "n": 20
   },
+  "db-lite price": {
+   "mean": 0.7246097516785227,
+   "ci": [
+    0.41322716746921434,
+    1.075251427660972
+   ],
+   "p": 0.00029997000299970003,
+   "p_bonferroni": 0.0014998500149985001,
+   "n": 20
+  },
   "db-pro": {
    "mean": 0.6502951130368682,
    "ci": [
     0.45723900745017165,
     0.8093448738573253
+   ],
+   "p": 9.999000099990002e-05,
+   "p_bonferroni": 0.0004999500049995,
+   "n": 20
+  },
+  "db-pro price": {
+   "mean": 0.8929708102535233,
+   "ci": [
+    0.6737824619783913,
+    1.1284577298145593
    ],
    "p": 9.999000099990002e-05,
    "p_bonferroni": 0.0004999500049995,
@@ -847,11 +878,31 @@
    "p_bonferroni": 0.0004999500049995,
    "n": 20
   },
+  "ds-flash price": {
+   "mean": 0.7615637412817102,
+   "ci": [
+    0.583795165218777,
+    0.9641575890999713
+   ],
+   "p": 9.999000099990002e-05,
+   "p_bonferroni": 0.0004999500049995,
+   "n": 20
+  },
   "ds-pro": {
    "mean": 0.6348589226732277,
    "ci": [
     0.4831105175536051,
     0.7735359681985338
+   ],
+   "p": 9.999000099990002e-05,
+   "p_bonferroni": 0.0004999500049995,
+   "n": 20
+  },
+  "ds-pro price": {
+   "mean": 0.7034332745036589,
+   "ci": [
+    0.5148030551724674,
+    0.915590928663431
    ],
    "p": 9.999000099990002e-05,
    "p_bonferroni": 0.0004999500049995,
@@ -2266,44 +2317,51 @@
   "db-lite-comm": {
    "messages": 1997,
    "share_with_price": 0.7891837756634953,
-   "announced_price_index_median": 1.2350803706717322,
-   "announced_above_monopoly_share": 0.6890862944162437
+   "share_own_price": 0.7871807711567351,
+   "own_price_index_median": 1.1659515006776175,
+   "own_above_monopoly_share": 0.6673027989821882
   },
   "db-lite-n4-comm": {
    "messages": 2398,
    "share_with_price": 0.8223519599666389,
-   "announced_price_index_median": 0.9247373391658158,
-   "announced_above_monopoly_share": 0.4847870182555781
+   "share_own_price": 0.8223519599666389,
+   "own_price_index_median": 0.9247373391658158,
+   "own_above_monopoly_share": 0.4847870182555781
   },
   "db-lite-open-nash-comm": {
    "messages": 1566,
    "share_with_price": 0.8492975734355045,
-   "announced_price_index_median": 0.0001622370968625829,
-   "announced_above_monopoly_share": 0.04285714285714286
+   "share_own_price": 0.8486590038314177,
+   "own_price_index_median": 0.0001622370968625829,
+   "own_above_monopoly_share": 0.04288939051918736
   },
   "ds-flash-comm": {
    "messages": 2000,
    "share_with_price": 0.8345,
-   "announced_price_index_median": 0.8341329247058656,
-   "announced_above_monopoly_share": 0.3678849610545237
+   "share_own_price": 0.826,
+   "own_price_index_median": 0.8341329247058656,
+   "own_above_monopoly_share": 0.3365617433414044
   },
   "ds-flash-n4-comm": {
    "messages": 2400,
    "share_with_price": 0.91375,
-   "announced_price_index_median": 0.7518347653807395,
-   "announced_above_monopoly_share": 0.26903784769721845
+   "share_own_price": 0.9079166666666667,
+   "own_price_index_median": 0.6869963002113358,
+   "own_above_monopoly_share": 0.21248279027076641
   },
   "ds-flash-open-nash-comm": {
    "messages": 1568,
    "share_with_price": 0.9126275510204082,
-   "announced_price_index_median": -0.0064741344225725085,
-   "announced_above_monopoly_share": 0.016771488469601678
+   "share_own_price": 0.9107142857142857,
+   "own_price_index_median": -0.0064741344225725085,
+   "own_above_monopoly_share": 0.0
   },
   "ds-pro-open-nash-comm": {
    "messages": 1568,
    "share_with_price": 0.399234693877551,
-   "announced_price_index_median": -0.050716611218806135,
-   "announced_above_monopoly_share": 0.03514376996805112
+   "share_own_price": 0.39668367346938777,
+   "own_price_index_median": -0.050716611218806135,
+   "own_above_monopoly_share": 0.03376205787781351
   }
  },
  "advisor_adoption": {

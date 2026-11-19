@@ -115,6 +115,7 @@ def main() -> None:
         vals[f"own/{m}/p_vs_avg"] = pv(e["p_vs_avg"])
         vals[f"own/{m}/ci"] = ci(e["ci"])
         vals[f"own/{m}/p"] = pv(e["p"])
+    vals["min_delta"] = f2(A["min_delta"])
     ref = A["reference"]
     vals["q/delta"] = f"{ref['qlearning_delta_mean']:.3f}"
     vals["q/ci"] = "[" + ", ".join(f"{x:.2f}" for x in ref["qlearning_delta_ci"]) + "]"
@@ -127,8 +128,9 @@ def main() -> None:
             vals[f"mech/{name}/{k}"] = pct(v)
     for name, m in A.get("message_prices", {}).items():
         vals[f"msg/{name}/withprice"] = pct(m["share_with_price"])
-        vals[f"msg/{name}/announced"] = f2(m["announced_price_index_median"])
-        vals[f"msg/{name}/above"] = pct(m["announced_above_monopoly_share"])
+        vals[f"msg/{name}/own"] = pct(m["share_own_price"])
+        vals[f"msg/{name}/announced"] = f2(m["own_price_index_median"])
+        vals[f"msg/{name}/above"] = pct(m["own_above_monopoly_share"])
         vals[f"msg/{name}/n"] = f"{m['messages']:,}".replace(",", "{,}")
 
     # p-values for running text carry their relation: \V{.../pe} -> "= 0.016" or "< 0.001"

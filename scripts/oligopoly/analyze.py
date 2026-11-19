@@ -149,6 +149,10 @@ def main() -> None:
             p = sign_flip_p(x)
             h1[m] = {"mean": float(x.mean()), "ci": boot_ci(x), "p": p,
                      "p_bonferroni": min(1.0, 5 * p), "n": len(x)}
+            xr = arr(cells, f"{m}-base", "price_index")
+            pr = sign_flip_p(xr)
+            h1[m + " price"] = {"mean": float(xr.mean()), "ci": boot_ci(xr), "p": pr,
+                                "p_bonferroni": min(1.0, 5 * pr), "n": len(xr)}
     for m in ("ds-flash", "db-lite"):
         two(f"H2 comm>{m}", f"{m}-comm", f"{m}-base", "greater")
         two(f"H3 advisor-br<{m}", f"{m}-advisor-br", f"{m}-base", "less", "price_index")
@@ -272,7 +276,8 @@ def main() -> None:
     ref = {"qlearning_delta_mean": float(qd.mean()), "qlearning_delta_ci": boot_ci(qd),
            "qlearning_sessions": len(q)}
 
-    result = {"cells": table, "h1": h1, "tests": tests, "reference": ref, "e5": e5, "e6": e6, "split": split, "own_gain": own,
+    result = {"min_delta": min(min(r["delta"] for r in v) for v in cells.values()),
+              "cells": table, "h1": h1, "tests": tests, "reference": ref, "e5": e5, "e6": e6, "split": split, "own_gain": own,
               "mechanisms": mechanisms(cells), "message_prices": message_prices(cells),
               "advisor_adoption": advisor_adoption(cells), "reasoning": reasoning_truncation(),
               "final_price_modes": final_price_modes(cells)}
@@ -335,7 +340,14 @@ def mechanisms(cells) -> dict:
 
 
 def message_prices(cells) -> dict:
-    """Share of cheap-talk messages announcing a price, and where those prices sit."""
+    """Cheap-talk content: does a message state the sender's own price?
+
+    A message "states its own price" when one of its numbers in the plausible price
+    range equals (to 0.6% of the price scale) the price the sender charged in that
+    round or the next. The announced level is that own price, never the largest
+    number in the message, so mentions of a rival's price are not counted as
+    announcements.
+    """
 
     import re
 
@@ -344,23 +356,30 @@ def message_prices(cells) -> dict:
     for name, summaries in sorted(cells.items()):
         if not summaries[0].get("communication"):
             continue
-        idx, total, with_price = [], 0, 0
+        idx, total, with_price, own = [], 0, 0, 0
         for s in summaries:
             b, sc = s["benchmarks"], s["scale"]
-            for r in episode_rows(s):
-                for m in r["messages"]:
+            rows = episode_rows(s)
+            for t, r in enumerate(rows):
+                for i, m in enumerate(r["messages"]):
                     if not m:
                         continue
                     total += 1
                     vals = [float(x) for x in num.findall(m)]
                     vals = [x for x in vals if 0.8 * b["marginal_cost"] < x < 5 * sc]
-                    if vals:
-                        with_price += 1
-                        idx.append((max(vals) - b["nash_price"]) / (b["monopoly_price"] - b["nash_price"]))
+                    if not vals:
+                        continue
+                    with_price += 1
+                    mine = [r["prices"][i]] + ([rows[t + 1]["prices"][i]] if t + 1 < len(rows) else [])
+                    hit = [p for p in mine if any(abs(v - p) <= 0.006 * sc for v in vals)]
+                    if hit:
+                        own += 1
+                        idx.append((hit[0] - b["nash_price"]) / (b["monopoly_price"] - b["nash_price"]))
         a = np.array(idx)
         out[name] = {"messages": total, "share_with_price": with_price / max(total, 1),
-                     "announced_price_index_median": float(np.median(a)) if len(a) else None,
-                     "announced_above_monopoly_share": float(np.mean(a > 1)) if len(a) else None}
+                     "share_own_price": own / max(total, 1),
+                     "own_price_index_median": float(np.median(a)) if len(a) else None,
+                     "own_above_monopoly_share": float(np.mean(a > 1)) if len(a) else None}
     return out
 
 
@@ -467,10 +486,10 @@ def write_tables(r: dict) -> None:
         lines += ["", f"{key.split(':')[1]} 同一批 {w['n']} 局：Δ 第 36–50 轮 {w['delta_rounds_36_50']:.2f} → 第 121–150 轮 "
                   f"{w['delta_rounds_121_150']:.2f}，差 {w['diff']:+.2f} {fmt_ci(w['diff_ci'])}；上升 {w['rose']} 局，下降 {w['fell']} 局。"]
     if r.get("message_prices"):
-        lines += ["", "| 通信格 | 消息数 | 含价格的消息 | 宣布价格指数（中位数） | 宣布价高于垄断价 |", "|---|---|---|---|---|"]
+        lines += ["", "| 通信格 | 消息数 | 含价格数字 | 写明自己报价 | 自报价格指数（中位数） | 自报价格高于垄断价 |", "|---|---|---|---|---|---|"]
         for k, v in r["message_prices"].items():
-            lines.append(f"| {k} | {v['messages']} | {v['share_with_price']:.0%} | "
-                         f"{v['announced_price_index_median']:.2f} | {v['announced_above_monopoly_share']:.0%} |")
+            lines.append(f"| {k} | {v['messages']} | {v['share_with_price']:.0%} | {v['share_own_price']:.0%} | "
+                         f"{v['own_price_index_median']:.2f} | {v['own_above_monopoly_share']:.0%} |")
     lines += ["", "| 格 | 开局→终局价格指数相关 | 最后一次改价轮次（中位数） | 笔记提到合谋 | 提到合作/协调 | 提到价格战 | 提到报复 | 提到均衡/Nash | 消息提到合作/协调 |",
               "|---|---|---|---|---|---|---|---|---|"]
     for name, m in r["mechanisms"].items():
