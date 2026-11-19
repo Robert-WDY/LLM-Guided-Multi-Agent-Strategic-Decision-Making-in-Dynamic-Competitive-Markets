@@ -1,0 +1,1465 @@
+{
+  "cohorts": {
+    "smol-econ": {
+      "policies": {
+        "keep": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 48,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false,
+          "gross_loss": 0.0,
+          "gross_gain": 0.0
+        },
+        "cut": {
+          "effect": [
+            38.610433027249805,
+            20.63322789134872,
+            58.20201872677945
+          ],
+          "n": 48,
+          "used": 48,
+          "lost": 12,
+          "large": 12,
+          "coverage": 1.0,
+          "risk_upper": 0.41635658269608694,
+          "worst": -49.41295801253949,
+          "passed": false,
+          "gross_loss": 321.2977204005067,
+          "gross_gain": 2174.598505708497
+        },
+        "previous": {
+          "effect": [
+            20.607327936832792,
+            6.970693239796024,
+            38.45918056126619
+          ],
+          "n": 48,
+          "used": 13,
+          "lost": 1,
+          "large": 1,
+          "coverage": 0.2708333333333333,
+          "risk_upper": 0.40055608886328475,
+          "worst": -41.469872044936515,
+          "passed": false,
+          "gross_loss": 41.469872044936515,
+          "gross_gain": 1030.6216130129105
+        },
+        "wide": {
+          "effect": [
+            22.3791804192502,
+            10.238304782373502,
+            37.76467955673591
+          ],
+          "n": 48,
+          "used": 17,
+          "lost": 1,
+          "large": 1,
+          "coverage": 0.3541666666666667,
+          "risk_upper": 0.32109796848236083,
+          "worst": -10.017502630017617,
+          "passed": false,
+          "gross_loss": 10.017502630017617,
+          "gross_gain": 1084.2181627540272,
+          "risk_brier": 0.13256091488077057
+        },
+        "wide_matched": {
+          "effect": [
+            14.733427449309275,
+            5.0770433779776,
+            26.953820043866557
+          ],
+          "n": 48,
+          "used": 12,
+          "lost": 1,
+          "large": 1,
+          "coverage": 0.25,
+          "risk_upper": 0.4267915230969296,
+          "worst": -10.017502630017617,
+          "passed": false,
+          "gross_loss": 10.017502630017617,
+          "gross_gain": 717.2220201968628
+        },
+        "repeated": {
+          "effect": [
+            13.225833976323413,
+            4.958143192322141,
+            24.160133479280613
+          ],
+          "n": 48,
+          "used": 12,
+          "lost": 1,
+          "large": 1,
+          "coverage": 0.25,
+          "risk_upper": 0.4267915230969296,
+          "worst": -10.017502630017617,
+          "passed": false,
+          "gross_loss": 10.017502630017617,
+          "gross_gain": 644.8575334935415,
+          "risk_brier": 0.12728542477231247
+        },
+        "repeated_matched": {
+          "effect": [
+            13.225833976323413,
+            4.958143192322141,
+            24.160133479280613
+          ],
+          "n": 48,
+          "used": 12,
+          "lost": 1,
+          "large": 1,
+          "coverage": 0.25,
+          "risk_upper": 0.4267915230969296,
+          "worst": -10.017502630017617,
+          "passed": false,
+          "gross_loss": 10.017502630017617,
+          "gross_gain": 644.8575334935415
+        },
+        "duplicated": {
+          "effect": [
+            15.23331887951459,
+            6.198693752366843,
+            27.691625627913318
+          ],
+          "n": 48,
+          "used": 13,
+          "lost": 1,
+          "large": 1,
+          "coverage": 0.2708333333333333,
+          "risk_upper": 0.40055608886328475,
+          "worst": -10.017502630017617,
+          "passed": false,
+          "gross_loss": 10.017502630017617,
+          "gross_gain": 741.2168088467179,
+          "risk_brier": 0.13244451276083835
+        },
+        "duplicated_matched": {
+          "effect": [
+            15.442016850973289,
+            6.437002323716054,
+            27.823819136279013
+          ],
+          "n": 48,
+          "used": 12,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.25,
+          "risk_upper": 0.3059205794727106,
+          "worst": 0.0,
+          "passed": false,
+          "gross_loss": 0.0,
+          "gross_gain": 741.2168088467179
+        },
+        "wide_requests": {
+          "effect": [
+            16.645929051044607,
+            7.173071390739358,
+            29.169321241587316
+          ],
+          "n": 48,
+          "used": 13,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.2708333333333333,
+          "risk_upper": 0.28614753660725034,
+          "worst": 0.0,
+          "passed": false,
+          "gross_loss": 0.0,
+          "gross_gain": 799.0045944501412,
+          "risk_brier": 0.13407737337405223
+        },
+        "wide_requests_matched": {
+          "effect": [
+            15.230093729368003,
+            5.978317474224579,
+            27.529583271378037
+          ],
+          "n": 48,
+          "used": 12,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.25,
+          "risk_upper": 0.3059205794727106,
+          "worst": 0.0,
+          "passed": false,
+          "gross_loss": 0.0,
+          "gross_gain": 731.0444990096642
+        }
+      },
+      "selection": {
+        "wide": {
+          "eligible": 48,
+          "held": 31,
+          "correctly_held": 10,
+          "missed_better_move": 21
+        },
+        "repeated": {
+          "eligible": 48,
+          "held": 36,
+          "correctly_held": 10,
+          "missed_better_move": 26
+        },
+        "duplicated": {
+          "eligible": 48,
+          "held": 35,
+          "correctly_held": 10,
+          "missed_better_move": 25
+        },
+        "wide_requests": {
+          "eligible": 48,
+          "held": 35,
+          "correctly_held": 11,
+          "missed_better_move": 24
+        },
+        "previous": {
+          "eligible": 48,
+          "held": 35,
+          "correctly_held": 10,
+          "missed_better_move": 25
+        }
+      },
+      "matched_overlap": {
+        "proposals": 12,
+        "both": 5,
+        "different_actions": 14
+      },
+      "matched_gain_diff": [
+        -1.5075934729858622,
+        -15.414573815882823,
+        11.00131347557181
+      ],
+      "frozen_gain_diff": [
+        -9.153346442926786,
+        -25.896643653466732,
+        4.725119744259634
+      ],
+      "repeated_vs_duplicate": [
+        -2.216182874649876,
+        -14.767250771964061,
+        9.029564548630647
+      ],
+      "repeated_vs_equal_requests": [
+        -2.004259753044588,
+        -15.010519961293669,
+        10.400629867746998
+      ],
+      "brier_diff": [
+        -0.005275490108458111,
+        -0.017426138894304773,
+        0.007064022847181101
+      ]
+    },
+    "qwen-econ": {
+      "policies": {
+        "keep": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 48,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false,
+          "gross_loss": 0.0,
+          "gross_gain": 0.0
+        },
+        "cut": {
+          "effect": [
+            5.098441850319583,
+            -0.6376902790195471,
+            10.929054424882812
+          ],
+          "n": 48,
+          "used": 48,
+          "lost": 19,
+          "large": 11,
+          "coverage": 1.0,
+          "risk_upper": 0.5672951118712154,
+          "worst": -47.958495306304805,
+          "passed": false,
+          "gross_loss": 224.00784635570523,
+          "gross_gain": 468.7330551710452
+        },
+        "previous": {
+          "effect": [
+            3.4919783490344596,
+            0.20813057089248993,
+            7.12609831075475
+          ],
+          "n": 48,
+          "used": 18,
+          "lost": 4,
+          "large": 3,
+          "coverage": 0.375,
+          "risk_upper": 0.5098311562306593,
+          "worst": -24.711701564583183,
+          "passed": false,
+          "gross_loss": 49.17791571316734,
+          "gross_gain": 216.79287646682138
+        },
+        "wide": {
+          "effect": [
+            2.3855175128549537,
+            -0.3287033976545693,
+            5.365005669673175
+          ],
+          "n": 48,
+          "used": 17,
+          "lost": 5,
+          "large": 3,
+          "coverage": 0.3541666666666667,
+          "risk_upper": 0.5926654097094056,
+          "worst": -24.711701564583183,
+          "passed": false,
+          "gross_loss": 42.525015307346806,
+          "gross_gain": 157.02985592438455,
+          "risk_brier": 0.2609092725427059
+        },
+        "wide_matched": {
+          "effect": [
+            1.8029884701070837,
+            -0.6891804396715336,
+            4.694739002357832
+          ],
+          "n": 48,
+          "used": 12,
+          "lost": 4,
+          "large": 3,
+          "coverage": 0.25,
+          "risk_upper": 0.68707553317234,
+          "worst": -24.711701564583183,
+          "passed": false,
+          "gross_loss": 39.9241470596929,
+          "gross_gain": 126.4675936248329
+        },
+        "repeated": {
+          "effect": [
+            3.498258127182242,
+            0.9692204242963759,
+            6.48727935356651
+          ],
+          "n": 48,
+          "used": 16,
+          "lost": 2,
+          "large": 1,
+          "coverage": 0.3333333333333333,
+          "risk_upper": 0.41953609681893633,
+          "worst": -7.729612019075404,
+          "passed": false,
+          "gross_loss": 10.33048026672931,
+          "gross_gain": 178.24687037147692,
+          "risk_brier": 0.24746438138671945
+        },
+        "repeated_matched": {
+          "effect": [
+            2.5277518484869295,
+            0.6659375559411944,
+            5.008587852177021
+          ],
+          "n": 48,
+          "used": 12,
+          "lost": 1,
+          "large": 0,
+          "coverage": 0.25,
+          "risk_upper": 0.4267915230969296,
+          "worst": -2.6008682476539056,
+          "passed": false,
+          "gross_loss": 2.6008682476539056,
+          "gross_gain": 123.93295697502653
+        },
+        "duplicated": {
+          "effect": [
+            2.6965678364333487,
+            0.600881906414787,
+            5.319814551603627
+          ],
+          "n": 48,
+          "used": 13,
+          "lost": 2,
+          "large": 1,
+          "coverage": 0.2708333333333333,
+          "risk_upper": 0.49421401942385657,
+          "worst": -5.388249747897838,
+          "passed": false,
+          "gross_loss": 7.9891179955517435,
+          "gross_gain": 137.4243741443525,
+          "risk_brier": 0.25426271414680496
+        },
+        "duplicated_matched": {
+          "effect": [
+            2.8088230395145537,
+            0.7758814179450446,
+            5.396390268782943
+          ],
+          "n": 48,
+          "used": 12,
+          "lost": 1,
+          "large": 0,
+          "coverage": 0.25,
+          "risk_upper": 0.4267915230969296,
+          "worst": -2.6008682476539056,
+          "passed": false,
+          "gross_loss": 2.6008682476539056,
+          "gross_gain": 137.4243741443525
+        },
+        "wide_requests": {
+          "effect": [
+            2.647546129079209,
+            0.04827711844286259,
+            5.674488434965699
+          ],
+          "n": 48,
+          "used": 18,
+          "lost": 4,
+          "large": 3,
+          "coverage": 0.375,
+          "risk_upper": 0.5098311562306593,
+          "worst": -24.711701564583183,
+          "passed": false,
+          "gross_loss": 40.430431579210335,
+          "gross_gain": 167.51264577501234,
+          "risk_brier": 0.25665524466187273
+        },
+        "wide_requests_matched": {
+          "effect": [
+            2.551135934320401,
+            0.41711196037490095,
+            5.244052289760849
+          ],
+          "n": 48,
+          "used": 12,
+          "lost": 2,
+          "large": 2,
+          "coverage": 0.25,
+          "risk_upper": 0.5250810947605415,
+          "worst": -7.729612019075404,
+          "passed": false,
+          "gross_loss": 13.117861766973242,
+          "gross_gain": 135.57238661435247
+        }
+      },
+      "selection": {
+        "wide": {
+          "eligible": 48,
+          "held": 31,
+          "correctly_held": 7,
+          "missed_better_move": 24
+        },
+        "repeated": {
+          "eligible": 48,
+          "held": 32,
+          "correctly_held": 10,
+          "missed_better_move": 22
+        },
+        "duplicated": {
+          "eligible": 48,
+          "held": 35,
+          "correctly_held": 9,
+          "missed_better_move": 26
+        },
+        "wide_requests": {
+          "eligible": 48,
+          "held": 30,
+          "correctly_held": 8,
+          "missed_better_move": 22
+        },
+        "previous": {
+          "eligible": 48,
+          "held": 30,
+          "correctly_held": 8,
+          "missed_better_move": 22
+        }
+      },
+      "matched_overlap": {
+        "proposals": 12,
+        "both": 6,
+        "different_actions": 12
+      },
+      "matched_gain_diff": [
+        0.7247633783798463,
+        -1.1584293862636361,
+        2.6047667689235716
+      ],
+      "frozen_gain_diff": [
+        1.1127406143272884,
+        -1.0699950621662448,
+        3.685512048771223
+      ],
+      "repeated_vs_duplicate": [
+        -0.28107119102762407,
+        -1.4701909355713538,
+        0.3459061714608575
+      ],
+      "repeated_vs_equal_requests": [
+        -0.02338408583347129,
+        -1.2110446295867607,
+        0.8436262746736737
+      ],
+      "brier_diff": [
+        -0.01344489115598648,
+        -0.028725524534703697,
+        -0.0002833961056561601
+      ]
+    },
+    "archived-econ": {
+      "policies": {
+        "keep": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 96,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false,
+          "gross_loss": 0.0,
+          "gross_gain": 0.0
+        },
+        "cut": {
+          "effect": [
+            43.287724719387334,
+            28.363533293317072,
+            59.050971181543304
+          ],
+          "n": 96,
+          "used": 96,
+          "lost": 15,
+          "large": 13,
+          "coverage": 1.0,
+          "risk_upper": 0.25759710995176943,
+          "worst": -91.66181213525357,
+          "passed": false,
+          "gross_loss": 657.4731146477584,
+          "gross_gain": 4813.094687708942
+        },
+        "previous": {
+          "effect": [
+            14.036113371371405,
+            7.506986444886767,
+            21.383597029822525
+          ],
+          "n": 96,
+          "used": 27,
+          "lost": 1,
+          "large": 1,
+          "coverage": 0.28125,
+          "risk_upper": 0.21409842329155637,
+          "worst": -46.18891247716963,
+          "passed": false,
+          "gross_loss": 46.18891247716963,
+          "gross_gain": 1393.6557961288245
+        },
+        "wide": {
+          "effect": [
+            14.779894678161696,
+            7.416282070788672,
+            22.55379061183047
+          ],
+          "n": 96,
+          "used": 32,
+          "lost": 2,
+          "large": 2,
+          "coverage": 0.3333333333333333,
+          "risk_upper": 0.23070759127263119,
+          "worst": -88.32656894865131,
+          "passed": false,
+          "gross_loss": 134.51548142582095,
+          "gross_gain": 1553.3853705293438,
+          "risk_brier": 0.12322693399486151
+        },
+        "wide_matched": {
+          "effect": [
+            9.8212374857253,
+            3.7951214668968745,
+            16.32748806798682
+          ],
+          "n": 96,
+          "used": 24,
+          "lost": 2,
+          "large": 2,
+          "coverage": 0.25,
+          "risk_upper": 0.2979969849293691,
+          "worst": -88.32656894865131,
+          "passed": false,
+          "gross_loss": 134.51548142582095,
+          "gross_gain": 1077.3542800554496
+        },
+        "repeated": {
+          "effect": [
+            10.343902343022828,
+            4.307188212216823,
+            17.104742167498014
+          ],
+          "n": 96,
+          "used": 30,
+          "lost": 4,
+          "large": 3,
+          "coverage": 0.3125,
+          "risk_upper": 0.332565063125068,
+          "worst": -88.32656894865131,
+          "passed": false,
+          "gross_loss": 150.77597936029042,
+          "gross_gain": 1143.790604290482,
+          "risk_brier": 0.12900534488366175
+        },
+        "repeated_matched": {
+          "effect": [
+            8.327293793916747,
+            3.362024593556418,
+            14.006175739986212
+          ],
+          "n": 96,
+          "used": 24,
+          "lost": 3,
+          "large": 2,
+          "coverage": 0.25,
+          "risk_upper": 0.3523712243142352,
+          "worst": -88.32656894865131,
+          "passed": false,
+          "gross_loss": 104.5870668831208,
+          "gross_gain": 904.0072710991285
+        },
+        "duplicated": {
+          "effect": [
+            10.52506545420635,
+            4.4608064316311165,
+            17.40655210399093
+          ],
+          "n": 96,
+          "used": 28,
+          "lost": 3,
+          "large": 2,
+          "coverage": 0.2916666666666667,
+          "risk_upper": 0.30821888849703,
+          "worst": -88.32656894865131,
+          "passed": false,
+          "gross_loss": 104.5870668831208,
+          "gross_gain": 1114.9933504869305,
+          "risk_brier": 0.1321626313139523
+        },
+        "duplicated_matched": {
+          "effect": [
+            8.739968366919207,
+            3.2442894377783476,
+            14.924621185636123
+          ],
+          "n": 96,
+          "used": 24,
+          "lost": 3,
+          "large": 2,
+          "coverage": 0.25,
+          "risk_upper": 0.3523712243142352,
+          "worst": -88.32656894865131,
+          "passed": false,
+          "gross_loss": 104.5870668831208,
+          "gross_gain": 943.6240301073647
+        },
+        "wide_requests": {
+          "effect": [
+            12.515612795623303,
+            6.085848693910939,
+            19.74070127930942
+          ],
+          "n": 96,
+          "used": 29,
+          "lost": 2,
+          "large": 2,
+          "coverage": 0.3020833333333333,
+          "risk_upper": 0.2520768411152787,
+          "worst": -88.32656894865131,
+          "passed": false,
+          "gross_loss": 134.51548142582095,
+          "gross_gain": 1336.014309805658,
+          "risk_brier": 0.12580403840264395
+        },
+        "wide_requests_matched": {
+          "effect": [
+            10.530412974095588,
+            4.30037285259417,
+            17.570226588559258
+          ],
+          "n": 96,
+          "used": 24,
+          "lost": 2,
+          "large": 2,
+          "coverage": 0.25,
+          "risk_upper": 0.2979969849293691,
+          "worst": -88.32656894865131,
+          "passed": false,
+          "gross_loss": 134.51548142582095,
+          "gross_gain": 1145.4351269389972
+        }
+      },
+      "selection": {
+        "wide": {
+          "eligible": 96,
+          "held": 64,
+          "correctly_held": 13,
+          "missed_better_move": 51
+        },
+        "repeated": {
+          "eligible": 96,
+          "held": 66,
+          "correctly_held": 11,
+          "missed_better_move": 55
+        },
+        "duplicated": {
+          "eligible": 96,
+          "held": 68,
+          "correctly_held": 12,
+          "missed_better_move": 56
+        },
+        "wide_requests": {
+          "eligible": 96,
+          "held": 67,
+          "correctly_held": 13,
+          "missed_better_move": 54
+        },
+        "previous": {
+          "eligible": 96,
+          "held": 69,
+          "correctly_held": 14,
+          "missed_better_move": 55
+        }
+      },
+      "matched_overlap": {
+        "proposals": 24,
+        "both": 17,
+        "different_actions": 14
+      },
+      "matched_gain_diff": [
+        -1.493943691808554,
+        -6.285229965510907,
+        2.3862841231258582
+      ],
+      "frozen_gain_diff": [
+        -4.435992335138868,
+        -10.925691993250116,
+        1.4368228940653704
+      ],
+      "repeated_vs_duplicate": [
+        -0.41267457300246146,
+        -5.016183337025456,
+        3.44480768580457
+      ],
+      "repeated_vs_equal_requests": [
+        -2.2031191801788412,
+        -7.500161777313028,
+        1.9245078870789638
+      ],
+      "brier_diff": [
+        0.005778410888800247,
+        -0.003356210041165204,
+        0.014613034496166155
+      ]
+    },
+    "smol-native": {
+      "policies": {
+        "keep": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 48,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false,
+          "gross_loss": 0.0,
+          "gross_gain": 0.0
+        },
+        "cut": {
+          "effect": [
+            76347.95002033097,
+            -37097.359687448436,
+            198625.49584766704
+          ],
+          "n": 48,
+          "used": 40,
+          "lost": 18,
+          "large": 15,
+          "coverage": 0.8333333333333334,
+          "risk_upper": 0.6360861149373355,
+          "worst": -904438.8466244342,
+          "passed": false,
+          "gross_loss": 3587993.7557891374,
+          "gross_gain": 7252695.356765023
+        },
+        "previous": {
+          "effect": [
+            135007.45785539589,
+            48911.63638082192,
+            245394.12795246195
+          ],
+          "n": 48,
+          "used": 28,
+          "lost": 9,
+          "large": 6,
+          "coverage": 0.5833333333333334,
+          "risk_upper": 0.549887447923666,
+          "worst": -173398.0891180018,
+          "passed": false,
+          "gross_loss": 524080.4580182325,
+          "gross_gain": 7004438.435077235
+        },
+        "wide": {
+          "effect": [
+            46736.15544576776,
+            -11790.568589726168,
+            147034.48518070742
+          ],
+          "n": 48,
+          "used": 10,
+          "lost": 6,
+          "large": 4,
+          "coverage": 0.20833333333333334,
+          "risk_upper": 0.9006664412353215,
+          "worst": -209359.082307865,
+          "passed": false,
+          "gross_loss": 381285.1208976624,
+          "gross_gain": 2624620.582294515,
+          "risk_brier": 0.23341860192910113
+        },
+        "wide_matched": {
+          "effect": [
+            46736.15544576776,
+            -11790.568589726168,
+            147034.48518070742
+          ],
+          "n": 48,
+          "used": 10,
+          "lost": 6,
+          "large": 4,
+          "coverage": 0.20833333333333334,
+          "risk_upper": 0.9006664412353215,
+          "worst": -209359.082307865,
+          "passed": false,
+          "gross_loss": 381285.1208976624,
+          "gross_gain": 2624620.582294515
+        },
+        "repeated": {
+          "effect": [
+            51612.70697758893,
+            -2837.9092738747186,
+            145918.7883991193
+          ],
+          "n": 48,
+          "used": 10,
+          "lost": 5,
+          "large": 3,
+          "coverage": 0.20833333333333334,
+          "risk_upper": 0.841498476682194,
+          "worst": -108028.6539220411,
+          "passed": false,
+          "gross_loss": 171926.0385897974,
+          "gross_gain": 2649335.973514066,
+          "risk_brier": 0.22697082901649424
+        },
+        "repeated_matched": {
+          "effect": [
+            51612.70697758893,
+            -2837.9092738747186,
+            145918.7883991193
+          ],
+          "n": 48,
+          "used": 10,
+          "lost": 5,
+          "large": 3,
+          "coverage": 0.20833333333333334,
+          "risk_upper": 0.841498476682194,
+          "worst": -108028.6539220411,
+          "passed": false,
+          "gross_loss": 171926.0385897974,
+          "gross_gain": 2649335.973514066
+        },
+        "duplicated": {
+          "effect": [
+            43162.27709995647,
+            -5300.914208001675,
+            137454.38298784423
+          ],
+          "n": 48,
+          "used": 9,
+          "lost": 5,
+          "large": 3,
+          "coverage": 0.1875,
+          "risk_upper": 0.8878738888354571,
+          "worst": -108028.6539220411,
+          "passed": false,
+          "gross_loss": 171926.0385897974,
+          "gross_gain": 2243715.3393877074,
+          "risk_brier": 0.22953001503954135
+        },
+        "duplicated_matched": {
+          "effect": [
+            43162.27709995647,
+            -5300.914208001675,
+            137454.38298784423
+          ],
+          "n": 48,
+          "used": 9,
+          "lost": 5,
+          "large": 3,
+          "coverage": 0.1875,
+          "risk_upper": 0.8878738888354571,
+          "worst": -108028.6539220411,
+          "passed": false,
+          "gross_loss": 171926.0385897974,
+          "gross_gain": 2243715.3393877074
+        },
+        "wide_requests": {
+          "effect": [
+            59245.83619140529,
+            -1421.5428650817285,
+            157793.4794230827
+          ],
+          "n": 48,
+          "used": 10,
+          "lost": 5,
+          "large": 3,
+          "coverage": 0.20833333333333334,
+          "risk_upper": 0.841498476682194,
+          "worst": -108028.6539220411,
+          "passed": false,
+          "gross_loss": 171926.0385897974,
+          "gross_gain": 3015726.175777251,
+          "risk_brier": 0.22072241755275845
+        },
+        "wide_requests_matched": {
+          "effect": [
+            59245.83619140529,
+            -1421.5428650817285,
+            157793.4794230827
+          ],
+          "n": 48,
+          "used": 10,
+          "lost": 5,
+          "large": 3,
+          "coverage": 0.20833333333333334,
+          "risk_upper": 0.841498476682194,
+          "worst": -108028.6539220411,
+          "passed": false,
+          "gross_loss": 171926.0385897974,
+          "gross_gain": 3015726.175777251
+        }
+      },
+      "selection": {
+        "wide": {
+          "eligible": 40,
+          "held": 30,
+          "correctly_held": 7,
+          "missed_better_move": 23
+        },
+        "repeated": {
+          "eligible": 40,
+          "held": 30,
+          "correctly_held": 8,
+          "missed_better_move": 22
+        },
+        "duplicated": {
+          "eligible": 40,
+          "held": 31,
+          "correctly_held": 8,
+          "missed_better_move": 23
+        },
+        "wide_requests": {
+          "eligible": 40,
+          "held": 30,
+          "correctly_held": 8,
+          "missed_better_move": 22
+        },
+        "previous": {
+          "eligible": 40,
+          "held": 12,
+          "correctly_held": 5,
+          "missed_better_move": 7
+        }
+      },
+      "matched_overlap": {
+        "proposals": 11,
+        "both": 8,
+        "different_actions": 6
+      },
+      "matched_gain_diff": [
+        4876.551531821173,
+        -38805.50076647705,
+        42974.44150022015
+      ],
+      "frozen_gain_diff": [
+        4876.551531821173,
+        -38805.50076647705,
+        42974.44150022015
+      ],
+      "repeated_vs_duplicate": [
+        8450.429877632467,
+        0.0,
+        33801.71951052987
+      ],
+      "repeated_vs_equal_requests": [
+        -7633.129213816355,
+        -57291.58565039255,
+        32366.595631642085
+      ],
+      "brier_diff": [
+        -0.0064477729126069475,
+        -0.028802849264193103,
+        0.013842215936479338
+      ]
+    },
+    "archived-native": {
+      "policies": {
+        "keep": {
+          "effect": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "n": 96,
+          "used": 0,
+          "lost": 0,
+          "large": 0,
+          "coverage": 0.0,
+          "risk_upper": null,
+          "worst": 0.0,
+          "passed": false,
+          "gross_loss": 0.0,
+          "gross_gain": 0.0
+        },
+        "cut": {
+          "effect": [
+            97900.82875552923,
+            24911.905260253214,
+            175320.45298735652
+          ],
+          "n": 96,
+          "used": 71,
+          "lost": 25,
+          "large": 19,
+          "coverage": 0.7395833333333334,
+          "risk_upper": 0.49134027503298217,
+          "worst": -1066532.2941830752,
+          "passed": false,
+          "gross_loss": 5224199.968154146,
+          "gross_gain": 14622679.528684953
+        },
+        "previous": {
+          "effect": [
+            83961.1388490018,
+            14529.986017829275,
+            156733.25519180147
+          ],
+          "n": 96,
+          "used": 55,
+          "lost": 17,
+          "large": 11,
+          "coverage": 0.5729166666666666,
+          "risk_upper": 0.46723025363328863,
+          "worst": -1066532.2941830752,
+          "passed": false,
+          "gross_loss": 4199369.865909832,
+          "gross_gain": 12259639.195414003
+        },
+        "wide": {
+          "effect": [
+            14346.223081957723,
+            -4512.211853167969,
+            37085.980816916686
+          ],
+          "n": 96,
+          "used": 17,
+          "lost": 7,
+          "large": 2,
+          "coverage": 0.17708333333333334,
+          "risk_upper": 0.7006151155517025,
+          "worst": -335059.0863364709,
+          "passed": false,
+          "gross_loss": 469333.2430543432,
+          "gross_gain": 1846570.6589222846,
+          "risk_brier": 0.20755694739846114
+        },
+        "wide_matched": {
+          "effect": [
+            11228.225903745022,
+            50.89502207708125,
+            25898.364112583797
+          ],
+          "n": 96,
+          "used": 13,
+          "lost": 6,
+          "large": 1,
+          "coverage": 0.13541666666666666,
+          "risk_upper": 0.7785115748296239,
+          "worst": -77206.46161996383,
+          "passed": false,
+          "gross_loss": 134274.1567178723,
+          "gross_gain": 1212183.8434773947
+        },
+        "repeated": {
+          "effect": [
+            14786.63195614395,
+            564.8250649317731,
+            37174.12880652156
+          ],
+          "n": 96,
+          "used": 15,
+          "lost": 6,
+          "large": 1,
+          "coverage": 0.15625,
+          "risk_upper": 0.70852150885235,
+          "worst": -77206.46161996383,
+          "passed": false,
+          "gross_loss": 134274.1567178723,
+          "gross_gain": 1553790.8245076914,
+          "risk_brier": 0.2182569116311333
+        },
+        "repeated_matched": {
+          "effect": [
+            4078.9346884586193,
+            -1967.10665704063,
+            13207.952917530514
+          ],
+          "n": 96,
+          "used": 12,
+          "lost": 6,
+          "large": 1,
+          "coverage": 0.125,
+          "risk_upper": 0.8173236982771785,
+          "worst": -77206.46161996383,
+          "passed": false,
+          "gross_loss": 134274.1567178723,
+          "gross_gain": 525851.8868098998
+        },
+        "duplicated": {
+          "effect": [
+            21389.36698988937,
+            -8003.764010307049,
+            66063.33387217783
+          ],
+          "n": 96,
+          "used": 13,
+          "lost": 7,
+          "large": 2,
+          "coverage": 0.13541666666666666,
+          "risk_upper": 0.8337752919449342,
+          "worst": -369087.76372793375,
+          "passed": false,
+          "gross_loss": 503361.92044580606,
+          "gross_gain": 2556741.151475186,
+          "risk_brier": 0.22424566282752034
+        },
+        "duplicated_matched": {
+          "effect": [
+            17234.673978577044,
+            -1795.943507097092,
+            58525.87788102686
+          ],
+          "n": 96,
+          "used": 11,
+          "lost": 6,
+          "large": 1,
+          "coverage": 0.11458333333333333,
+          "risk_upper": 0.8583461325411047,
+          "worst": -77206.46161996383,
+          "passed": false,
+          "gross_loss": 134274.1567178723,
+          "gross_gain": 1788802.8586612688
+        },
+        "wide_requests": {
+          "effect": [
+            30753.11985325556,
+            1809.8276296135846,
+            73804.47710114362
+          ],
+          "n": 96,
+          "used": 20,
+          "lost": 7,
+          "large": 2,
+          "coverage": 0.20833333333333334,
+          "risk_upper": 0.6220638346380931,
+          "worst": -335059.0863364709,
+          "passed": false,
+          "gross_loss": 469333.2430543432,
+          "gross_gain": 3421632.748966877,
+          "risk_brier": 0.20840229190428314
+        },
+        "wide_requests_matched": {
+          "effect": [
+            8758.24039853208,
+            -243.00275690704976,
+            21501.45234283445
+          ],
+          "n": 96,
+          "used": 15,
+          "lost": 6,
+          "large": 1,
+          "coverage": 0.15625,
+          "risk_upper": 0.70852150885235,
+          "worst": -77206.46161996383,
+          "passed": false,
+          "gross_loss": 134274.1567178723,
+          "gross_gain": 975065.2349769521
+        }
+      },
+      "selection": {
+        "wide": {
+          "eligible": 76,
+          "held": 56,
+          "correctly_held": 12,
+          "missed_better_move": 44
+        },
+        "repeated": {
+          "eligible": 76,
+          "held": 58,
+          "correctly_held": 13,
+          "missed_better_move": 45
+        },
+        "duplicated": {
+          "eligible": 76,
+          "held": 60,
+          "correctly_held": 12,
+          "missed_better_move": 48
+        },
+        "wide_requests": {
+          "eligible": 76,
+          "held": 53,
+          "correctly_held": 11,
+          "missed_better_move": 42
+        },
+        "previous": {
+          "eligible": 76,
+          "held": 16,
+          "correctly_held": 1,
+          "missed_better_move": 15
+        }
+      },
+      "matched_overlap": {
+        "proposals": 21,
+        "both": 17,
+        "different_actions": 8
+      },
+      "matched_gain_diff": [
+        -7149.2912152864055,
+        -19803.3912458149,
+        289.7180306241846
+      ],
+      "frozen_gain_diff": [
+        440.40887418622634,
+        -23425.09913273165,
+        25871.527030497182
+      ],
+      "repeated_vs_duplicate": [
+        -13155.739290118427,
+        -55163.134502487024,
+        2382.3415189513908
+      ],
+      "repeated_vs_equal_requests": [
+        -4679.305710073462,
+        -15637.73254174471,
+        0.0
+      ],
+      "brier_diff": [
+        0.010699964232672167,
+        -0.002030495228848618,
+        0.02416749049538344
+      ]
+    }
+  },
+  "within_market": {
+    "econ": {
+      "cut": {
+        "n": 24,
+        "widest_flipping_example": {
+          "seed": 250041,
+          "outcomes": [
+            15.369935041739838,
+            37.81396151544075,
+            -7.817963463488191,
+            -61.39732647317485
+          ]
+        },
+        "noise_share": 0.4555650564408994,
+        "noise_share_interval": [
+          0.30359607240647674,
+          0.6637790120247324
+        ],
+        "first_rmse": 37.23161299480615,
+        "three_rmse": 30.399484712683517,
+        "first_absolute_error": [
+          26.143983346193693,
+          18.907879226440084,
+          34.65842109563292
+        ],
+        "three_absolute_error": [
+          21.5778138816087,
+          15.421257001648565,
+          28.436466621639234
+        ],
+        "absolute_error_diff": [
+          -4.566169464584991,
+          -6.499262399827475,
+          -2.9705212438521085
+        ],
+        "both_won_and_lost": 7
+      },
+      "raise": {
+        "n": 24,
+        "widest_flipping_example": {
+          "seed": 250086,
+          "outcomes": [
+            -73.67980117057141,
+            15.783882945399311,
+            -50.551412350725634,
+            -10.531807985428433
+          ]
+        },
+        "noise_share": 0.5026500586323246,
+        "noise_share_interval": [
+          0.2467388866120339,
+          0.7267505945402145
+        ],
+        "first_rmse": 46.90949682001679,
+        "three_rmse": 38.301443766583745,
+        "first_absolute_error": [
+          27.68251825583518,
+          17.092179457098744,
+          42.06685137578298
+        ],
+        "three_absolute_error": [
+          23.59201993385302,
+          14.321072199319273,
+          36.259824960473196
+        ],
+        "absolute_error_diff": [
+          -4.090498321982156,
+          -6.351328067209833,
+          -2.4248060102999562
+        ],
+        "both_won_and_lost": 6
+      }
+    },
+    "native": {
+      "cut": {
+        "n": 19,
+        "widest_flipping_example": {
+          "seed": 251000,
+          "outcomes": [
+            500527.69284366415,
+            263917.3331516165,
+            -746751.1303370954,
+            312553.28712566465
+          ]
+        },
+        "noise_share": 0.4355928538550249,
+        "noise_share_interval": [
+          0.30202712072747695,
+          0.8339397944100838
+        ],
+        "first_rmse": 541607.2961315132,
+        "three_rmse": 442220.5054968909,
+        "first_absolute_error": [
+          338555.61902238417,
+          204563.09175244792,
+          492278.8102729019
+        ],
+        "three_absolute_error": [
+          288627.1347741811,
+          173940.4893650472,
+          421178.31640110654
+        ],
+        "absolute_error_diff": [
+          -49928.48424820308,
+          -77090.5889749483,
+          -25804.814323701787
+        ],
+        "both_won_and_lost": 9
+      },
+      "raise": {
+        "n": 19,
+        "widest_flipping_example": {
+          "seed": 251082,
+          "outcomes": [
+            -2022512.9122794797,
+            -947407.5370452264,
+            836536.1244330955,
+            -873625.4506706055
+          ]
+        },
+        "noise_share": 0.8146623695827466,
+        "noise_share_interval": [
+          0.4371729144745024,
+          1.0
+        ],
+        "first_rmse": 540588.6990960988,
+        "three_rmse": 441388.82450013194,
+        "first_absolute_error": [
+          310277.82745572476,
+          157741.9078745964,
+          504395.58142011816
+        ],
+        "three_absolute_error": [
+          250459.95411289742,
+          131008.00467217101,
+          393614.097469909
+        ],
+        "absolute_error_diff": [
+          -59817.873342827246,
+          -113906.58561793885,
+          -22549.29617808903
+        ],
+        "both_won_and_lost": 7
+      }
+    }
+  },
+  "qwen_minus_smol_same_econ_seeds": {
+    "n": 48,
+    "gain_diff": {
+      "previous": [
+        -17.11534958779833,
+        -33.54938353600377,
+        -4.317856469802515
+      ],
+      "repeated": [
+        -9.727575849141173,
+        -20.05448022139872,
+        -1.9141604665503993
+      ],
+      "wide": [
+        -19.993662906395244,
+        -35.25255429883709,
+        -8.221429915962032
+      ],
+      "wide_requests": [
+        -13.9983829219654,
+        -25.904806359796137,
+        -4.900660278307691
+      ],
+      "cut": [
+        -33.51199117693022,
+        -53.93131139446554,
+        -15.122177893971054
+      ]
+    }
+  }
+}

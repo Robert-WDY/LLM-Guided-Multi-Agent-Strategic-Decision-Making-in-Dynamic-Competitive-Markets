@@ -1,0 +1,34 @@
+{
+  "host_time": "2026-11-19T11:16:02.5577215+08:00",
+  "smol_process": {
+    "id": 19556,
+    "modules": [
+      "ggml-base.dll",
+      "ggml.dll",
+      "ggml-cpu-alderlake.dll"
+    ]
+  },
+  "smol_sha": "decd2598bc2c8ed08c19adc3c8fdd461ee19ed5708679d1c54ef54a5a30d4f33",
+  "qwen_sha": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+  "cpu_runtime_sha": "a1c2b33ea499e0a8f80d0125371b87de8708af588d2dcb6a4b425c401bfda55e",
+  "extra_commercial_api_cny": 0,
+  "qwen_process": {
+    "sampled_at": "2026-11-19T11:26:43.1094161+08:00",
+    "id": 29460,
+    "modules": [
+      "ggml-base.dll",
+      "ggml.dll",
+      "ggml-cpu-alderlake.dll"
+    ]
+  },
+  "after_completion": {
+    "time": "2026-11-19T11:31:11.335867+08:00",
+    "project_model_pids": []
+  },
+  "study_requests": {
+    "smol": 8471,
+    "qwen": 3831,
+    "reused_previous_stage": 1228,
+    "new": 11074
+  }
+}
