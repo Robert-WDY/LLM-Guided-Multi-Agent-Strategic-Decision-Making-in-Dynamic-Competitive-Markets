@@ -17,8 +17,21 @@ ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "experiment-results" / "oligopoly-v1"
 FIG = ROOT / "docs" / "figures"
 PHASES = ("e1", "e2", "e3", "e4", "e5", "e6", "e7")
-RNG = np.random.default_rng(20261119)
+RNG = np.random.default_rng(20261119)  # only used for figure jitter
 B = 10_000
+
+
+def rng_for(*arrays) -> np.random.Generator:
+    """Resampling stream derived from the data itself, so every interval and
+    p-value is reproducible regardless of how many other quantities are computed."""
+
+    import hashlib
+
+    h = hashlib.sha256()
+    for a in arrays:
+        h.update(np.asarray(a, dtype=float).round(12).tobytes())
+        h.update(b"|")
+    return np.random.default_rng(int.from_bytes(h.digest()[:8], "little"))
 
 
 def load() -> dict[str, list[dict]]:
@@ -36,14 +49,15 @@ def load() -> dict[str, list[dict]]:
 def boot_ci(x: np.ndarray) -> tuple[float, float]:
     if len(x) < 2:
         return (float("nan"), float("nan"))
-    idx = RNG.integers(0, len(x), size=(B, len(x)))
+    idx = rng_for(x).integers(0, len(x), size=(B, len(x)))
     m = x[idx].mean(axis=1)
     return float(np.quantile(m, 0.025)), float(np.quantile(m, 0.975))
 
 
 def boot_diff_ci(x: np.ndarray, y: np.ndarray) -> tuple[float, float]:
-    mx = x[RNG.integers(0, len(x), size=(B, len(x)))].mean(axis=1)
-    my = y[RNG.integers(0, len(y), size=(B, len(y)))].mean(axis=1)
+    rng = rng_for(x, y)
+    mx = x[rng.integers(0, len(x), size=(B, len(x)))].mean(axis=1)
+    my = y[rng.integers(0, len(y), size=(B, len(y)))].mean(axis=1)
     d = mx - my
     return float(np.quantile(d, 0.025)), float(np.quantile(d, 0.975))
 
@@ -53,9 +67,10 @@ def perm_p(x: np.ndarray, y: np.ndarray, alternative: str) -> float:
 
     obs = x.mean() - y.mean()
     pool = np.concatenate([x, y])
+    rng = rng_for(x, y, [len(x)])
     stats = np.empty(B)
     for b in range(B):
-        RNG.shuffle(pool)
+        rng.shuffle(pool)
         stats[b] = pool[: len(x)].mean() - pool[len(x) :].mean()
     if alternative == "greater":
         return float((np.sum(stats >= obs) + 1) / (B + 1))
@@ -68,7 +83,7 @@ def sign_flip_p(x: np.ndarray) -> float:
     """One-sided H0: mean <= 0, sign-flip randomisation test."""
 
     obs = x.mean()
-    flips = RNG.choice([-1.0, 1.0], size=(B, len(x)))
+    flips = rng_for(x, [1.0]).choice([-1.0, 1.0], size=(B, len(x)))
     stats = (flips * np.abs(x)).mean(axis=1)
     return float((np.sum(stats >= obs) + 1) / (B + 1))
 
@@ -107,6 +122,11 @@ def main() -> None:
                 "welfare_vs_nash": float(arr(cells, name, "welfare_vs_nash").mean()),
                 "cs_loss_vs_nash": float(arr(cells, name, "cs_loss_vs_nash").mean()),
                 "invalid_rate": float(arr(cells, name, "invalid_rate").mean()),
+                "episodes_with_firm_below_nash": int(sum(
+                    min(r["mean_price_by_firm"]) < r["benchmarks"]["nash_price"] for r in rows)),
+                "price_gap_norm": float(np.mean([
+                    r["cross_firm_price_gap"] * r["scale"]
+                    / (r["benchmarks"]["monopoly_price"] - r["benchmarks"]["nash_price"]) for r in rows])),
                 "tokens": int(sum(r["input_tokens"] + r["output_tokens"] for r in rows)),
             }
         )
@@ -164,10 +184,11 @@ def main() -> None:
         if rows:
             dp = np.array([(r["mean_price_by_firm"][1] - r["mean_price_by_firm"][0]) / r["scale"] for r in rows])
             dd = np.array([r["delta_by_firm"][0] - r["delta_by_firm"][1] for r in rows])
-            flips = RNG.choice([-1.0, 1.0], size=(B, len(dd)))
+            flips = rng_for(dd, [2.0]).choice([-1.0, 1.0], size=(B, len(dd)))
             p_two = float((np.sum(np.abs((flips * dd).mean(axis=1)) >= abs(dd.mean())) + 1) / (B + 1))
             e5[m] = {
                 "n": len(rows),
+                "episodes_B_above_A": int((dp > 0).sum()),
                 "price_B_minus_A": float(dp.mean()), "price_B_minus_A_ci": boot_ci(dp),
                 "p_price_one_sided": sign_flip_p(dp),
                 "delta_A_minus_B": float(dd.mean()), "delta_A_minus_B_ci": boot_ci(dd),
@@ -203,6 +224,17 @@ def main() -> None:
         }
     for m in ("ds-flash", "db-lite"):
         two(f"E7 alt wording vs default {m}", f"{m}-base-alt", f"{m}-base", "two")
+        two(f"E7 alt wording price index {m}", f"{m}-base-alt", f"{m}-base", "two", "price_index")
+
+    # Firm-level split for asymmetric matchups (firm 0 is the first listed agent)
+    split = {}
+    for name in ("ds-flash-vs-br", "ds-flash-vs-db-lite"):
+        rows = cells.get(name, [])
+        if rows:
+            d0 = np.array([r["delta_by_firm"][0] for r in rows])
+            d1 = np.array([r["delta_by_firm"][1] for r in rows])
+            split[name] = {"delta_firm0": float(d0.mean()), "delta_firm1": float(d1.mean()),
+                           "firm1_higher_profit": int((d1 > d0).sum()), "n": len(rows)}
 
     # Holm over pre-specified family H2-H6, pooling the two models by Fisher's
     # method is avoided: each model-specific test is a family member.
@@ -215,8 +247,10 @@ def main() -> None:
     ref = {"qlearning_delta_mean": float(qd.mean()), "qlearning_delta_ci": boot_ci(qd),
            "qlearning_sessions": len(q)}
 
-    result = {"cells": table, "h1": h1, "tests": tests, "reference": ref, "e5": e5, "e6": e6,
-              "mechanisms": mechanisms(cells)}
+    result = {"cells": table, "h1": h1, "tests": tests, "reference": ref, "e5": e5, "e6": e6, "split": split,
+              "mechanisms": mechanisms(cells), "message_prices": message_prices(cells),
+              "advisor_adoption": advisor_adoption(cells), "reasoning": reasoning_truncation(),
+              "final_price_modes": final_price_modes(cells)}
     (OUT / "analysis.json").write_text(json.dumps(result, indent=1))
     write_tables(result)
     figures(cells, ref)
@@ -275,6 +309,90 @@ def mechanisms(cells) -> dict:
     return out
 
 
+def message_prices(cells) -> dict:
+    """Share of cheap-talk messages announcing a price, and where those prices sit."""
+
+    import re
+
+    num = re.compile(r"(?<![\w.])\$?(\d+(?:\.\d+)?)")
+    out = {}
+    for name, summaries in sorted(cells.items()):
+        if not summaries[0].get("communication"):
+            continue
+        idx, total, with_price = [], 0, 0
+        for s in summaries:
+            b, sc = s["benchmarks"], s["scale"]
+            for r in episode_rows(s):
+                for m in r["messages"]:
+                    if not m:
+                        continue
+                    total += 1
+                    vals = [float(x) for x in num.findall(m)]
+                    vals = [x for x in vals if 0.8 * b["marginal_cost"] < x < 5 * sc]
+                    if vals:
+                        with_price += 1
+                        idx.append((max(vals) - b["nash_price"]) / (b["monopoly_price"] - b["nash_price"]))
+        a = np.array(idx)
+        out[name] = {"messages": total, "share_with_price": with_price / max(total, 1),
+                     "announced_price_index_median": float(np.median(a)) if len(a) else None,
+                     "announced_above_monopoly_share": float(np.mean(a > 1)) if len(a) else None}
+    return out
+
+
+def advisor_adoption(cells) -> dict:
+    """How often an advised firm's price equals the advisor's reported best response."""
+
+    from game_theory_agent.oligopoly.economics import LogitMarket
+
+    out = {}
+    for name, summaries in sorted(cells.items()):
+        if summaries[0].get("advisor") != "br":
+            continue
+        advised = summaries[0].get("advisor_firms") or list(range(summaries[0]["n"]))
+        exact = total = 0
+        round1_nash = []
+        for s in summaries:
+            mk = LogitMarket(n=s["n"], scale=s["scale"])
+            rows = episode_rows(s)
+            round1_nash.append(all(abs(rows[0]["prices"][i] - round(mk.nash_price, 2)) < 0.006 * s["scale"] for i in advised))
+            for t in range(1, len(rows)):
+                prev = rows[t - 1]["prices"]
+                for i in advised:
+                    br = mk.best_response([p for j, p in enumerate(prev) if j != i])
+                    total += 1
+                    exact += abs(rows[t]["prices"][i] - round(br, 2)) < 0.006 * s["scale"]
+        out[name] = {"share_equal_to_reported_br": exact / total, "share_round1_at_nash": float(np.mean(round1_nash))}
+    return out
+
+
+def reasoning_truncation() -> dict:
+    """Empty replies in reasoning mode and whether they hit the output-token cap."""
+
+    import gzip
+
+    rows = []
+    for f in sorted((OUT / "cache").glob("*.jsonl*")):
+        opener = gzip.open if f.suffix == ".gz" else open
+        with opener(f, "rt", encoding="utf-8") as fh:
+            rows += [r for r in map(json.loads, fh) if r["model"].endswith("+thinking")]
+    empty = [r for r in rows if not r["text"].strip()]
+    return {"replies": len(rows), "empty": len(empty),
+            "empty_at_cap": sum(r["output_tokens"] >= 5900 for r in empty)}
+
+
+def final_price_modes(cells) -> dict:
+    """Most frequent final prices (unscaled, rounded to cents) across all firms and episodes."""
+
+    from collections import Counter
+
+    c = Counter()
+    for summaries in cells.values():
+        for srow in summaries:
+            c.update(round(p / srow["scale"], 2) for p in srow["mean_price_by_firm"])
+    total = sum(c.values())
+    return {"firm_episodes": total, "top": [[p, n] for p, n in c.most_common(5)]}
+
+
 def rows_len(summaries) -> int:
     return summaries[0]["rounds"]
 
@@ -323,6 +441,11 @@ def write_tables(r: dict) -> None:
             continue
         lines += ["", f"{key.split(':')[1]} 同一批 {w['n']} 局：Δ 第 36–50 轮 {w['delta_rounds_36_50']:.2f} → 第 121–150 轮 "
                   f"{w['delta_rounds_121_150']:.2f}，差 {w['diff']:+.2f} {fmt_ci(w['diff_ci'])}；上升 {w['rose']} 局，下降 {w['fell']} 局。"]
+    if r.get("message_prices"):
+        lines += ["", "| 通信格 | 消息数 | 含价格的消息 | 宣布价格指数（中位数） | 宣布价高于垄断价 |", "|---|---|---|---|---|"]
+        for k, v in r["message_prices"].items():
+            lines.append(f"| {k} | {v['messages']} | {v['share_with_price']:.0%} | "
+                         f"{v['announced_price_index_median']:.2f} | {v['announced_above_monopoly_share']:.0%} |")
     lines += ["", "| 格 | 开局→终局价格指数相关 | 最后一次改价轮次（中位数） | 笔记提到合谋 | 提到合作/协调 | 提到价格战 | 提到报复 | 提到均衡/Nash | 消息提到合作/协调 |",
               "|---|---|---|---|---|---|---|---|---|"]
     for name, m in r["mechanisms"].items():
