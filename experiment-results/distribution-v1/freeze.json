@@ -1,0 +1,26 @@
+{
+  "econ": {
+    "cutoffs": {
+      "wide": 0.12562994388652282,
+      "repeated": 0.1223976688820438
+    },
+    "calibration_digest": "2ff9fd8f2520850fbc3b6493761028923f48c1934dcb8ffaad7f0718b5d200ca",
+    "historical_eligible": 96,
+    "training_hashes": {
+      "wide": "488866508896b28ec5665b7b9be4e1ae42ea247634ad3c7d5ca04fa3749e93cb",
+      "repeated": "57281eca436ee7c3b70145932fac07951f306466425d1fc8b2182bb722b98596"
+    }
+  },
+  "native": {
+    "cutoffs": {
+      "wide": 0.1993429167959176,
+      "repeated": 0.144164812130715
+    },
+    "calibration_digest": "eed678643e5d7bbca75feda5de1ea524b8c3e191fe94498ae9e0e2a54a2a1ca8",
+    "historical_eligible": 88,
+    "training_hashes": {
+      "wide": "3d54383d8e3530e9e92d7ae29932ab708099a291684843fd983396480c7f6510",
+      "repeated": "b904ca3fe6c6997edd5172fa70dfe6e6e86e156bef6ba0596783a375e7d73c12"
+    }
+  }
+}
