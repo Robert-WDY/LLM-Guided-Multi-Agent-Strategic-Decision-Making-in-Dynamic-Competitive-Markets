@@ -7,7 +7,7 @@ Usage:
 
 Every episode is identified by (phase, cell, seed). Finished episodes are
 skipped, so the command can be re-run after an interruption. LLM responses are
-cached in experiment-results/oligopoly-v1/cache/responses.jsonl.
+cached in experiment-results/oligopoly-v1/cache/<phase>.jsonl[.gz].
 """
 
 from __future__ import annotations
@@ -69,7 +69,7 @@ async def main() -> None:
     if args.only:
         keep = set(args.only.split(","))
         cells = [c for c in cells if c["cell"] in keep]
-    cache = ResponseCache(OUT / "cache" / "responses.jsonl")
+    cache = ResponseCache(OUT / "cache" / f"{args.phase}.jsonl")
     budget = TokenBudget(args.max_tokens)
     models: dict[str, OpenAICompatibleModel] = {}
 
@@ -82,7 +82,7 @@ async def main() -> None:
             )
         return models[alias]
 
-    phase_dir = OUT / args.phase
+    phase_dir = OUT / (f"{args.phase}-replay" if args.offline else args.phase)
     summary_path = phase_dir / "summaries.jsonl"
     finished = done_ids(summary_path)
     jobs = []
@@ -142,8 +142,25 @@ async def main() -> None:
     for e in errors[:5]:
         print("ERROR", type(e).__name__, str(e)[:300], flush=True)
     print(f"done: {completed} ok, {len(errors)} failed, tokens sent={budget.used}", flush=True)
+    if args.offline:
+        verify_replay(OUT / args.phase / "summaries.jsonl", summary_path)
     if any(isinstance(e, BudgetExceeded) for e in errors):
         sys.exit(3)
+
+
+def verify_replay(original: Path, replay: Path) -> None:
+    """Offline replay must reproduce every archived episode exactly."""
+
+    def by_id(p):
+        return {json.loads(l)["episode_id"]: json.loads(l) for l in p.read_text().splitlines() if l.strip()}
+
+    a, b = by_id(original), by_id(replay)
+    keys = ("delta", "price_index", "total_welfare", "mean_price_by_firm")
+    mismatched = [e for e in a if e not in b or any(a[e][k] != b[e][k] for k in keys)]
+    print(f"replay check: {len(a) - len(mismatched)}/{len(a)} episodes identical", flush=True)
+    if mismatched:
+        print("mismatched:", mismatched[:10], flush=True)
+        sys.exit(4)
 
 
 if __name__ == "__main__":

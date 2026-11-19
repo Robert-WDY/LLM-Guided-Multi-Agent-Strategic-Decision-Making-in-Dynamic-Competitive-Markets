@@ -9,6 +9,7 @@ per call so cost can be reconciled against provider billing.
 from __future__ import annotations
 
 import asyncio
+import gzip
 import hashlib
 import json
 import os
@@ -59,12 +60,20 @@ class TokenBudget:
 
 
 class ResponseCache:
+    """Appends to ``path``; reads every ``*.jsonl`` / ``*.jsonl.gz`` beside it.
+
+    One writer file per process keeps concurrent studies from interleaving
+    lines, while lookups still see every response archived so far.
+    """
+
     def __init__(self, path: Path) -> None:
         self.path = path
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self._mem: dict[str, dict[str, Any]] = {}
-        if path.exists():
-            with path.open(encoding="utf-8") as fh:
+        files = sorted(self.path.parent.glob("*.jsonl")) + sorted(self.path.parent.glob("*.jsonl.gz"))
+        for f in files:
+            opener = gzip.open if f.suffix == ".gz" else open
+            with opener(f, "rt", encoding="utf-8") as fh:
                 for line in fh:
                     if line.strip():
                         row = json.loads(line)
