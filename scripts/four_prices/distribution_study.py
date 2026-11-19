@@ -15,7 +15,7 @@ from renewal_trials import OUT as RENEWAL, archive as earlier
 from run import read, save
 from saturation_report import ci, weights
 
-METHODS = ("wide", "repeated")
+METHODS = ("wide", "repeated", "duplicated")
 
 
 def training(market):
@@ -25,8 +25,10 @@ def training(market):
     repeated = [f for group in grouped for f in group]
     assert len(base) == 120 and len(single) == len(repeated) == 96
     assert {group[0] for group in grouped}.issubset(single)
+    duplicated = [group[0] for group in grouped for _ in group]
+    allocations = dict(zip(METHODS, (single, repeated, duplicated)))
     models = {}
-    for key, paths in zip(METHODS, (single, repeated)):
+    for key, paths in allocations.items():
         records = [read(f) for f in base + paths]
         x = [opportunity(r)[0] for r in records]
         y = [targets(r)[1] for r in records]
@@ -34,7 +36,7 @@ def training(market):
     return (
         models,
         grouped,
-        {k: digest(base + p) for k, p in zip(METHODS, (single, repeated))},
+        {k: digest(base + p) for k, p in allocations.items()},
     )
 
 
@@ -82,7 +84,9 @@ def predict(proposals, models, market, hurdle, cutoffs):
         for (seed, _), flag in zip(proposals, enabled)
     ]
     choices = [candidates(raw[key], enabled, hurdle) for key in METHODS]
-    quota = min(int(np.ceil(enabled.sum() / 4)), *(int(a[2].sum()) for a in choices))
+    quota = min(
+        int(np.ceil(enabled.sum() / 4)), *(int(a[2].sum()) for a in choices[:2])
+    )
     reviewer = PublicRenewalReview(RENEWAL / f"public-{market}.npz")
     for r, (_, proposal) in zip(rows, proposals):
         result = reviewer.review(*proposal)
@@ -152,6 +156,7 @@ def evaluate(records, scores, hurdle):
         matched_overlap=overlap,
         matched_gain_diff=effect("repeated_matched", "wide_matched"),
         frozen_gain_diff=effect("repeated", "wide"),
+        repeated_vs_duplicate=effect("repeated_matched", "duplicated_matched"),
         brier_diff=[
             float((differences[1] - differences[0]).sum() / active.sum()),
             *np.quantile(delta, [0.0125, 0.9875]).tolist(),
