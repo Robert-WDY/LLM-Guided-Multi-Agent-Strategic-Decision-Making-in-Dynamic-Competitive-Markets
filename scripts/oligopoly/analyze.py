@@ -237,13 +237,13 @@ def fmt_ci(ci) -> str:
 
 
 def write_tables(r: dict) -> None:
-    lines = ["| 格 | 局数 | 卖家 | Δ 均值 [95% CI] | Δ 中位数 | 价格指数 [95% CI] | 价格高于垄断价的比例 | 消费者剩余损失 | 无效回复率 |",
-             "|---|---|---|---|---|---|---|---|---|"]
+    lines = ["| 格 | 局数 | 卖家 | Δ 均值 [95% CI] | Δ 中位数 | 价格指数 [95% CI] | 价格高于垄断价的比例 | 消费者剩余损失 | 总福利损失 | 无效回复率 |",
+             "|---|---|---|---|---|---|---|---|---|---|"]
     for c in r["cells"]:
         lines.append(
             f"| {c['cell']} | {c['episodes']} | {c['n']} | {c['delta_mean']:.2f} {fmt_ci(c['delta_ci'])} | "
             f"{c['delta_median']:.2f} | {c['price_index_mean']:.2f} {fmt_ci(c['price_index_ci'])} | "
-            f"{c['share_above_monopoly_price']:.0%} | {c['cs_loss_vs_nash']:.2f} | {c['invalid_rate']:.3f} |"
+            f"{c['share_above_monopoly_price']:.0%} | {c['cs_loss_vs_nash']:.2f} | {c['welfare_vs_nash']:.2f} | {c['invalid_rate']:.3f} |"
         )
     lines += ["", f"参照：Calvano Q-learning {r['reference']['qlearning_sessions']} 次会话 Δ = "
               f"{r['reference']['qlearning_delta_mean']:.3f} {fmt_ci(r['reference']['qlearning_delta_ci'])}。", ""]
@@ -294,6 +294,23 @@ def figures(cells, ref) -> None:
     ax.set_xlim(-1.5, 1.3)
     fig.tight_layout()
     fig.savefig(FIG / "oligopoly-delta-by-cell.png", dpi=150)
+    plt.close(fig)
+
+    # welfare: price index vs total-welfare loss (both 0 at Nash, 1 at monopoly)
+    fig, ax = plt.subplots(figsize=(6.4, 4.6))
+    for name in names:
+        pi = arr(cells, name, "price_index").mean()
+        wl = arr(cells, name, "welfare_vs_nash").mean()
+        color = "#e76f51" if ("comm" in name or "cooperative" in name) else (
+            "#2a9d8f" if "advisor-br" in name or "aggressive" in name else "#1d3557")
+        ax.scatter(pi, wl, color=color, s=22)
+        ax.annotate(name, (pi, wl), fontsize=6, xytext=(3, 2), textcoords="offset points")
+    ax.axhline(1, color="#888", ls="--", lw=1)
+    ax.axvline(1, color="#888", ls="--", lw=1)
+    ax.set_xlabel("price index (0 = Nash, 1 = monopoly price)")
+    ax.set_ylabel("total-welfare loss (0 = Nash, 1 = monopoly loss)")
+    fig.tight_layout()
+    fig.savefig(FIG / "oligopoly-welfare.png", dpi=150)
     plt.close(fig)
 
     fig, axes = plt.subplots(1, 2, figsize=(10, 3.6), sharey=True)

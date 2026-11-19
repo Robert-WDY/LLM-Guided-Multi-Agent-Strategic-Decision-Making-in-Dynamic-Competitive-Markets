@@ -38,6 +38,7 @@ async def run_episode(
     communication: bool = False,
     advisor: str | None = None,
     opening: str | None = None,
+    advisor_firms: list[int] | None = None,
     out_dir: Path | None = None,
 ) -> dict[str, Any]:
     """``opening`` = "nash" or "monopoly" fixes every firm's round-1 price."""
@@ -58,7 +59,7 @@ async def run_episode(
                 history=histories[i],
                 rival_messages={k: v for k, v in messages.items() if k != FIRM_NAMES[i]},
             )
-            if advisor:
+            if advisor and (advisor_firms is None or i in advisor_firms):
                 obs.advisor = advisor_report(market, obs, advisor)
             observations.append(obs)
         if t == 1 and opening is not None:

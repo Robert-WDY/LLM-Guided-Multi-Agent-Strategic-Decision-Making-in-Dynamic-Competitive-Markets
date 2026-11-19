@@ -126,6 +126,7 @@ async def main() -> None:
                 communication=cell.get("communication", False),
                 advisor=cell.get("advisor"),
                 opening=cell.get("opening"),
+                advisor_firms=cell.get("advisor_firms"),
                 out_dir=phase_dir / "episodes",
             )
             with summary_path.open("a", encoding="utf-8") as fh:

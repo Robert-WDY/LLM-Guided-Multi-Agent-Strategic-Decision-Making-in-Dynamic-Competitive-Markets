@@ -14,7 +14,7 @@ MODELS = {
 
 
 def cell(name, firms, *, personas=None, communication=False, advisor=None,
-         opening=None, rounds=100, window=30, seeds=range(3)):
+         opening=None, advisor_firms=None, rounds=100, window=30, seeds=range(3)):
     n = len(firms)
     return {
         "cell": name,
@@ -24,6 +24,7 @@ def cell(name, firms, *, personas=None, communication=False, advisor=None,
         "communication": communication,
         "advisor": advisor,
         "opening": opening,
+        "advisor_firms": advisor_firms,
         "rounds": rounds,
         "window": window,
         "seeds": list(seeds),
@@ -68,7 +69,15 @@ for m in ("ds-flash", "db-lite", "ds-pro"):
     ]
 E4 += [cell("ds-flash-think-base", ["ds-flash-think"] * 2, seeds=range(400, 412), **MAIN)]
 
+# E5: unilateral game-theory advisor (firm 0 only); E6: long horizon from Nash
+E5 = [cell(f"{m}-advisor-br-firm0", [m] * 2, advisor="br", advisor_firms=[0],
+           seeds=range(500, 520), **MAIN) for m in ("ds-flash", "db-lite")]
+E6 = [cell("ds-flash-open-nash-long", ["ds-flash"] * 2, opening="nash",
+           rounds=150, window=30, seeds=range(600, 610))]
+
 PHASES: dict[str, list[dict]] = {
+    "e5": E5,
+    "e6": E6,
     "e4": E4,
     "e1": E1,
     "e2": E2,

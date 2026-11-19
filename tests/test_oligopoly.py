@@ -125,3 +125,17 @@ def test_fixed_opening_overrides_round_one_only() -> None:
     s = asyncio.run(run_episode(spec, [RuleAgent(m, "monopoly"), RuleAgent(m, "monopoly")], opening="nash"))
     assert s["price_path_mean"][0] == pytest.approx(m.nash_price)
     assert s["price_path_mean"][-1] == pytest.approx(m.monopoly_price)
+
+
+def test_unilateral_advisor_only_reaches_listed_firm() -> None:
+    seen = []
+
+    def reply(msgs):
+        seen.append("Advisor report" in msgs[0]["content"])
+        return json.dumps({"price": 1.6, "notes": "n"})
+
+    m = LogitMarket()
+    agents = [LLMPricingAgent(ScriptedModel(reply), max_price=5, episode_key=f"f{i}") for i in range(2)]
+    spec = EpisodeSpec("u", n=2, rounds=3, scale=1.0, window=1)
+    asyncio.run(run_episode(spec, agents, advisor="br", advisor_firms=[0]))
+    assert seen.count(True) == 3 and seen.count(False) == 3
