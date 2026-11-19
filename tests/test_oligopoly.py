@@ -117,3 +117,11 @@ def test_response_cache_roundtrip(tmp_path) -> None:
 def test_qlearning_smoke() -> None:
     r = run_session(LogitMarket(), seed=1, m=5, stable=200, max_steps=20_000, beta=5e-4)
     assert r["cycle_length"] >= 1 and -1.5 < r["delta"] < 1.5
+
+
+def test_fixed_opening_overrides_round_one_only() -> None:
+    m = LogitMarket()
+    spec = EpisodeSpec("o", n=2, rounds=5, scale=1.0, window=2)
+    s = asyncio.run(run_episode(spec, [RuleAgent(m, "monopoly"), RuleAgent(m, "monopoly")], opening="nash"))
+    assert s["price_path_mean"][0] == pytest.approx(m.nash_price)
+    assert s["price_path_mean"][-1] == pytest.approx(m.monopoly_price)

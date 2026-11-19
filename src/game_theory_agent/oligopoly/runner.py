@@ -37,8 +37,10 @@ async def run_episode(
     *,
     communication: bool = False,
     advisor: str | None = None,
+    opening: str | None = None,
     out_dir: Path | None = None,
 ) -> dict[str, Any]:
+    """``opening`` = "nash" or "monopoly" fixes every firm's round-1 price."""
     if len(agents) != spec.n:
         raise ValueError("one agent per firm")
     market = LogitMarket(n=spec.n, scale=spec.scale)
@@ -59,9 +61,13 @@ async def run_episode(
             if advisor:
                 obs.advisor = advisor_report(market, obs, advisor)
             observations.append(obs)
-        decisions: list[Decision] = await asyncio.gather(
-            *(agent.decide(obs) for agent, obs in zip(agents, observations))
-        )
+        if t == 1 and opening is not None:
+            fixed = {"nash": market.nash_price, "monopoly": market.monopoly_price}[opening]
+            decisions = [Decision(price=fixed) for _ in range(spec.n)]
+        else:
+            decisions = await asyncio.gather(
+                *(agent.decide(obs) for agent, obs in zip(agents, observations))
+            )
         prices = [d.price for d in decisions]
         out = market.outcome(prices)
         for i in range(spec.n):

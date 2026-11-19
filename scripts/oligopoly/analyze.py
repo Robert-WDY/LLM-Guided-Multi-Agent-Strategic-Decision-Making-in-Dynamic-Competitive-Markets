@@ -16,7 +16,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "experiment-results" / "oligopoly-v1"
 FIG = ROOT / "docs" / "figures"
-PHASES = ("e1", "e2", "e3")
+PHASES = ("e1", "e2", "e3", "e4")
 RNG = np.random.default_rng(20261119)
 B = 10_000
 
@@ -142,6 +142,20 @@ def main() -> None:
     two("X heterogeneous vs db-lite", "ds-flash-vs-db-lite", "db-lite-base", "two")
     two("X ds-pro vs ds-flash", "ds-pro-base", "ds-flash-base", "two")
     two("X db-pro vs db-mini", "db-pro-base", "db-mini-base", "two")
+
+    # E4 follow-up (PLAN addendum): from a forced Nash opening, do prices rise?
+    for m in ("ds-flash", "db-lite", "ds-pro"):
+        x = arr(cells, f"{m}-open-nash")
+        if len(x):
+            h1[f"{m} open-nash"] = {"mean": float(x.mean()), "ci": boot_ci(x), "p": sign_flip_p(x),
+                                    "p_bonferroni": min(1.0, 3 * sign_flip_p(x)), "n": len(x)}
+        xc = arr(cells, f"{m}-open-nash-comm")
+        if len(xc):
+            h1[f"{m} open-nash-comm"] = {"mean": float(xc.mean()), "ci": boot_ci(xc), "p": sign_flip_p(xc),
+                                         "p_bonferroni": min(1.0, 3 * sign_flip_p(xc)), "n": len(xc)}
+        two(f"E4 open-nash vs free opening {m}", f"{m}-open-nash", f"{m}-base", "two")
+        two(f"E4 comm from Nash {m}", f"{m}-open-nash-comm", f"{m}-open-nash", "greater")
+    two("E4 thinking vs no thinking (ds-flash)", "ds-flash-think-base", "ds-flash-base", "two")
 
     # Holm over pre-specified family H2-H6, pooling the two models by Fisher's
     # method is avoided: each model-specific test is a family member.

@@ -9,11 +9,12 @@ MODELS = {
     "db-pro": ("doubao", "doubao-seed-2-1-pro-260915", False),
     "ds-flash": ("deepseek", "deepseek-flash", False),
     "ds-pro": ("deepseek", "deepseek-v4-pro", False),
+    "ds-flash-think": ("deepseek", "deepseek-flash", True),
 }
 
 
 def cell(name, firms, *, personas=None, communication=False, advisor=None,
-         rounds=100, window=30, seeds=range(3)):
+         opening=None, rounds=100, window=30, seeds=range(3)):
     n = len(firms)
     return {
         "cell": name,
@@ -22,6 +23,7 @@ def cell(name, firms, *, personas=None, communication=False, advisor=None,
         "personas": list(personas or ["neutral"] * n),
         "communication": communication,
         "advisor": advisor,
+        "opening": opening,
         "rounds": rounds,
         "window": window,
         "seeds": list(seeds),
@@ -56,7 +58,18 @@ E3 += [
     cell("ds-flash-vs-db-lite", ["ds-flash", "db-lite"], seeds=S20, **MAIN),
 ]
 
+# E4 (follow-up, specified after E1-E3 mechanism tables; see PLAN.md addendum)
+S16 = range(300, 316)
+E4 = []
+for m in ("ds-flash", "db-lite", "ds-pro"):
+    E4 += [
+        cell(f"{m}-open-nash", [m] * 2, opening="nash", seeds=S16, **MAIN),
+        cell(f"{m}-open-nash-comm", [m] * 2, opening="nash", communication=True, seeds=S16, **MAIN),
+    ]
+E4 += [cell("ds-flash-think-base", ["ds-flash-think"] * 2, seeds=range(400, 412), **MAIN)]
+
 PHASES: dict[str, list[dict]] = {
+    "e4": E4,
     "e1": E1,
     "e2": E2,
     "e3": E3,
