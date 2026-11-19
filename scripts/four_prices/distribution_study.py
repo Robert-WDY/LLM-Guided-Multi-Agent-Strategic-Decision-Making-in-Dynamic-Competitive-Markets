@@ -15,7 +15,7 @@ from renewal_trials import OUT as RENEWAL, archive as earlier
 from run import read, save
 from saturation_report import ci, weights
 
-METHODS = ("wide", "repeated", "duplicated")
+METHODS = ("wide", "repeated", "duplicated", "wide_requests")
 
 
 def training(market):
@@ -26,7 +26,20 @@ def training(market):
     assert len(base) == 120 and len(single) == len(repeated) == 96
     assert {group[0] for group in grouped}.issubset(single)
     duplicated = [group[0] for group in grouped for _ in group]
-    allocations = dict(zip(METHODS, (single, repeated, duplicated)))
+
+    def calls(paths):
+        return {reply["sha"] for path in paths for reply in read(path)["tape"].values()}
+
+    repeated_budget = sum(len(calls(group)) for group in grouped)
+    cumulative = np.cumsum([len(calls([file])) for file in single])
+    slots = int(np.searchsorted(cumulative, repeated_budget, side="right"))
+    allocations = dict(zip(METHODS, (single, repeated, duplicated, single[:slots])))
+    budget = dict(
+        wide_requests=int(cumulative[slots - 1]),
+        repeated_requests=repeated_budget,
+        wide_equal_labels_requests=int(cumulative[-1]),
+        wide_requests_openings=slots,
+    )
     models = {}
     for key, paths in allocations.items():
         records = [read(f) for f in base + paths]
@@ -37,6 +50,7 @@ def training(market):
         models,
         grouped,
         {k: digest(base + p) for k, p in allocations.items()},
+        budget,
     )
 
 
@@ -157,6 +171,7 @@ def evaluate(records, scores, hurdle):
         matched_gain_diff=effect("repeated_matched", "wide_matched"),
         frozen_gain_diff=effect("repeated", "wide"),
         repeated_vs_duplicate=effect("repeated_matched", "duplicated_matched"),
+        repeated_vs_equal_requests=effect("repeated_matched", "wide_requests_matched"),
         brier_diff=[
             float((differences[1] - differences[0]).sum() / active.sum()),
             *np.quantile(delta, [0.0125, 0.9875]).tolist(),
@@ -231,13 +246,20 @@ def run(phase):
     report = {}
     diagnostics = {}
     for m in MARKETS:
-        models, groups, hashes = training(m)
+        models, groups, hashes, budget = training(m)
         hurdle = 20000 if m == "native" else 5
         if phase == "freeze":
-            config[m] = dict(**freeze(models, m, hurdle), training_hashes=hashes)
+            config[m] = dict(
+                **freeze(models, m, hurdle),
+                training_hashes=hashes,
+                label_request_budget=budget,
+            )
             continue
         frozen = config[m]
-        assert hashes == frozen["training_hashes"]
+        assert (
+            hashes == frozen["training_hashes"]
+            and budget == frozen["label_request_budget"]
+        )
         assert digest(historical("calibrate", m)) == frozen["calibration_digest"]
         if phase == "measure":
             diagnostics[m] = variance(groups)
